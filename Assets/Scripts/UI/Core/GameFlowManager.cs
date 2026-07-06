@@ -20,6 +20,21 @@ public class GameFlowManager
 
     private void OnGameStartRequest()
     {
+        ShowCharacterSelectAsync().Forget();
+    }
+
+    private async UniTask ShowCharacterSelectAsync()
+    {
+        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI);
+
+        CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
+        viewModel.OnEnterGameRequested += OnEnterGameRequest;
+
+        view.BindViewModel(viewModel);
+    }
+
+    private void OnEnterGameRequest()
+    {
 
     }
 }
