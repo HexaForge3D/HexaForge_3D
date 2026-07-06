@@ -48,7 +48,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.TitleUI, UIRootType.Main },
         {UIType.CharacterSelectUI, UIRootType.Main },
         {UIType.InGameUI, UIRootType.Main },
-        {UIType.HuntingAreaSelectUI, UIRootType.Popup },
+        {UIType.HuntingAreaSelectUI, UIRootType.Content },
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리
