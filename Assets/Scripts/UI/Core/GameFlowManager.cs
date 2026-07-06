@@ -35,6 +35,21 @@ public class GameFlowManager
 
     private void OnEnterGameRequest()
     {
+        ShowInGameAsync().Forget();
+    }
 
+    private async UniTask ShowInGameAsync()
+    {
+        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI);
+
+        InGameViewModel viewModel = new InGameViewModel();
+        viewModel.OnBackToCharacterSelectRequest += OnBackToCharacterSelectRequested;
+
+        view.BindViewModel(viewModel);
+    }
+
+    private void OnBackToCharacterSelectRequested()
+    {
+        ShowCharacterSelectAsync().Forget();
     }
 }
