@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
+        }
+
         if (Input.GetMouseButtonDown(1))
         {
             SetTargetPosition();
