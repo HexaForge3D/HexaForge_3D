@@ -33,6 +33,7 @@ public class UIManager : BaseMonoManager<UIManager>
     [SerializeField] private Canvas Canvas_Front;
     [SerializeField] private Canvas Canvas_ETC;
 
+    // UI의 주소를 관리하는 딕셔너리
     private readonly Dictionary<UIType, string> _addressMap = new Dictionary<UIType, string>
     {
         {UIType.TitleUI, "UI_Title" },
@@ -41,6 +42,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
     };
 
+    // UI가 배치될 레이어 관리
     private readonly Dictionary<UIType, UIRootType> _rootTypeMap = new Dictionary<UIType, UIRootType>
     {
         {UIType.TitleUI, UIRootType.Main },
@@ -49,10 +51,11 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, UIRootType.Popup },
     };
 
+    // 생성된 UI 인스턴스 캐싱 + 현재 활성화된 UI 추적
     private readonly Dictionary<UIType, BaseUI> _uiDic = new Dictionary<UIType, BaseUI>();
-
     private readonly HashSet<UIType> _activeUI = new HashSet<UIType>();
 
+    // UI를 열기 위해선 무조건 이 메서드를 통해서 열려야 함.
     public async UniTask<T> OpenUIAsync<T>(UIType uiType) where T : BaseUI
     {
         BaseUI ui = await GetOrCreateUIAsync(uiType);
@@ -91,6 +94,7 @@ public class UIManager : BaseMonoManager<UIManager>
         return _activeUI.Contains(uIType);
     }
 
+    // 실제 로드/생성 로직 
     private async UniTask<BaseUI> GetOrCreateUIAsync(UIType uiType)
     {
         if (_uiDic.TryGetValue(uiType, out BaseUI cached))
