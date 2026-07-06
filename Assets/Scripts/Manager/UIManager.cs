@@ -27,10 +27,10 @@ public enum UIRootType : byte
 public class UIManager : BaseMonoManager<UIManager>
 {
     [SerializeField] private Canvas Canvas_BackGround;
-    [SerializeField] private Canvas Canvas_Main;
-    [SerializeField] private Canvas Canvas_Content;
-    [SerializeField] private Canvas Canvas_Popup;
-    [SerializeField] private Canvas Canvas_Front;
+    [SerializeField] private Canvas Canvas_Main;  // 완전히 전환되는 화면
+    [SerializeField] private Canvas Canvas_Content;  // 인게임에서 한가지씩만 열리는 화면
+    [SerializeField] private Canvas Canvas_Popup;  // 여러개 열러도 상관없는 팝업
+    [SerializeField] private Canvas Canvas_Front;  // 로딩화면
     [SerializeField] private Canvas Canvas_ETC;
 
     // UI의 주소를 관리하는 딕셔너리
@@ -51,22 +51,36 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, UIRootType.Popup },
     };
 
+    // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리
+    private readonly Dictionary<UIRootType, bool> _exclusiveRootMap = new Dictionary<UIRootType, bool>
+    {
+        {UIRootType.BackGround, false },
+        {UIRootType.Main, true },
+        {UIRootType.Content, false },
+        {UIRootType.Popup, false },
+        {UIRootType.Front, false },
+        {UIRootType.ETC, false }
+    };
+
     // 생성된 UI 인스턴스 캐싱 + 현재 활성화된 UI 추적
     private readonly Dictionary<UIType, BaseUI> _uiDic = new Dictionary<UIType, BaseUI>();
     private readonly HashSet<UIType> _activeUI = new HashSet<UIType>();
+    private readonly Dictionary<UIRootType, UIType> _activeUIByRoot = new Dictionary<UIRootType, UIType>();
 
     // UI를 열기 위해선 무조건 이 메서드를 통해서 열려야 함.
     public async UniTask<T> OpenUIAsync<T>(UIType uiType) where T : BaseUI
     {
+        UIRootType rootType = GetRootType(uiType);
+
+        CloseExclusiveUIIfNeeded(uiType, rootType);
+
         BaseUI ui = await GetOrCreateUIAsync(uiType);
 
-        if (ui == null)
-        {
-            return null;
-        }
+        if (ui == null) return null;
 
         ui.gameObject.SetActive(true);
         _activeUI.Add(uiType);
+        _activeUIByRoot[rootType] = uiType;
 
         return ui as T;
     }
@@ -92,6 +106,25 @@ public class UIManager : BaseMonoManager<UIManager>
     public bool IsActiveUI(UIType uIType)
     {
         return _activeUI.Contains(uIType);
+    }
+
+    private void CloseExclusiveUIIfNeeded(UIType newUIType, UIRootType rootType)
+    {
+        if (_exclusiveRootMap.TryGetValue(rootType, out bool isExclusive) == false || isExclusive == false) return;
+        if (_activeUIByRoot.TryGetValue(rootType, out UIType previousUIType) == false) return;
+        if (previousUIType == newUIType) return;
+        if (_activeUI.Contains(previousUIType)) CloseUI(previousUIType);
+    }
+    
+    private UIRootType GetRootType(UIType uiType)
+    {
+        if (_rootTypeMap.TryGetValue(uiType, out UIRootType rootType) == false)
+        {
+            Debug.LogError($"[UIManager] {uiType}에 대한 UIRootType이 없습니다.");
+            return UIRootType.None;
+        }
+
+        return rootType;
     }
 
     // 실제 로드/생성 로직 
