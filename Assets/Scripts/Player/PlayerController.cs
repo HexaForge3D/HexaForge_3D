@@ -62,4 +62,10 @@ public class PlayerController : MonoBehaviour
             _isMoving = false;
         }
     }
+
+    public void MoveStop()
+    {
+        _isMoving = false;
+        _targetPosition = transform.position;
+    }
 }
