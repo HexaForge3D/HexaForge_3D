@@ -6,8 +6,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5f; // 이동속도
     [SerializeField] private float _rotationSpeed = 8f; // 회전속도
 
+    [Header("Player Camera")]
+    [SerializeField] private Camera _playerCamera;
+
     private Vector3 _targetPosition;
     private bool _isMoving = false;
+
+    public float MoveSpeed => _moveSpeed;
 
     private void Start()
     {
@@ -29,15 +34,14 @@ public class PlayerController : MonoBehaviour
 
     private void SetTargetPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (_playerCamera == null) return;
+        Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
             _targetPosition = hit.point;
-
             _targetPosition.y = transform.position.y;
-
             _isMoving = true;
         }
     }
