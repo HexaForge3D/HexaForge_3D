@@ -161,4 +161,4 @@ x86/
 *.vsix
 
 # ThirdParty (에셋 관리, Git 미포함)
-/Asset/ThirdParty/
+/Assets/ThirdParty/
