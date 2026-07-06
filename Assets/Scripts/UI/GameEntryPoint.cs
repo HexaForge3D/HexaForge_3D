@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks.Triggers;
-using UnityEngine;
+﻿using UnityEngine;
 
 // 게임의 시작지점을 확인함
 public class GameEntryPoint : MonoBehaviour
