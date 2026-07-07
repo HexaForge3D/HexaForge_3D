@@ -40,11 +40,11 @@ public class HuntingAreaSelectViewModel
     {
         return new List<HuntingAreaData>
         {
-            new HuntingAreaData("area_a", "사냥터 A", "사냥터A 설명......", ""),
-            new HuntingAreaData("area_b", "사냥터 B", "사냥터B 설명......", ""),
-            new HuntingAreaData("area_c", "사냥터 C", "사냥터C 설명......", ""),
-            new HuntingAreaData("area_d", "사냥터 D", "사냥터D 설명......", ""),
-            new HuntingAreaData("area_e", "사냥터 E", "사냥터E 설명......", ""),
+            new HuntingAreaData("area_a", "Area A", "Area A Description......", ""),
+            new HuntingAreaData("area_b", "Area B", "Area B Description......", ""),
+            new HuntingAreaData("area_c", "Area C", "Area C Description......", ""),
+            new HuntingAreaData("area_d", "Area D", "Area D Description......", ""),
+            new HuntingAreaData("area_e", "Area E", "Area E Description......", ""),
         };
     }
 }

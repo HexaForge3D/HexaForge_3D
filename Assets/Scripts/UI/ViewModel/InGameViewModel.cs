@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class InGameViewModel
 {
-    public Action OnBackToCharacterSelectRequest;
+    public Action OnBackToCharacterSelectRequested;
+    public Action OnHuntingAreaSelectRequested;
 
     public void RequestBackToCharacterSelect()
     {
-        OnBackToCharacterSelectRequest?.Invoke();
+        OnBackToCharacterSelectRequested?.Invoke();
+    }
+
+    public void RequestHuntingAreaSelect()
+    {
+        OnHuntingAreaSelectRequested?.Invoke();
     }
 }
