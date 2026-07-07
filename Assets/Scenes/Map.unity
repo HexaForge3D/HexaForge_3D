@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 178086609}
   - component: {fileID: 178086608}
   - component: {fileID: 178086607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Npc_House_1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -592,7 +592,7 @@ GameObject:
   - component: {fileID: 565178646}
   - component: {fileID: 565178645}
   - component: {fileID: 565178644}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GeneralStore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -816,7 +816,7 @@ GameObject:
   - component: {fileID: 586385992}
   - component: {fileID: 586385991}
   - component: {fileID: 586385990}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +884,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: a2407126e3372f64cacb75ed466a5621, type: 3}
+  - {fileID: 2100000, guid: 5433b1c87424cfe42bd8ea501af39cd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1187,7 +1187,7 @@ GameObject:
   - component: {fileID: 822654215}
   - component: {fileID: 822654214}
   - component: {fileID: 822654213}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Npc_House_1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1975,7 +1975,7 @@ GameObject:
   - component: {fileID: 1106537934}
   - component: {fileID: 1106537933}
   - component: {fileID: 1106537932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PotionShop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2344,7 +2344,7 @@ GameObject:
   - component: {fileID: 1247232818}
   - component: {fileID: 1247232817}
   - component: {fileID: 1247232816}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2412,7 +2412,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: a2407126e3372f64cacb75ed466a5621, type: 3}
+  - {fileID: 2100000, guid: 5433b1c87424cfe42bd8ea501af39cd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2698,7 +2698,7 @@ GameObject:
   - component: {fileID: 1396315395}
   - component: {fileID: 1396315394}
   - component: {fileID: 1396315393}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Npc_House_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3032,7 +3032,7 @@ GameObject:
   - component: {fileID: 1502700436}
   - component: {fileID: 1502700435}
   - component: {fileID: 1502700434}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3100,7 +3100,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: a2407126e3372f64cacb75ed466a5621, type: 3}
+  - {fileID: 2100000, guid: 5433b1c87424cfe42bd8ea501af39cd2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4440,6 +4440,7 @@ GameObject:
   - component: {fileID: 1986974041}
   - component: {fileID: 1986974040}
   - component: {fileID: 1986974043}
+  - component: {fileID: 1986974044}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4565,6 +4566,22 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1986974044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986974039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54406d85a5a56754c8595bd18b5002c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraManager
+  _playerTransform: {fileID: 1550026826}
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &2008049604
 GameObject:
   m_ObjectHideFlags: 0

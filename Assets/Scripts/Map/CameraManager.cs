@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private LayerMask _obstacleMask;
-    //다중투명화시
-    //private List<Renderer> _currentHitRenderers = new List<Renderer>(); 
-    private Renderer _lastHitObjectRenderer;
+
+    private List<Renderer> _currentHitRenderers = new List<Renderer>(); 
 
     private void Update()
     {
@@ -29,29 +29,31 @@ public class CameraManager : MonoBehaviour
 
         Debug.DrawRay(rayOrigin, rayDirection * distance, Color.yellow, 0.1f);
 
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, distance, _obstacleMask))
+        List<Renderer> currentHitRenderList = new List<Renderer>();
+
+        foreach (RaycastHit hit in Physics.RaycastAll(rayOrigin, rayDirection, distance, _obstacleMask))
         {
-            Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
-
-            if (_lastHitObjectRenderer != null && _lastHitObjectRenderer != hitRenderer)
+            Renderer targetRenderer = hit.collider.GetComponent<Renderer>();
+            if (targetRenderer != null)
             {
-                ChangedHidingObject(_lastHitObjectRenderer, false);
-            }
+                currentHitRenderList.Add(targetRenderer);
 
-            if (hitRenderer != null)
-            {
-                _lastHitObjectRenderer = hitRenderer;
-                ChangedHidingObject(_lastHitObjectRenderer, true);
+                if (!_currentHitRenderers.Contains(targetRenderer))
+                {
+                    ChangedHidingObject(targetRenderer, true);
+                }
             }
         }
-        else
+
+        foreach (Renderer renderer in _currentHitRenderers)
         {
-            if (_lastHitObjectRenderer != null)
+            if (!currentHitRenderList.Contains(renderer))
             {
-                ChangedHidingObject(_lastHitObjectRenderer, false);
-                _lastHitObjectRenderer = null;
+                ChangedHidingObject(renderer, false);
             }
         }
+
+        _currentHitRenderers = currentHitRenderList;
     }
 
     private void ChangedHidingObject(Renderer renderer, bool isTransparent)
