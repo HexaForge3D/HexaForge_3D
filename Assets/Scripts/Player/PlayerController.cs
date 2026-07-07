@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.AI.Navigation;
+using UnityEngine;
 using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Camera")]
     [SerializeField] private Camera _playerCamera;
+
+    [Header("NavMesh Surface")]
+    [SerializeField] private Transform _navMeshSurface;
 
     private Vector3 _targetPosition;
     private bool _isMoving = false;
@@ -21,6 +25,7 @@ public class PlayerController : MonoBehaviour
         _targetPosition = transform.position;
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
+        _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
 
         if (_rb != null)
         {
@@ -55,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             MovePlayer();
         }
+        CheckDistance();
     }
 
     private void SetTargetPosition()
@@ -75,6 +81,15 @@ public class PlayerController : MonoBehaviour
             }
 
             _isMoving = true;
+        }
+    }
+
+    private void CheckDistance()
+    {
+        if (Vector3.Distance(this.transform.position, _navMeshSurface.position) > 10f)
+        {
+            _navMeshSurface.transform.position = this.transform.position;
+            _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
         }
     }
 
