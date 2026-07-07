@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Setting")]
@@ -12,11 +12,26 @@ public class PlayerController : MonoBehaviour
     private Vector3 _targetPosition;
     private bool _isMoving = false;
 
+    private NavMeshAgent _agent;
+    private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
 
     private void Start()
     {
         _targetPosition = transform.position;
+        _agent = GetComponent<NavMeshAgent>();
+        _rb = GetComponent<Rigidbody>();
+
+        if (_rb != null)
+        {
+            _rb.isKinematic = true;
+        }
+
+        if (_agent != null)
+        {
+            _agent.speed = _moveSpeed;
+            _agent.updateRotation = false;
+        }
     }
 
     private void Update()
@@ -29,6 +44,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             SetTargetPosition();
+        }
+
+        if (_agent != null)
+        {
+            _agent.speed = _moveSpeed;
         }
 
         if (_isMoving)
@@ -47,24 +67,34 @@ public class PlayerController : MonoBehaviour
         {
             _targetPosition = hit.point;
             _targetPosition.y = transform.position.y;
+
+            if (_agent != null)
+            {
+                _agent.SetDestination(_targetPosition);
+                _agent.isStopped = false;
+            }
+
             _isMoving = true;
         }
     }
 
     private void MovePlayer()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
-        Vector3 direction = (_targetPosition - transform.position).normalized;
-        
-        if (direction != Vector3.zero)
+        if (_agent != null)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
-        }
+            Vector3 direction = _agent.velocity;
+            direction.y = 0f;
 
-        if (Vector3.Distance(transform.position, _targetPosition) <= 0.05f)
-        {
-            _isMoving = false;
+            if (direction.sqrMagnitude > 0.01f)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(direction.normalized);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
+            }
+
+            if (_agent.pathPending == false && _agent.remainingDistance <= 0.05f)
+            {
+                _isMoving = false;
+            }
         }
     }
 
@@ -72,5 +102,10 @@ public class PlayerController : MonoBehaviour
     {
         _isMoving = false;
         _targetPosition = transform.position;
+        if (_agent != null)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
     }
 }
