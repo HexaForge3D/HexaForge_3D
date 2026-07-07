@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HuntingAreaSelectView : BaseUI
+public class HuntingAreaSelectView : BaseOverLayUI
 {
     [SerializeField] private Transform Transform_ListParent;
     [SerializeField] private GameObject Prefab_ListItem;

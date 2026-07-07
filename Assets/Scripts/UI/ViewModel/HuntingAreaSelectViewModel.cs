@@ -36,6 +36,7 @@ public class HuntingAreaSelectViewModel
         OnTeleportRequested?.Invoke(_selectedArea);
     }
 
+    // 더미 데이터로 추후 데이터 드리븐으로 빠질 예정
     private List<HuntingAreaData> CreateDummyData()
     {
         return new List<HuntingAreaData>

@@ -167,6 +167,8 @@ public class UIManager : BaseMonoManager<UIManager>
             return null;
         }
 
+        baseUI.SetUIType(uiType);
+
         _uiDic.Add(uiType, baseUI);
 
         return baseUI;
