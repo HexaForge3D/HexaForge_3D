@@ -5,15 +5,14 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Move Setting")]
     [SerializeField] private float _moveSpeed = 5f; // 이동속도
-    [SerializeField] private float _rotationSpeed = 8f; // 회전속도
+    [SerializeField] private float _rotationSpeed = 10f; // 회전속도
 
     [Header("Player Camera")]
     [SerializeField] private Camera _playerCamera;
 
     [Header("NavMesh Surface")]
     [SerializeField] private Transform _navMeshSurface;
-
-    public Transform _spotPoint;
+    [SerializeField] private Transform _spotPoint;
     
     private Vector3 _targetPosition;
     private bool _isMoving = false;
@@ -49,6 +48,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
+            // OnClickAttack();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -66,6 +66,11 @@ public class PlayerController : MonoBehaviour
             MovePlayer();
         }
         CheckDistance();
+    }
+
+    public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
+    {
+
     }
 
     private void SetTargetPosition()
@@ -94,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckDistance()
     {
-        if (Vector3.Distance(this.transform.position, _navMeshSurface.position) > 10f)
+        if (Vector3.Distance(this.transform.position, _navMeshSurface.position) >= 15f)
         {
             _navMeshSurface.transform.position = this.transform.position;
             _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
@@ -126,6 +131,7 @@ public class PlayerController : MonoBehaviour
     {
         _isMoving = false;
         _targetPosition = transform.position;
+        _spotPoint.gameObject.SetActive(false);
         if (_agent != null)
         {
             _agent.isStopped = true;
