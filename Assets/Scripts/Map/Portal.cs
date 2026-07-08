@@ -1,22 +1,50 @@
-﻿using UnityEngine;
+﻿//using UnityEngine;
+//using UnityEngine.InputSystem;
 
-public class Portal : MonoBehaviour
-{
-    [SerializeField] private string _nextMapName;
-    [SerializeField] private Transform _spawnPoint;
+//public class Portal : MonoBehaviour
+//{
+//    [SerializeField] private string _nextMapName;
+//    [SerializeField] private Transform _spawnPoint;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (MapManager.Instance != null)
-            {
-                MapManager.Instance.ChangeMap(_nextMapName, _spawnPoint.position);
-            }
-            else
-            {
-                Debug.LogError("MapManager.Instance가 null입니다. 씬에 MapManager가 배치되어 있는지 확인하세요.");
-            }
-        }
-    }
-}
+//    private bool _isPlayerInCollider;
+
+//    private void OnEnable()
+//    {
+//        PlayerInputManager.Oninteract += Handleinteraction;
+//    }
+
+//    private void OnDisable()
+//    {
+//        PlayerInput.OnInteract -= HandleInteraction;
+//    }
+
+//    private void Handleinteraction()
+//    {
+//        if (_isPlayerInCollider)
+//        {
+//            MapManager.Instance.ChangeMap(_nextMapName, _spawnPoint.position);
+//        }
+//    }
+
+//    private void OnTriggerEnter(Collider other)
+//    {
+//        if (other.CompareTag("Player"))
+//        {
+//            if (MapManager.Instance != null)
+//            {
+//                _isPlayerInCollider = true;
+//            }
+//        }
+//    }
+
+//    //private void OnTriggerExit(Collider other)
+//    //{
+//    //    if (other.CompareTag("Player"))
+//    //    {
+//    //        if (MapManager.Instance != null)
+//    //        {
+//    //            _isPlayerInCollider = false;
+//    //        }
+//    //    }
+//    //}
+//}
