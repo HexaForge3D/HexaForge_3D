@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 _targetPosition;
     private bool _isMoving = false;
 
-    
     private NavMeshAgent _agent;
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
@@ -33,7 +32,6 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
         _spotPoint.gameObject.SetActive(false);
-
         if (_rb != null)
         {
             _rb.isKinematic = true;
@@ -73,9 +71,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
     {
+        PlayerTableData playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
+        if (playerData != null)
+        {
+            int atk = playerData.Atk;
+            Debug.Log($"{atk}의 데미지로 공격하였습니다.");
+        }
         //_anmator.SetTrigger("Attack");
-        Debug.Log("공격");
-        //공격로직
     }
 
 
