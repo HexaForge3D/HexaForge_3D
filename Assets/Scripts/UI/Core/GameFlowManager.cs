@@ -45,7 +45,7 @@ public class GameFlowManager
 
     private async UniTask ShowCharacterSelectAsync()
     {
-        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI);
+        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI, useFullScreenLoading: false);
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
@@ -55,7 +55,7 @@ public class GameFlowManager
 
     private async UniTask ShowInGameAsync()
     {
-        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI);
+        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
         InGameViewModel viewModel = new InGameViewModel();
         viewModel.OnBackToCharacterSelectRequested += OnBackToCharacterSelectRequested;
@@ -66,7 +66,7 @@ public class GameFlowManager
 
     private async UniTask ShowHuntingAreaAsync()
     {
-        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI);
+        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
         HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
         viewModel.OnTeleportRequested += OnTeleportRequest;

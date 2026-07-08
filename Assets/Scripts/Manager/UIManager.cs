@@ -33,6 +33,8 @@ public class UIManager : BaseMonoManager<UIManager>
     [SerializeField] private Canvas Canvas_Front;  // 로딩화면
     [SerializeField] private Canvas Canvas_ETC;
 
+    [SerializeField] private LoadingOverLayView LoadingOverLay;
+
     // UI의 주소를 관리하는 딕셔너리
     private readonly Dictionary<UIType, string> _addressMap = new Dictionary<UIType, string>
     {
@@ -68,15 +70,34 @@ public class UIManager : BaseMonoManager<UIManager>
     private readonly Dictionary<UIRootType, UIType> _activeUIByRoot = new Dictionary<UIRootType, UIType>();
 
     // UI를 열기 위해선 무조건 이 메서드를 통해서 열려야 함.
-    public async UniTask<T> OpenUIAsync<T>(UIType uiType) where T : BaseUI
+    public async UniTask<T> OpenUIAsync<T>(UIType uiType, bool useFullScreenLoading = false) where T : BaseUI
     {
         UIRootType rootType = GetRootType(uiType);
+        bool needsLoad = _uiDic.ContainsKey(uiType) == false;
+
+        BaseUI ui;
+
+        if (needsLoad)
+        {
+            UniTask visualTask = LoadingOverLay.ShowAsync(useFullScreenLoading);
+            UniTask<BaseUI> loadTask = GetOrCreateUIAsync(uiType);
+
+            await visualTask;
+            ui = await loadTask;
+
+            LoadingOverLay.Hide();
+        }
+        else
+        {
+            ui = await GetOrCreateUIAsync(uiType);
+        }
+
+        if (ui == null)
+        {
+            return null;
+        }
 
         CloseExclusiveUIIfNeeded(uiType, rootType);
-
-        BaseUI ui = await GetOrCreateUIAsync(uiType);
-
-        if (ui == null) return null;
 
         ui.gameObject.SetActive(true);
         _activeUI.Add(uiType);
