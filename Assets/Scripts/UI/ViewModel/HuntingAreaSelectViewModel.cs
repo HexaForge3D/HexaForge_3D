@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class HuntingAreaSelectViewModel
 {
+    private readonly HuntingAreaRepository _repository = new HuntingAreaRepository();
+    
     private List<HuntingAreaData> _areaList;
     private HuntingAreaData _selectedArea;
 
@@ -14,7 +16,7 @@ public class HuntingAreaSelectViewModel
     {
         if (_areaList == null)
         {
-            _areaList = CreateDummyData();
+            _areaList = _repository.GetAllAreas();
         }
 
         return _areaList;
@@ -34,18 +36,5 @@ public class HuntingAreaSelectViewModel
         }
 
         OnTeleportRequested?.Invoke(_selectedArea);
-    }
-
-    // 더미 데이터로 추후 데이터 드리븐으로 빠질 예정
-    private List<HuntingAreaData> CreateDummyData()
-    {
-        return new List<HuntingAreaData>
-        {
-            new HuntingAreaData("area_a", "Area A", "Area A Description......", ""),
-            new HuntingAreaData("area_b", "Area B", "Area B Description......", ""),
-            new HuntingAreaData("area_c", "Area C", "Area C Description......", ""),
-            new HuntingAreaData("area_d", "Area D", "Area D Description......", ""),
-            new HuntingAreaData("area_e", "Area E", "Area E Description......", ""),
-        };
     }
 }
