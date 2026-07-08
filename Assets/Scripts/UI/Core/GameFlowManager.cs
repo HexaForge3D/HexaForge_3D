@@ -8,19 +8,39 @@ public class GameFlowManager
         await ShowTitleAsync();
     }
 
+    private void OnGameStartRequested()
+    {
+        ShowCharacterSelectAsync().Forget();
+    }
+
+    private void OnEnterGameRequested()
+    {
+        ShowInGameAsync().Forget();
+    }
+
+    private void OnBackToCharacterSelectRequested()
+    {
+        ShowCharacterSelectAsync().Forget();
+    }
+
+    private void OnHuntingAreaSelectRequested()
+    {
+        ShowHuntingAreaAsync().Forget();
+    }
+
+    private void OnTeleportRequest(HuntingAreaData data)
+    {
+        UnityEngine.Debug.Log($"텔레포트 요청: {data.Name} (Id: {data.Id})");
+    }
+
     private async UniTask ShowTitleAsync()
     {
         TitleView view = await UIManager.Instance.OpenUIAsync<TitleView>(UIType.TitleUI);
 
         TitleViewModel viewModel = new TitleViewModel();
-        viewModel.OnGameStartRequest += OnGameStartRequest;
+        viewModel.OnGameStartRequested += OnGameStartRequested;
 
         view.BindViewModel(viewModel);
-    }
-
-    private void OnGameStartRequest()
-    {
-        ShowCharacterSelectAsync().Forget();
     }
 
     private async UniTask ShowCharacterSelectAsync()
@@ -28,14 +48,9 @@ public class GameFlowManager
         CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI);
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
-        viewModel.OnEnterGameRequested += OnEnterGameRequest;
+        viewModel.OnEnterGameRequested += OnEnterGameRequested;
 
         view.BindViewModel(viewModel);
-    }
-
-    private void OnEnterGameRequest()
-    {
-        ShowInGameAsync().Forget();
     }
 
     private async UniTask ShowInGameAsync()
@@ -43,13 +58,19 @@ public class GameFlowManager
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI);
 
         InGameViewModel viewModel = new InGameViewModel();
-        viewModel.OnBackToCharacterSelectRequest += OnBackToCharacterSelectRequested;
+        viewModel.OnBackToCharacterSelectRequested += OnBackToCharacterSelectRequested;
+        viewModel.OnHuntingAreaSelectRequested += OnHuntingAreaSelectRequested;
 
         view.BindViewModel(viewModel);
     }
 
-    private void OnBackToCharacterSelectRequested()
+    private async UniTask ShowHuntingAreaAsync()
     {
-        ShowCharacterSelectAsync().Forget();
+        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI);
+
+        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
+        viewModel.OnTeleportRequested += OnTeleportRequest;
+
+        view.BindViewModel(viewModel);
     }
 }
