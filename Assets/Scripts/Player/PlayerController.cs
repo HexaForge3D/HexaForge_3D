@@ -13,12 +13,16 @@ public class PlayerController : MonoBehaviour
     [Header("NavMesh Surface")]
     [SerializeField] private Transform _navMeshSurface;
 
+    public Transform _spotPoint;
+    
     private Vector3 _targetPosition;
     private bool _isMoving = false;
+
 
     private NavMeshAgent _agent;
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
+
 
     private void Start()
     {
@@ -26,6 +30,7 @@ public class PlayerController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
+        _spotPoint.gameObject.SetActive(false);
 
         if (_rb != null)
         {
@@ -66,6 +71,7 @@ public class PlayerController : MonoBehaviour
     private void SetTargetPosition()
     {
         if (_playerCamera == null) return;
+        
         Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -79,7 +85,9 @@ public class PlayerController : MonoBehaviour
                 _agent.SetDestination(_targetPosition);
                 _agent.isStopped = false;
             }
-
+          
+            _spotPoint.gameObject.SetActive(true);
+            _spotPoint.position = hit.point;
             _isMoving = true;
         }
     }
@@ -109,6 +117,7 @@ public class PlayerController : MonoBehaviour
             if (_agent.pathPending == false && _agent.remainingDistance <= 0.05f)
             {
                 _isMoving = false;
+                _spotPoint.gameObject.SetActive(false);
             }
         }
     }
