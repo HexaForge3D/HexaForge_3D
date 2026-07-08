@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class TitleViewModel
 {
-    public Action OnGameStartRequest;
+    public Action OnGameStartRequested;
 
     public void RequestGameStart()
     {
-        OnGameStartRequest?.Invoke();
+        OnGameStartRequested?.Invoke();
     }
 }
