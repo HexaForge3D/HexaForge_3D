@@ -13,11 +13,14 @@ public class PlayerController : MonoBehaviour
     [Header("NavMesh Surface")]
     [SerializeField] private Transform _navMeshSurface;
     [SerializeField] private Transform _spotPoint;
-    
+
+    [Header("Animator")]
+    [SerializeField] private Animator _anmator;
+
     private Vector3 _targetPosition;
     private bool _isMoving = false;
 
-
+    
     private NavMeshAgent _agent;
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
@@ -48,7 +51,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
-            // OnClickAttack();
+            OnClickAttack();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -70,8 +73,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
     {
-
+        //_anmator.SetTrigger("Attack");
+        Debug.Log("공격");
+        //공격로직
     }
+
 
     private void SetTargetPosition()
     {
