@@ -1,4 +1,7 @@
-﻿public class PlayerTableData : GameDataBase
+﻿using System;
+
+[Serializable]
+public class PlayerTableData : GameDataBase
 {
     public string Name;
     public string Job;
