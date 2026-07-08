@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     private void SetTargetPosition()
     {
         if (_playerCamera == null) return;
-        
+
         Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
                 _agent.SetDestination(_targetPosition);
                 _agent.isStopped = false;
             }
-          
+
             _spotPoint.gameObject.SetActive(true);
             _spotPoint.position = hit.point;
             _isMoving = true;
@@ -144,6 +144,24 @@ public class PlayerController : MonoBehaviour
         {
             _agent.isStopped = true;
             _agent.ResetPath();
+        }
+    }
+
+    public void WarpPosition(Vector3 targetPosition)
+    {
+        _isMoving = false;
+        _spotPoint.gameObject.SetActive(false);
+
+        if (_agent != null && _agent.isActiveAndEnabled)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+            _agent.Warp(targetPosition);
+        }
+
+        else
+        {
+            transform.position = targetPosition;
         }
     }
 }
