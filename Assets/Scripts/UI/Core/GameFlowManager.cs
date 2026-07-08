@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem;
 
 // 게임의 흐름 타이밍을 관리할 스크립트
 public class GameFlowManager
@@ -20,6 +21,7 @@ public class GameFlowManager
 
     private void OnBackToCharacterSelectRequested()
     {
+        PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
         ShowCharacterSelectAsync().Forget();
     }
 
@@ -32,6 +34,13 @@ public class GameFlowManager
     {
         UnityEngine.Debug.Log($"텔레포트 요청: {data.Name} (Id: {data.Id})");
     }
+
+    private void OnInformationKeyPressed()
+    {
+        ShowInformationAsync().Forget();
+    }
+
+
 
     private async UniTask ShowTitleAsync()
     {
@@ -62,6 +71,8 @@ public class GameFlowManager
         viewModel.OnHuntingAreaSelectRequested += OnHuntingAreaSelectRequested;
 
         view.BindViewModel(viewModel);
+
+        PlayerInputSystem.OnInformation += OnInformationKeyPressed;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -73,4 +84,15 @@ public class GameFlowManager
 
         view.BindViewModel(viewModel);
     }
+
+    private async UniTask ShowInformationAsync()
+    {
+        InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationUI);
+
+        InformationViewModel viewModel = new InformationViewModel();
+        
+        view.BindViewModel(viewModel);
+
+    }
+
 }
