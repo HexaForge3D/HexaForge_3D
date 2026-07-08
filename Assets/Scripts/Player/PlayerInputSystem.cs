@@ -40,6 +40,14 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action ActionSkill3;
     public static event Action ActionSkill4;
     public static event Action OnEvasion;
+    public static event Action OnItem1;
+    public static event Action OnItem2;
+    public static event Action OnItem3;
+    public static event Action OnItem4;
+    public static event Action OnInventory;
+    public static event Action OninteractionKey;
+    public static event Action OnInformation;
+    public static event Action OnMap;
 
     private void Start()
     {
@@ -92,30 +100,35 @@ public class PlayerInputSystem : MonoBehaviour
         {
             Debug.Log("아이템1 사용");
             // 아이템1 사용 메서드 추가
+            OnItem1?.Invoke();
         }
 
         if (Input.GetKeyDown(_itemKey2)) 
         {
             Debug.Log("아이템2 사용");
             // 아이템2 사용 메서드 추가
+            OnItem2?.Invoke();
         }
 
         if (Input.GetKeyDown(_itemKey3))
         {
             Debug.Log("아이템3 사용");
             // 아이템3 사용 메서드 추가
+            OnItem3?.Invoke();
         }
 
         if (Input.GetKeyDown(_itemKey4))
         {
             Debug.Log("아이템4 사용");
             // 아이템4 사용 메서드 추가
+            OnItem4?.Invoke();
         }
 
         if (Input.GetKeyDown(_inventoryKey))
         {
             Debug.Log("인벤토리가 열렸습니다.");
             // 인벤토리 Ui 열고 닫는 내용 추가
+            OnInventory?.Invoke();
         }
 
         if (Input.GetKeyDown(_interactionKey))
@@ -128,12 +141,14 @@ public class PlayerInputSystem : MonoBehaviour
         {
             Debug.Log("정보창 오픈");
             // InformationUi 출력
+            OnInformation?.Invoke();
         }
 
         if (Input.GetKeyDown(_mapKey))
         {
             Debug.Log("Map을 열었습니다.");
             // MapUi 출력 => 없을 수 있으므로 지워도 될 듯
+            OnMap?.Invoke();
         }
     }
 
