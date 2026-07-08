@@ -1,0 +1,32 @@
+[
+  {
+    "ID": "area_a",
+    "Name": "Plain A",
+    "Description": "This is Wide Plain. So Easy World",
+    "ImageAddress": ""
+  },
+  {
+    "ID": "area_b",
+    "Name": "Forest B",
+    "Description": "This is Forest. Easy World",
+    "ImageAddress": ""
+  },
+  {
+    "ID": "area_c",
+    "Name": "Mountain C",
+    "Description": "This is Mountain. Normal World",
+    "ImageAddress": ""
+  },
+  {
+    "ID": "area_d",
+    "Name": "Vally D",
+    "Description": "This is Deep Vally. Hard World",
+    "ImageAddress": ""
+  },
+  {
+    "ID": "area_e",
+    "Name": "Laboratory E",
+    "Description": "This is Laboratory. Very Hard World",
+    "ImageAddress": ""
+  }
+]
