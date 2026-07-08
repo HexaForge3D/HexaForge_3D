@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System;
 
-public class PlayerInputManager : MonoBehaviour
+public class PlayerInputSystem : MonoBehaviour
 {
     [Header("Movement Stop")] // S/s 버튼을 누르면 움직임 멈춤과 동시에 목적지 초기화
     [SerializeField] private KeyCode _playerStop = KeyCode.S;
@@ -10,6 +11,14 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private KeyCode _skillKey2 = KeyCode.W;
     [SerializeField] private KeyCode _skillKey3 = KeyCode.E;
     [SerializeField] private KeyCode _skillKey4 = KeyCode.R;
+    [SerializeField] private KeyCode _evasionKey = KeyCode.Space;
+
+    [Header("Item Key")] // 아이템 버튼
+    [SerializeField] private KeyCode _itemKey1 = KeyCode.Alpha1;
+    [SerializeField] private KeyCode _itemKey2 = KeyCode.Alpha2;    
+    [SerializeField] private KeyCode _itemKey3 = KeyCode.Alpha3;
+    [SerializeField] private KeyCode _itemKey4 = KeyCode.Alpha4;
+
 
     [Header("Inventory Key")] // 인벤토리 버튼
     [SerializeField] private KeyCode _inventoryKey = KeyCode.I;
@@ -24,7 +33,8 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private KeyCode _mapKey = KeyCode.M;
 
     private PlayerController _playerController;
-   
+
+    public static event Action OnInteract;
 
     private void Start()
     {
@@ -62,6 +72,36 @@ public class PlayerInputManager : MonoBehaviour
             // 애니메이션 및, 공격 메서드 추가
         }
 
+        if (Input.GetKeyDown(_evasionKey))
+        {
+            Debug.Log("회피 실행");
+            // 회피 메서드 추가
+        }
+
+        if (Input.GetKeyDown(_itemKey1))
+        {
+            Debug.Log("아이템1 사용");
+            // 아이템1 사용 메서드 추가
+        }
+
+        if (Input.GetKeyDown(_itemKey2)) 
+        {
+            Debug.Log("아이템2 사용");
+            // 아이템2 사용 메서드 추가
+        }
+
+        if (Input.GetKeyDown(_itemKey3))
+        {
+            Debug.Log("아이템3 사용");
+            // 아이템3 사용 메서드 추가
+        }
+
+        if (Input.GetKeyDown(_itemKey4))
+        {
+            Debug.Log("아이템4 사용");
+            // 아이템4 사용 메서드 추가
+        }
+
         if (Input.GetKeyDown(_inventoryKey))
         {
             Debug.Log("인벤토리가 열렸습니다.");
@@ -71,7 +111,7 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetKeyDown(_interactionKey))
         {
             Debug.Log("상호작용 실행");
-            // 상호작용 하는 메서드 추가
+            OnInteract?.Invoke();
         }
 
         if (Input.GetKeyDown(_informationKey))
@@ -85,5 +125,10 @@ public class PlayerInputManager : MonoBehaviour
             Debug.Log("Map을 열었습니다.");
             // MapUi 출력 => 없을 수 있으므로 지워도 될 듯
         }
+    }
+
+    private void Evasion()
+    {
+        //앙기모띠
     }
 }
