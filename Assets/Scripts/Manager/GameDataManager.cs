@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine.AddressableAssets;
 
 public class GameDataManager : BaseMonoManager<GameDataManager>
 {
@@ -12,24 +14,24 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
 
         if (Instance == this)
         {
-            LoadAllData();
+            LoadAllDataAsync().Forget();
         }
     }
 
-    public void ReloadAlData()
+    public async UniTask ReloadAlDataAsync()
     {
         _dataStore.Clear();
-        LoadAllData();
+        await LoadAllDataAsync();
     }
 
-    private void LoadAllData()
+    private async UniTask LoadAllDataAsync()
     {
-        LoadData<HuntingAreaTableData>("HuntingArea");
+        await LoadData<HuntingAreaTableData>("HuntingArea");
     }
 
-    public void LoadData<T>(string tableName) where T : GameDataBase
+    public async UniTask LoadData<T>(string tableName) where T : GameDataBase
     {
-        Dictionary<string, T> table = ParseJson<T>(tableName);
+        Dictionary<string, T> table = await ParseJsonAsync<T>(tableName);
         _dataStore[typeof(T)] = table;
     }
 
@@ -64,14 +66,14 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
         public List<T> _data;
     }
 
-    private Dictionary<string, T> ParseJson<T>(string tableName) where T : GameDataBase
+    private async UniTask<Dictionary<string, T>> ParseJsonAsync<T>(string tableName) where T : GameDataBase
     {
-        string resourcePath = $"JsonOutput/{tableName}";
-        TextAsset textAsset = Resources.Load<TextAsset>(resourcePath);
+        string address = $"JsonOutput/{tableName}";
+        TextAsset textAsset = await LoadTextAssetAsync(address);
 
         if (textAsset == null)
         {
-            Debug.LogError($"[GameDataManager] {resourcePath} 경로에 리소스가 없습니다.");
+            Debug.LogError($"[GameDataManager] {address} 경로에 리소스가 없습니다.");
             return new Dictionary<string, T>();
         }
 
@@ -82,7 +84,7 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
 
             if (wrapper._data == null)
             {
-                Debug.LogError($"[GameDataManager] {resourcePath}의 데이터가 없습니다.");
+                Debug.LogError($"[GameDataManager] {address}의 데이터가 없습니다.");
                 return new Dictionary<string, T>();
             }
 
@@ -93,7 +95,7 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
                 result.Add(data.ID, data);
             }
 
-            Debug.LogError($"[GameDataManager] {resourcePath} 데이터 {result.Count}건 로드 완료");
+            Debug.Log($"[GameDataManager] {address} 데이터 {result.Count}건 로드 완료");
 
             return result;
         }
@@ -103,5 +105,10 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
             Debug.LogException(e);
             return new Dictionary<string, T>();
         }
+    }
+
+    private async UniTask<TextAsset> LoadTextAssetAsync(string address)
+    {
+        return await Addressables.LoadAssetAsync<TextAsset>(address).ToUniTask();
     }
 }
