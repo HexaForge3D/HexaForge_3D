@@ -32,6 +32,12 @@ public partial class MoveToTarget3DAction : Action
             return Status.Failure;
         }
 
+        if (currentDistance <= 1.5f)
+        {
+            navAgent.ResetPath();
+            return Status.Success;
+        }
+
         navAgent.SetDestination(Target.Value.transform.position);
 
         if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
