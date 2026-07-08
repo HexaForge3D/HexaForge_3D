@@ -35,6 +35,11 @@ public class PlayerInputSystem : MonoBehaviour
     private PlayerController _playerController;
 
     public static event Action OnInteract;
+    public static event Action ActionSkill1;
+    public static event Action ActionSkill2;
+    public static event Action ActionSkill3;
+    public static event Action ActionSkill4;
+    public static event Action OnEvasion;
 
     private void Start()
     {
@@ -52,30 +57,35 @@ public class PlayerInputSystem : MonoBehaviour
         {
             Debug.Log("Q스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
+            ActionSkill1?.Invoke();
         }
 
         if (Input.GetKeyDown(_skillKey2))
         {
             Debug.Log("W스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
+            ActionSkill2?.Invoke();
         }
 
         if (Input.GetKeyDown(_skillKey3))
         {
             Debug.Log("E스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
+            ActionSkill3?.Invoke();
         }
 
         if (Input.GetKeyDown(_skillKey4))
         {
             Debug.Log("R스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
+            ActionSkill4?.Invoke();
         }
 
         if (Input.GetKeyDown(_evasionKey))
         {
             Debug.Log("회피 실행");
             // 회피 메서드 추가
+            OnEvasion?.Invoke();
         }
 
         if (Input.GetKeyDown(_itemKey1))
