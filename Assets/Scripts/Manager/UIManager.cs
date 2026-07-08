@@ -98,6 +98,7 @@ public class UIManager : BaseMonoManager<UIManager>
         }
 
         CloseExclusiveUIIfNeeded(uiType, rootType);
+        CloseAllExceptMainIfNeeded(rootType);
 
         ui.gameObject.SetActive(true);
         _activeUI.Add(uiType);
@@ -135,6 +136,31 @@ public class UIManager : BaseMonoManager<UIManager>
         if (_activeUIByRoot.TryGetValue(rootType, out UIType previousUIType) == false) return;
         if (previousUIType == newUIType) return;
         if (_activeUI.Contains(previousUIType)) CloseUI(previousUIType);
+    }
+
+    private void CloseAllExceptMainIfNeeded(UIRootType newUIRootType)
+    {
+        if (newUIRootType != UIRootType.Main)
+        {
+            return;
+        }
+
+        List<UIType> toClose = new List<UIType>();
+
+        foreach (UIType activeType in _activeUI)
+        {
+            UIRootType activeRootType = GetRootType(activeType);
+
+            if (activeRootType != UIRootType.Main)
+            {
+                toClose.Add(activeType);
+            }
+        }
+
+        foreach (UIType type in toClose)
+        {
+            CloseUI(type);
+        }
     }
     
     private UIRootType GetRootType(UIType uiType)
