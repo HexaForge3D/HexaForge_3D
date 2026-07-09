@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class CharacterSelectView : BaseUI       
 {
+    [SerializeField] private Image Image_CharacterPreview;
     [SerializeField] private Button Button_EnterGame;
 
     private CharacterSelectViewModel _viewModel;

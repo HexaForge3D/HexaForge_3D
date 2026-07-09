@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using UnityEngine.InputSystem;
 
 // 게임의 흐름 타이밍을 관리할 스크립트
 public class GameFlowManager
@@ -14,9 +13,9 @@ public class GameFlowManager
         ShowCharacterSelectAsync().Forget();
     }
 
-    private void OnEnterGameRequested()
+    private void OnEnterGameRequested(PlayerData data)
     {
-        ShowInGameAsync().Forget();
+        ShowInGameAsync(data).Forget();
     }
 
     private void OnBackToCharacterSelectRequested()
@@ -62,8 +61,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowInGameAsync()
+    private async UniTask ShowInGameAsync(PlayerData data)
     {
+        await PlayerSpawnManager.Instance.SpawnPlayerAsync(data);
+
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
         InGameViewModel viewModel = new InGameViewModel();

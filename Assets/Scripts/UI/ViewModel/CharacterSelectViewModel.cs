@@ -3,10 +3,21 @@ using UnityEngine;
 
 public class CharacterSelectViewModel
 {
-    public Action OnEnterGameRequested;
+    private readonly PlayerRepository _repository = new PlayerRepository();
+    
+    public Action<PlayerData> OnEnterGameRequested;
+
+    public PlayerData GetSelectableCharacter()
+    {
+        return _repository.GetCurrentPlayer();
+    }
 
     public void RequestEnterGame()
     {
-        OnEnterGameRequested?.Invoke();
+        PlayerData data = GetSelectableCharacter();
+
+        if (data == null) return;
+
+        OnEnterGameRequested?.Invoke(data);
     }
 }
