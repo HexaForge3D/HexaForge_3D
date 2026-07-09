@@ -15,8 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _spotPoint;
 
     [Header("Pointer Timer")]
-    [SerializeField] private float _disappearTime = 1f; // 사라지기까지 걸리는 시간
-    [SerializeField] private float _appearTime = 2f; // 다시 나타나기까지 걸리는 시간
+    [SerializeField] private float _disappearTime = 0.3f; // 사라지기까지 걸리는 시간
+    [SerializeField] private float _appearTime = 1.2f; // 다시 나타나기까지 걸리는 시간
 
     [Header("Animator")]
     [SerializeField] private Animator _anmator;
