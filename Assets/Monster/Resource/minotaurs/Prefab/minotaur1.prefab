@@ -3989,7 +3989,7 @@ GameObject:
   - component: {fileID: 3356069327954813390}
   - component: {fileID: 9055795822608500722}
   - component: {fileID: 14325061817120725}
-  - component: {fileID: 9200835416107140146}
+  - component: {fileID: 5492942865036117532}
   m_Layer: 0
   m_Name: minotaur1
   m_TagString: Untagged
@@ -4121,7 +4121,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -4197,7 +4197,7 @@ MonoBehaviour:
   hitRadius: 1
   minDamage: 10
   maxDamage: 20
---- !u!54 &9200835416107140146
+--- !u!54 &5492942865036117532
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
