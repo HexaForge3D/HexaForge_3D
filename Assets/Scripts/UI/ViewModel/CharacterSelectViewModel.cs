@@ -1,23 +1,30 @@
 ﻿using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 public class CharacterSelectViewModel
 {
     private readonly PlayerRepository _repository = new PlayerRepository();
-    
-    public Action<PlayerData> OnEnterGameRequested;
 
-    public PlayerData GetSelectableCharacter()
+    private PlayerData _selectedCharacter;
+
+    public Action<PlayerData> OnCharacterSelected;
+    public Action<PlayerData> OnEnterGameRequested;
+    
+    public void SelectCharacter(PlayerData data)
     {
-        return _repository.GetCurrentPlayer();
+        _selectedCharacter = data;
+        OnCharacterSelected?.Invoke(data);
+    }
+
+    public List<PlayerData> GetSelecttableCharacters()
+    {
+        return _repository.GetAllPlayers();
     }
 
     public void RequestEnterGame()
     {
-        PlayerData data = GetSelectableCharacter();
+        if (_selectedCharacter == null) return;
 
-        if (data == null) return;
-
-        OnEnterGameRequested?.Invoke(data);
+        OnEnterGameRequested?.Invoke(_selectedCharacter);
     }
 }
