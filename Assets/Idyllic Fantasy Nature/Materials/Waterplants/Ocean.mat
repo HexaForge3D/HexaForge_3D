@@ -153,7 +153,7 @@ Material:
     - _Metallicness: 0.1
     - _Noise: 10
     - _NormalStrength: 1.56
-    - _Normal_Strength: 0.2
+    - _Normal_Strength: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -179,7 +179,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _Tiling: 0.5
-    - _Water_Speed: 0.3
+    - _Water_Speed: 0.001
     - _WaveSpeed: 0.5
     - _Wave_Amplitude: 0.03
     - _Wave_Frequency: 0
