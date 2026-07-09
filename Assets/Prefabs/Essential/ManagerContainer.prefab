@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
   _playerTransform: {fileID: 0}
+  _mapSpawnPoints:
+  - MapName: 
+    SpawnPoint: {fileID: 0}
 --- !u!1 &1295954592154818130
 GameObject:
   m_ObjectHideFlags: 0
