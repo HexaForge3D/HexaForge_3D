@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1472958177971482962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1031761753317549976}
+  m_Layer: 0
+  m_Name: Hit_point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1031761753317549976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472958177971482962}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0029614663, y: -0.049159423, z: -0.08881256, w: 0.99483013}
+  m_LocalPosition: {x: 0.452, y: 1.116, z: 0.622}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4414871117353324496}
+  m_LocalEulerAnglesHint: {x: -0.838, y: -5.583, z: -10.162}
 --- !u!1 &4414871115646680189
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,6 +3988,7 @@ GameObject:
   - component: {fileID: 5756327301849542281}
   - component: {fileID: 3356069327954813390}
   - component: {fileID: 9055795822608500722}
+  - component: {fileID: 14325061817120725}
   m_Layer: 0
   m_Name: minotaur1
   m_TagString: Untagged
@@ -4113,6 +4145,7 @@ MonoBehaviour:
   m_Graph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 312138339817881858
+  - rid: 312138365541810282
   m_OriginalGraph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -4127,6 +4160,14 @@ MonoBehaviour:
           m_Value1: 0
         Name: Monster
         m_Value: {fileID: 4414871117303439921}
+    - rid: 312138365541810282
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15909375925810966652
+          m_Value1: 15678016294215956311
+        Name: DetectionRange
+        m_Value: 15
 --- !u!114 &9055795822608500722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4139,6 +4180,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702e7ffc5071e6c479f37b13b8baf1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterAnimSync
+--- !u!114 &14325061817120725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6bc326b2a9a4b9449c2626c258d13cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterHitBox
+  weaponPoint: {fileID: 1031761753317549976}
+  hitRadius: 1
+  minDamage: 10
+  maxDamage: 20
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0
@@ -4168,7 +4225,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1031761753317549976}
   m_Father: {fileID: 4414871117303439923}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &4414871117353324499
