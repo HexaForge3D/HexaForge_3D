@@ -3989,6 +3989,7 @@ GameObject:
   - component: {fileID: 3356069327954813390}
   - component: {fileID: 9055795822608500722}
   - component: {fileID: 14325061817120725}
+  - component: {fileID: 5492942865036117532}
   m_Layer: 0
   m_Name: minotaur1
   m_TagString: Untagged
@@ -4120,7 +4121,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -4196,6 +4197,33 @@ MonoBehaviour:
   hitRadius: 1
   minDamage: 10
   maxDamage: 20
+--- !u!54 &5492942865036117532
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4414871117303439921}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0
