@@ -21,6 +21,7 @@ public class GameFlowManager
     private void OnBackToCharacterSelectRequested()
     {
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
+        Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         ShowCharacterSelectAsync().Forget();
     }
@@ -32,7 +33,13 @@ public class GameFlowManager
 
     private void OnTeleportRequest(HuntingAreaData data)
     {
-        UnityEngine.Debug.Log($"텔레포트 요청: {data.Name} (Id: {data.Id})");
+        MapManager.Instance.ChangeMap(data.MapName);
+        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+    }
+
+    private void OnPortalInteracted(Portal portal)
+    {
+        ShowHuntingAreaAsync().Forget();
     }
 
     private void OnInformationKeyPressed()
@@ -75,6 +82,7 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
+        Portal.OnPortalInteracted += OnPortalInteracted;
     }
 
     private async UniTask ShowHuntingAreaAsync()
