@@ -16,6 +16,8 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private List<MapSpawnPoint> _mapSpawnPoints;
 
+    private PlayerController _playerController;
+
     private Dictionary<string, Transform> _spawnPointMap;
 
     private void Awake()
@@ -57,11 +59,16 @@ public class MapManager : MonoBehaviour
         Debug.Log($"맵이 {mapName}으로 변경되었습니다.");
     }
 
+    public void SetPlayer(Transform playerTransform)
+    {
+        _playerController = playerTransform.GetComponent<PlayerController>();
+    }
+
     private void WarpPlayer(Vector3 targetPosition)
     {
-        if (_playerTransform != null)
+        if (_playerController != null)
         {
-            PlayerController controller = _playerTransform.GetComponent<PlayerController>();
+            PlayerController controller = _playerController.GetComponent<PlayerController>();
 
             if (controller != null)
             {

@@ -33,6 +33,7 @@ public class Portal : MonoBehaviour
         {
             if (MapManager.Instance != null)
             {
+                MapManager.Instance.SetPlayer(other.transform);
                 _isPlayerInCollider = true;
             }
         }
