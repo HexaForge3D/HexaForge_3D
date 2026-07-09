@@ -21,6 +21,7 @@ public class GameFlowManager
     private void OnBackToCharacterSelectRequested()
     {
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
+        PlayerSpawnManager.Instance.DeSpawnPlayer();
         ShowCharacterSelectAsync().Forget();
     }
 
