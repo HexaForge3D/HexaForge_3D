@@ -1,5 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using UnityEngine.InputSystem;
 
 // 게임의 흐름 타이밍을 관리할 스크립트
 public class GameFlowManager
@@ -14,14 +13,16 @@ public class GameFlowManager
         ShowCharacterSelectAsync().Forget();
     }
 
-    private void OnEnterGameRequested()
+    private void OnEnterGameRequested(PlayerData data)
     {
-        ShowInGameAsync().Forget();
+        ShowInGameAsync(data).Forget();
     }
 
     private void OnBackToCharacterSelectRequested()
     {
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
+        Portal.OnPortalInteracted -= OnPortalInteracted;
+        PlayerSpawnManager.Instance.DeSpawnPlayer();
         ShowCharacterSelectAsync().Forget();
     }
 
@@ -32,7 +33,13 @@ public class GameFlowManager
 
     private void OnTeleportRequest(HuntingAreaData data)
     {
-        UnityEngine.Debug.Log($"텔레포트 요청: {data.Name} (Id: {data.Id})");
+        MapManager.Instance.ChangeMap(data.MapName);
+        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+    }
+
+    private void OnPortalInteracted(Portal portal)
+    {
+        ShowHuntingAreaAsync().Forget();
     }
 
     private void OnInformationKeyPressed()
@@ -62,8 +69,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowInGameAsync()
+    private async UniTask ShowInGameAsync(PlayerData data)
     {
+        await PlayerSpawnManager.Instance.SpawnPlayerAsync(data);
+
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
         InGameViewModel viewModel = new InGameViewModel();
@@ -73,6 +82,7 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
+        Portal.OnPortalInteracted += OnPortalInteracted;
     }
 
     private async UniTask ShowHuntingAreaAsync()
