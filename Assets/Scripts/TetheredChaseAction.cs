@@ -57,6 +57,8 @@ public partial class TetheredChaseAction : Action
         if (distanceToPlayer <= AttackRange.Value)
         {
             nav.ResetPath();
+            nav.velocity = Vector3.zero;
+
             return Status.Success;
         }
 
