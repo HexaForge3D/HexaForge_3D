@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _navMeshSurface;
     [SerializeField] private Transform _spotPoint;
 
+    [Header("Pointer Timer")]
+    [SerializeField] private float _disappearTime = 1f; // 사라지기까지 걸리는 시간
+    [SerializeField] private float _appearTime = 2f; // 다시 나타나기까지 걸리는 시간
+
     [Header("Animator")]
     [SerializeField] private Animator _anmator;
 
@@ -24,6 +28,9 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
 
+    private float _spotTimer = 0f;
+    private bool _isSpotVisible = false;
+
 
     private void Start()
     {
@@ -32,6 +39,8 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _navMeshSurface.GetComponent<NavMeshSurface>().BuildNavMesh();
         _spotPoint.gameObject.SetActive(false);
+        _isSpotVisible = false;
+
         if (_rb != null)
         {
             _rb.isKinematic = true;
@@ -52,9 +61,23 @@ public class PlayerController : MonoBehaviour
             OnClickAttack();
         }
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            _spotTimer = 0f;
+            _isSpotVisible = true;
+            _spotPoint.gameObject.SetActive(true);
+        }
+
         if (Input.GetMouseButton(1))
         {
             SetTargetPosition();
+            HandleSpotPointBlink();
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            _isSpotVisible = true;
+            _spotPoint.gameObject.SetActive(true);
         }
 
         if (_agent != null)
@@ -126,9 +149,33 @@ public class PlayerController : MonoBehaviour
                 _agent.isStopped = false;
             }
 
-            _spotPoint.gameObject.SetActive(true);
             _spotPoint.position = _targetPosition;
             _isMoving = true;
+        }
+    }
+
+    private void HandleSpotPointBlink()
+    {
+        _spotTimer += Time.deltaTime;
+
+        if (_isSpotVisible)
+        {
+            if (_spotTimer >= _disappearTime)
+            {
+                _isSpotVisible = false;
+                _spotPoint.gameObject.SetActive(false);
+                _spotTimer = 0f;
+            }
+        }
+
+        else
+        {
+            if (_spotTimer >= _appearTime)
+            {
+                _isSpotVisible = true;
+                _spotPoint.gameObject.SetActive(true);
+                _spotTimer = 0f;
+            }
         }
     }
 
@@ -157,6 +204,7 @@ public class PlayerController : MonoBehaviour
             if (_agent.pathPending == false && _agent.remainingDistance <= 0.05f)
             {
                 _isMoving = false;
+                _isSpotVisible = false;
                 _spotPoint.gameObject.SetActive(false);
             }
         }
@@ -166,6 +214,7 @@ public class PlayerController : MonoBehaviour
     {
         _isMoving = false;
         _targetPosition = transform.position;
+        _isSpotVisible = false;
         _spotPoint.gameObject.SetActive(false);
         if (_agent != null)
         {
@@ -177,6 +226,7 @@ public class PlayerController : MonoBehaviour
     public void WarpPosition(Vector3 targetPosition)
     {
         _isMoving = false;
+        _isSpotVisible = false;
         _spotPoint.gameObject.SetActive(false);
 
         if (_agent != null && _agent.isActiveAndEnabled)
