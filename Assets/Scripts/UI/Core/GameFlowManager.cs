@@ -5,6 +5,7 @@ public class GameFlowManager
 {
     public async UniTask StartAsync()
     {
+        await GameDataManager.Instance.WaitUntilReadyAsync();
         await ShowTitleAsync();
     }
 
