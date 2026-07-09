@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Portal : MonoBehaviour
 {
-    [SerializeField] private string _nextMapName;
-    [SerializeField] private Transform _spawnPoint;
-
     private bool _isPlayerInCollider;
+
+    public static event System.Action<Portal> OnPortalInteracted;
 
     private void OnEnable()
     {
@@ -20,10 +18,12 @@ public class Portal : MonoBehaviour
 
     private void Handleinteraction()
     {
-        if (_isPlayerInCollider)
+        if (_isPlayerInCollider == false)
         {
-            MapManager.Instance.ChangeMap(_nextMapName, _spawnPoint.position);
+            return;
         }
+
+        OnPortalInteracted?.Invoke(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,6 +32,7 @@ public class Portal : MonoBehaviour
         {
             if (MapManager.Instance != null)
             {
+                MapManager.Instance.SetPlayer(other.transform);
                 _isPlayerInCollider = true;
             }
         }
