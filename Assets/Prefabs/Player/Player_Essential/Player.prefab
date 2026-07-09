@@ -133,6 +133,8 @@ MonoBehaviour:
   _playerCamera: {fileID: 777996260539164698}
   _navMeshSurface: {fileID: 535860893495831787}
   _spotPoint: {fileID: 5074255985663793053}
+  _disappearTime: 0.3
+  _appearTime: 1.2
   _anmator: {fileID: 0}
 --- !u!114 &3239361790481512152
 MonoBehaviour:
