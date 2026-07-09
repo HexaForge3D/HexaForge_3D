@@ -13,7 +13,6 @@ public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
 
-    [SerializeField] private Transform _playerTransform;
     [SerializeField] private List<MapSpawnPoint> _mapSpawnPoints;
 
     private PlayerController _playerController;
