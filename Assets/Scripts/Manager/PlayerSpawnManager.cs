@@ -11,13 +11,10 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
 
     public async UniTask<GameObject> SpawnPlayerAsync(PlayerData data)
     {
-        if (_currentPlayer != null)
-        {
-            Destroy(_currentPlayer);
-        }
+
+        DeSpawnPlayer();
 
         GameObject prefab = await Addressables.LoadAssetAsync<GameObject>(PlayerPrefabAddress);
-
 
         if (prefab == null)
         {
@@ -33,6 +30,15 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
         _currentPlayer = instance;
 
         return instance;
+    }
+
+    public void DeSpawnPlayer()
+    {
+        if (_currentPlayer != null)
+        {
+            Destroy(_currentPlayer);
+            _currentPlayer = null;
+        }
     }
 
     private void InitializePlayer(GameObject instance, PlayerData data)
