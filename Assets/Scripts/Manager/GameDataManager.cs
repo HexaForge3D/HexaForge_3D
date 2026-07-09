@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 public class GameDataManager : BaseMonoManager<GameDataManager>
 {
     private readonly Dictionary<Type, object> _dataStore = new Dictionary<Type, object>();
+    private UniTaskCompletionSource _loadingCompletionSource = new UniTaskCompletionSource();
 
     protected override void Awake()
     {
@@ -14,20 +15,33 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
 
         if (Instance == this)
         {
-            LoadAllDataAsync().Forget();
+            InitializeAsync().Forget();
         }
-    }
-
-    public async UniTask ReloadAlDataAsync()
-    {
-        _dataStore.Clear();
-        await LoadAllDataAsync();
     }
 
     private async UniTask LoadAllDataAsync()
     {
         await LoadData<HuntingAreaTableData>("HuntingArea");
         await LoadData<PlayerTableData>("Player");
+    }
+
+    private async UniTask InitializeAsync()
+    {
+        await LoadAllDataAsync();
+        _loadingCompletionSource.TrySetResult();
+    }
+
+    public UniTask WaitUntilReadyAsync()
+    {
+        return _loadingCompletionSource.Task;
+    }
+
+    public async UniTask ReloadAIDataAsync()
+    {
+        _dataStore.Clear();
+        _loadingCompletionSource = new UniTaskCompletionSource();
+        await LoadAllDataAsync();
+        _loadingCompletionSource.TrySetResult();
     }
 
     public async UniTask LoadData<T>(string tableName) where T : GameDataBase
