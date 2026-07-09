@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63c6cd37ac1945c4291e6375dec7d4c8
+    m_Address: Player_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98a8c94858514784ba615a915f2fdc40
     m_Address: JsonOutput/HuntingArea
     m_ReadOnly: 0
@@ -47,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db3465f0bfc18f744b40149d77a4a257
     m_Address: UI_CharacterSelect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec6dbc591aa231047a39a3c6fe223687
+    m_Address: Player_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
