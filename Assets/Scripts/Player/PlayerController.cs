@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
             OnClickAttack();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             SetTargetPosition();
         }
@@ -91,7 +91,34 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             _targetPosition = hit.point;
+
+            // 2. 바닥이 아닌 장애물(벽, 기둥 등)을 클릭했는지 판별
+            // hit.normal(표면이 바라보는 방향)이 위쪽(Vector3.up)이 아니면 장애물로 간주합니다.
+            if (Vector3.Dot(hit.normal, Vector3.up) < 0.9f)
+            {
+                if (hit.collider != null && !hit.collider.isTrigger)
+                {
+                    // [핵심] 질문자님 아이디어: 중심을 찾아서 바깥으로 밀어내기
+                    Vector3 boundsCenter = hit.collider.bounds.center;
+
+                    // 중심에서 마우스 클릭 지점으로 향하는 방향 벡터 계산 (Y축 높낮이는 무시)
+                    Vector3 dirFromCenter = (hit.point - boundsCenter).normalized;
+                    dirFromCenter.y = 0;
+
+                    // 에러가 나는 ClosestPoint 대신 모든 콜라이더에 안전한 ClosestPointOnBounds 사용
+                    Vector3 safeEdge = hit.collider.ClosestPointOnBounds(hit.point);
+
+                    // 콜라이더 외곽에서 바깥쪽으로 살짝 밀어냅니다.
+                    _targetPosition = safeEdge + dirFromCenter * 1.5f;
+                }
+            }
+
             _targetPosition.y = transform.position.y;
+
+            if (NavMesh.SamplePosition(_targetPosition, out NavMeshHit navHit, 1.5f, NavMesh.AllAreas))
+            {
+                _targetPosition = navHit.position;
+            }
 
             if (_agent != null)
             {
@@ -100,7 +127,7 @@ public class PlayerController : MonoBehaviour
             }
 
             _spotPoint.gameObject.SetActive(true);
-            _spotPoint.position = hit.point;
+            _spotPoint.position = _targetPosition;
             _isMoving = true;
         }
     }
