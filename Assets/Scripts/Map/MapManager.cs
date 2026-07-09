@@ -1,11 +1,23 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+
+[System.Serializable]
+public class MapSpawnPoint
+{
+    public string MapName;
+    public Transform SpawnPoint;
+}
 
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
 
-    [SerializeField] private Transform _playerTransform;
+    [SerializeField] private List<MapSpawnPoint> _mapSpawnPoints;
+
+    private PlayerController _playerController;
+
+    private Dictionary<string, Transform> _spawnPointMap;
 
     private void Awake()
     {
@@ -17,19 +29,45 @@ public class MapManager : MonoBehaviour
         }
 
         Instance = this;
+
+        BuildSpawnPointMap();
     }
 
-    public void ChangeMap(string mapName, Vector3 spawnPosition)
+    private void BuildSpawnPointMap()
     {
-        WarpPlayer(spawnPosition);
+        _spawnPointMap = new Dictionary<string, Transform>();
+
+        foreach (MapSpawnPoint entry in _mapSpawnPoints)
+        {
+            if (_spawnPointMap.ContainsKey(entry.MapName) == false)
+            {
+                _spawnPointMap.Add(entry.MapName, entry.SpawnPoint);
+            }
+        }
+    }
+
+    public void ChangeMap(string mapName)
+    {
+        if (_spawnPointMap.TryGetValue(mapName, out Transform spawnPoint) == false)
+        {
+            Debug.LogError($"[MapManager] {mapName}에 대한 스폰 위치가 등록되어 있지 않습니다.");
+            return;
+        }
+
+        WarpPlayer(spawnPoint.position);
         Debug.Log($"맵이 {mapName}으로 변경되었습니다.");
+    }
+
+    public void SetPlayer(Transform playerTransform)
+    {
+        _playerController = playerTransform.GetComponent<PlayerController>();
     }
 
     private void WarpPlayer(Vector3 targetPosition)
     {
-        if (_playerTransform != null)
+        if (_playerController != null)
         {
-            PlayerController controller = _playerTransform.GetComponent<PlayerController>();
+            PlayerController controller = _playerController.GetComponent<PlayerController>();
 
             if (controller != null)
             {
