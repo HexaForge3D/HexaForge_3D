@@ -25,23 +25,20 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
   - _ALPHATEST_ON
   - _COLOR_OVERLAY_UV
   - _SPECULAR_SETUP
-  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords:
   - _OVERLAY_VERTEX_POSITION
   - _WIND_OVERLAY_UV
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2450
   stringTagMap:
-    RenderType: Transparent
+    RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
-  - DepthOnly
   - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
@@ -138,7 +135,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 1
-    - _AlphaToMask: 0
+    - _AlphaToMask: 1
     - _Alpha_Cutoff: 0.5
     - _BLEND_NORMALS: 0
     - _Base_Map_Scale: 3.67
@@ -161,8 +158,8 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
-    - _DstBlendAlpha: 10
+    - _DstBlend: 0
+    - _DstBlendAlpha: 0
     - _ENABLE_COVERAGE: 0
     - _Enable_Top_Color: 1
     - _EnvironmentReflections: 1
@@ -185,7 +182,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Start_Bend_Range: 0
-    - _Surface: 1
+    - _Surface: 0
     - _WIND_OVERLAY: 1
     - _Wave_Scale: 0
     - _Wind_Speed: 0
@@ -193,7 +190,7 @@ Material:
     - _Wind_Variation: 0
     - _WorkflowMode: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
