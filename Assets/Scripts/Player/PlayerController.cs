@@ -17,6 +17,13 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
+    [Header("Attack Setting")]
+    [SerializeField] private Transform _attackPoint;
+    [SerializeField] private float _attackRadius = 1f;
+
+    private PlayerTableData _playerData;
+    public PlayerTableData PlayerData => _playerData;
+
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
     private bool _isMoving = false;
@@ -47,6 +54,21 @@ public class PlayerController : MonoBehaviour
         {
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
+        }
+
+        if (GameDataManager.Instance != null)
+        {
+            _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
+            
+            if (_playerData == null)
+            {
+                Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
+            }
+        }
+
+        else
+        {
+            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
         }
     }
 
@@ -99,17 +121,32 @@ public class PlayerController : MonoBehaviour
 
     public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
     {
-        if (GameDataManager.Instance == null)
+        if (_playerData != null)
         {
-            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-            return;
-        }
+            int atk = _playerData.Atk;
+            Debug.Log($"공격을 하였습니다.");
 
-        PlayerTableData playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
-        if (playerData != null)
+            if (_attackPoint != null)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(_attackPoint.position, _attackRadius);
+
+                foreach (Collider hitCollider in hitColliders)
+                {
+                    if (hitCollider.CompareTag("Monster"))
+                    {
+                        Debug.Log($"{atk}의 데미지를 몬스터에게 주었습니다.");
+                    }
+                }
+            }
+
+            else
+            {
+                Debug.LogWarning("AttackPoint가 설정되지 않았습니다.");
+            }
+        }
+        else
         {
-            int atk = playerData.Atk;
-            Debug.Log($"{atk}의 데미지로 공격하였습니다.");
+            Debug.LogError("플레이어 데이터가 로드되지 않았습니다.");
         }
     }
 
@@ -213,6 +250,15 @@ public class PlayerController : MonoBehaviour
         else
         {
             transform.position = targetPosition;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_attackPoint != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(_attackPoint.position, _attackRadius);
         }
     }
 }
