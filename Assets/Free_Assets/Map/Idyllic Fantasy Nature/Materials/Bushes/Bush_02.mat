@@ -27,6 +27,7 @@ Material:
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _COLOR_OVERLAY_UV
+  - _RECEIVE_SHADOWS_OFF
   - _SPECULAR_SETUP
   m_InvalidKeywords:
   - _BEND_WIND_OVERLAY_VERTEX_POSITION
@@ -43,6 +44,7 @@ Material:
     RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -126,7 +128,7 @@ Material:
     - _CAST_SHADOWS: 1
     - _CAST_SHADOWS_OFF: 1
     - _COLOR_OVERLAY: 1
-    - _CastShadows: 1
+    - _CastShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 0
@@ -154,7 +156,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Range: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
