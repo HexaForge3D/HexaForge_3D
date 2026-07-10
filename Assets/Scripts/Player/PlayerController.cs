@@ -17,10 +17,6 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
-    [Header("Attack Setting")]
-    [SerializeField] private Transform _attackPoint;
-    [SerializeField] private float _attackRadius = 1f;
-
     private PlayerTableData _playerData;
     public PlayerTableData PlayerData => _playerData;
 
@@ -35,12 +31,14 @@ public class PlayerController : MonoBehaviour
 
     private bool _isAttacking = false;
     private Quaternion _attackTargetRotation;
+    private PlayerBattle _playerBattle;
 
     private void Start()
     {
         _targetPosition = transform.position;
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
+        _playerBattle = GetComponent<PlayerBattle>();
 
         if (_spotPoint != null)
         {
@@ -78,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            OnClickAttack(); // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
+            OnClickAttack();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -165,33 +163,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (_playerData != null)
+        if (_playerBattle != null)
         {
-            int atk = _playerData.Atk;
-            Debug.Log($"공격을 하였습니다.");
-
-            if (_attackPoint != null)
-            {
-                Collider[] hitColliders = Physics.OverlapSphere(_attackPoint.position, _attackRadius);
-
-                foreach (Collider hitCollider in hitColliders)
-                {
-                    if (hitCollider.CompareTag("Monster"))
-                    {
-                        Debug.Log($"{atk}의 데미지를 몬스터에게 주었습니다.");
-                    }
-                }
-            }
-
-            else
-            {
-                Debug.LogWarning("AttackPoint가 설정되지 않았습니다.");
-            }
-        }
-
-        else
-        {
-            Debug.LogError("플레이어 데이터가 로드되지 않았습니다.");
+            _playerBattle.ExecuteAttack();
         }
     }
 
@@ -296,15 +270,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             transform.position = targetPosition;
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (_attackPoint != null)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(_attackPoint.position, _attackRadius);
         }
     }
 }
