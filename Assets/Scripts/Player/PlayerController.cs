@@ -33,6 +33,8 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     private float _spotTimer = 0f;
 
+    private bool _isAttacking = false;
+    private Quaternion _attackTargetRotation;
 
     private void Start()
     {
@@ -113,14 +115,56 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
         }
 
+        if (_isAttacking)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
+           
+            if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
+            {
+                transform.rotation = _attackTargetRotation;
+                _isAttacking = false;
+            }
+        }
+        
         if (_isMoving)
         {
             MovePlayer();
         }
     }
 
-    public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
+    public void OnClickAttack() // 좌클릭시 공격하는 로직
     {
+        if (_playerCamera != null)
+        {
+            Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
+           
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Vector3 lookDirection = hit.point - transform.position;
+                lookDirection.y = 0f;
+
+                if (lookDirection.sqrMagnitude > 0.01f)
+                {
+                    // 1. 에러 해결: Vector3 방향을 Quaternion(회전값)으로 변환해 줍니다.
+                    _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
+
+                    // 2. 롤처럼 멈추기: 걷고 있던 발걸음을 멈추고 목적지를 초기화합니다.
+                    if (_agent != null)
+                    {
+                        _agent.isStopped = true;
+                        _agent.ResetPath();
+                    }
+
+                    _isMoving = false;
+
+                    if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+
+                    // 3. Update가 몸을 돌릴 수 있게 스위치를 켭니다.
+                    _isAttacking = true;
+                }
+            }
+        }
+
         if (_playerData != null)
         {
             int atk = _playerData.Atk;
@@ -144,6 +188,7 @@ public class PlayerController : MonoBehaviour
                 Debug.LogWarning("AttackPoint가 설정되지 않았습니다.");
             }
         }
+
         else
         {
             Debug.LogError("플레이어 데이터가 로드되지 않았습니다.");
@@ -184,6 +229,7 @@ public class PlayerController : MonoBehaviour
 
                 if (_agent != null)
                 {
+                    _isAttacking = false;
                     _agent.SetDestination(_targetPosition);
                     _agent.isStopped = false;
                 }
