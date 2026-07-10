@@ -5,7 +5,7 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Find Player Auto", story: "씬에서 [Player] 태그를 찾아 [Target]에 저장합니다", category: "Action", id: "find_player_auto")]
+[NodeDescription(name: "Find Player Auto", story: "Player를 찾고, 만약 사라지면 다시 찾아 [Target]에 저장합니다", category: "Action", id: "find_player_auto")]
 public partial class FindPlayerAutoAction : Action
 {
     [SerializeReference] public BlackboardVariable<GameObject> Target;
@@ -16,7 +16,10 @@ public partial class FindPlayerAutoAction : Action
     }
     protected override Status OnUpdate()
     {
-        if (Target.Value != null) return Status.Success;
+        if (Target.Value != null)
+        {
+            return Status.Success;
+        }
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
 
