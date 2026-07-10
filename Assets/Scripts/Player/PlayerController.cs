@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
+    private PlayerTableData _playerData;
+    public PlayerTableData PlayerData => _playerData;
+
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
     private bool _isMoving = false;
@@ -26,12 +29,16 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     private float _spotTimer = 0f;
 
+    private bool _isAttacking = false;
+    private Quaternion _attackTargetRotation;
+    private PlayerBattle _playerBattle;
 
     private void Start()
     {
         _targetPosition = transform.position;
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
+        _playerBattle = GetComponent<PlayerBattle>();
 
         if (_spotPoint != null)
         {
@@ -48,13 +55,28 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
         }
+
+        if (GameDataManager.Instance != null)
+        {
+            _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
+            
+            if (_playerData == null)
+            {
+                Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
+            }
+        }
+
+        else
+        {
+            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
+        }
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            OnClickAttack(); // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
+            OnClickAttack();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -91,25 +113,59 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
         }
 
+        if (_isAttacking)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
+           
+            if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
+            {
+                transform.rotation = _attackTargetRotation;
+                _isAttacking = false;
+            }
+        }
+        
         if (_isMoving)
         {
             MovePlayer();
         }
     }
 
-    public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
+    public void OnClickAttack() // 좌클릭시 공격하는 로직
     {
-        if (GameDataManager.Instance == null)
+        if (_playerCamera != null)
         {
-            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-            return;
+            Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
+           
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                Vector3 lookDirection = hit.point - transform.position;
+                lookDirection.y = 0f;
+
+                if (lookDirection.sqrMagnitude > 0.01f)
+                {
+                    // 1. 에러 해결: Vector3 방향을 Quaternion(회전값)으로 변환해 줍니다.
+                    _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
+
+                    // 2. 롤처럼 멈추기: 걷고 있던 발걸음을 멈추고 목적지를 초기화합니다.
+                    if (_agent != null)
+                    {
+                        _agent.isStopped = true;
+                        _agent.ResetPath();
+                    }
+
+                    _isMoving = false;
+
+                    if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+
+                    // 3. Update가 몸을 돌릴 수 있게 스위치를 켭니다.
+                    _isAttacking = true;
+                }
+            }
         }
 
-        PlayerTableData playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
-        if (playerData != null)
+        if (_playerBattle != null)
         {
-            int atk = playerData.Atk;
-            Debug.Log($"{atk}의 데미지로 공격하였습니다.");
+            _playerBattle.ExecuteAttack();
         }
     }
 
@@ -147,6 +203,7 @@ public class PlayerController : MonoBehaviour
 
                 if (_agent != null)
                 {
+                    _isAttacking = false;
                     _agent.SetDestination(_targetPosition);
                     _agent.isStopped = false;
                 }
