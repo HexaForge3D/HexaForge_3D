@@ -133,8 +133,7 @@ MonoBehaviour:
   _playerCamera: {fileID: 777996260539164698}
   _spotPoint: {fileID: 5074255985663793053}
   _disappearTime: 0.3
-  _appearTime: 999
-  _anmator: {fileID: 0}
+  _animator: {fileID: 0}
 --- !u!114 &3239361790481512152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,7 +181,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 1
 --- !u!54 &1678629590546129848
 Rigidbody:
   m_ObjectHideFlags: 0
