@@ -279,6 +279,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBattle
   _attackPoint: {fileID: 8135499702949746326}
   _attackRadius: 1
+  _attackPauseTime: 1
+  AttackTimer: 0
 --- !u!1 &8101564865326635360
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +431,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3008c8542f9e05f4484f88c72ea4d415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCamera
-  Target: {fileID: 7558258009264250843}
+  Target: {fileID: 6004393224512649243}
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &8230283126801229191
 GameObject:
   m_ObjectHideFlags: 0
