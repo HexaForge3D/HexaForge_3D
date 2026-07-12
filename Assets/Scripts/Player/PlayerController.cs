@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _spotPoint;
     [SerializeField] private float _disappearTime = 0.3f;
 
+    [Header("Layer Masks")]
+    [SerializeField] private LayerMask _clickableLayer;
+
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
@@ -144,7 +147,7 @@ public class PlayerController : MonoBehaviour
         {
             Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
            
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _clickableLayer))
             {
                 Vector3 lookDirection = hit.point - transform.position;
                 lookDirection.y = 0f;
@@ -181,7 +184,7 @@ public class PlayerController : MonoBehaviour
         Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickableLayer))
         {
             if (Vector3.Distance(_lastSetDestination, hit.point) < 0.2f) return;
             _lastSetDestination = hit.point;

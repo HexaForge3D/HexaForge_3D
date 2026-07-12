@@ -6,7 +6,9 @@ public class PlayerCamera : MonoBehaviour
     [Header("Camera Setting")]
     [SerializeField] private Transform Target;
     [SerializeField] private LayerMask _obstacleMask;
-   
+    [SerializeField] private float _checkRadius = 1f; // 레이케스트 두께
+    [SerializeField] private float _transfparentAlpha = 0.2f; // 투명해질 때의 알파 값
+
     private PlayerController _playerController;
     private Vector3 _offset;
     private List<Renderer> _currentHitRenderers = new List<Renderer>();
@@ -37,18 +39,18 @@ public class PlayerCamera : MonoBehaviour
         Vector3 rayOrigin = transform.position;
         Vector3 rayDirection = direction.normalized;
 
-        Debug.DrawRay(rayOrigin, rayDirection * distance, Color.yellow, 0.1f);
+        RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, _checkRadius, rayDirection, distance, _obstacleMask);
 
         List<Renderer> currentHitRenderList = new List<Renderer>();
 
-        foreach (RaycastHit hit in Physics.RaycastAll(rayOrigin, rayDirection, distance, _obstacleMask))
+        foreach (RaycastHit hit in hits)
         {
             Renderer targetRenderer = hit.collider.GetComponent<Renderer>();
             if (targetRenderer != null)
             {
                 currentHitRenderList.Add(targetRenderer);
 
-                if (!_currentHitRenderers.Contains(targetRenderer))
+                if (_currentHitRenderers.Contains(targetRenderer) == false)
                 {
                     ChangedHidingObject(targetRenderer, true);
                 }
@@ -70,7 +72,7 @@ public class PlayerCamera : MonoBehaviour
         if (renderer == null) return;
 
         Color targetColor = renderer.material.color;
-        targetColor.a = isTransparent ? 0.2f : 1.0f;
+        targetColor.a = isTransparent ? _transfparentAlpha : 1.0f;
         renderer.material.color = targetColor;
     }
 }
