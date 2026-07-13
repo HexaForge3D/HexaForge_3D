@@ -8,7 +8,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private float _checkRadius = 1f; // 레이케스트 두께
 
-    [Header("Material Swap Setting")] // 물질은 200, 200, 200 , 20
+    [Header("Material Swap Setting")]
     [SerializeField] private Material _transparentMaterial;
 
     private PlayerController _playerController;
