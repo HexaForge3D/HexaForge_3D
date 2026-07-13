@@ -4,18 +4,24 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Setting")]
-    [SerializeField] private float _moveSpeed = 15f; // 이동속도
-    [SerializeField] private float _rotationSpeed = 25f; // 회전속도
+    [SerializeField] private float _moveSpeed = 15f;
+    [SerializeField] private float _rotationSpeed = 25f;
 
     [Header("Player Camera")]
     [SerializeField] private Camera _playerCamera;
 
     [Header("Destination Point")]
-    [SerializeField] private Transform _spotPoint; // 목표지점 이미지
-    [SerializeField] private float _disappearTime = 0.3f; // 마우스 우클릭을 유지하는 시간 => 이 시간 후 목표지점 이미지 안보임
+    [SerializeField] private Transform _spotPoint;
+    [SerializeField] private float _disappearTime = 0.3f;
+
+    [Header("Layer Masks")]
+    [SerializeField] private LayerMask _clickableLayer;
 
     [Header("Animator")]
     [SerializeField] private Animator _animator;
+
+    private PlayerTableData _playerData;
+    public PlayerTableData PlayerData => _playerData;
 
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
@@ -26,12 +32,16 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     private float _spotTimer = 0f;
 
+    private bool _isAttacking = false;
+    private Quaternion _attackTargetRotation;
+    private PlayerBattle _playerBattle;
 
     private void Start()
     {
         _targetPosition = transform.position;
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
+        _playerBattle = GetComponent<PlayerBattle>();
 
         if (_spotPoint != null)
         {
@@ -48,68 +58,122 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
         }
+
+        if (GameDataManager.Instance != null)
+        {
+            _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
+            
+            if (_playerData == null)
+            {
+                Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
+            }
+        }
+
+        else
+        {
+            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
+        }
     }
 
     private void Update()
     {
+        //타이머에서 애니메이션 종료 시간으로 변경될 예정
+        if (_playerBattle.AttackTimer > 0f)
+        {
+            _playerBattle.AttackTimer -= Time.deltaTime;
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            OnClickAttack(); // 몬스터 공격하는 평타 기능 추가 (07/06에 추가 => 이후에 기능 추가할 것)
+            OnClickAttack();
         }
-
-        if (Input.GetMouseButtonDown(1))
+        if (_playerBattle.AttackTimer <= 0f)
         {
-            _spotTimer = 0f;
-            if (_spotPoint != null) _spotPoint.gameObject.SetActive(true);
-            SetTargetPosition();
-        }
-
-        else if (Input.GetMouseButton(1))
-        {
-            SetTargetPosition();
-
-            if (_spotPoint != null && _spotPoint.gameObject.activeSelf)
+            if (Input.GetMouseButtonDown(1))
             {
-                _spotTimer += Time.deltaTime;
-                if (_spotTimer >= _disappearTime)
+                _spotTimer = 0f;
+                if (_spotPoint != null) _spotPoint.gameObject.SetActive(true);
+                SetTargetPosition();
+            }
+
+            else if (Input.GetMouseButton(1))
+            {
+                SetTargetPosition();
+
+                if (_spotPoint != null && _spotPoint.gameObject.activeSelf)
                 {
-                    _spotPoint.gameObject.SetActive(false);
+                    _spotTimer += Time.deltaTime;
+                    if (_spotTimer >= _disappearTime)
+                    {
+                        _spotPoint.gameObject.SetActive(false);
+                    }
+                }
+            }
+
+            else if (Input.GetMouseButtonUp(1))
+            {
+                if (_spotPoint != null)
+                {
+                    _spotPoint.gameObject.SetActive(true);
+                }
+            }
+        }
+            if (_agent != null && _agent.speed != _moveSpeed)
+            {
+                _agent.speed = _moveSpeed;
+            }
+
+            if (_isAttacking)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
+
+                if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
+                {
+                    transform.rotation = _attackTargetRotation;
+                    _isAttacking = false;
+                }
+            }
+
+            if (_isMoving)
+            {
+                MovePlayer();
+            }
+    }
+
+    public void OnClickAttack()
+    {
+        _playerBattle.AttackTimer = _playerBattle._attackPauseTime;
+
+        if (_playerCamera != null)
+        {
+            Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
+           
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _clickableLayer))
+            {
+                Vector3 lookDirection = hit.point - transform.position;
+                lookDirection.y = 0f;
+
+                if (lookDirection.sqrMagnitude > 0.01f)
+                {
+                    _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
+
+                    if (_agent != null)
+                    {
+                        _agent.isStopped = true;
+                        _agent.ResetPath();
+                    }
+
+                    _isMoving = false;
+
+                    if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+
+                    _isAttacking = true;
                 }
             }
         }
 
-        else if (Input.GetMouseButtonUp(1))
+        if (_playerBattle != null)
         {
-            if (_spotPoint != null)
-            {
-                _spotPoint.gameObject.SetActive(true);
-            }
-        }
-
-        if (_agent != null && _agent.speed != _moveSpeed)
-        {
-            _agent.speed = _moveSpeed;
-        }
-
-        if (_isMoving)
-        {
-            MovePlayer();
-        }
-    }
-
-    public void OnClickAttack() // 좌클릭시 공격하는 로직 (메서드 이름은 변경해도 됨)
-    {
-        if (GameDataManager.Instance == null)
-        {
-            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-            return;
-        }
-
-        PlayerTableData playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
-        if (playerData != null)
-        {
-            int atk = playerData.Atk;
-            Debug.Log($"{atk}의 데미지로 공격하였습니다.");
+            _playerBattle.ExecuteAttack();
         }
     }
 
@@ -120,7 +184,7 @@ public class PlayerController : MonoBehaviour
         Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickableLayer))
         {
             if (Vector3.Distance(_lastSetDestination, hit.point) < 0.2f) return;
             _lastSetDestination = hit.point;
@@ -147,6 +211,7 @@ public class PlayerController : MonoBehaviour
 
                 if (_agent != null)
                 {
+                    _isAttacking = false;
                     _agent.SetDestination(_targetPosition);
                     _agent.isStopped = false;
                 }
@@ -178,6 +243,11 @@ public class PlayerController : MonoBehaviour
                 _isMoving = false;
                 if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
             }
+        }
+        if (_isAttacking == true)
+        {
+            _isMoving = false;
+            if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
         }
     }
 

@@ -1,12 +1,12 @@
-[
+﻿[
   {
     "ID": "Player_01",
     "Name": "HMB",
     "Job": "Warrior",
     "Exp": 0,
-    "Hp": 100,
+    "Hp": 200,
     "Mp": 50,
-    "Atk": 34,
-    "Def": 34
+    "Atk": 20,
+    "Def": 8
   }
 ]

@@ -125,7 +125,7 @@ Material:
     - _BillboardShadowFade: 0.5
     - _Blend: 0
     - _BlendHeight: 1.3
-    - _BlendModePreserveSpecular: 0
+    - _BlendModePreserveSpecular: 1
     - _Blend_Height: 0.36
     - _BumpScale: 1
     - _CAST_SHADOWS: 0

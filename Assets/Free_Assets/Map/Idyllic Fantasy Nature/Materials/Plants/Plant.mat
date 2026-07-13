@@ -29,6 +29,7 @@ Material:
     RenderType: TransparentCutout
   disabledShaderPasses:
   - MOTIONVECTORS
+  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -105,11 +106,11 @@ Material:
     - _Bend_Strength: 0.7
     - _Blend: 0
     - _BlendHeight: 1.25
-    - _BlendModePreserveSpecular: 0
+    - _BlendModePreserveSpecular: 1
     - _Blend_Height: 0.9
     - _BumpScale: 1
     - _COLOR_OVERLAY: 0
-    - _CastShadows: 1
+    - _CastShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 0
