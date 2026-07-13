@@ -5,8 +5,6 @@ public class PlayerBattle : MonoBehaviour
     [Header("Attack Setting")]
     [SerializeField] private Transform _attackPoint;
     [SerializeField] private float _attackRadius = 1f;
-    [SerializeField] public float _attackPauseTime = 1.0f;
-    public float AttackTimer;
 
     private PlayerController _playerController;
     private int _currentHp;
