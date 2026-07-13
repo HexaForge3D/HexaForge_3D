@@ -1359,6 +1359,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8646642277259301846, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: m_Acceleration
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8646642277259301846, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8646642277259301846, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
