@@ -55,14 +55,14 @@ public class GameFlowManager
     
     private void OnCreateCharacterRequest(string slotId)
     {
-        bool success = SaveManager.Instance.CreateCharacter(slotId, "TempHeor", "Warrior");
-
-        if (success)
-        {
-            ShowCharacterSelectAsync().Forget();
-        }
+        ShowCharacterCreateAsync(slotId).Forget();
     }
 
+    private void OnCharacterCreated()
+    {
+        UIManager.Instance.CloseUI(UIType.CharacterCreateUI);
+        ShowCharacterSelectAsync().Forget();
+    }
 
 
     private async UniTask ShowTitleAsync()
@@ -130,4 +130,12 @@ public class GameFlowManager
 
     }
 
+    private async UniTask ShowCharacterCreateAsync(string slotId)
+    {
+        CharacterCreateView view  = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreateUI);
+        CharacterCreateViewModel viewModel = new CharacterCreateViewModel(slotId);
+        viewModel.OnCharacterCreated += OnCharacterCreated;
+
+        view.BindViewModel(viewModel);
+    }
 }
