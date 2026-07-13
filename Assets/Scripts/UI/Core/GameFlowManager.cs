@@ -52,6 +52,16 @@ public class GameFlowManager
     {
         ShowInformationAsync().Forget();
     }
+    
+    private void OnCreateCharacterRequest(string slotId)
+    {
+        bool success = SaveManager.Instance.CreateCharacter(slotId, "TempHeor", "Warrior");
+
+        if (success)
+        {
+            ShowCharacterSelectAsync().Forget();
+        }
+    }
 
 
 
@@ -71,6 +81,7 @@ public class GameFlowManager
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
+        viewModel.OnCreateCharacterRequested += OnCreateCharacterRequest;
 
         view.BindViewModel(viewModel);
     }
