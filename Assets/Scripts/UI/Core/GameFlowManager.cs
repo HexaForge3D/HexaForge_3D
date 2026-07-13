@@ -64,6 +64,17 @@ public class GameFlowManager
         ShowCharacterSelectAsync().Forget();
     }
 
+    private void OnDeleteRequested(string slotId)
+    {
+        ShowDeleteConfirmAsync(slotId).Forget();
+    }
+
+    private void OnDeleteConfirmed()
+    {
+        UIManager.Instance.CloseUI(UIType.DeleteConfirmPopup);
+        ShowCharacterSelectAsync().Forget();
+    }
+
 
     private async UniTask ShowTitleAsync()
     {
@@ -82,6 +93,7 @@ public class GameFlowManager
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
         viewModel.OnCreateCharacterRequested += OnCreateCharacterRequest;
+        viewModel.OnDeleteRequested += OnDeleteRequested;
 
         view.BindViewModel(viewModel);
     }
@@ -136,6 +148,14 @@ public class GameFlowManager
         CharacterCreateViewModel viewModel = new CharacterCreateViewModel(slotId);
         viewModel.OnCharacterCreated += OnCharacterCreated;
 
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowDeleteConfirmAsync(string slotId)
+    {
+        DeleteConfirmView view = await UIManager.Instance.OpenUIAsync<DeleteConfirmView>(UIType.DeleteConfirmPopup);
+        DeleteConfirmViewModel viewModel = new DeleteConfirmViewModel(slotId);
+        viewModel.OnConfirmed += OnDeleteConfirmed;
         view.BindViewModel(viewModel);
     }
 }

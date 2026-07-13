@@ -10,6 +10,7 @@ public class CharacterSelectViewModel
     public Action<CharacterSlotData> OnSlotSelected;
     public Action<string> OnCreateCharacterRequested;
     public Action<PlayerData> OnEnterGameRequested;
+    public Action<string> OnDeleteRequested;
     
     public List<CharacterSlotData> GetAllSlots()
     {
@@ -33,5 +34,12 @@ public class CharacterSelectViewModel
         if (_selectedSlot == null || _selectedSlot.IsEmpty) return;
 
         OnEnterGameRequested?.Invoke(_selectedSlot.Character);
+    }
+
+    public void RequestDelete()
+    {
+        if (_selectedSlot == null || _selectedSlot.IsEmpty) return;
+
+        OnDeleteRequested?.Invoke(_selectedSlot.SlotId);
     }
 }
