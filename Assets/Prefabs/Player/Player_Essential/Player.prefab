@@ -393,6 +393,7 @@ Transform:
   - {fileID: 1315382168233441330}
   - {fileID: 1977479743647432962}
   - {fileID: 8348393902567681065}
+  - {fileID: 2933328853932099767}
   m_Father: {fileID: 7570861225482397971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3890863442705419813
@@ -454,8 +455,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c06e988ff804e41926a4f86f64a53b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBattle
-  _attackPoint: {fileID: 3116884457573168562}
-  _attackRadius: 0.6
+  _attackPoint: {fileID: 2933328853932099767}
+  _attackRadius: 1.5
+  _horizontalAngle: 120
+  _verticalAngle: 120
+  _attackOffset: 0
+  _gizmoGridSegments: 15
 --- !u!95 &6215523674562784445
 Animator:
   serializedVersion: 7
@@ -487,7 +492,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 858504871581969533}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.23
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -499,7 +504,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
 --- !u!54 &1695674800264197086
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -841,7 +846,6 @@ Transform:
   - {fileID: 8766004668173645344}
   - {fileID: 8219488526073775570}
   - {fileID: 8682688218482553546}
-  - {fileID: 3116884457573168562}
   m_Father: {fileID: 2645920414894171268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2535934635864360949
@@ -939,59 +943,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6254734598117303364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2884276764423623353
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3116884457573168562}
-  - component: {fileID: 2659704871498005660}
-  m_Layer: 0
-  m_Name: SwordCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3116884457573168562
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2884276764423623353}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.00000012545942, y: 0.00000007881317, z: -0.120528035, w: 0.99270993}
-  m_LocalPosition: {x: -0.282, y: -0.652, z: 0.064}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2206412774600552164}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -13.845}
---- !u!135 &2659704871498005660
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2884276764423623353}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2998882570766234794
 GameObject:
   m_ObjectHideFlags: 0
@@ -3098,6 +3049,37 @@ Transform:
   m_Children:
   - {fileID: 7060566808154795989}
   m_Father: {fileID: 2791428196877291992}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9084311040054447499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2933328853932099767}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2933328853932099767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9084311040054447499}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.143, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 45551724372801223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9185265182149131267
 GameObject:

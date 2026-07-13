@@ -138,7 +138,6 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_informationKey))
         {
-            //Debug.Log("정보창 오픈");
             if (_playerController != null && _playerController.PlayerData != null)
             {
                 CharacterSaveData data = _playerController.PlayerData;
@@ -155,7 +154,6 @@ public class PlayerInputSystem : MonoBehaviour
             {
                 Debug.LogWarning("플레이어 데이터를 아직 불러오지 못했습니다.");
             }
-            // InformationUi 출력
             OnInformation?.Invoke();
         }
 
@@ -169,6 +167,6 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void Evasion()
     {
-        //앙기모띠
+        // 추가 구현 예정
     }
 }

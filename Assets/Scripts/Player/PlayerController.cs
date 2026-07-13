@@ -60,21 +60,6 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
         }
-
-       //if (GameDataManager.Instance != null)
-       //{
-       //    _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
-         
-       //    if (_playerData == null)
-       //    {
-       //        Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
-       //    }
-       //}
-
-       //else
-       //{
-       //    Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-       //}
     }
 
     private void Update()
@@ -139,7 +124,7 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool("isWalking", _isMoving);
     }
 
-    public void InitializePlayerData(PlayerTableData playerData)
+    public void InitializePlayerData(CharacterSaveData playerData)
     {
         _playerData = playerData;
     }
