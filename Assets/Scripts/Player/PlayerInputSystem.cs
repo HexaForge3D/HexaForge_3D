@@ -141,7 +141,7 @@ public class PlayerInputSystem : MonoBehaviour
             //Debug.Log("정보창 오픈");
             if (_playerController != null && _playerController.PlayerData != null)
             {
-                PlayerTableData data = _playerController.PlayerData;
+                CharacterSaveData data = _playerController.PlayerData;
 
                 Debug.Log($"<color=yellow>[플레이어 상태창]</color>\n" +
                           $"이름: {data.Name}\n" +

@@ -20,8 +20,8 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
-    private PlayerTableData _playerData;
-    public PlayerTableData PlayerData => _playerData;
+    private CharacterSaveData _playerData;
+    public CharacterSaveData PlayerData => _playerData;
 
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
@@ -59,20 +59,20 @@ public class PlayerController : MonoBehaviour
             _agent.updateRotation = false;
         }
 
-        if (GameDataManager.Instance != null)
-        {
-            _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
+        //if (GameDataManager.Instance != null)
+        //{
+        //    _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
             
-            if (_playerData == null)
-            {
-                Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
-            }
-        }
+        //    if (_playerData == null)
+        //    {
+        //        Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
+        //    }
+        //}
 
-        else
-        {
-            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-        }
+        //else
+        //{
+        //    Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
+        //}
     }
 
     private void Update()
@@ -137,6 +137,11 @@ public class PlayerController : MonoBehaviour
             {
                 MovePlayer();
             }
+    }
+
+    public void InitializePlayerData(CharacterSaveData playerData)
+    {
+        _playerData = playerData;
     }
 
     public void OnClickAttack()
@@ -284,5 +289,10 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = targetPosition;
         }
+    }
+
+    private void OnAttackAnimation()
+    {
+
     }
 }
