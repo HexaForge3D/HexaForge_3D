@@ -7,11 +7,16 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private Transform Target;
     [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private float _checkRadius = 1f; // 레이케스트 두께
-    [SerializeField] private float _transfparentAlpha = 0.2f; // 투명해질 때의 알파 값
+
+    [Header("Material Swap Setting")]
+    [SerializeField] private Material _transparentMaterial;
 
     private PlayerController _playerController;
     private Vector3 _offset;
-    private List<Renderer> _currentHitRenderers = new List<Renderer>();
+
+    // 원래 있던 Material과 바꿀 Material을 위해서 원래 값을 담는 Dictionary를 생성
+    private Dictionary<Renderer, Material[]> _originalMaterials = new Dictionary<Renderer, Material[]>();
+    private HashSet<Renderer> _currentHitRenderers = new HashSet<Renderer>();
 
     private void Start()
     {
@@ -41,18 +46,22 @@ public class PlayerCamera : MonoBehaviour
 
         RaycastHit[] hits = Physics.SphereCastAll(rayOrigin, _checkRadius, rayDirection, distance, _obstacleMask);
 
-        List<Renderer> currentHitRenderList = new List<Renderer>();
+        HashSet<Renderer> currentHitRenderList = new HashSet<Renderer>();
 
         foreach (RaycastHit hit in hits)
         {
-            Renderer targetRenderer = hit.collider.GetComponent<Renderer>();
-            if (targetRenderer != null)
-            {
-                currentHitRenderList.Add(targetRenderer);
+            Renderer[] targetRenderers = hit.collider.GetComponentsInChildren<Renderer>();
 
-                if (_currentHitRenderers.Contains(targetRenderer) == false)
+            foreach (Renderer targetRenderer in targetRenderers)
+            {
+                if (targetRenderer != null)
                 {
-                    ChangedHidingObject(targetRenderer, true);
+                    currentHitRenderList.Add(targetRenderer);
+
+                    if (_currentHitRenderers.Contains(targetRenderer) == false)
+                    {
+                        ChangedHidingObject(targetRenderer, true);
+                    }
                 }
             }
         }
@@ -69,10 +78,33 @@ public class PlayerCamera : MonoBehaviour
 
     private void ChangedHidingObject(Renderer renderer, bool isTransparent)
     {
-        if (renderer == null) return;
+        // 투명 머티리얼이 Inspector에 안 들어가 있으면 작동하지 않음
+        if (renderer == null || _transparentMaterial == null) return;
 
-        Color targetColor = renderer.material.color;
-        targetColor.a = isTransparent ? _transfparentAlpha : 1.0f;
-        renderer.material.color = targetColor;
+        if (isTransparent)
+        {
+            // 1. 처음 가려진 거라면 원래 머티리얼을 딕셔너리에 안전하게 보관
+            if (_originalMaterials.ContainsKey(renderer) == false)
+            {
+                _originalMaterials.Add(renderer, renderer.sharedMaterials);
+
+                // 2. 투명 머티리얼로 옷 갈아입히기
+                Material[] transparentMats = new Material[renderer.sharedMaterials.Length];
+                for (int i = 0; i < transparentMats.Length; i++)
+                {
+                    transparentMats[i] = _transparentMaterial;
+                }
+                renderer.sharedMaterials = transparentMats;
+            }
+        }
+        else
+        {
+            // 3. 카메라 밖으로 벗어나면 보관해둔 원래 머티리얼로 다시 복구
+            if (_originalMaterials.ContainsKey(renderer))
+            {
+                renderer.sharedMaterials = _originalMaterials[renderer];
+                _originalMaterials.Remove(renderer);
+            }
+        }
     }
 }

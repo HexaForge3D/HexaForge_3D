@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 public class CharacterCreateViewModel
 {
-    private readonly JobRepository _jobRepository = new JobRepository();
+    //private readonly JobRepository _jobRepository = new JobRepository();
     private readonly string _slotId;
 
     private string _nickName;
@@ -18,10 +18,10 @@ public class CharacterCreateViewModel
         _slotId = slotId;
     }
 
-    public List<PlayerTableData> GetJobList()
-    {
-        return _jobRepository.GetAllJobs();
-    }
+    //public List<PlayerTableData> GetJobList()
+    //{
+    //    return _jobRepository.GetAllJobs();
+    //}
 
     public void SetNickName(string nickName)
     {
