@@ -1,8 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 // 게임의 흐름 타이밍을 관리할 스크립트
 public class GameFlowManager
 {
+    private string _currentSlotId;
+
     public async UniTask StartAsync()
     {
         await GameDataManager.Instance.WaitUntilReadyAsync();
@@ -16,6 +19,7 @@ public class GameFlowManager
 
     private void OnEnterGameRequested(PlayerData data)
     {
+        _currentSlotId = data.Id;
         ShowInGameAsync(data).Forget();
     }
 
@@ -24,6 +28,7 @@ public class GameFlowManager
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerSpawnManager.Instance.DeSpawnPlayer();
+        _currentSlotId = null;
         ShowCharacterSelectAsync().Forget();
     }
 
@@ -72,7 +77,15 @@ public class GameFlowManager
 
     private async UniTask ShowInGameAsync(PlayerData data)
     {
-        await PlayerSpawnManager.Instance.SpawnPlayerAsync(data);
+        PlayerTableData jobMaster = GameDataManager.Instance.GetData<PlayerTableData>(data.Job);
+        
+        if (jobMaster == null)
+        {
+            Debug.LogError($"[GameFlowManager] {data.Job}에 대한 직업 마스터 데이터를 찾을 수 없습니다.");
+            return;
+        }
+
+        await PlayerSpawnManager.Instance.SpawnPlayerAsync(data, jobMaster.PrefabAddress);
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
@@ -100,7 +113,7 @@ public class GameFlowManager
     {
         InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationUI);
 
-        InformationViewModel viewModel = new InformationViewModel();
+        InformationViewModel viewModel = new InformationViewModel(_currentSlotId);
         
         view.BindViewModel(viewModel);
 

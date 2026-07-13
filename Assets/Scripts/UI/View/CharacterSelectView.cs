@@ -17,7 +17,7 @@ public class CharacterSelectView : BaseUI
     {
         _viewModel = viewModel;
 
-        viewModel.OnCharacterSelected += OnCharacterSeleted;
+        viewModel.OnSlotSelected += OnSlotSeleted;
 
         Button_EnterGame.onClick.RemoveAllListeners();
         Button_EnterGame.onClick.AddListener(OnClickEnterGame);
@@ -29,13 +29,13 @@ public class CharacterSelectView : BaseUI
     {
         ClearSlotList();
 
-        List<PlayerData> characters = _viewModel.GetSelecttableCharacters();
+        List<CharacterSlotData> slots = _viewModel.GetAllSlots();
 
-        foreach (PlayerData data in characters)
+        foreach (CharacterSlotData slot in slots)
         {
             GameObject slotObject = Instantiate(Prefab_CharacterSlot, Transform_SlotParent);
             CharacterSlotView slotView = slotObject.GetComponent<CharacterSlotView>();
-            slotView.Setup(data, OnSlotClicked);
+            slotView.Setup(slot, OnSlotClicked);
 
             _spawnedSlots.Add(slotObject);
         }
@@ -51,13 +51,12 @@ public class CharacterSelectView : BaseUI
         _spawnedSlots.Clear();  
     }
 
-    private void OnSlotClicked(PlayerData data)
+    private void OnSlotClicked(CharacterSlotData slot)
     {
-        _viewModel.SelectCharacter(data);
-        Debug.Log("선택됨");
+        _viewModel.SelectSlot(slot);
     }
 
-    private void OnCharacterSeleted(PlayerData data)
+    private void OnSlotSeleted(CharacterSlotData slot)
     {
 
     }
