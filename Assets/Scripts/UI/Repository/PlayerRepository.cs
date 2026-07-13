@@ -23,6 +23,25 @@ public class PlayerRepository
         return result;
     }
 
+    public List<CharacterSlotData> GetAllSlots()
+    {
+        List<CharacterSlotData> result = new List<CharacterSlotData>();
+
+        foreach (CharacterSaveData saveData in SaveManager.Instance.CurrentSaveData.Slots)
+        {
+            if (saveData.IsEmpty)
+            {
+                result.Add(new CharacterSlotData(saveData.SlotId, true, null));
+            }
+            else
+            {
+                result.Add(new CharacterSlotData(saveData.SlotId, false, ConvertToPlayerData(saveData)));
+            }
+        }
+
+        return result;
+    }
+
     private CharacterSaveData FindSlot(string slotId)
     {
         foreach (CharacterSaveData slot in SaveManager.Instance.CurrentSaveData.Slots)
