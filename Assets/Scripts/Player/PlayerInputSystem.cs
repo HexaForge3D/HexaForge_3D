@@ -138,7 +138,23 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_informationKey))
         {
-            Debug.Log("정보창 오픈");
+            //Debug.Log("정보창 오픈");
+            if (_playerController != null && _playerController.PlayerData != null)
+            {
+                PlayerTableData data = _playerController.PlayerData;
+
+                Debug.Log($"<color=yellow>[플레이어 상태창]</color>\n" +
+                          $"이름: {data.Name}\n" +
+                          $"직업: {data.Job}\n" +
+                          $"HP: {data.Hp}\n" +
+                          $"MP: {data.Mp}\n" +
+                          $"공격력(ATK): {data.Atk}\n" +
+                          $"방어력(DEF): {data.Def}");
+            }
+            else
+            {
+                Debug.LogWarning("플레이어 데이터를 아직 불러오지 못했습니다.");
+            }
             // InformationUi 출력
             OnInformation?.Invoke();
         }

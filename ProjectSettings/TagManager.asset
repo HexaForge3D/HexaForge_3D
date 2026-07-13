@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Monster
   - PlayerCamera
-  - Ground
   layers:
   - Default
   - TransparentFX
@@ -13,8 +13,8 @@ TagManager:
   - 
   - Water
   - UI
-  - _obstacleMask
-  - 
+  - Obstacle
+  - Ground
   - 
   - 
   - 

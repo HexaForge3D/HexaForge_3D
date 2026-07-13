@@ -6,7 +6,7 @@
     public int Hp {  get; private set; }
     public int Mp { get; private set; }
     public int Atk { get; private set; }
-    public float Def { get; private set; }
+    public int Def { get; private set; }
 
     public PlayerData(string id, string name, string job, int hp, int mp, int atk, int def)
     {
