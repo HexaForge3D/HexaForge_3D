@@ -9,6 +9,7 @@ public class CharacterSelectView : BaseUI
 
     [SerializeField] private Image Image_CharacterPreview;
     [SerializeField] private Button Button_EnterGame;
+    [SerializeField] private Button Button_Delete;
 
     private CharacterSelectViewModel _viewModel;
     private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
@@ -21,6 +22,10 @@ public class CharacterSelectView : BaseUI
 
         Button_EnterGame.onClick.RemoveAllListeners();
         Button_EnterGame.onClick.AddListener(OnClickEnterGame);
+
+        Button_Delete.onClick.RemoveAllListeners();
+        Button_Delete.onClick.AddListener(OnClickDelete);
+        Button_Delete.interactable = false;
 
         BuildSlotList();
     }
@@ -58,11 +63,16 @@ public class CharacterSelectView : BaseUI
 
     private void OnSlotSeleted(CharacterSlotData slot)
     {
-
+        Button_Delete.interactable = true;
     }
 
     private void OnClickEnterGame()
     {
         _viewModel?.RequestEnterGame();
+    }
+
+    private void OnClickDelete()
+    {
+        _viewModel?.RequestDelete();
     }
 }

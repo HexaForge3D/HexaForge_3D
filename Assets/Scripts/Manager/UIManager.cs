@@ -10,7 +10,9 @@ public enum UIType : byte
     CharacterSelectUI,
     InGameUI,
     HuntingAreaSelectUI,
-    InformationUI
+    InformationUI,
+    CharacterCreateUI,
+    DeleteConfirmPopup
 }
 
 public enum UIRootType : byte
@@ -43,7 +45,9 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.CharacterSelectUI, "UI_CharacterSelect" },
         {UIType.InGameUI, "UI_InGame" },
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
-        {UIType.InformationUI, "UI_Information" }
+        {UIType.InformationUI, "UI_Information" },
+        {UIType.CharacterCreateUI, "UI_CharacterCreate" },
+        {UIType.DeleteConfirmPopup, "Popup_DeleteConfirm" }
     };
 
     // UI가 배치될 레이어 관리
@@ -53,7 +57,9 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.CharacterSelectUI, UIRootType.Main },
         {UIType.InGameUI, UIRootType.Main },
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
-        {UIType.InformationUI, UIRootType.Popup }
+        {UIType.InformationUI, UIRootType.Popup },
+        {UIType.CharacterCreateUI, UIRootType.Main },
+        {UIType.DeleteConfirmPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리

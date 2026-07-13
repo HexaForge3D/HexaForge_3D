@@ -91,14 +91,14 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
     
-    public void DeleteCharacter(string slotId)
+    public bool DeleteCharacter(string slotId)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
         if (slot == null)
         {
             Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return;
+            return false;
         }
 
         slot.IsEmpty = true;
@@ -111,6 +111,8 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Def = 0;
 
         SaveToFile(CurrentSaveData);
+        
+        return true;
     }
 
     public void UpdataCharacter(CharacterSaveData updateSlot)
