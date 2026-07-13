@@ -1,44 +1,51 @@
-﻿using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 public class PlayerRepository
 {
-    private const string TempCurrentPlayerId = "Player_01";
-
-    public PlayerData GetCurrentPlayer()
+    public PlayerData GetCharacter(string slotId)
     {
-        return GetPlayer(TempCurrentPlayerId);
+        CharacterSaveData saveData = FindSlot(slotId);
+        return saveData == null || saveData.IsEmpty ? null : ConvertToPlayerData(saveData);
     }
-
-    public PlayerData GetPlayer(string id)
+    
+    public List<PlayerData> GetAllCharacters()
     {
-        PlayerTableData tableData = GameDataManager.Instance.GetData<PlayerTableData>(id);
-        return tableData == null ? null : ConvertToPlayerData(tableData);
-    }
+        List<PlayerData> result = new List<PlayerData>();
 
-    public List<PlayerData> GetAllPlayers()
-    {
-        Dictionary<string, PlayerTableData> table = GameDataManager.Instance.GetAllData<PlayerTableData>();
-
-        if (table == null)
+        foreach (CharacterSaveData saveData in SaveManager.Instance.CurrentSaveData.Slots)
         {
-            return new List<PlayerData>();
+            if (saveData.IsEmpty == false)
+            {
+                result.Add(ConvertToPlayerData(saveData));
+            }
         }
 
-        return table.Values.Select(ConvertToPlayerData).ToList();
+        return result;
     }
 
-    private PlayerData ConvertToPlayerData(PlayerTableData tableData)
+    private CharacterSaveData FindSlot(string slotId)
+    {
+        foreach (CharacterSaveData slot in SaveManager.Instance.CurrentSaveData.Slots)
+        {
+            if (slot.SlotId == slotId)
+            {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private PlayerData ConvertToPlayerData(CharacterSaveData saveData)
     {
         return new PlayerData(
-            tableData.ID,
-            tableData.Name,
-            tableData.Job,
-            tableData.Hp,
-            tableData.Mp,
-            tableData.Atk,
-            tableData.Def
+            saveData.SlotId,
+            saveData.Name,
+            saveData.Job,
+            saveData.Hp,
+            saveData.Mp,
+            saveData.Atk,
+            saveData.Def
             );
     }
 }
