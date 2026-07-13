@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool("isWalking", _isMoving);
     }
 
-    public void InitializePlayerData(PlayerTableData playerData)
+    public void InitializePlayerData(CharacterSaveData playerData)
     {
         _playerData = playerData;
     }
