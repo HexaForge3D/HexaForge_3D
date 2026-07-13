@@ -22,6 +22,9 @@ public class CharacterSelectView : BaseUI
 
         Button_EnterGame.onClick.RemoveAllListeners();
         Button_EnterGame.onClick.AddListener(OnClickEnterGame);
+
+        Button_Delete.onClick.RemoveAllListeners();
+        Button_Delete.onClick.AddListener(OnClickDelete);
         Button_Delete.interactable = false;
 
         BuildSlotList();
@@ -66,5 +69,10 @@ public class CharacterSelectView : BaseUI
     private void OnClickEnterGame()
     {
         _viewModel?.RequestEnterGame();
+    }
+
+    private void OnClickDelete()
+    {
+        _viewModel?.RequestDelete();
     }
 }
