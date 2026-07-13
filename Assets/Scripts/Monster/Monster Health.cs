@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class MonsterHealth : MonoBehaviour
@@ -40,8 +39,21 @@ public class MonsterHealth : MonoBehaviour
         Collider coll = GetComponent<Collider>();
         if (coll != null) coll.enabled = false;
 
-        GetComponent<Animator>().SetTrigger("Die");
+        Behaviour[] allScripts = GetComponents<Behaviour>();
+        foreach (Behaviour script in allScripts)
+        {
+            if (script.GetType().Name == "BehaviorAgent")
+            {
+                script.enabled = false;
+            }
+        }
 
-        Destroy(gameObject, 2f);
+        Animator anim = GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("Die");
+        }
+
+        Destroy(gameObject, 4f);
     }
 }

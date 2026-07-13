@@ -4169,7 +4169,7 @@ MonoBehaviour:
           m_Value0: 15909375925810966652
           m_Value1: 15678016294215956311
         Name: DetectionRange
-        m_Value: 15
+        m_Value: 10
 --- !u!54 &5492942865036117532
 Rigidbody:
   m_ObjectHideFlags: 0
