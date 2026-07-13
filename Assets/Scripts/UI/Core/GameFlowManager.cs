@@ -53,7 +53,15 @@ public class GameFlowManager
         ShowInformationAsync().Forget();
     }
 
+    private void OnCreateCharacterRequested(string slotId)
+    {
+        bool success = SaveManager.Instance.CreateCharacter(slotId, "TempHero", "Warrior");
 
+        if (success)
+        {
+            ShowCharacterSelectAsync().Forget();
+        }
+    }
 
     private async UniTask ShowTitleAsync()
     {
@@ -71,6 +79,7 @@ public class GameFlowManager
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
+        viewModel.OnCreateCharacterRequested += OnCreateCharacterRequested;
 
         view.BindViewModel(viewModel);
     }
