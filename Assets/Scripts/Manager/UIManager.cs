@@ -12,7 +12,8 @@ public enum UIType : byte
     HuntingAreaSelectUI,
     InformationUI,
     CharacterCreatePopup,
-    ConfirmPopup
+    ConfirmPopup,
+    GameMenuPopup
 }
 
 public enum UIRootType : byte
@@ -47,7 +48,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
         {UIType.InformationUI, "UI_Information" },
         {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
-        {UIType.ConfirmPopup, "Popup_Confirm" }
+        {UIType.ConfirmPopup, "Popup_Confirm" },
+        {UIType.GameMenuPopup, "Popup_GameMenu" }
     };
 
     // UI가 배치될 레이어 관리
@@ -59,7 +61,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
         {UIType.InformationUI, UIRootType.Popup },
         {UIType.CharacterCreatePopup, UIRootType.Popup },
-        {UIType.ConfirmPopup, UIRootType.Popup }
+        {UIType.ConfirmPopup, UIRootType.Popup },
+        {UIType.GameMenuPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리
@@ -255,6 +258,32 @@ public class UIManager : BaseMonoManager<UIManager>
             default:
                 Debug.LogError($"[UIManager] {rootType}에 해당하는 Canvas가 없습니다.");
                 return null;
+        }
+    }
+
+    // 기능
+    public bool HasActivePopup()
+    {
+        foreach(UIType type in _activeUI)
+        {
+            if (GetRootType(type) == UIRootType.Popup) return true;
+        }
+
+        return false;
+    }
+
+    public void CloseAllPopups()
+    {
+        List<UIType> toClose = new List<UIType>();
+
+        foreach (UIType type in _activeUI)
+        {
+            if (GetRootType(type) == UIRootType.Popup) toClose.Add(type);
+        }
+
+        foreach (UIType type in toClose)
+        {
+            CloseUI(type);
         }
     }
 }
