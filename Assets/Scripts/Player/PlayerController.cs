@@ -69,18 +69,19 @@ public class PlayerController : MonoBehaviour
         {
             OnClickAttack();
         }
-        if (!_isAttackAnimPlaying)
+
+        if (_isAttackAnimPlaying == false)
         {
+
             if (Input.GetMouseButtonDown(1))
             {
                 _spotTimer = 0f;
-                if (_spotPoint != null) _spotPoint.gameObject.SetActive(true);
-                SetTargetPosition();
+                SetTargetPosition(true);
             }
 
             else if (Input.GetMouseButton(1))
             {
-                SetTargetPosition();
+                SetTargetPosition(false);
 
                 if (_spotPoint != null && _spotPoint.gameObject.activeSelf)
                 {
@@ -96,30 +97,31 @@ public class PlayerController : MonoBehaviour
             {
                 if (_spotPoint != null)
                 {
-                    _spotPoint.gameObject.SetActive(true);
+                    _spotPoint.gameObject.SetActive(false);
                 }
             }
         }
-            if (_agent != null && _agent.speed != _moveSpeed)
-            {
-                _agent.speed = _moveSpeed;
-            }
 
-            if (_isAttacking)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
+        if (_agent != null && _agent.speed != _moveSpeed)
+        {
+            _agent.speed = _moveSpeed;
+        }
 
-                if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
-                {
-                    transform.rotation = _attackTargetRotation;
-                    _isAttacking = false;
-                }
-            }
+        if (_isAttacking)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
 
-            if (_isMoving)
+            if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
             {
-                MovePlayer();
+                transform.rotation = _attackTargetRotation;
+                _isAttacking = false;
             }
+        }
+
+        if (_isMoving)
+        {
+            MovePlayer();
+        }
 
         _animator.SetBool("isWalking", _isMoving);
     }
@@ -172,7 +174,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SetTargetPosition()
+    private void SetTargetPosition(bool updateSpotMarker = false)
     {
         if (_playerCamera == null) return;
 
@@ -211,9 +213,10 @@ public class PlayerController : MonoBehaviour
                     _agent.isStopped = false;
                 }
 
-                if (_spotPoint != null)
+                if (updateSpotMarker && _spotPoint != null)
                 {
                     _spotPoint.position = _targetPosition + Vector3.up * 0.05f;
+                    _spotPoint.gameObject.SetActive(true);
                 }
                 _isMoving = true;
             }
