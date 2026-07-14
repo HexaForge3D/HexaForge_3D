@@ -434,15 +434,21 @@ MonoBehaviour:
   _skillKey2: 119
   _skillKey3: 101
   _skillKey4: 114
+  _skillKey5: 97
+  _skillKey6: 115
+  _skillKey7: 100
+  _skillKey8: 102
+  _skillinfoKey: 107
   _evasionKey: 32
   _itemKey1: 49
   _itemKey2: 50
   _itemKey3: 51
   _itemKey4: 52
   _inventoryKey: 105
-  _interactionKey: 102
+  _interactionKey: 103
   _informationKey: 99
   _mapKey: 109
+  _systemKey: 27
 --- !u!114 &2214026887260603912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2791,6 +2797,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _checkRadius: 1
+  _offset: {x: 0, y: 0, z: 0}
+  _cameraAngle: {x: 0, y: 0, z: 0}
   _transparentMaterial: {fileID: 2100000, guid: 2411438522ca77d4a984f85c9fa60588, type: 2}
 --- !u!1 &8230283126801229191
 GameObject:
