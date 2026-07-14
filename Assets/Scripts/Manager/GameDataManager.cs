@@ -23,6 +23,7 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
     {
         await LoadData<HuntingAreaTableData>("HuntingArea");
         await LoadData<PlayerTableData>("Player");
+        await LoadData<SkillTableData>("Skill");
     }
 
     private async UniTask InitializeAsync()
