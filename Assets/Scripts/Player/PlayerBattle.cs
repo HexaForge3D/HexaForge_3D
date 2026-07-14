@@ -34,7 +34,7 @@ public class PlayerBattle : MonoBehaviour
         if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
 
         int atk = _playerController.PlayerData.Atk;
-        Debug.Log($"플레이어가 공격을 합니다! (공격력: {atk})");
+        Debug.Log($"<color=blue>[플레이어 공격]</color> (공격력: {atk})");
 
         if (_attackPoint != null)
         {
