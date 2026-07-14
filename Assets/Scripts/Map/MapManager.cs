@@ -19,12 +19,9 @@ public class MapManager : MonoBehaviour
 
     private Dictionary<string, Transform> _spawnPointMap;
 
-    private Dictionary<string, Portal_Village> _villagePortalGroup;
 
     private void Awake()
     {
-        _villagePortalGroup = new Dictionary<string, Portal_Village>();
-
         if (Instance != null && Instance != this)
         {
             Debug.LogWarning($"[MapManager:Awake] 현재 인스턴스가 존재하여 중복 오브젝트를 파괴합니다.");
@@ -62,12 +59,6 @@ public class MapManager : MonoBehaviour
         Debug.Log($"맵이 {mapName}으로 변경되었습니다.");
     }
 
-    public void WarpInVillage(string targetPortalId)
-    {
-        if (_villagePortalGroup.TryGetValue(targetPortalId, out var targetPortal) == false) return;
-        WarpPlayer(targetPortal.transform.position);
-    }
-
     public void SetPlayer(Transform playerTransform)
     {
         _playerController = playerTransform.GetComponent<PlayerController>();
@@ -91,31 +82,5 @@ public class MapManager : MonoBehaviour
             //_playerTransform.position = targetPosition;
             Debug.Log($"플레이어가 {targetPosition} 위치로 이동했습니다.");
         }
-    }
-
-    public void RegisterPortal(Portal_Village portal)
-    {
-        if (_villagePortalGroup.ContainsKey(portal.PortalID()) == false)
-        {
-            _villagePortalGroup.Add(portal.PortalID(), portal);
-        }
-    }
-
-    public void UnRegisterPortal(Portal_Village portal)
-    {
-        if (_villagePortalGroup.ContainsKey(portal.PortalID()))
-        {
-            _villagePortalGroup.Remove(portal.PortalID());
-        }
-    }
-
-    public Transform TargetPotalTransform(string targetPortalId)
-    {
-        if (_villagePortalGroup.TryGetValue(targetPortalId, out var targetPortal))
-        {
-            return targetPortal.transform;
-        }
-
-        return null;
     }
 }

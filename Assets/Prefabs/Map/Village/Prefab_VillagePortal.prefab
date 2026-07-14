@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 7969297431454928064}
   - component: {fileID: 227118738294139423}
   - component: {fileID: 6170974093377550592}
-  - component: {fileID: 8779111470407709458}
   - component: {fileID: 586040349656822432}
+  - component: {fileID: 2142669771942299959}
   m_Layer: 0
   m_Name: Prefab_VillagePortal
   m_TagString: Untagged
@@ -116,20 +116,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8779111470407709458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7200736758794041503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 871e9154f53bde742b80caf406e0b418, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Portal_Village
-  _portalID: 
-  _targetPortalID: 
 --- !u!114 &586040349656822432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,3 +136,16 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!114 &2142669771942299959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7200736758794041503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4cdfd3bc85c6834fa65fba4784bcf17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Portal
+  _portalType: 1

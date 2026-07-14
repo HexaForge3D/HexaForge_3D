@@ -600,6 +600,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 235841580520352581}
     m_Modifications:
+    - target: {fileID: 2142669771942299959, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
+      propertyPath: _portalType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4767801688853487137, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -652,16 +656,38 @@ PrefabInstance:
       propertyPath: _targetPortalID
       value: StoryNpc_B
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8779111470407709458, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7200736758794041503, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8167600815244452818}
   m_SourcePrefab: {fileID: 100100000, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
 --- !u!4 &5044566841446415731 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4767801688853487137, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
   m_PrefabInstance: {fileID: 300409325568795474}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7477492015802489805 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7200736758794041503, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
+  m_PrefabInstance: {fileID: 300409325568795474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8167600815244452818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7477492015802489805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4cdfd3bc85c6834fa65fba4784bcf17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Portal
+  _portalType: 2
 --- !u!1001 &484992761437951183
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1873,9 +1899,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _portalType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
-      value: PortalTemp
+      value: Portal_Field
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1895,6 +1925,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 651107850659944744}
     m_Modifications:
+    - target: {fileID: 2142669771942299959, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
+      propertyPath: _portalType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4767801688853487137, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2772,6 +2806,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7868579055455213018}
     m_Modifications:
+    - target: {fileID: 2142669771942299959, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
+      propertyPath: _portalType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4767801688853487137, guid: 88023bca1286a324bb51fc5a0dc37f36, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
