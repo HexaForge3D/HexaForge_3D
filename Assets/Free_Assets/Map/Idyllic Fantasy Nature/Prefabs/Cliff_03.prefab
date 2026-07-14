@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9203603019921810759}
   - component: {fileID: 9203603019921810758}
   - component: {fileID: 9203603019921810761}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 9203603020432555440}
   - component: {fileID: 9203603020432555443}
   - component: {fileID: 9203603020432555442}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 9203603020665382091}
   - component: {fileID: 9203603020665382090}
   - component: {fileID: 9203603020665382093}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,8 +280,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9203603020710262027}
   - component: {fileID: 9203603020710262026}
-  - component: {fileID: 7549743870759027191}
-  m_Layer: 0
+  - component: {fileID: 9041988742674385710}
+  m_Layer: 6
   m_Name: Cliff_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,8 +333,8 @@ LODGroup:
     renderers:
     - renderer: {fileID: 9203603020665382093}
   m_Enabled: 1
---- !u!64 &7549743870759027191
-MeshCollider:
+--- !u!65 &9041988742674385710
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -351,7 +351,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 13.929957, y: 6.0826616, z: 15.253288}
+  m_Center: {x: -0.23160721, y: 0.35092688, z: -0.057846136}
