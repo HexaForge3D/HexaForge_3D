@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 3fe7437895d856445bd004fd77908377
   m_SerializeEntries:
   - m_GUID: 16b05635507bb8c40ab95933bc99b1e2
-    m_Address: Popup_DeleteConfirm
+    m_Address: Popup_Confirm
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
