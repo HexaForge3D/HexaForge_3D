@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce6d8e39813adfd468c541a8de643447
+    m_Address: JsonOutput/Skill
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5c1a6c8369cdff469b10883e7e15f32
     m_Address: UI_InGame
     m_ReadOnly: 0
