@@ -32,6 +32,9 @@ public class PlayerInputSystem : MonoBehaviour
     [Header("Map Key")] // 미니 맵 버튼
     [SerializeField] private KeyCode _mapKey = KeyCode.M;
 
+    [Header("System Key")] // 시스템 버튼
+    [SerializeField] private KeyCode _systemKey = KeyCode.Escape;
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -47,6 +50,7 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnInteract;
     public static event Action OnInformation;
     public static event Action OnMap;
+    public static event Action OnSystem;
 
     private void Start()
     {
@@ -134,6 +138,13 @@ public class PlayerInputSystem : MonoBehaviour
         {
             Debug.Log("상호작용 실행");
             OnInteract?.Invoke();
+        }
+        
+        if (Input.GetKeyDown(_systemKey))
+        {
+            Debug.Log("시스템창이 열렸습니다.");
+            // 시스템 Ui 열고 닫는 내용 추가
+            OnSystem?.Invoke();
         }
 
         if (Input.GetKeyDown(_informationKey))
