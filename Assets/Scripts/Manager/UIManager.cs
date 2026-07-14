@@ -11,7 +11,7 @@ public enum UIType : byte
     InGameUI,
     HuntingAreaSelectUI,
     InformationUI,
-    CharacterCreateUI,
+    CharacterCreatePopup,
     DeleteConfirmPopup
 }
 
@@ -46,7 +46,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.InGameUI, "UI_InGame" },
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
         {UIType.InformationUI, "UI_Information" },
-        {UIType.CharacterCreateUI, "UI_CharacterCreate" },
+        {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
         {UIType.DeleteConfirmPopup, "Popup_DeleteConfirm" }
     };
 
@@ -58,7 +58,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.InGameUI, UIRootType.Main },
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
         {UIType.InformationUI, UIRootType.Popup },
-        {UIType.CharacterCreateUI, UIRootType.Main },
+        {UIType.CharacterCreatePopup, UIRootType.Popup },
         {UIType.DeleteConfirmPopup, UIRootType.Popup }
     };
 

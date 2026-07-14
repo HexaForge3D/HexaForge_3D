@@ -60,7 +60,7 @@ public class GameFlowManager
 
     private void OnCharacterCreated()
     {
-        UIManager.Instance.CloseUI(UIType.CharacterCreateUI);
+        UIManager.Instance.CloseUI(UIType.CharacterCreatePopup);
         ShowCharacterSelectAsync().Forget();
     }
 
@@ -144,7 +144,7 @@ public class GameFlowManager
 
     private async UniTask ShowCharacterCreateAsync(string slotId)
     {
-        CharacterCreateView view  = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreateUI);
+        CharacterCreateView view  = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreatePopup);
         CharacterCreateViewModel viewModel = new CharacterCreateViewModel(slotId);
         viewModel.OnCharacterCreated += OnCharacterCreated;
 
