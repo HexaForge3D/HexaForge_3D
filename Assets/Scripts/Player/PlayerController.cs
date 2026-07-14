@@ -133,12 +133,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnClickAttack()
     {
+        // 공격 애니메이션이 끝나기 전까지 데미지 안들어가게 하는 로직
+        if (_isAttackAnimPlaying) return;
+
         _isAttackAnimPlaying = true;
 
         if (_playerCamera != null)
         {
             Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
-           
+
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _clickableLayer))
             {
                 Vector3 lookDirection = hit.point - transform.position;
