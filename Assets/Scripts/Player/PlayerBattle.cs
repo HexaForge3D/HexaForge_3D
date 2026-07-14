@@ -13,10 +13,11 @@ public class PlayerBattle : MonoBehaviour
 
     private PlayerController _playerController;
     private int _currentHp;
+    private int _maxHp;
     private bool _isDead = false;
     private bool _isHpSet = false;
     // 플레이어 체력 변경시 나오는 이벤트 변수
-    public static event Action OnHpChanged;
+    public static event Action<int, int> OnHpChanged;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class PlayerBattle : MonoBehaviour
         if (_isHpSet == false && _playerController != null && _playerController.PlayerData != null)
         {
             _currentHp = _playerController.PlayerData.Hp;
+            _maxHp = _playerController.PlayerData.Hp;
             _isHpSet = true;
         }
     }
@@ -85,11 +87,11 @@ public class PlayerBattle : MonoBehaviour
         _currentHp -= finalDamage;
         _currentHp = Mathf.Max(0, _currentHp);
 
-        int maxHp = _playerController.PlayerData.Hp;
+        _playerController.SetCurrentHp(_currentHp);
 
-        Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {_currentHp} / {maxHp})");
+        Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {_currentHp} / {_maxHp})");
         // 이벤트를 위한 내용
-        OnHpChanged?.Invoke();
+        OnHpChanged?.Invoke(_currentHp, _maxHp);
 
         if (_currentHp <= 0)
         {

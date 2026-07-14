@@ -293,4 +293,11 @@ public class PlayerController : MonoBehaviour
     {
         _isAttackAnimPlaying = false;
     }
+
+    public void SetCurrentHp(int hp)
+    {
+        if (_playerData == null) return;
+
+        _playerData.Hp = hp;
+    }
 }
