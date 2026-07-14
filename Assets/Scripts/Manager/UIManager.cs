@@ -121,6 +121,8 @@ public class UIManager : BaseMonoManager<UIManager>
 
     public void CloseUI(UIType uiType)
     {
+        if (_activeUI.Contains(uiType) == false) return;
+
         if (_activeUI.Contains(uiType) == false)
         {
             Debug.LogError($"[UIManager] {uiType}은 열려있지 않습니다.");
