@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PlayerBattle : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PlayerBattle : MonoBehaviour
     private int _currentHp;
     private bool _isDead = false;
     private bool _isHpSet = false;
+    // 플레이어 체력 변경시 나오는 이벤트 변수
+    public static event Action OnHpChanged;
 
     private void Start()
     {
@@ -34,7 +37,7 @@ public class PlayerBattle : MonoBehaviour
         if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
 
         int atk = _playerController.PlayerData.Atk;
-        Debug.Log($"플레이어가 공격을 합니다! (공격력: {atk})");
+        Debug.Log($"<color=blue>[플레이어 공격]</color> (공격력: {atk})");
 
         if (_attackPoint != null)
         {
@@ -45,7 +48,9 @@ public class PlayerBattle : MonoBehaviour
             {
                 if (hitCollider.CompareTag("Monster"))
                 {
-                    Vector3 localPos = _attackPoint.InverseTransformPoint(hitCollider.transform.position);
+                    Vector3 closestPoint = hitCollider.ClosestPoint(_attackPoint.position);
+
+                    Vector3 localPos = _attackPoint.InverseTransformPoint(closestPoint);
 
                     float angleH = Mathf.Atan2(localPos.x, localPos.z) * Mathf.Rad2Deg;
                     float angleV = Mathf.Atan2(localPos.y, Mathf.Sqrt(localPos.x * localPos.x + localPos.z * localPos.z)) * Mathf.Rad2Deg;
@@ -83,6 +88,8 @@ public class PlayerBattle : MonoBehaviour
         int maxHp = _playerController.PlayerData.Hp;
 
         Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {_currentHp} / {maxHp})");
+        // 이벤트를 위한 내용
+        OnHpChanged?.Invoke();
 
         if (_currentHp <= 0)
         {

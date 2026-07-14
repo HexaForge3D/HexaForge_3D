@@ -11,11 +11,16 @@ public class PlayerInputSystem : MonoBehaviour
     [SerializeField] private KeyCode _skillKey2 = KeyCode.W;
     [SerializeField] private KeyCode _skillKey3 = KeyCode.E;
     [SerializeField] private KeyCode _skillKey4 = KeyCode.R;
+    [SerializeField] private KeyCode _skillKey5 = KeyCode.A;
+    [SerializeField] private KeyCode _skillKey6 = KeyCode.S;
+    [SerializeField] private KeyCode _skillKey7 = KeyCode.D;
+    [SerializeField] private KeyCode _skillKey8 = KeyCode.F;
+    [SerializeField] private KeyCode _skillinfoKey = KeyCode.K;
     [SerializeField] private KeyCode _evasionKey = KeyCode.Space;
 
     [Header("Item Key")] // 아이템 버튼
     [SerializeField] private KeyCode _itemKey1 = KeyCode.Alpha1;
-    [SerializeField] private KeyCode _itemKey2 = KeyCode.Alpha2;    
+    [SerializeField] private KeyCode _itemKey2 = KeyCode.Alpha2;
     [SerializeField] private KeyCode _itemKey3 = KeyCode.Alpha3;
     [SerializeField] private KeyCode _itemKey4 = KeyCode.Alpha4;
 
@@ -24,7 +29,7 @@ public class PlayerInputSystem : MonoBehaviour
     [SerializeField] private KeyCode _inventoryKey = KeyCode.I;
 
     [Header("Interaction Key")] // 상호작용 버튼
-    [SerializeField] private KeyCode _interactionKey = KeyCode.F;
+    [SerializeField] private KeyCode _interactionKey = KeyCode.G;
 
     [Header("Information Key")] // 정보 버튼
     [SerializeField] private KeyCode _informationKey = KeyCode.C;
@@ -41,13 +46,22 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnSkill2;
     public static event Action OnSkill3;
     public static event Action OnSkill4;
+    public static event Action OnSkill5;
+    public static event Action OnSkill6;
+    public static event Action OnSkill7;
+    public static event Action OnSkill8;
     public static event Action OnEvasion;
+    public static event Action OnSkillinfo;
+
     public static event Action OnItem1;
     public static event Action OnItem2;
     public static event Action OnItem3;
     public static event Action OnItem4;
+
     public static event Action OnInventory;
+
     public static event Action OnInteract;
+
     public static event Action OnInformation;
     public static event Action OnMap;
     public static event Action OnSystem;
@@ -92,11 +106,45 @@ public class PlayerInputSystem : MonoBehaviour
             OnSkill4?.Invoke();
         }
 
+        if (Input.GetKeyDown(_skillKey5))
+        {
+            Debug.Log("A스킬 발동!");
+            // 애니메이션 및, 공격 메서드 추가
+            OnSkill5?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_skillKey6))
+        {
+            Debug.Log("S스킬 발동!");
+            // 애니메이션 및, 공격 메서드 추가
+            OnSkill6?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_skillKey7))
+        {
+            Debug.Log("D스킬 발동!");
+            // 애니메이션 및, 공격 메서드 추가
+            OnSkill7?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_skillKey8))
+        {
+            Debug.Log("F스킬 발동!");
+            // 애니메이션 및, 공격 메서드 추가
+            OnSkill8?.Invoke();
+        }
+
         if (Input.GetKeyDown(_evasionKey))
         {
             Debug.Log("회피 실행");
             // 회피 메서드 추가
             OnEvasion?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_skillinfoKey))
+        {
+            Debug.Log("스킬 정보창 출력");
+            OnSkillinfo?.Invoke();
         }
 
         if (Input.GetKeyDown(_itemKey1))
@@ -106,7 +154,7 @@ public class PlayerInputSystem : MonoBehaviour
             OnItem1?.Invoke();
         }
 
-        if (Input.GetKeyDown(_itemKey2)) 
+        if (Input.GetKeyDown(_itemKey2))
         {
             Debug.Log("아이템2 사용");
             // 아이템2 사용 메서드 추가
@@ -139,7 +187,7 @@ public class PlayerInputSystem : MonoBehaviour
             Debug.Log("상호작용 실행");
             OnInteract?.Invoke();
         }
-        
+
         if (Input.GetKeyDown(_systemKey))
         {
             Debug.Log("시스템창이 열렸습니다.");
