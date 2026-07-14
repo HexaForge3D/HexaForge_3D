@@ -14,6 +14,8 @@ public class GameFlowManager
         await ShowTitleAsync();
     }
 
+
+    // 요청 메서드 모음
     private void OnGameStartRequested()
     {
         ShowCharacterSelectAsync().Forget();
@@ -39,7 +41,7 @@ public class GameFlowManager
         ShowHuntingAreaAsync().Forget();
     }
 
-    private void OnTeleportRequest(HuntingAreaData data)
+    private void OnTeleportRequested(HuntingAreaData data)
     {
         MapManager.Instance.ChangeMap(data.MapName);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
@@ -55,7 +57,7 @@ public class GameFlowManager
         ShowInformationAsync().Forget();
     }
     
-    private void OnCreateCharacterRequest(string slotId)
+    private void OnCreateCharacterRequested(string slotId)
     {
         ShowCharacterCreateAsync(slotId).Forget();
     }
@@ -69,17 +71,17 @@ public class GameFlowManager
     private void OnDeleteRequested(string slotId)
     {
         _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", ExcuteCharacterDelete).Forget();
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed).Forget();
     }
 
-    private void ExcuteCharacterDelete()
+    private void OnDeleteConfirmed()
     {
         SaveManager.Instance.DeleteCharacter(_pendingDeleteSlotId);
         ShowCharacterSelectAsync().Forget();
     }
 
 
-
+    // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
     {
         TitleView view = await UIManager.Instance.OpenUIAsync<TitleView>(UIType.TitleUI);
@@ -96,7 +98,7 @@ public class GameFlowManager
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
-        viewModel.OnCreateCharacterRequested += OnCreateCharacterRequest;
+        viewModel.OnCreateCharacterRequested += OnCreateCharacterRequested;
         viewModel.OnDeleteRequested += OnDeleteRequested;
 
         view.BindViewModel(viewModel);
@@ -131,7 +133,7 @@ public class GameFlowManager
         HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
         HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
-        viewModel.OnTeleportRequested += OnTeleportRequest;
+        viewModel.OnTeleportRequested += OnTeleportRequested;
 
         view.BindViewModel(viewModel);
     }
