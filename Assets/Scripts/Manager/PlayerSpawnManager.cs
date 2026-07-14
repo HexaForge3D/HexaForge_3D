@@ -41,32 +41,27 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
 
     private void InitializePlayer(GameObject instance, PlayerData data)
     {
-        PlayerController controller = instance.GetComponent<PlayerController>();
+        PlayerController controller = instance.GetComponentInChildren<PlayerController>();
 
-        if (controller != null)
+        if (controller == null)
         {
-            if (controller != null)
-            {
-                CharacterSaveData saveData = new CharacterSaveData
-                {
-                    SlotId = data.Id,
-                    IsEmpty = false,
-                    Name = data.Name,
-                    Job = data.Job,
-                    Hp = data.Hp,
-                    Mp = data.Mp,
-                    Atk = data.Atk,
-                    Def = data.Def
-                };
-
-                controller.InitializePlayerData(saveData);
-            }
-            else
-            {
-                Debug.LogError("[PlayerSpawnManager] 생성된 프리팹에 PlayerController가 없습니다.");
-            }
+            Debug.LogError("[PlayerSpawnManager] 생성된 프리팹에 PlayerController가 없습니다.");
+            return;
         }
 
+        CharacterSaveData saveData = new CharacterSaveData
+        {
+            SlotId = data.Id,
+            IsEmpty = false,
+            Name = data.Name,
+            Job = data.Job,
+            Hp = data.Hp,
+            Mp = data.Mp,
+            Atk = data.Atk,
+            Def = data.Def
+        };
+
+        controller.InitializePlayerData(saveData);
         Debug.Log($"[PlayerSpawnManager] 플레이어 생성 및 초기화: {data.Name} ({data.Job}) HP:{data.Hp} MP:{data.Mp} ATK:{data.Atk} DEF:{data.Def}");
     }
 }

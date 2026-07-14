@@ -8,11 +8,14 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private LayerMask _obstacleMask;
     [SerializeField] private float _checkRadius = 1f; // 레이케스트 두께
 
+    [Header("Camera Position")]
+    [SerializeField] private Vector3 _offset;
+    [SerializeField] private Vector3 _cameraAngle;
+
     [Header("Material Swap Setting")]
     [SerializeField] private Material _transparentMaterial;
 
     private PlayerController _playerController;
-    private Vector3 _offset;
 
     // 원래 있던 Material과 바꿀 Material을 위해서 원래 값을 담는 Dictionary를 생성
     private Dictionary<Renderer, Material[]> _originalMaterials = new Dictionary<Renderer, Material[]>();
@@ -24,15 +27,23 @@ public class PlayerCamera : MonoBehaviour
         {
             _playerController = Target.GetComponent<PlayerController>();
             _offset = transform.position - Target.transform.position;
+            _cameraAngle = transform.eulerAngles;
         }
     }
 
     private void LateUpdate()
     {
         if (Target == null || _playerController == null) return;
+
+        // 높이, 거리 조절
         Vector3 targetPos = Target.transform.position + _offset;
+
         float playerSpeed = _playerController.MoveSpeed;
         transform.position = Vector3.Lerp(transform.position, targetPos, playerSpeed * Time.deltaTime);
+
+        // 각도 조절
+        Quaternion targetRotation = Quaternion.Euler(_cameraAngle);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, playerSpeed * Time.deltaTime);
 
         CheckOcclusion();
     }
