@@ -31,14 +31,16 @@ public class GameFlowManager
     {
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
         Portal.OnPortalInteracted -= OnPortalInteracted;
+        PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
         ShowCharacterSelectAsync().Forget();
     }
 
-    private void OnHuntingAreaSelectRequested()
+    private void OnMenuCharacterSelectRequested()
     {
-        ShowHuntingAreaAsync().Forget();
+        UIManager.Instance.CloseUI(UIType.GameMenuPopup);
+        OnBackToCharacterSelectRequested();
     }
 
     private void OnTeleportRequested(HuntingAreaData data)
@@ -80,6 +82,28 @@ public class GameFlowManager
         ShowCharacterSelectAsync().Forget();
     }
 
+    private void OnEscapeKeyPressed()
+    {
+        if (UIManager.Instance.HasActivePopup())
+        {
+            UIManager.Instance.CloseAllPopups();
+        }
+        else
+        {
+            ShowGameMenuAsync().Forget();
+        }
+    }
+
+    private void OnQuitGameRequested()
+    {
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
+    }
+
+    private void OnQuitGameConfirmed()
+    {
+        Application.Quit();
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -119,13 +143,12 @@ public class GameFlowManager
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
         InGameViewModel viewModel = new InGameViewModel();
-        viewModel.OnBackToCharacterSelectRequested += OnBackToCharacterSelectRequested;
-        viewModel.OnHuntingAreaSelectRequested += OnHuntingAreaSelectRequested;
 
         view.BindViewModel(viewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
+        PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -161,6 +184,16 @@ public class GameFlowManager
     {
         ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
         ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed);
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowGameMenuAsync()
+    {
+        GameMenuView view = await UIManager.Instance.OpenUIAsync<GameMenuView>(UIType.GameMenuPopup);
+        GameMenuViewModel viewModel = new GameMenuViewModel();
+        viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
+        viewModel.OnQuitGameRequested += OnQuitGameRequested;
+
         view.BindViewModel(viewModel);
     }
 }
