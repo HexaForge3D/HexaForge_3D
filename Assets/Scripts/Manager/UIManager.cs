@@ -12,7 +12,7 @@ public enum UIType : byte
     HuntingAreaSelectUI,
     InformationUI,
     CharacterCreatePopup,
-    DeleteConfirmPopup
+    ConfirmPopup
 }
 
 public enum UIRootType : byte
@@ -47,7 +47,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
         {UIType.InformationUI, "UI_Information" },
         {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
-        {UIType.DeleteConfirmPopup, "Popup_DeleteConfirm" }
+        {UIType.ConfirmPopup, "Popup_Confirm" }
     };
 
     // UI가 배치될 레이어 관리
@@ -59,7 +59,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
         {UIType.InformationUI, UIRootType.Popup },
         {UIType.CharacterCreatePopup, UIRootType.Popup },
-        {UIType.DeleteConfirmPopup, UIRootType.Popup }
+        {UIType.ConfirmPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리

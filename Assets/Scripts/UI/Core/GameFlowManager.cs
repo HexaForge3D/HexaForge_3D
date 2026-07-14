@@ -1,10 +1,12 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 
 // 게임의 흐름 타이밍을 관리할 스크립트
 public class GameFlowManager
 {
     private string _currentSlotId;
+    private string _pendingDeleteSlotId;
 
     public async UniTask StartAsync()
     {
@@ -66,14 +68,16 @@ public class GameFlowManager
 
     private void OnDeleteRequested(string slotId)
     {
-        ShowDeleteConfirmAsync(slotId).Forget();
+        _pendingDeleteSlotId = slotId;
+        ShowConfirmAsync("Delete this Character?", ExcuteCharacterDelete).Forget();
     }
 
-    private void OnDeleteConfirmed()
+    private void ExcuteCharacterDelete()
     {
-        UIManager.Instance.CloseUI(UIType.DeleteConfirmPopup);
+        SaveManager.Instance.DeleteCharacter(_pendingDeleteSlotId);
         ShowCharacterSelectAsync().Forget();
     }
+
 
 
     private async UniTask ShowTitleAsync()
@@ -151,11 +155,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowDeleteConfirmAsync(string slotId)
+    private async UniTask ShowConfirmAsync(string message, Action onConfirmed)
     {
-        DeleteConfirmView view = await UIManager.Instance.OpenUIAsync<DeleteConfirmView>(UIType.DeleteConfirmPopup);
-        DeleteConfirmViewModel viewModel = new DeleteConfirmViewModel(slotId);
-        viewModel.OnConfirmed += OnDeleteConfirmed;
+        ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
+        ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed);
         view.BindViewModel(viewModel);
     }
 }

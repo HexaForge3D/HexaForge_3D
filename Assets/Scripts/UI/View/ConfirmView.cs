@@ -2,18 +2,18 @@
 using UnityEngine.UI;
 using UnityEngine;
 
-public class DeleteConfirmView : BaseOverLayUI
+public class ConfirmView : BaseOverLayUI
 {
     [SerializeField] private TMP_Text Text_Message;
     [SerializeField] private Button Button_Confirm;
 
-    private DeleteConfirmViewModel _viewModel;
+    private ConfirmViewModel _viewModel;
 
-    public void BindViewModel(DeleteConfirmViewModel viewModel)
+    public void BindViewModel(ConfirmViewModel viewModel)
     {
         _viewModel = viewModel;
 
-        Text_Message.text = "Delete this Character?";
+        Text_Message.text = viewModel.Message;
 
         Button_Confirm.onClick.RemoveAllListeners();
         Button_Confirm.onClick.AddListener(OnClickConfirm);
@@ -22,5 +22,6 @@ public class DeleteConfirmView : BaseOverLayUI
     private void OnClickConfirm()
     {
         _viewModel?.RequestConfirm();
+        UIManager.Instance.CloseUI(UIType.ConfirmPopup);
     }
 }
