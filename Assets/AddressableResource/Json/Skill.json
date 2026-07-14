@@ -1,0 +1,12 @@
+[
+  {
+    "ID": "Skill_Slash",
+    "Name": "Slash",
+    "Key": "SkillQ",
+    "RequiredLevel": 1,
+    "IconAddress": "",
+    "Cooldown": 3,
+    "Damage": 10,
+    "ManaCost": 5
+  }
+]
