@@ -7,6 +7,7 @@ public class GameFlowManager
 {
     private string _currentSlotId;
     private string _pendingDeleteSlotId;
+    private InGameViewModel _inGameViewModel;
 
     public async UniTask StartAsync()
     {
@@ -32,8 +33,10 @@ public class GameFlowManager
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
+        PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
+        _inGameViewModel = null;
         ShowCharacterSelectAsync().Forget();
     }
 
@@ -131,6 +134,11 @@ public class GameFlowManager
         Application.Quit();
     }
 
+    private void OnPlayerHpChanged(int currentHp, int maxHp)
+    {
+        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -169,13 +177,14 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
-        InGameViewModel viewModel = new InGameViewModel();
+        _inGameViewModel = new InGameViewModel();
 
-        view.BindViewModel(viewModel);
+        view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
+        PlayerBattle.OnHpChanged += OnPlayerHpChanged;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -223,4 +232,5 @@ public class GameFlowManager
 
         view.BindViewModel(viewModel);
     }
+
 }

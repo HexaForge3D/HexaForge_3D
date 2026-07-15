@@ -2655,6 +2655,7 @@ GameObject:
   - component: {fileID: 3782309597756877889}
   - component: {fileID: 8159528084379604362}
   - component: {fileID: 1392707050479763169}
+  - component: {fileID: 5153246146540200365}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: PlayerCamera
@@ -2797,9 +2798,36 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _checkRadius: 1
-  _offset: {x: 0, y: 0, z: 0}
-  _cameraAngle: {x: 0, y: 0, z: 0}
+  _offset: {x: 0, y: 19.2, z: -11.47}
+  _cameraAngle: {x: 58, y: 0, z: 0}
   _transparentMaterial: {fileID: 2100000, guid: 2411438522ca77d4a984f85c9fa60588, type: 2}
+--- !u!54 &5153246146540200365
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8101564865326635360}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &8230283126801229191
 GameObject:
   m_ObjectHideFlags: 0
