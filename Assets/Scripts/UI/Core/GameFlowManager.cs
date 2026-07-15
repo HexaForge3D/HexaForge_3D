@@ -16,6 +16,7 @@ public class GameFlowManager
     }
 
 
+
     // 요청 메서드 모음
     private void OnGameStartRequested()
     {
@@ -31,6 +32,7 @@ public class GameFlowManager
     private void OnBackToCharacterSelectRequested()
     {
         PlayerInputSystem.OnInformation -= OnInformationKeyPressed;
+        PlayerInputSystem.OnInventory -= OnInventoryKeyPressed;
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
@@ -50,6 +52,23 @@ public class GameFlowManager
     {
         MapManager.Instance.ChangeMap(data.MapName);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+    }
+
+    private void OnDeleteRequested(string slotId)
+    {
+        _pendingDeleteSlotId = slotId;
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed).Forget();
+    }
+
+    private void OnQuitGameRequested()
+    {
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
+    }
+
+
+    private void OnCreateCharacterRequested(string slotId)
+    {
+        ShowCharacterCreateAsync(slotId).Forget();
     }
 
     private void OnPortalInteracted(Portal portal)
@@ -84,32 +103,37 @@ public class GameFlowManager
         }
     }
 
-    private void OnInformationKeyPressed()
-    {
-        ShowInformationAsync().Forget();
-    }
-    
-    private void OnCreateCharacterRequested(string slotId)
-    {
-        ShowCharacterCreateAsync(slotId).Forget();
-    }
-
     private void OnCharacterCreated()
     {
         UIManager.Instance.CloseUI(UIType.CharacterCreatePopup);
         ShowCharacterSelectAsync().Forget();
     }
 
-    private void OnDeleteRequested(string slotId)
-    {
-        _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed).Forget();
-    }
-
     private void OnDeleteConfirmed()
     {
         SaveManager.Instance.DeleteCharacter(_pendingDeleteSlotId);
         ShowCharacterSelectAsync().Forget();
+    }
+
+    private void OnQuitGameConfirmed()
+    {
+        Application.Quit();
+    }
+
+    private void OnPlayerHpChanged(int currentHp, int maxHp)
+    {
+        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
+    }
+
+    // 단축키 입력 호출
+    private void OnInformationKeyPressed()
+    {
+        ToggleUI(UIType.InformationPopup, ShowInformation);
+    }
+
+    private void OnInventoryKeyPressed()
+    {
+        ToggleUI(UIType.InventoryPopup, ShowInventory); 
     }
 
     private void OnEscapeKeyPressed()
@@ -122,21 +146,6 @@ public class GameFlowManager
         {
             ShowGameMenuAsync().Forget();
         }
-    }
-
-    private void OnQuitGameRequested()
-    {
-        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
-    }
-
-    private void OnQuitGameConfirmed()
-    {
-        Application.Quit();
-    }
-
-    private void OnPlayerHpChanged(int currentHp, int maxHp)
-    {
-        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
     }
 
 
@@ -182,6 +191,7 @@ public class GameFlowManager
         view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
+        PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
@@ -199,7 +209,7 @@ public class GameFlowManager
 
     private async UniTask ShowInformationAsync()
     {
-        InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationUI);
+        InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationPopup);
 
         InformationViewModel viewModel = new InformationViewModel(_currentSlotId);
         
@@ -233,4 +243,34 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowInventoryAsync()
+    {
+        InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
+        InventoryViewModel viewModel = new InventoryViewModel();
+        view.BindViewModel(viewModel);
+    }
+
+
+    // UI 토글화
+    private void ToggleUI(UIType uiType, Action showAction)
+    {
+        if (UIManager.Instance.IsActiveUI(uiType))
+        {
+            UIManager.Instance.CloseUI(uiType);
+        }
+        else
+        {
+            showAction();
+        }
+    }
+
+    private void ShowInformation()
+    {
+        ShowInformationAsync().Forget();
+    }
+
+    private void ShowInventory()
+    {
+        ShowInventoryAsync().Forget();
+    }
 }
