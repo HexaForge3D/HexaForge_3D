@@ -89,10 +89,11 @@ public class UIManager : BaseMonoManager<UIManager>
     {
         UIRootType rootType = GetRootType(uiType);
         bool needsLoad = _uiDic.ContainsKey(uiType) == false;
+        bool shouldShowLoading = needsLoad && rootType != UIRootType.Popup;
 
         BaseUI ui;
 
-        if (needsLoad)
+        if (shouldShowLoading)
         {
             UniTask visualTask = LoadingOverLay.ShowAsync(useFullScreenLoading);
             UniTask<BaseUI> loadTask = GetOrCreateUIAsync(uiType);
