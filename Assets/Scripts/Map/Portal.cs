@@ -1,0 +1,62 @@
+﻿using UnityEngine;
+
+public enum PortalType : byte
+{
+    None,
+    Dungeon,
+    Store,
+    MainQuest,
+    Smithy
+}
+
+public class Portal : MonoBehaviour
+{
+    private bool _isPlayerInCollider;
+
+    public static event System.Action<Portal> OnPortalInteracted;
+
+    [SerializeField] private PortalType _portalType;
+    public PortalType PortalType => _portalType;
+    private void OnEnable()
+    {
+        PlayerInputSystem.OnInteract += Handleinteraction;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInputSystem.OnInteract -= Handleinteraction;
+    }
+
+    private void Handleinteraction()
+    {
+        if (_isPlayerInCollider == false)
+        {
+            return;
+        }
+
+        OnPortalInteracted?.Invoke(this);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (MapManager.Instance != null)
+            {
+                MapManager.Instance.SetPlayer(other.transform);
+                _isPlayerInCollider = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (MapManager.Instance != null)
+            {
+                _isPlayerInCollider = false;
+            }
+        }
+    }
+}
