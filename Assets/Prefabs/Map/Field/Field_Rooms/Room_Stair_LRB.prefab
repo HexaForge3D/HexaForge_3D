@@ -995,7 +995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 541501771669628777}
   m_Layer: 0
-  m_Name: Room_LRB
+  m_Name: Room_LRB_Stair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

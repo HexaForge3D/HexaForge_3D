@@ -1,0 +1,30 @@
+[
+  {
+    "ID": "area_village",
+    "Name": "Village",
+    "Description": "This is Villaged",
+    "ImageAddress": "",
+    "MapName": "Village"
+  },
+  {
+    "ID": "area_store",
+    "Name": "Store",
+    "Description": "This is Store",
+    "ImageAddress": "",
+    "MapName": "Store"
+  },
+  {
+    "ID": "area_smithy",
+    "Name": "Smithy",
+    "Description": "This is Smithy",
+    "ImageAddress": "",
+    "MapName": "Smithy"
+  },
+  {
+    "ID": "area_mainquest",
+    "Name": "MainQuest",
+    "Description": "This is MainQuest",
+    "ImageAddress": "",
+    "MapName": "MainQuest"
+  }
+]
