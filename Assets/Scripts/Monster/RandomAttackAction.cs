@@ -5,12 +5,11 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "Random Attack", story: "[Agent]가 [Target]을 향해 조준한 뒤 [MaxAttack]가지 중 랜덤 공격을 합니다", category: "Action", id: "random_attack")]
+[NodeDescription(name: "Random Attack", story: "[Agent]가 [Target]을 향해 조준한 뒤 [MaxAttack]가지 중 랜덤 공격을 합니다", category: "Action", id: "random_attack_new")]
 public partial class RandomAttackAction : Action
 {
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
-
     [SerializeReference] public BlackboardVariable<int> MaxAttack;
 
     private float rotationSpeed = 10f;
@@ -62,6 +61,7 @@ public partial class RandomAttackAction : Action
         if (anim != null)
         {
             int randomNum = UnityEngine.Random.Range(0, MaxAttack.Value);
+
             anim.SetInteger("AttackType", randomNum);
             anim.ResetTrigger("Attack");
             anim.SetTrigger("Attack");
