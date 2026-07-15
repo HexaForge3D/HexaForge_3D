@@ -13,7 +13,8 @@ public enum UIType : byte
     InformationUI,
     CharacterCreatePopup,
     ConfirmPopup,
-    GameMenuPopup
+    GameMenuPopup,
+    InventoryPopup
 }
 
 public enum UIRootType : byte
@@ -49,7 +50,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.InformationUI, "UI_Information" },
         {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
         {UIType.ConfirmPopup, "Popup_Confirm" },
-        {UIType.GameMenuPopup, "Popup_GameMenu" }
+        {UIType.GameMenuPopup, "Popup_GameMenu" },
+        {UIType.InventoryPopup, "Popup_Inventory" }
     };
 
     // UI가 배치될 레이어 관리
@@ -62,7 +64,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.InformationUI, UIRootType.Popup },
         {UIType.CharacterCreatePopup, UIRootType.Popup },
         {UIType.ConfirmPopup, UIRootType.Popup },
-        {UIType.GameMenuPopup, UIRootType.Popup }
+        {UIType.GameMenuPopup, UIRootType.Popup },
+        {UIType.InventoryPopup, UIRootType.Popup }  
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리

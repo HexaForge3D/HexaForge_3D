@@ -139,6 +139,11 @@ public class GameFlowManager
         _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
     }
 
+    private void OnInventoryKeyPressed()
+    {
+        ShowInventoryAsync().Forget();
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -182,6 +187,7 @@ public class GameFlowManager
         view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
+        PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
@@ -233,4 +239,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowInventoryAsync()
+    {
+        InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
+        InventoryViewModel viewModel = new InventoryViewModel();
+        view.BindViewModel(viewModel);
+    }
 }
