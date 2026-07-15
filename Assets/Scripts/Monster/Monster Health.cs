@@ -39,21 +39,16 @@ public class MonsterHealth : MonoBehaviour
         Collider coll = GetComponent<Collider>();
         if (coll != null) coll.enabled = false;
 
-        Behaviour[] allScripts = GetComponents<Behaviour>();
-        foreach (Behaviour script in allScripts)
-        {
-            if (script.GetType().Name == "BehaviorAgent")
-            {
-                script.enabled = false;
-            }
-        }
+        Unity.Behavior.BehaviorGraphAgent bt = GetComponent<Unity.Behavior.BehaviorGraphAgent>();
+        if (bt != null) bt.enabled = false;
 
         Animator anim = GetComponent<Animator>();
         if (anim != null)
         {
+            anim.ResetTrigger("Attack");
             anim.SetTrigger("Die");
         }
 
-        Destroy(gameObject, 4f);
+        Destroy(gameObject, 3f);
     }
 }

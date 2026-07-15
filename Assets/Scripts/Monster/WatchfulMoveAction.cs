@@ -24,21 +24,25 @@ public partial class WatchfulMoveAction : Action
     protected override Status OnUpdate()
     {
         if (Agent.Value == null) return Status.Failure;
+        UnityEngine.AI.NavMeshAgent nav = Agent.Value.GetComponent<UnityEngine.AI.NavMeshAgent>();
 
-        if (Player.Value != null)
+        if (Player.Value != null && Vector3.Distance(Agent.Value.transform.position, Player.Value.transform.position) <= 10f)
         {
-            float dist = Vector3.Distance(Agent.Value.transform.position, Player.Value.transform.position);
-            if (dist < SightRange.Value)
-            {
-                Agent.Value.GetComponent<NavMeshAgent>().ResetPath();
-                return Status.Failure;
-            }
+            nav.ResetPath();
+            return Status.Success;
         }
 
-        NavMeshAgent nav = Agent.Value.GetComponent<NavMeshAgent>();
-        if (!nav.pathPending && nav.remainingDistance <= 0.1f)
+        if (!nav.pathPending)
         {
-            return Status.Success;
+            if (nav.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathInvalid || nav.pathStatus == UnityEngine.AI.NavMeshPathStatus.PathPartial)
+            {
+                return Status.Success;
+            }
+
+            if (nav.remainingDistance <= nav.stoppingDistance + 0.1f)
+            {
+                return Status.Success;
+            }
         }
 
         return Status.Running;
