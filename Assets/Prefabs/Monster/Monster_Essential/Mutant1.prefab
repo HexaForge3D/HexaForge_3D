@@ -1965,19 +1965,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
+  m_Graph: {fileID: 2526050477347474807, guid: 154636cb998cdd64d8bce189c357d402, type: 2}
   m_BlackboardVariableOverridesList:
-  - rid: 312138497893597680
-  - rid: 312138497893597687
-  - rid: 312138497893597688
-  - rid: 312138497893598161
-  m_OriginalGraph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
+  - rid: 312138503810974181
+  - rid: 312138503810974182
+  - rid: 312138503810974185
+  - rid: 312138503810974186
+  m_OriginalGraph: {fileID: 2526050477347474807, guid: 154636cb998cdd64d8bce189c357d402, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
-    - rid: 312138497893597680
+    - rid: 312138503810974181
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1985,7 +1985,15 @@ MonoBehaviour:
           m_Value1: 0
         Name: Monster
         m_Value: {fileID: 3490026887102114920}
-    - rid: 312138497893597687
+    - rid: 312138503810974182
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 3548664228425225645
+          m_Value1: 15562744978023618590
+        Name: AttackWaitTime
+        m_Value: 3
+    - rid: 312138503810974185
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1993,7 +2001,7 @@ MonoBehaviour:
           m_Value1: 14419878264557771408
         Name: AttackRange
         m_Value: 1.5
-    - rid: 312138497893597688
+    - rid: 312138503810974186
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -2001,14 +2009,6 @@ MonoBehaviour:
           m_Value1: 9969009955419321762
         Name: LeashRange
         m_Value: 30
-    - rid: 312138497893598161
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 3548664228425225645
-          m_Value1: 15562744978023618590
-        Name: AtaackWaitTime
-        m_Value: 3
 --- !u!54 &1082962937581708946
 Rigidbody:
   m_ObjectHideFlags: 0

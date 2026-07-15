@@ -1180,13 +1180,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
+  m_Graph: {fileID: 2526050477347474807, guid: 154636cb998cdd64d8bce189c357d402, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 312138497893597681
   - rid: 312138497893597689
   - rid: 312138497893597690
-  - rid: 312138497893598162
-  m_OriginalGraph: {fileID: 2526050477347474807, guid: d9466bfeb79175a418c5ed731b87b98f, type: 2}
+  - rid: 312138503810974180
+  m_OriginalGraph: {fileID: 2526050477347474807, guid: 154636cb998cdd64d8bce189c357d402, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -1216,13 +1216,13 @@ MonoBehaviour:
           m_Value1: 9969009955419321762
         Name: LeashRange
         m_Value: 30
-    - rid: 312138497893598162
+    - rid: 312138503810974180
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 3548664228425225645
           m_Value1: 15562744978023618590
-        Name: AtaackWaitTime
+        Name: AttackWaitTime
         m_Value: 3
 --- !u!54 &8276956205377930098
 Rigidbody:
