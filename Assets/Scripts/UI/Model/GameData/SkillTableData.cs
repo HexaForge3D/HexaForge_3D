@@ -4,6 +4,7 @@
 public class SkillTableData : GameDataBase
 {
     public string Name;
+    public string Description;
     public string Key;
     public int RequiredLevel;
     public string IconAddress;

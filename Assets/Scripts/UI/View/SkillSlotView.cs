@@ -7,6 +7,7 @@ public class SkillSlotView : MonoBehaviour
     [SerializeField] private Image Image_Icon;
     [SerializeField] private Image Image_CoolDownOverLay;
     [SerializeField] private TMP_Text Text_KeyLabel;
+    [SerializeField] private TooltipTrigger TooltipTrigger;
 
     private float _coolDownRemaining;
     private float _coolDownDuration;
@@ -36,10 +37,19 @@ public class SkillSlotView : MonoBehaviour
         if (skill == null)
         {
             Image_Icon.gameObject.SetActive(false);
+            TooltipTrigger.SetData(null);
             return;
         }
 
         Image_Icon.gameObject.SetActive(true);
+
+        TooltipData tooltipData = new TooltipData(
+            skill.IconAddress,
+            skill.Name,
+            skill.Descripton,
+            null,
+            null
+            );
     }
 
     public void StartCoolDown(float duration)
