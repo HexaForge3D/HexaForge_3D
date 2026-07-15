@@ -50,13 +50,13 @@ MonoBehaviour:
   - rid: 312138453264629937
   - rid: 312138453264629988
   - rid: 312138497893597445
-  m_VersionTimestamp: 639197183079970918
+  m_VersionTimestamp: 639197283901600546
   m_SerializedVersion: 3
   m_DebugInfo: {fileID: -7368121374521963042}
   m_RuntimeGraph: {fileID: 2526050477347474807}
   AssetID:
-    m_Value0: 11850538213928814297
-    m_Value1: 10356457370093995288
+    m_Value0: 10697000977172264506
+    m_Value1: 8693357794610147243
   Story:
     Story: 
     StoryVariableNames: []
@@ -2283,8 +2283,8 @@ MonoBehaviour:
   m_Name: Monster AI Blackboard
   m_EditorClassIdentifier: Unity.Behavior.Authoring::Unity.Behavior.BehaviorBlackboardAuthoringAsset
   AssetID:
-    m_Value0: 11850538213928814297
-    m_Value1: 10356457370093995288
+    m_Value0: 10697000977172264506
+    m_Value1: 8693357794610147243
   m_Variables:
   - rid: 312138297749274626
   - rid: 312138297749274848
@@ -2417,15 +2417,15 @@ MonoBehaviour:
       type: {class: BehaviorGraphModule, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         AuthoringAssetID:
-          m_Value0: 11850538213928814297
-          m_Value1: 10356457370093995288
+          m_Value0: 10697000977172264506
+          m_Value1: 8693357794610147243
         m_DebugInfo: {fileID: -7368121374521963042}
         BlackboardReference:
           rid: 312138297749274628
         BlackboardGroupReferences: []
         Root:
           rid: 312138497893598129
-        m_VersionTimestamp: 639197183079970918
+        m_VersionTimestamp: 639197283901600546
     - rid: 312138297749274628
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
