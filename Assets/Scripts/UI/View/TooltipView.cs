@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TooltipView : MonoBehaviour
 {
     [SerializeField] private RectTransform RectTransform_Self;
+    [SerializeField] private CanvasGroup CanvasGroup_Self;
     [SerializeField] private Image Image_Icon;
     [SerializeField] private TMP_Text Text_Name;
     [SerializeField] private TMP_Text Text_Description;
@@ -15,6 +16,7 @@ public class TooltipView : MonoBehaviour
 
     private void Awake()
     {
+        CanvasGroup_Self.blocksRaycasts = false;
         Hide();
     }
 

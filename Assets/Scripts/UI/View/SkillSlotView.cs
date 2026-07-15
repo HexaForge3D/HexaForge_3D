@@ -46,10 +46,12 @@ public class SkillSlotView : MonoBehaviour
         TooltipData tooltipData = new TooltipData(
             skill.IconAddress,
             skill.Name,
-            skill.Descripton,
+            skill.Description,
             null,
             null
             );
+
+        TooltipTrigger.SetData(tooltipData);
     }
 
     public void StartCoolDown(float duration)
