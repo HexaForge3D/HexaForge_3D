@@ -1436,6 +1436,10 @@ PrefabInstance:
       propertyPath: _gizmoGridSegments
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3890863442705419813, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: _disappearTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7570861225482397971, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.2984608
@@ -1490,6 +1494,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8646642277259301846, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
       propertyPath: m_ObstacleAvoidanceType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128118938057973575, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128118938057973575, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128611408391466721, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128611408391466721, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128686038534652891, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128686038534652891, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128714821004033783, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9128714821004033783, guid: 63c6cd37ac1945c4291e6375dec7d4c8, type: 3}
+      propertyPath: stopAction
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

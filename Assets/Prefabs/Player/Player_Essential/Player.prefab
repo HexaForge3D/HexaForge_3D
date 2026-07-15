@@ -412,7 +412,6 @@ MonoBehaviour:
   _rotationSpeed: 25
   _playerCamera: {fileID: 777996260539164698}
   _spotPoint: {fileID: 5074255985663793053}
-  _disappearTime: 0.3
   _clickableLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -3212,6 +3211,38 @@ PrefabInstance:
     - target: {fileID: 1301441588763188594, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083084593309652392, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083084593309652392, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083660916205062452, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083660916205062452, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083684910323233816, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083684910323233816, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: stopAction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083718211888604174, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3083718211888604174, guid: d885d3b0c5bbe704188f169e3b90782b, type: 3}
+      propertyPath: stopAction
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
