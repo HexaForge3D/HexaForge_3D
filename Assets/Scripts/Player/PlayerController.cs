@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Destination Point")]
     [SerializeField] private Transform _spotPoint;
-    [SerializeField] private float _disappearTime = 0.3f;
 
     [Header("Layer Masks")]
     [SerializeField] private LayerMask _clickableLayer;
@@ -30,7 +29,6 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent _agent;
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
-    private float _spotTimer = 0f;
 
     private bool _isAttackAnimPlaying = false;
     private bool _isAttacking = false;
@@ -75,30 +73,12 @@ public class PlayerController : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1))
             {
-                _spotTimer = 0f;
                 SetTargetPosition(true);
             }
 
             else if (Input.GetMouseButton(1))
             {
                 SetTargetPosition(false);
-
-                if (_spotPoint != null && _spotPoint.gameObject.activeSelf)
-                {
-                    _spotTimer += Time.deltaTime;
-                    if (_spotTimer >= _disappearTime)
-                    {
-                        _spotPoint.gameObject.SetActive(false);
-                    }
-                }
-            }
-
-            else if (Input.GetMouseButtonUp(1))
-            {
-                if (_spotPoint != null)
-                {
-                    _spotPoint.gameObject.SetActive(false);
-                }
             }
         }
 
@@ -220,6 +200,19 @@ public class PlayerController : MonoBehaviour
                 {
                     _spotPoint.position = _targetPosition + Vector3.up * 0.05f;
                     _spotPoint.gameObject.SetActive(true);
+
+                    ParticleSystem[] particleSystems = _spotPoint.GetComponentsInChildren<ParticleSystem>(true);
+
+                    foreach (ParticleSystem ps in particleSystems)
+                    {
+                        ps.gameObject.SetActive(true);
+                    }
+
+                    if (particleSystems.Length > 0)
+                    {
+                        particleSystems[0].Play(true);
+                    }
+
                 }
                 _isMoving = true;
             }
