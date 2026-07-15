@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7409226907475651949}
   - component: {fileID: 7675553927849753035}
+  - component: {fileID: 1886723800636360716}
   - component: {fileID: 1726051329254818425}
   - component: {fileID: 582406750144920304}
   m_Layer: 5
@@ -56,6 +57,19 @@ MonoBehaviour:
   Image_Icon: {fileID: 7114288210396611827}
   Image_CoolDownOverLay: {fileID: 5386514660411602693}
   Text_KeyLabel: {fileID: 5299179867259644698}
+  TooltipTrigger: {fileID: 1886723800636360716}
+--- !u!114 &1886723800636360716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326912374577500924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e3dabb564ccfd418a9868999eb2ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
 --- !u!222 &1726051329254818425
 CanvasRenderer:
   m_ObjectHideFlags: 0

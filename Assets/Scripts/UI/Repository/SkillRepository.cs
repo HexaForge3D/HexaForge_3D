@@ -46,6 +46,7 @@ public class SkillRepository : MonoBehaviour
         return new SkillData(
             tableData.ID,
             tableData.Name,
+            tableData.Description,
             tableData.Key,
             tableData.RequiredLevel,
             tableData.IconAddress,

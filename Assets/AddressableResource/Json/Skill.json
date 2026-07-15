@@ -2,6 +2,7 @@
   {
     "ID": "Skill_Slash",
     "Name": "Slash",
+    "Description": "A quick slash tha deals damege to enemies.",
     "Key": "SkillQ",
     "RequiredLevel": 1,
     "IconAddress": "",
