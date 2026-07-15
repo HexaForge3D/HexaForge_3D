@@ -28,8 +28,8 @@ public class PlayerCamera : MonoBehaviour
         if (Target != null)
         {
             _playerController = Target.GetComponent<PlayerController>();
-            _offset = transform.position - Target.transform.position;
-            _cameraAngle = transform.eulerAngles;
+            transform.position = Target.transform.position + _offset;
+            transform.rotation = Quaternion.Euler(_cameraAngle);
         }
 
         GameObject colliderObj = new GameObject("SightCollider");

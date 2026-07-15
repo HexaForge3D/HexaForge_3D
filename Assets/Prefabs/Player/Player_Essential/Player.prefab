@@ -2798,8 +2798,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _checkRadius: 1
-  _offset: {x: 0, y: 0, z: 0}
-  _cameraAngle: {x: 0, y: 0, z: 0}
+  _offset: {x: 0, y: 19.2, z: -11.47}
+  _cameraAngle: {x: 58, y: 0, z: 0}
   _transparentMaterial: {fileID: 2100000, guid: 2411438522ca77d4a984f85c9fa60588, type: 2}
 --- !u!54 &5153246146540200365
 Rigidbody:
