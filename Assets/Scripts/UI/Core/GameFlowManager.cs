@@ -123,7 +123,12 @@ public class GameFlowManager
         _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
     }
 
-    // 단축키 입력 호출
+    // 아직 미구독상태
+    private void OnShopNpcInteracted()
+    {
+        ToggleUI(UIType.ShopUI, ShowShop);
+    }
+
     private void OnInformationKeyPressed()
     {
         ToggleUI(UIType.InformationPopup, ShowInformation);
@@ -248,6 +253,13 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowShopAsync()
+    {
+        ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
+        ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
 
     // UI 토글화
     private void ToggleUI(UIType uiType, Action showAction)
@@ -270,5 +282,10 @@ public class GameFlowManager
     private void ShowInventory()
     {
         ShowInventoryAsync().Forget();
+    }
+
+    private void ShowShop()
+    {
+        ShowShopAsync().Forget();
     }
 }
