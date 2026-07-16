@@ -71,33 +71,15 @@ public class GameFlowManager
 
     private void OnPortalInteracted(Portal portal)
     {
-        switch (portal.PortalType)
+        var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
+        if (portal.PortalType != PortalType.Dungeon)
         {
-            case PortalType.Dungeon:
-                {
-                    ShowHuntingAreaAsync().Forget();
-                }
-                break;
-            case PortalType.MainQuest:
-                {
-                    Debug.Log("MainQuest 이동");
-                }
-                break;
-            case PortalType.Smithy:
-                {
-                    Debug.Log("Smithy 이동");
-                }
-                break;
-            case PortalType.Store:
-                {
-                    Debug.Log("Store 이동");
-                }
-                break;
-            default:
-                {
-                    Debug.Log("PortalType 설정이 잘못되었습니다.");
-                }
-                break;
+            if (portal.PortalType == PortalType.None) return;
+            MapManager.Instance.TeleportToDestinationPortal(targetPortal);
+        }
+        else
+        {
+            ShowHuntingAreaAsync().Forget();
         }
     }
 
