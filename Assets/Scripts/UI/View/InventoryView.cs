@@ -16,6 +16,11 @@ public class InventoryView : BaseOverLayUI
         BuildSlots();
     }
 
+    public void Refresh()
+    {
+        BuildSlots();
+    }
+
     private void BuildSlots()
     {
         ClearSlot();
