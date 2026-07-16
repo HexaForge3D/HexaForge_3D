@@ -5,18 +5,18 @@ using UnityEngine;
 
 public class CharacterSlotView : MonoBehaviour
 {
-    [SerializeField] private TMP_Text Text_CharacterName;
+    [SerializeField] private TMP_Text Text_SlotLabel;
     [SerializeField] private Button Button_Select;
 
-    private PlayerData _data;
-    private Action<PlayerData> _onSelected;
+    private CharacterSlotData _data;
+    private Action<CharacterSlotData> _onSelected;
 
-    public void Setup(PlayerData data, Action<PlayerData> onSelected)
+    public void Setup(CharacterSlotData data, Action<CharacterSlotData> onSelected)
     {
         _data = data;
         _onSelected = onSelected;
 
-        Text_CharacterName.text = data.Name;
+        Text_SlotLabel.text = data.IsEmpty ? "Empty Slot (Create)" : data.Character.Name;
 
         Button_Select.onClick.RemoveAllListeners();
         Button_Select.onClick.AddListener(OnClickSelect);

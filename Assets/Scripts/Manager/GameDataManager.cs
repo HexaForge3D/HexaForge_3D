@@ -21,8 +21,11 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
 
     private async UniTask LoadAllDataAsync()
     {
+        await LoadData<VillageAreaTableData>("VillageArea");
         await LoadData<HuntingAreaTableData>("HuntingArea");
         await LoadData<PlayerTableData>("Player");
+        await LoadData<SkillTableData>("Skill");
+        await LoadData<ItemTableData>("Item");
     }
 
     private async UniTask InitializeAsync()

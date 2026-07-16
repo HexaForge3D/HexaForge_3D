@@ -5,26 +5,41 @@ public class CharacterSelectViewModel
 {
     private readonly PlayerRepository _repository = new PlayerRepository();
 
-    private PlayerData _selectedCharacter;
+    private CharacterSlotData _selectedSlot;
 
-    public Action<PlayerData> OnCharacterSelected;
+    public Action<CharacterSlotData> OnSlotSelected;
+    public Action<string> OnCreateCharacterRequested;
     public Action<PlayerData> OnEnterGameRequested;
+    public Action<string> OnDeleteRequested;
     
-    public void SelectCharacter(PlayerData data)
+    public List<CharacterSlotData> GetAllSlots()
     {
-        _selectedCharacter = data;
-        OnCharacterSelected?.Invoke(data);
+        return _repository.GetAllSlots();
     }
 
-    public List<PlayerData> GetSelecttableCharacters()
+    public void SelectSlot(CharacterSlotData slot)
     {
-        return _repository.GetAllPlayers();
+        if (slot.IsEmpty)
+        {
+            OnCreateCharacterRequested?.Invoke(slot.SlotId);
+            return;
+        }
+
+        _selectedSlot = slot;
+        OnSlotSelected?.Invoke(slot);
     }
 
     public void RequestEnterGame()
     {
-        if (_selectedCharacter == null) return;
+        if (_selectedSlot == null || _selectedSlot.IsEmpty) return;
 
-        OnEnterGameRequested?.Invoke(_selectedCharacter);
+        OnEnterGameRequested?.Invoke(_selectedSlot.Character);
+    }
+
+    public void RequestDelete()
+    {
+        if (_selectedSlot == null || _selectedSlot.IsEmpty) return;
+
+        OnDeleteRequested?.Invoke(_selectedSlot.SlotId);
     }
 }

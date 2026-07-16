@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Destination Point")]
     [SerializeField] private Transform _spotPoint;
-    [SerializeField] private float _disappearTime = 0.3f;
 
     [Header("Layer Masks")]
     [SerializeField] private LayerMask _clickableLayer;
@@ -20,8 +19,8 @@ public class PlayerController : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
-    private PlayerTableData _playerData;
-    public PlayerTableData PlayerData => _playerData;
+    private CharacterSaveData _playerData;
+    public CharacterSaveData PlayerData => _playerData;
 
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
@@ -30,8 +29,8 @@ public class PlayerController : MonoBehaviour
     private NavMeshAgent _agent;
     private Rigidbody _rb;
     public float MoveSpeed => _moveSpeed;
-    private float _spotTimer = 0f;
 
+    private bool _isAttackAnimPlaying = false;
     private bool _isAttacking = false;
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
@@ -39,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _targetPosition = transform.position;
+        _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
@@ -58,95 +58,70 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
         }
-
-        if (GameDataManager.Instance != null)
-        {
-            _playerData = GameDataManager.Instance.GetData<PlayerTableData>("Player_01");
-            
-            if (_playerData == null)
-            {
-                Debug.LogError("플레이어의 데이터를 찾지 못했습니다.");
-            }
-        }
-
-        else
-        {
-            Debug.LogWarning("GameDataManager가 Scene에 없습니다.");
-        }
     }
 
     private void Update()
     {
-        //타이머에서 애니메이션 종료 시간으로 변경될 예정
-        if (_playerBattle.AttackTimer > 0f)
-        {
-            _playerBattle.AttackTimer -= Time.deltaTime;
-        }
+
         if (Input.GetMouseButtonDown(0))
         {
             OnClickAttack();
         }
-        if (_playerBattle.AttackTimer <= 0f)
+
+        if (_isAttackAnimPlaying == false)
         {
+
             if (Input.GetMouseButtonDown(1))
             {
-                _spotTimer = 0f;
-                if (_spotPoint != null) _spotPoint.gameObject.SetActive(true);
-                SetTargetPosition();
+                SetTargetPosition(true);
             }
 
             else if (Input.GetMouseButton(1))
             {
-                SetTargetPosition();
-
-                if (_spotPoint != null && _spotPoint.gameObject.activeSelf)
-                {
-                    _spotTimer += Time.deltaTime;
-                    if (_spotTimer >= _disappearTime)
-                    {
-                        _spotPoint.gameObject.SetActive(false);
-                    }
-                }
-            }
-
-            else if (Input.GetMouseButtonUp(1))
-            {
-                if (_spotPoint != null)
-                {
-                    _spotPoint.gameObject.SetActive(true);
-                }
+                SetTargetPosition(false);
             }
         }
-            if (_agent != null && _agent.speed != _moveSpeed)
-            {
-                _agent.speed = _moveSpeed;
-            }
 
-            if (_isAttacking)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
+        if (_agent != null && _agent.speed != _moveSpeed)
+        {
+            _agent.speed = _moveSpeed;
+        }
 
-                if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
-                {
-                    transform.rotation = _attackTargetRotation;
-                    _isAttacking = false;
-                }
-            }
+        if (_isAttacking)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, _attackTargetRotation, _rotationSpeed * Time.deltaTime);
 
-            if (_isMoving)
+            if (Quaternion.Angle(transform.rotation, _attackTargetRotation) < 0.5f)
             {
-                MovePlayer();
+                transform.rotation = _attackTargetRotation;
+                _isAttacking = false;
             }
+        }
+
+        if (_isMoving)
+        {
+            MovePlayer();
+        }
+
+        _animator.SetBool("isWalking", _isMoving);
+    }
+
+    public void InitializePlayerData(CharacterSaveData playerData)
+    {
+        _playerData = playerData;
     }
 
     public void OnClickAttack()
     {
-        _playerBattle.AttackTimer = _playerBattle._attackPauseTime;
+        // 공격 애니메이션이 끝나기 전까지 데미지 안들어가게 하는 로직
+        if (_isAttackAnimPlaying) return;
+
+        _isAttackAnimPlaying = true;
 
         if (_playerCamera != null)
         {
             Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
-           
+
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _clickableLayer))
             {
                 Vector3 lookDirection = hit.point - transform.position;
@@ -162,11 +137,16 @@ public class PlayerController : MonoBehaviour
                         _agent.ResetPath();
                     }
 
+
                     _isMoving = false;
 
                     if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
 
+                    _animator.SetBool("isWalking", _isMoving);
+
                     _isAttacking = true;
+
+                    FireAnimationTrigger("isAttack");
                 }
             }
         }
@@ -177,7 +157,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void SetTargetPosition()
+    private void SetTargetPosition(bool updateSpotMarker = false)
     {
         if (_playerCamera == null) return;
 
@@ -216,9 +196,23 @@ public class PlayerController : MonoBehaviour
                     _agent.isStopped = false;
                 }
 
-                if (_spotPoint != null)
+                if (updateSpotMarker && _spotPoint != null)
                 {
                     _spotPoint.position = _targetPosition + Vector3.up * 0.05f;
+                    _spotPoint.gameObject.SetActive(true);
+
+                    ParticleSystem[] particleSystems = _spotPoint.GetComponentsInChildren<ParticleSystem>(true);
+
+                    foreach (ParticleSystem ps in particleSystems)
+                    {
+                        ps.gameObject.SetActive(true);
+                    }
+
+                    if (particleSystems.Length > 0)
+                    {
+                        particleSystems[0].Play(true);
+                    }
+
                 }
                 _isMoving = true;
             }
@@ -284,5 +278,22 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = targetPosition;
         }
+    }
+
+    public void FireAnimationTrigger(string animationName)
+    {
+        _animator.SetTrigger(animationName);
+    }
+
+    public void OnAttackAnimEnd()
+    {
+        _isAttackAnimPlaying = false;
+    }
+
+    public void SetCurrentHp(int hp)
+    {
+        if (_playerData == null) return;
+
+        _playerData.Hp = hp;
     }
 }

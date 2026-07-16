@@ -15,13 +15,48 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 3fe7437895d856445bd004fd77908377
   m_SerializeEntries:
+  - m_GUID: 1541e7891490bbd479f343cae7a19310
+    m_Address: JsonOutput/VillageArea
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 16b05635507bb8c40ab95933bc99b1e2
+    m_Address: Popup_Confirm
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ad3de2321ea47e49b518aecda626781
+    m_Address: Popup_GameMenu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ecb3cd75d672c54988713eea44e2d1a
     m_Address: UI_HuntingAreaSelect
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 632db659e108c374d851282e40776f86
+    m_Address: SkillIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 63c6cd37ac1945c4291e6375dec7d4c8
-    m_Address: Player_01
+    m_Address: Player_Warrior
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66cd65fec34a24b469560363cd083c45
+    m_Address: Popup_CharacterCreate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 925e2d1f6c8dfa9438b89bff5515645d
+    m_Address: UI_Shop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 930530340e9c8a7409df01285c0e3da0
+    m_Address: JsonOutput/Equipment
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -36,12 +71,22 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a52cc4d4501a4eb46aeee222760ae6ad
-    m_Address: UI_Information
+    m_Address: Popup_Information
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af1d97ba7e645da45af28fd4bf9675b4
     m_Address: UI_Title
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc1090cb736d2c84bad3f8a6708b720d
+    m_Address: JsonOutput/Item
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce6d8e39813adfd468c541a8de643447
+    m_Address: JsonOutput/Skill
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -52,6 +97,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db3465f0bfc18f744b40149d77a4a257
     m_Address: UI_CharacterSelect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee9854f30969ccd43bbcbf4e17b73d98
+    m_Address: Popup_Inventory
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

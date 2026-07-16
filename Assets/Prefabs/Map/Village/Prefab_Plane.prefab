@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 5379341842102932372}
   - component: {fileID: 1856501273867456958}
   - component: {fileID: 2055150606313587963}
-  - component: {fileID: 1677074166101235926}
-  m_Layer: 0
+  - component: {fileID: 111239767634352501}
+  m_Layer: 7
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4219791311256127431}
   m_Mesh: {fileID: 4300000, guid: e9f025ff0d0c408479141bfc015b3962, type: 2}
---- !u!65 &1677074166101235926
+--- !u!65 &111239767634352501
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

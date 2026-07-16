@@ -10,7 +10,12 @@ public enum UIType : byte
     CharacterSelectUI,
     InGameUI,
     HuntingAreaSelectUI,
-    InformationUI
+    InformationPopup,
+    CharacterCreatePopup,
+    ConfirmPopup,
+    GameMenuPopup,
+    InventoryPopup,
+    ShopUI
 }
 
 public enum UIRootType : byte
@@ -43,7 +48,12 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.CharacterSelectUI, "UI_CharacterSelect" },
         {UIType.InGameUI, "UI_InGame" },
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
-        {UIType.InformationUI, "UI_Information" }
+        {UIType.InformationPopup, "Popup_Information" },
+        {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
+        {UIType.ConfirmPopup, "Popup_Confirm" },
+        {UIType.GameMenuPopup, "Popup_GameMenu" },
+        {UIType.InventoryPopup, "Popup_Inventory" },
+        {UIType.ShopUI, "UI_Shop" }
     };
 
     // UI가 배치될 레이어 관리
@@ -53,7 +63,12 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.CharacterSelectUI, UIRootType.Main },
         {UIType.InGameUI, UIRootType.Main },
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
-        {UIType.InformationUI, UIRootType.Popup }
+        {UIType.InformationPopup, UIRootType.Popup },
+        {UIType.CharacterCreatePopup, UIRootType.Popup },
+        {UIType.ConfirmPopup, UIRootType.Popup },
+        {UIType.GameMenuPopup, UIRootType.Popup },
+        {UIType.InventoryPopup, UIRootType.Popup },
+        {UIType.ShopUI, UIRootType.Content }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리
@@ -77,10 +92,11 @@ public class UIManager : BaseMonoManager<UIManager>
     {
         UIRootType rootType = GetRootType(uiType);
         bool needsLoad = _uiDic.ContainsKey(uiType) == false;
+        bool shouldShowLoading = needsLoad && rootType != UIRootType.Popup;
 
         BaseUI ui;
 
-        if (needsLoad)
+        if (shouldShowLoading)
         {
             UniTask visualTask = LoadingOverLay.ShowAsync(useFullScreenLoading);
             UniTask<BaseUI> loadTask = GetOrCreateUIAsync(uiType);
@@ -112,6 +128,8 @@ public class UIManager : BaseMonoManager<UIManager>
 
     public void CloseUI(UIType uiType)
     {
+        if (_activeUI.Contains(uiType) == false) return;
+
         if (_activeUI.Contains(uiType) == false)
         {
             Debug.LogError($"[UIManager] {uiType}은 열려있지 않습니다.");
@@ -175,6 +193,16 @@ public class UIManager : BaseMonoManager<UIManager>
         }
 
         return rootType;
+    }
+
+    public T GetUI<T>(UIType uiType) where T : BaseUI
+    {
+        if (_uiDic.TryGetValue(uiType, out BaseUI ui))
+        {
+            return ui as T;
+        }
+
+        return null;
     }
 
     // 실제 로드/생성 로직 
@@ -249,6 +277,32 @@ public class UIManager : BaseMonoManager<UIManager>
             default:
                 Debug.LogError($"[UIManager] {rootType}에 해당하는 Canvas가 없습니다.");
                 return null;
+        }
+    }
+
+    // 기능
+    public bool HasActivePopup()
+    {
+        foreach(UIType type in _activeUI)
+        {
+            if (GetRootType(type) == UIRootType.Popup) return true;
+        }
+
+        return false;
+    }
+
+    public void CloseAllPopups()
+    {
+        List<UIType> toClose = new List<UIType>();
+
+        foreach (UIType type in _activeUI)
+        {
+            if (GetRootType(type) == UIRootType.Popup) toClose.Add(type);
+        }
+
+        foreach (UIType type in toClose)
+        {
+            CloseUI(type);
         }
     }
 }

@@ -1,18 +1,36 @@
 ﻿using UnityEngine;
 
+public enum PortalType : byte
+{
+    None,
+    Dungeon,
+    Store,
+    MainQuest,
+    Smithy
+}
+
 public class Portal : MonoBehaviour
 {
     private bool _isPlayerInCollider;
 
     public static event System.Action<Portal> OnPortalInteracted;
 
+    [SerializeField] private PortalType _portalType;
+
+    public PortalType PortalType => _portalType;
+
+    public Portal _partnerPortal { get; set; }
+
+
     private void OnEnable()
     {
+        PortalManager.Instance.RegisterPortal(this);
         PlayerInputSystem.OnInteract += Handleinteraction;
     }
 
     private void OnDisable()
     {
+        PortalManager.Instance.UnRegisterPortal(this);
         PlayerInputSystem.OnInteract -= Handleinteraction;
     }
 
