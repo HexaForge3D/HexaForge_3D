@@ -376,7 +376,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
-    public bool SellItem(string slotId, string itemId)
+    public bool SellItem(string slotId, string itemId, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
@@ -396,20 +396,20 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
 
-        if (existingSlot == null || existingSlot.Count < 1)
+        if (existingSlot == null || existingSlot.Count < count)
         {
             Debug.LogWarning($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
             return false;
         }
 
-        existingSlot.Count -= 1;
+        existingSlot.Count -= count;
 
         if (existingSlot.Count <= 0)
         {
             slot.Inventory.Slots.Remove(existingSlot);
         }
 
-        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio);
+        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio) * count;
         slot.Gold += sellPrice;
 
         SaveToFile(CurrentSaveData);
