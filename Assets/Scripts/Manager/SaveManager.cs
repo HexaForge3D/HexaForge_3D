@@ -6,6 +6,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
 {
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
+    public const float SellPriceRatio = 0.8f;
 
     public SaveData CurrentSaveData { get; private set; }
 
@@ -85,6 +86,18 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Mp = jobMaster.Mp;
         slot.Atk = jobMaster.Atk;
         slot.Def = jobMaster.Def;
+        slot.Gold = 0;
+
+        slot.Inventory = new InventorySaveData
+        {
+            Slots = new List<InventorySlotSaveData>()
+        };
+
+        slot.Skills = new SkillSaveData
+        {
+            Skills = new List<SkillProgressData>(),
+            AvailablePoints = 0
+        };
 
         SaveToFile(CurrentSaveData);
 
@@ -109,6 +122,9 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Mp = 0;
         slot.Atk = 0;
         slot.Def = 0;
+        slot.Gold = 0;
+        slot.Inventory = null;
+        slot.Skills = null;
 
         SaveToFile(CurrentSaveData);
         
@@ -182,5 +198,147 @@ public class SaveManager : BaseMonoManager<SaveManager>
         SaveData data = JsonUtility.FromJson<SaveData>(json);
         Debug.Log($"[SaveManager] 세이브 로드 완료: {GetPath()}");
         return data;
+    }
+
+    // 기능 메서드
+    public bool ChangeGold(string slotId, int amount)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+
+        if (slot.Gold + amount < 0)
+        {
+            Debug.LogError($"[SaveManager] 골드가 부족합니다. 현재: {slot.Gold}, 요청: {amount}");
+            return false;
+        }
+
+        slot.Gold += amount;
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    public bool AddItem(string slotId, string itemId, int count)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
+
+        if (itemMaster == null)
+        {
+            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
+            return false;
+        }
+
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+
+        if (existingSlot != null && existingSlot.Count + count <= itemMaster.MaxStack)
+        {
+            existingSlot.Count += count;
+        }
+        else
+        {
+            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            {
+                ItemId = itemId,
+                Count = count
+            });
+        }
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    public bool RemoveItem(string slotId, string itemId, int count)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+
+        if (existingSlot == null || existingSlot.Count < count)
+        {
+            Debug.LogError($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
+            return false;
+        }
+
+        existingSlot.Count -= count;
+
+        if (existingSlot.Count <= 0 )
+        {
+            slot.Inventory.Slots.Remove(existingSlot);
+        }
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    public bool BuyItem(string slotId, string itemId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return false;
+
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
+
+        if (itemMaster == null) return false;
+
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+
+        if (existingSlot != null && existingSlot.Count >= itemMaster.MaxStack)
+        {
+            Debug.LogError($"[SaveManager] {itemId}가 이미 최대 수량입니다.");
+            return false;
+        }
+
+        bool goldChanged = ChangeGold(slotId, -itemMaster.Price);
+
+        if (goldChanged == false) return false;
+
+        return AddItem(slotId, itemId, 1);
+    }
+
+    public bool SellItem(string slotId, string itemId)
+    {
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
+
+        if (itemMaster == null) return false;
+
+        bool isItemRemoved = RemoveItem(slotId, itemId, 1);
+
+        if (isItemRemoved == false) return false;
+
+        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio);
+        ChangeGold(slotId, sellPrice);
+
+        return true;
+    }
+
+    private InventorySlotSaveData FindInventorySlot(CharacterSaveData slot, string itemId)
+    {
+        foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
+        {
+            if (invSlot.ItemId == itemId) return invSlot;
+        }
+
+        return null;
     }
 }
