@@ -398,6 +398,7 @@ Transform:
   - {fileID: 2933328853932099767}
   - {fileID: 7715453632157740139}
   - {fileID: 1277928524220352180}
+  - {fileID: 2029886495377287980}
   m_Father: {fileID: 7570861225482397971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3890863442705419813
@@ -594,6 +595,9 @@ MonoBehaviour:
   id_Skill3: Skill_Smash
   prefab_Skill3Effect: {fileID: 7400460486551129925, guid: 54166ebbd88cde344b4d980d2e3cfcab, type: 3}
   location_Skill3: {fileID: 1277928524220352180}
+  id_Skill4: Skill_Bladestorm
+  prefab_Skill4Effect: {fileID: 3337160002960658834, guid: 242cbfe4d1ed34247afa2717d4b6a306, type: 3}
+  location_Skill4: {fileID: 2029886495377287980}
 --- !u!1 &1219086382586208679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,6 +1812,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3100059663935567665}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5095028281629691416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2029886495377287980}
+  m_Layer: 0
+  m_Name: Skill4Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2029886495377287980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5095028281629691416}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.12, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 45551724372801223}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5228943724458571438
 GameObject:

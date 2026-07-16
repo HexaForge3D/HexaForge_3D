@@ -16,6 +16,11 @@ public class PlayerSkillManager : MonoBehaviour
     [SerializeField] private GameObject prefab_Skill3Effect;
     [SerializeField] private Transform location_Skill3;
 
+    [Header("Skill4 Settings")]
+    [SerializeField] private string id_Skill4; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill4Effect;
+    [SerializeField] private Transform location_Skill4;
+
 
     private PlayerController _playerController;
     private PlayerBattle _playerBattle;
@@ -75,6 +80,12 @@ public class PlayerSkillManager : MonoBehaviour
             skillLocation = location_Skill3;
         }
 
+        // R 스킬
+        else if (_currentCastingSkill.ID == id_Skill4)
+        {
+            prefabSkill = prefab_Skill4Effect;
+            skillLocation = location_Skill4;
+        }
 
         if (prefabSkill != null && skillLocation != null)
         {
