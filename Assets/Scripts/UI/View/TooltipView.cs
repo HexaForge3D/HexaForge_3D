@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +41,8 @@ public class TooltipView : MonoBehaviour
         {
             Text_Count.text = data.CountText;
         }
+
+        SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();
 
         gameObject.SetActive(true);
         UpdatePosition(screenPosition);

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class InventorySlotView : MonoBehaviour
         }
 
         Image_Icon.gameObject.SetActive(true);
+        SpriteLoaderUtil.LoadAsync(Image_Icon, item.IconAddress).Forget();
 
         bool showCount = item.MaxStack > 1;
         Text_Count.gameObject.SetActive(showCount);
@@ -31,12 +33,22 @@ public class InventorySlotView : MonoBehaviour
         string usageHint = GetUsageHint(item.UsageType);
         string countText = showCount ? $"x{count}" : null;
 
+        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopPopup);
+        string priceText = null;
+
+        if (isShopOpen)
+        {
+            int sellPrice = Mathf.FloorToInt(item.Price * SaveManager.SellPriceRatio);
+            priceText = $"Sell: {sellPrice}G";
+        }
+
         TooltipData tooltipData = new TooltipData(
             item.IconAddress,
             item.Name,
             item.Description,
             usageHint,
-            null
+            countText,
+            priceText
             );
 
         TooltipTrigger.SetData(tooltipData);

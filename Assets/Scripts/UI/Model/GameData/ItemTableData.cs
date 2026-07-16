@@ -16,4 +16,5 @@ public class ItemTableData : GameDataBase
     public string IconAddress;
     public int MaxStack;
     public ItemUsageType UsageType;
+    public int Price;
 }

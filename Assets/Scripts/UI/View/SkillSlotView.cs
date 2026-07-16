@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,11 +43,13 @@ public class SkillSlotView : MonoBehaviour
         }
 
         Image_Icon.gameObject.SetActive(true);
+        SpriteLoaderUtil.LoadAsync(Image_Icon, skill.IconAddress).Forget();
 
         TooltipData tooltipData = new TooltipData(
             skill.IconAddress,
             skill.Name,
             skill.Description,
+            null,
             null,
             null
             );
