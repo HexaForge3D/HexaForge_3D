@@ -6,7 +6,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
 {
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
-    private const float SellPriceRatio = 0.8f;
+    public const float SellPriceRatio = 0.8f;
 
     public SaveData CurrentSaveData { get; private set; }
 

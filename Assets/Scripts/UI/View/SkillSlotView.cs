@@ -50,6 +50,7 @@ public class SkillSlotView : MonoBehaviour
             skill.Name,
             skill.Description,
             null,
+            null,
             null
             );
 
