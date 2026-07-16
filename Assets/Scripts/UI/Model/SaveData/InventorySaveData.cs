@@ -1,16 +1,15 @@
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 
-public class InventorySaveData : MonoBehaviour
+[Serializable]
+public class InventorySlotSaveData
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public string ItemId;
+    public int Count;
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[Serializable]
+public class InventorySaveData
+{
+    public List<InventorySlotSaveData> Slots;
 }

@@ -86,6 +86,17 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Atk = jobMaster.Atk;
         slot.Def = jobMaster.Def;
 
+        slot.Inventory = new InventorySaveData
+        {
+            Slots = new List<InventorySlotSaveData>()
+        };
+
+        slot.Skills = new SkillSaveData
+        {
+            Skills = new List<SkillProgressData>(),
+            AvailablePoints = 0
+        };
+
         SaveToFile(CurrentSaveData);
 
         return true;
@@ -109,6 +120,8 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Mp = 0;
         slot.Atk = 0;
         slot.Def = 0;
+        slot.Inventory = null;
+        slot.Skills = null;
 
         SaveToFile(CurrentSaveData);
         
