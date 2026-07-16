@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillUtil : MonoBehaviour
@@ -9,6 +10,14 @@ public class SkillUtil : MonoBehaviour
     private PlayerController _playerController;
     // 쿨타임 개념 추가 => Key: 스킬ID(String), value: 스킬 쿨타임 (float)
     private Dictionary<string, float> _skillCoolTime = new Dictionary<string, float>();
+    // 스킬 사용을 성공하였을 때 이벤트 발생
+    public static event Action<SkillTableData> OnSkillSuccess;
+    // 스킬 쿨타임 시작할 때 이벤트 발생
+    public static event Action<string, float> OnSkillCoolTimeStart;
+    // 스킬 쿨타임 중이라 스킬 사용에 실패했을 때
+    public static event Action<string, float> OnSkillCoolTimeFail;
+    // 마나가 부족할 때
+    public static event Action<string> OnLackMana;
 
     private void Awake()
     {
@@ -60,7 +69,9 @@ public class SkillUtil : MonoBehaviour
             if (Time.time < coolTime)
             {
                 float remainTime = coolTime - Time.time;
-                Debug.Log("쿨타임 입니다.");
+                Debug.Log($"쿨타임 입니다. 남은 시간: {remainTime}초");
+
+                OnSkillCoolTimeFail?.Invoke(skillData.ID, remainTime);
                 return;
             }
         }
@@ -68,12 +79,16 @@ public class SkillUtil : MonoBehaviour
         if (playerData.Mp < skillData.ManaCost)
         {
             Debug.Log("마나가 부족합니다!!");
+
+            OnLackMana?.Invoke(skillData.ID);
             return;
         }
 
         playerData.Mp -= skillData.ManaCost;
         _skillCoolTime[skillData.ID] = Time.time + skillData.CoolDown;
 
+        OnSkillSuccess?.Invoke(skillData);
+        OnSkillCoolTimeStart?.Invoke(skillData.ID, skillData.CoolDown);
         Debug.Log($"<color=cyan>[SkillUtil] {skillData.Name} 발동!</color> 데미지: {skillData.Damage}, 남은 마나: {playerData.Mp}");
     }
 }
