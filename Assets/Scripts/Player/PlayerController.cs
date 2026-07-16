@@ -150,11 +150,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        if (_playerBattle != null)
-        {
-            _playerBattle.ExecuteAttack();
-        }
     }
 
     private void SetTargetPosition(bool updateSpotMarker = false)
