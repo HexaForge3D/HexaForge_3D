@@ -11,6 +11,12 @@ public class PlayerSkillManager : MonoBehaviour
     [SerializeField] private GameObject prefab_Skill1Effect;
     [SerializeField] private Transform location_Skill1;
 
+    [Header("Skill3 Settings")]
+    [SerializeField] private string id_Skill3; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill3Effect;
+    [SerializeField] private Transform location_Skill3;
+
+
     private PlayerController _playerController;
     private PlayerBattle _playerBattle;
 
@@ -55,13 +61,20 @@ public class PlayerSkillManager : MonoBehaviour
 
         GameObject prefabSkill = null;
         Transform skillLocation = null;
-        // 계속 추가하기 스킬은 else if로 추가해주자
+        // 계속 추가하기 스킬은 else if로 추가해주자: Q 스킬
         if (_currentCastingSkill.ID == id_Skill1)
         {
             prefabSkill = prefab_Skill1Effect;
             skillLocation = location_Skill1;
         }
-        
+
+        // E 스킬
+        else if (_currentCastingSkill.ID == id_Skill3)
+        {
+            prefabSkill = prefab_Skill3Effect;
+            skillLocation = location_Skill3;
+        }
+
 
         if (prefabSkill != null && skillLocation != null)
         {
