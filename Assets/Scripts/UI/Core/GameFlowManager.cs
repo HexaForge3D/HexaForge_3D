@@ -105,6 +105,15 @@ public class GameFlowManager
         _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
     }
 
+    private void OnShopTransactionCompleted()
+    {
+        if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
     // 아직 미구독상태
     private void OnShopNpcInteracted()
     {
@@ -180,6 +189,8 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
+
+        ShowShop();
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -231,7 +242,7 @@ public class GameFlowManager
     private async UniTask ShowInventoryAsync()
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
-        InventoryViewModel viewModel = new InventoryViewModel();
+        InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
         view.BindViewModel(viewModel);
     }
 
@@ -239,6 +250,7 @@ public class GameFlowManager
     {
         ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
         ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
+        viewModel.OnGoldChanged += OnShopTransactionCompleted;
         view.BindViewModel(viewModel);
     }
 
