@@ -8,7 +8,6 @@ public class GameFlowManager
     private string _currentSlotId;
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
-    private InventoryView _inventoryView;
 
     public async UniTask StartAsync()
     {
@@ -108,12 +107,10 @@ public class GameFlowManager
 
     private void OnShopTransactionCompleted()
     {
-        bool viewExists = _inventoryView != null;
-        bool isOpen = UIManager.Instance.IsActiveUI(UIType.InventoryPopup);
-
-        if (viewExists && isOpen)
+        if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
         {
-            _inventoryView.Refresh();
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
         }
     }
 
