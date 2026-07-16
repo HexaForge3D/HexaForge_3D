@@ -5,7 +5,8 @@
     "Description": "Restores a small amount of HP.",
     "IconAddress": "",
     "MaxStack": 99,
-    "UsageType": "Consumable"
+    "UsageType": "Consumable",
+    "Price": 20
   },
   {
     "ID": "Item_ManaPotion",
@@ -13,7 +14,8 @@
     "Description": "Restores a small amount of MP.",
     "IconAddress": "",
     "MaxStack": 99,
-    "UsageType": "Consumable"
+    "UsageType": "Consumable",
+    "Price": 20
   },
   {
     "ID": "Item_IronSword",
@@ -21,7 +23,8 @@
     "Description": "A basic sword forged from iron.",
     "IconAddress": "",
     "MaxStack": 1,
-    "UsageType": "Equipment"
+    "UsageType": "Equipment",
+    "Price": 20
   },
   {
     "ID": "Item_MonsterFang",
@@ -29,6 +32,7 @@
     "Description": "A sharp fang taken from a monster. Used for crafting.",
     "IconAddress": "",
     "MaxStack": 99,
-    "UsageType": "None"
+    "UsageType": "None",
+    "Price": 20
   }
 ]
