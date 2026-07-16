@@ -33,7 +33,7 @@ public class InventorySlotView : MonoBehaviour
         string usageHint = GetUsageHint(item.UsageType);
         string countText = showCount ? $"x{count}" : null;
 
-        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopPopup);
+        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopUI);
         string priceText = null;
 
         if (isShopOpen)
