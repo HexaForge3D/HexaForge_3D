@@ -195,6 +195,16 @@ public class UIManager : BaseMonoManager<UIManager>
         return rootType;
     }
 
+    public T GetUI<T>(UIType uiType) where T : BaseUI
+    {
+        if (_uiDic.TryGetValue(uiType, out BaseUI ui))
+        {
+            return ui as T;
+        }
+
+        return null;
+    }
+
     // 실제 로드/생성 로직 
     private async UniTask<BaseUI> GetOrCreateUIAsync(UIType uiType)
     {

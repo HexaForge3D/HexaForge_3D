@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8398543115139028837}
   - component: {fileID: 1340833921640493083}
   - component: {fileID: 1894511375813412124}
-  - component: {fileID: 1294434609079707662}
+  - component: {fileID: 7897153085298674003}
   m_Layer: 0
   m_Name: Double Door
   m_TagString: Untagged
@@ -183,7 +183,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1294434609079707662
+--- !u!65 &7897153085298674003
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,8 +202,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.020000458, y: 0.6808262, z: 0.23000002}
-  m_Center: {x: -0.0100002885, y: 0.055077583, z: -0.11499998}
+  m_Size: {x: 0.06000138, y: 2.0424786, z: 0.6900001}
+  m_Center: {x: -0.030004505, y: 0.16523278, z: -0.34499624}
 --- !u!1 &4952579823987309075
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 3380261333905185100}
   - component: {fileID: 794763580972459285}
   - component: {fileID: 8828999698740358167}
-  - component: {fileID: 5894261447508884280}
+  - component: {fileID: 3630274918873260322}
   m_Layer: 0
   m_Name: Double Door
   m_TagString: Untagged
@@ -295,7 +295,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5894261447508884280
+--- !u!65 &3630274918873260322
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,5 +314,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.02000046, y: 0.6808262, z: 0.23000005}
-  m_Center: {x: -0.01000023, y: 0.055077583, z: -0.114999965}
+  m_Size: {x: 0.060001373, y: 2.0424786, z: 0.69000006}
+  m_Center: {x: -0.030008316, y: 0.16523278, z: -0.3449962}
