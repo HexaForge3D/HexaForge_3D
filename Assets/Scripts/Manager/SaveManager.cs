@@ -173,6 +173,27 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return -1;
     }
 
+    private InventorySlotSaveData FindInventorySlot(CharacterSaveData slot, string itemId)
+    {
+        foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
+        {
+            if (invSlot.ItemId == itemId) return invSlot;
+
+        }
+
+        return null;
+    }
+
+    private InventorySlotSaveData FindAvailableInventorySlot(CharacterSaveData slot, string itemId, int maxStack)
+    {
+        foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
+        {
+            if (invSlot.ItemId == itemId && invSlot.Count < maxStack) return invSlot;
+        }
+
+        return null;
+    }
+
 
     // 데이터 관리
     private string GetPath()
@@ -317,6 +338,12 @@ public class SaveManager : BaseMonoManager<SaveManager>
             return false;
         }
 
+        if (slot.Gold < itemMaster.Price)
+        {
+            Debug.LogWarning($"[SaveManager] 골드가 부족합니다. 현재: {slot.Gold}, 필요: {itemMaster.Price}");
+            return false;
+        }
+
         if (slot.Inventory == null)
         {
             slot.Inventory = new InventorySaveData
@@ -325,23 +352,13 @@ public class SaveManager : BaseMonoManager<SaveManager>
             };
         }
 
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
-
-        if (existingSlot != null && existingSlot.Count >= itemMaster.MaxStack)
-        {
-            Debug.LogWarning($"[SaveManager] {itemId}가 이미 최대 수량입니다.");
-            return false;
-        }
-
-        if (slot.Gold < itemMaster.Price)
-        {
-            Debug.LogWarning($"[SaveManager] 골드가 부족합니다. 현재: {slot.Gold}, 필요: {itemMaster.Price}");
-            return false;
-        }
-
         slot.Gold -= itemMaster.Price;
 
-        if (existingSlot != null)
+        InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+
+        Debug.Log($"[SaveManager] BuyItem - itemId: {itemId}, MaxStack: {itemMaster.MaxStack}, existingSlot count: {existingSlot?.Count ?? -1}");
+
+        if (existingSlot != null && existingSlot.Count < itemMaster.MaxStack)
         {
             existingSlot.Count += 1;
         }
@@ -400,21 +417,4 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
-    private InventorySlotSaveData FindInventorySlot(CharacterSaveData slot, string itemId)
-    {
-        if (slot.Inventory == null)
-        {
-            slot.Inventory = new InventorySaveData 
-            { 
-                Slots = new List<InventorySlotSaveData>() 
-            };
-        }
-
-        foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
-        {
-            if (invSlot.ItemId == itemId) return invSlot;
-        }
-
-        return null;
-    }
 }
