@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 930530340e9c8a7409df01285c0e3da0
+    m_Address: JsonOutput/Equipment
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98a8c94858514784ba615a915f2fdc40
     m_Address: JsonOutput/HuntingArea
     m_ReadOnly: 0
