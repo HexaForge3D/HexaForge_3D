@@ -32,7 +32,8 @@ public class ItemRepository
             tableData.Description,
             tableData.IconAddress,
             tableData.MaxStack,
-            tableData.UsageType
+            tableData.UsageType,
+            tableData.Price
             );
     }
 }

@@ -13,6 +13,7 @@ public class CharacterSaveData
     public int Mp;
     public int Atk;
     public int Def;
+    public int Gold;
 
     public InventorySaveData Inventory;
     public SkillSaveData Skills;
