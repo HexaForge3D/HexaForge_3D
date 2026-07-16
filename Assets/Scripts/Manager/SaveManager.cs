@@ -241,6 +241,14 @@ public class SaveManager : BaseMonoManager<SaveManager>
             return false;
         }
 
+        if (slot.Inventory == null)
+        {
+            slot.Inventory = new InventorySaveData
+            {
+                Slots = new List<InventorySlotSaveData>()
+            };
+        }
+
         InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
 
         if (existingSlot != null && existingSlot.Count + count <= itemMaster.MaxStack)
@@ -295,45 +303,113 @@ public class SaveManager : BaseMonoManager<SaveManager>
     {
         CharacterSaveData slot = FindSlot(slotId);
 
-        if (slot == null) return false;
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
 
         ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
 
-        if (itemMaster == null) return false;
+        if (itemMaster == null)
+        {
+            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
+            return false;
+        }
+
+        if (slot.Inventory == null)
+        {
+            slot.Inventory = new InventorySaveData
+            {
+                Slots = new List<InventorySlotSaveData>()
+            };
+        }
 
         InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
 
         if (existingSlot != null && existingSlot.Count >= itemMaster.MaxStack)
         {
-            Debug.LogError($"[SaveManager] {itemId}가 이미 최대 수량입니다.");
+            Debug.LogWarning($"[SaveManager] {itemId}가 이미 최대 수량입니다.");
             return false;
         }
 
-        bool goldChanged = ChangeGold(slotId, -itemMaster.Price);
+        if (slot.Gold < itemMaster.Price)
+        {
+            Debug.LogWarning($"[SaveManager] 골드가 부족합니다. 현재: {slot.Gold}, 필요: {itemMaster.Price}");
+            return false;
+        }
 
-        if (goldChanged == false) return false;
+        slot.Gold -= itemMaster.Price;
 
-        return AddItem(slotId, itemId, 1);
+        if (existingSlot != null)
+        {
+            existingSlot.Count += 1;
+        }
+        else
+        {
+            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            {
+                ItemId = itemId,
+                Count = 1
+            });
+        }
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
     }
 
     public bool SellItem(string slotId, string itemId)
     {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+        
         ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
 
-        if (itemMaster == null) return false;
+        if (itemMaster == null)
+        {
+            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
+            return false;
+        }
 
-        bool isItemRemoved = RemoveItem(slotId, itemId, 1);
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
 
-        if (isItemRemoved == false) return false;
+        if (existingSlot == null || existingSlot.Count < 1)
+        {
+            Debug.LogWarning($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
+            return false;
+        }
+
+        existingSlot.Count -= 1;
+
+        if (existingSlot.Count <= 0)
+        {
+            slot.Inventory.Slots.Remove(existingSlot);
+        }
 
         int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio);
-        ChangeGold(slotId, sellPrice);
+        slot.Gold += sellPrice;
+
+        SaveToFile(CurrentSaveData);
 
         return true;
     }
 
     private InventorySlotSaveData FindInventorySlot(CharacterSaveData slot, string itemId)
     {
+        if (slot.Inventory == null)
+        {
+            slot.Inventory = new InventorySaveData 
+            { 
+                Slots = new List<InventorySlotSaveData>() 
+            };
+        }
+
         foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
         {
             if (invSlot.ItemId == itemId) return invSlot;

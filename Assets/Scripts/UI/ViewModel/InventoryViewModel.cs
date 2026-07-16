@@ -2,25 +2,47 @@
 
 public class InventoryViewModel
 {
+    private readonly string _slotId;
     private readonly ItemRepository _itemRepository = new ItemRepository();
 
-    public List<ItemData> GetInventorySlots(int slotCount)
+    public InventoryViewModel(string slotId)
     {
-        List<ItemData> items = _itemRepository.GetAllItems();
-        List<ItemData> result = new List<ItemData>();
+        _slotId = slotId;
+    }
 
-        for (int i = 0; i < slotCount; i++)
+    public List<InventoryItemData> GetInventorySlots(int slotCount)
+    {
+        List<InventoryItemData> result = new List<InventoryItemData>();
+        CharacterSaveData saveData = FindCurrentSlot();
+
+        if (saveData != null && saveData.Inventory != null)
+        { 
+            foreach (InventorySlotSaveData invSlot in saveData.Inventory.Slots)
+            {
+                ItemData item = _itemRepository.GetItem(invSlot.ItemId);
+
+                if (item != null)
+                {
+                    result.Add(new InventoryItemData(item, invSlot.Count));
+                }
+            }   
+        }
+
+        while (result.Count < slotCount)
         {
-            if (i < items.Count)
-            {
-                result.Add(items[i]);
-            }
-            else
-            {
-                result.Add(null);
-            }
+            result.Add(null);
         }
 
         return result;
+    }
+
+    private CharacterSaveData FindCurrentSlot()
+    {
+        foreach (CharacterSaveData slot in SaveManager.Instance.CurrentSaveData.Slots)
+        {
+            if (slot.SlotId == _slotId) return slot;
+        }
+
+        return null;
     }
 }
