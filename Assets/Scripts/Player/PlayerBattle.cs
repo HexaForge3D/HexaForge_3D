@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerBattle : MonoBehaviour
 {
@@ -16,8 +17,12 @@ public class PlayerBattle : MonoBehaviour
     private int _maxHp;
     private bool _isDead = false;
     private bool _isHpSet = false;
+    // 몬스터에게 플레이어가 죽었다는 사실을 알려주기 위한 변수
+    public bool IsDead => _isDead;
     // 플레이어 체력 변경시 나오는 이벤트 변수
     public static event Action<int, int> OnHpChanged;
+    // 플레이어 사망시 나오는 이벤트 변수
+    public static event Action OnPlayerDead;
 
     private void Start()
     {
@@ -103,13 +108,27 @@ public class PlayerBattle : MonoBehaviour
     {
         _isDead = true;
         Debug.Log("플레이어가 사망했습니다...");
+        OnPlayerDead?.Invoke();
 
         if (_playerController != null)
         {
             _playerController.MoveStop();
+            _playerController.FireAnimationTrigger("isDie");
             _playerController.enabled = false;
         }
-
+        // 사망 시 몬스터가 플레이어를 공격하지 못하게 하기 위하여 Collider와 NavMeshAgent 설정 해제
+        // 다시 게임을 할려고 하면, 초기화되는 부분은 추가해야함
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = false;
+        }
+        
+        NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
+        if (playerAgent != null)
+        {
+            playerAgent.enabled = false;
+        }
     }
 
     private void OnDrawGizmos()

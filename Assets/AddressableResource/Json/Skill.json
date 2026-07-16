@@ -1,13 +1,46 @@
-[
+﻿[
   {
     "ID": "Skill_Slash",
     "Name": "Slash",
-    "Description": "A quick slash tha deals damege to enemies.",
+    "Description": "A quick slash attack to enemies.",
     "Key": "SkillQ",
     "RequiredLevel": 1,
     "IconAddress": "",
     "Cooldown": 3,
     "Damage": 10,
     "ManaCost": 5
+  },
+  {
+    "ID": "Skill_Cleave",
+    "Name": "Cleave",
+    "Description": "A Powerful, wide-sweeping attack to monsters",
+    "Key": "SkillW",
+    "RequiredLevel": 1,
+    "IconAddress": "",
+    "Cooldown": 5,
+    "Damage": 20,
+    "ManaCost": 10
+  },
+  {
+    "ID": "Skill_Smash",
+    "Name": "Smash",
+    "Description": "A Heavy, overHead Down attack to monsters",
+    "Key": "SkillE",
+    "RequiredLevel": 1,
+    "IconAddress": "",
+    "Cooldown": 15,
+    "Damage": 50,
+    "ManaCost": 20
+  },
+  {
+    "ID": "Skill_Bladestorm",
+    "Name": "Bladestorm",
+    "Description": "A Rapid, continous spinning attack to monsters",
+    "Key": "SkillR",
+    "RequiredLevel": 1,
+    "IconAddress": "",
+    "Cooldown": 30,
+    "Damage": 100,
+    "ManaCost": 35
   }
 ]

@@ -27,10 +27,10 @@ public class MonsterHitBox : MonoBehaviour
                 int finalDamage = Random.Range(minDamage, maxDamage + 1);
                 Debug.Log($"{currentPoint.name}으로 공격 성공! 데미지: {finalDamage}");
 
-                MonsterHealth monsterHealth = hit.GetComponent<MonsterHealth>();
-                if (monsterHealth != null)
+                PlayerBattle playerBattle = hit.GetComponent<PlayerBattle>();
+                if (playerBattle != null)
                 {
-                    monsterHealth.TakeDamage(finalDamage);
+                    playerBattle.TakeDamage(finalDamage);
                 }
             }
         }
