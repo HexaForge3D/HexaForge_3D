@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
 
     private bool _isAttackAnimPlaying = false;
+    public bool IsAttackingAnimPlaying => _isAttackAnimPlaying;
     private bool _isAttacking = false;
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
@@ -291,4 +292,40 @@ public class PlayerController : MonoBehaviour
 
         _playerData.Hp = hp;
     }
+    // 스킬을 사용할 때, 마우스 위치로 보게 하기 위한 메서드
+    public void LookAtMousePosition()
+    {
+        if (_playerCamera != null)
+        {
+            Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _clickableLayer))
+            {
+                Vector3 lookDirection = hit.point - transform.position;
+                lookDirection.y = 0f;
+
+                if (lookDirection.sqrMagnitude > 0.01f)
+                {
+                    _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
+
+                    if (_agent != null)
+                    {
+                        _agent.isStopped = true;
+                        _agent.ResetPath();
+                    }
+
+                    _isMoving = false;
+                    if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+                    _animator.SetBool("isWalking", _isMoving);
+
+                    _isAttacking = true;
+                }
+            }
+        }
+    }
+    // 스킬 시전중 움직이거나 다른 행동을 막기 위한 메서드
+    public void SetAttackAnimPlaying(bool isPlaying)
+    {
+        _isAttackAnimPlaying = isPlaying;
+    }
+
 }

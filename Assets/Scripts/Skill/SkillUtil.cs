@@ -53,6 +53,9 @@ public class SkillUtil : MonoBehaviour
     {
         if (string.IsNullOrEmpty(skillId)) return;
 
+        if (_playerController.IsAttackingAnimPlaying) return;
+
+
         SkillTableData skillData = GameDataManager.Instance.GetData<SkillTableData>(skillId);
 
         if (skillData == null)
