@@ -59,6 +59,12 @@ public class MapManager : MonoBehaviour
         Debug.Log($"맵이 {mapName}으로 변경되었습니다.");
     }
 
+    public void TeleportToDestinationPortal(Portal targetPortal)
+    {
+        if (targetPortal == null) Debug.LogError("포탈이 null입니다!");
+        WarpPlayer(targetPortal.transform.position);
+    }
+
     public void SetPlayer(Transform playerTransform)
     {
         _playerController = playerTransform.GetComponent<PlayerController>();
