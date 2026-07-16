@@ -1,11 +1,44 @@
 [
   {
-    "ID": "Skill_Slash",
-    "Name": "Slash",
+    "ID": "Skill_Slash1",
+    "Name": "Slash1",
     "Description": "A quick slash tha deals damege to enemies.",
     "Key": "SkillQ",
     "RequiredLevel": 1,
-    "IconAddress": "",
+    "IconAddress": "SkillIcon[Templete_14]",
+    "Cooldown": 3,
+    "Damage": 10,
+    "ManaCost": 5
+  },
+  {
+    "ID": "Skill_Slash2",
+    "Name": "Slash2",
+    "Description": "A quick slash tha deals damege to enemies.",
+    "Key": "SkillW",
+    "RequiredLevel": 1,
+    "IconAddress": "SkillIcon[Templete_15]",
+    "Cooldown": 3,
+    "Damage": 10,
+    "ManaCost": 5
+  },
+  {
+    "ID": "Skill_Slash3",
+    "Name": "Slash3",
+    "Description": "A quick slash tha deals damege to enemies.",
+    "Key": "SkillE",
+    "RequiredLevel": 1,
+    "IconAddress": "SkillIcon[Templete_16]",
+    "Cooldown": 3,
+    "Damage": 10,
+    "ManaCost": 5
+  },
+  {
+    "ID": "Skill_Slash4",
+    "Name": "Slash4",
+    "Description": "A quick slash tha deals damege to enemies.",
+    "Key": "SkillR",
+    "RequiredLevel": 1,
+    "IconAddress": "SkillIcon[Templete_17]",
     "Cooldown": 3,
     "Damage": 10,
     "ManaCost": 5

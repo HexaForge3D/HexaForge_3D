@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 632db659e108c374d851282e40776f86
+    m_Address: SkillIcon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 63c6cd37ac1945c4291e6375dec7d4c8
     m_Address: Player_Warrior
     m_ReadOnly: 0
