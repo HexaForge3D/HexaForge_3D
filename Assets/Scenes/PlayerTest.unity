@@ -2123,6 +2123,99 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668296923}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &1995138686
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 270978813282535172, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813595266070, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.59171
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -23.93616
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692675, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978813720692685, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Name
+      value: Effect_14_MadnessBloodBoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978814308921392, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978814555440606, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978814592995094, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 270978814780719435, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f8fe3107e82ab9e498e62f95cb153dd6, type: 3}
 --- !u!1 &2023641751
 GameObject:
   m_ObjectHideFlags: 0
@@ -2271,3 +2364,4 @@ SceneRoots:
   - {fileID: 1578718564}
   - {fileID: 1008525638}
   - {fileID: 999477962}
+  - {fileID: 1995138686}

@@ -587,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fab4dad6e86424cbfa0bbbfb8445f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillManager
-  iD_Skill1: Skill_Slash
+  id_Skill1: Skill_Slash
   prefab_Skill1Effect: {fileID: 4779920659494947421, guid: 45d53bd2927ddfb41bb42ac9f23cfba4, type: 3}
   location_Skill1: {fileID: 7715453632157740139}
 --- !u!1 &1219086382586208679
