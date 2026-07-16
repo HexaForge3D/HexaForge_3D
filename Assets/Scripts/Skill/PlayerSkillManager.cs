@@ -5,18 +5,11 @@ using UnityEngine;
 // 스킬은 항상 프리팹화 시킬 것
 public class PlayerSkillManager : MonoBehaviour
 {
-    [Serializable]
-    public struct SkillVFXData
-    {
-        public string skillID; //Json과 이름을 똑같이 해야 함
-        public GameObject vfxPrefab; // 콜라이더랑 SkillHitBOx 스크립트를 붙인 프리팹이 필요
-    }
-
-    [Header("Skill VFX Settings")]
-    [SerializeField] private Transform _attackPoint;
-    [SerializeField] private List<SkillVFXData> _skillVFXList;
-
-    private Dictionary<string, GameObject> _vfxDictionary = new Dictionary<string, GameObject>();
+    // 스킬을 추가할 때마다 추가해줘야 함
+    [Header("Skill1 Settings")]
+    [SerializeField] private string id_Skill1; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill1Effect;
+    [SerializeField] private Transform location_Skill1;
 
     private PlayerController _playerController;
     private PlayerBattle _playerBattle;
@@ -28,14 +21,6 @@ public class PlayerSkillManager : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         _playerBattle = GetComponent<PlayerBattle>();
-
-        foreach (var data in _skillVFXList)
-        {
-            if (_vfxDictionary.ContainsKey(data.skillID) == false)
-            {
-                _vfxDictionary.Add(data.skillID, data.vfxPrefab);
-            }
-        }
     }
 
     private void OnEnable()
@@ -68,23 +53,30 @@ public class PlayerSkillManager : MonoBehaviour
     {
         if (_currentCastingSkill == null) return;
 
-        if (_vfxDictionary.TryGetValue(_currentCastingSkill.ID, out GameObject vfxPrefab))
+        GameObject prefabSkill = null;
+        Transform skillLocation = null;
+        // 계속 추가하기 스킬은 else if로 추가해주자
+        if (_currentCastingSkill.ID == id_Skill1)
         {
-            if (vfxPrefab != null && _attackPoint != null)
-            {
-                // 1. 이펙트 생성
-                GameObject spawnedVFX = Instantiate(vfxPrefab, _attackPoint.position, transform.rotation);
+            prefabSkill = prefab_Skill1Effect;
+            skillLocation = location_Skill1;
+        }
+        
 
-                // 2. 생성된 이펙트에 있는 SkillHitbox를 찾아서 데미지 발생
-                SkillHitbox hitbox = spawnedVFX.GetComponent<SkillHitbox>();
-                if (hitbox != null)
-                {
-                    hitbox.SetDamage(_currentCastingSkill.Damage);
-                }
-                else
-                {
-                    Debug.LogWarning("이펙트 프리팹에 SkillHitbox 스크립트가 없습니다!");
-                }
+        if (prefabSkill != null && skillLocation != null)
+        {
+            GameObject spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation);
+
+            SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
+
+            if (hitbox != null)
+            {
+                hitbox.SetDamage(_currentCastingSkill.Damage);
+            }
+
+            else
+            {
+                Debug.LogWarning("Skill프리팹에 SkillHitBox가 있는지 확인하세요");
             }
         }
     }

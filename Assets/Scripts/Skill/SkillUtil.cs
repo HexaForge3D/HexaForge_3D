@@ -53,6 +53,7 @@ public class SkillUtil : MonoBehaviour
     {
         if (string.IsNullOrEmpty(skillId)) return;
 
+        // 스킬 사용 중에는 플레이어가 다른 행동을 할 수 없게 하는 메서드
         if (_playerController.IsAttackingAnimPlaying) return;
 
 
