@@ -37,6 +37,8 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
+        NPC.OnNPCInteracted -= OnNpcInterated;
+
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
         _inGameViewModel = null;
@@ -94,6 +96,25 @@ public class GameFlowManager
         else
         {
             ShowHuntingAreaAsync().Forget();
+        }
+    }
+
+    private void OnNpcInterated(NPC npc)
+    {
+        switch (npc.NPCId)
+        {
+            case NPCId.Store:
+                ToggleUI(UIType.ShopUI, ShowShop);
+                    break;
+            case NPCId.Smithy:
+                Debug.Log("smithy 상호작용");
+                break;
+            case NPCId.MainQuest:
+                Debug.Log("MainQuest 상호작용");
+                break;
+            default:
+                Debug.Log("NPCId 설정이 잘못되었습니다.");
+                break;
         }
     }
 
@@ -214,8 +235,7 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-
-        ShowShop();
+        NPC.OnNPCInteracted += OnNpcInterated;
     }
 
     private async UniTask ShowHuntingAreaAsync()
