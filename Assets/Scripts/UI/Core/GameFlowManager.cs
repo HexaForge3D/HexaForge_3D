@@ -9,6 +9,9 @@ public class GameFlowManager
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
+    private string _pendingSellItemId;
+    private int _pendingSellCount;
+
     public async UniTask StartAsync()
     {
         await GameDataManager.Instance.WaitUntilReadyAsync();
@@ -63,6 +66,17 @@ public class GameFlowManager
         ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
     }
 
+    private void OnInventorySellRequested(InventoryItemData data, int count)
+    {
+        _pendingSellItemId = data.Id;
+        _pendingSellCount = count;
+
+        int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
+        string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
+
+        ShowConfirmAsync(message, OnSellConfirmed).Forget();
+    }
+
 
     private void OnCreateCharacterRequested(string slotId)
     {
@@ -108,6 +122,17 @@ public class GameFlowManager
     private void OnShopTransactionCompleted()
     {
         if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
+    private void OnSellConfirmed()
+    {
+        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+
+        if (success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
@@ -243,6 +268,7 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+        view.OnSellRequested += OnInventorySellRequested;
         view.BindViewModel(viewModel);
     }
 

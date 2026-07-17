@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class InventoryViewModel
 {
     private readonly string _slotId;
     private readonly ItemRepository _itemRepository = new ItemRepository();
+
+    public Action OnItemSold;
 
     public InventoryViewModel(string slotId)
     {
@@ -44,5 +47,15 @@ public class InventoryViewModel
         }
 
         return null;
+    }
+
+    private void SellItem(InventoryItemData data, int count)
+    {
+        bool success = SaveManager.Instance.SellItem(_slotId, data.Id, count);
+
+        if (success)
+        {
+            OnItemSold?.Invoke();
+        }
     }
 }
