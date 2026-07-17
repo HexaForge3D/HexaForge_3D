@@ -12,7 +12,8 @@ public class PlayerState : MonoBehaviour
     public static event Action OnLevelUp;
 
     private const int MaxLevel = 100; // 최대레벨은 100으로 수정불가능 하게
-    private const int MaxExp = 80000; // 전체 경험치는 80000으로 설정
+    private const int MaxExp = 1700000; // 전체 경험치는 1,700,000으로 설정 => 1 -> 2 하는 걸 보기 위해서
+    private const float ExpCurve = 0.5f; // 곡선으로 레벨이 올라갈 수록 레벨 업하기 어렵게 수정 => 숫자가 커질 수록 후반부에 편해지지만, 0.5f 기본세팅함
 
     private void Awake()
     {
@@ -37,10 +38,21 @@ public class PlayerState : MonoBehaviour
         }
 
         float ratio = (float)totalExp / MaxExp;
-
-        int calculatedLevel = 1 + Mathf.FloorToInt(ratio * (MaxLevel - 1));
+        float curveRatio = Mathf.Pow(ratio, ExpCurve);
+        int calculatedLevel = 1 + Mathf.FloorToInt(curveRatio * (MaxLevel - 1));
 
         return calculatedLevel;
+    }
+
+    public int ExpForNextLevel(int targetLevel)
+    {
+        if (targetLevel <= 1) return 0;
+        if (targetLevel >= MaxLevel) return MaxExp;
+
+        float targetCurveRatio = (float)(targetLevel - 1) / (MaxLevel - 1);
+        float ratio = Mathf.Pow(targetCurveRatio, 1f / ExpCurve);
+
+        return Mathf.CeilToInt(ratio * MaxExp);
     }
 
     private void HandleExpTestKey()
@@ -64,9 +76,20 @@ public class PlayerState : MonoBehaviour
 
         data.Exp = newExp;
 
-        Debug.Log($"[PlayerState] 경험치 {amount} 획득! (총 누적 Exp: {data.Exp} / {MaxExp})");
-
         int levelAfter = LevelFromExp(data.Exp);
+
+        if (levelAfter >= MaxLevel)
+        {
+            Debug.Log($"[PlayerState] 경험치 {amount} 획득! (만렙입니다 / 총 누적 Exp: {data.Exp} / {MaxExp})");
+        }
+
+        else
+        {
+            int nextLevelTotalExp = ExpForNextLevel(levelAfter + 1);
+            int remainExp = nextLevelTotalExp - data.Exp;
+
+            Debug.Log($"[PlayerState] 경험치 {amount} 획득! (총 누적 Exp: {data.Exp} / {MaxExp} | 다음 레벨업까지 남은 경험치: {remainExp})");
+        }
 
         SaveManager.Instance.AddExp(data.SlotId, data.Exp, levelBefore, levelAfter);
 
