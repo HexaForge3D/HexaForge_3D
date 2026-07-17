@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 1069357221733129813}
   - component: {fileID: 4967516959221930824}
   - component: {fileID: 8690082736745137894}
-  - component: {fileID: 113745674807120203}
+  - component: {fileID: 4645212287648280549}
   m_Layer: 0
   m_Name: BridgeEnd
   m_TagString: Untagged
@@ -92,6 +92,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -113,12 +118,14 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &113745674807120203
-MeshCollider:
+--- !u!65 &4645212287648280549
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -135,10 +142,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6623636414208535075, guid: a18e05c3226dd274caeb4a43212e40c8, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 3.6000009, y: 3.3530517, z: 2.6188262}
+  m_Center: {x: -0.11739278, y: -0.66026473, z: 0.000004763124}
 --- !u!1 &4510459257017618164
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +156,7 @@ GameObject:
   - component: {fileID: 8320802621038020911}
   - component: {fileID: 3541367027727260241}
   - component: {fileID: 8535393191410532305}
-  - component: {fileID: 5567521286464214978}
+  - component: {fileID: 5538835595685509627}
   m_Layer: 0
   m_Name: BridgeStart
   m_TagString: Untagged
@@ -198,6 +204,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -219,12 +230,14 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5567521286464214978
-MeshCollider:
+--- !u!65 &5538835595685509627
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -241,7 +254,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4982261723046905864, guid: a18e05c3226dd274caeb4a43212e40c8, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 3.6000009, y: 3.3530517, z: 2.6188262}
+  m_Center: {x: -0.11739206, y: -0.66026545, z: 0.0000019021008}

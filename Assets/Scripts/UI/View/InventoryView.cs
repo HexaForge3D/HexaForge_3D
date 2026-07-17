@@ -16,20 +16,22 @@ public class InventoryView : BaseOverLayUI
         BuildSlots();
     }
 
+    public void Refresh()
+    {
+        BuildSlots();
+    }
+
     private void BuildSlots()
     {
         ClearSlot();
 
-        List<ItemData> slots = _viewModel.GetInventorySlots(SlotCount);
+        List<InventoryItemData> slots = _viewModel.GetInventorySlots(SlotCount);
 
-        foreach (ItemData item in slots)
+        foreach (InventoryItemData slotData in slots)
         {
             GameObject slotObject = Instantiate(Prefab_InventorySlot, Transform_SlotParent);
             InventorySlotView slotView = slotObject.GetComponent<InventorySlotView>();
-
-            //임시 카운트 처리 추후 세이브데이터로 받아올 예정
-            int count = item != null ? 1 : 0;
-            slotView.Setup(item, count);
+            slotView.Setup(slotData);
 
             _spawnedSlots.Add(slotObject);
         }

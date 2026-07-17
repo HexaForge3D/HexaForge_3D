@@ -71,33 +71,15 @@ public class GameFlowManager
 
     private void OnPortalInteracted(Portal portal)
     {
-        switch (portal.PortalType)
+        var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
+        if (portal.PortalType != PortalType.Dungeon)
         {
-            case PortalType.Dungeon:
-                {
-                    ShowHuntingAreaAsync().Forget();
-                }
-                break;
-            case PortalType.MainQuest:
-                {
-                    Debug.Log("MainQuest 이동");
-                }
-                break;
-            case PortalType.Smithy:
-                {
-                    Debug.Log("Smithy 이동");
-                }
-                break;
-            case PortalType.Store:
-                {
-                    Debug.Log("Store 이동");
-                }
-                break;
-            default:
-                {
-                    Debug.Log("PortalType 설정이 잘못되었습니다.");
-                }
-                break;
+            if (portal.PortalType == PortalType.None) return;
+            MapManager.Instance.TeleportToDestinationPortal(targetPortal);
+        }
+        else
+        {
+            ShowHuntingAreaAsync().Forget();
         }
     }
 
@@ -123,7 +105,21 @@ public class GameFlowManager
         _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
     }
 
-    // 단축키 입력 호출
+    private void OnShopTransactionCompleted()
+    {
+        if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
+    // 아직 미구독상태
+    private void OnShopNpcInteracted()
+    {
+        ToggleUI(UIType.ShopUI, ShowShop);
+    }
+
     private void OnInformationKeyPressed()
     {
         ToggleUI(UIType.InformationPopup, ShowInformation);
@@ -193,6 +189,8 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
+
+        ShowShop();
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -244,7 +242,15 @@ public class GameFlowManager
     private async UniTask ShowInventoryAsync()
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
-        InventoryViewModel viewModel = new InventoryViewModel();
+        InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowShopAsync()
+    {
+        ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
+        ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
+        viewModel.OnGoldChanged += OnShopTransactionCompleted;
         view.BindViewModel(viewModel);
     }
 
@@ -270,5 +276,10 @@ public class GameFlowManager
     private void ShowInventory()
     {
         ShowInventoryAsync().Forget();
+    }
+
+    private void ShowShop()
+    {
+        ShowShopAsync().Forget();
     }
 }

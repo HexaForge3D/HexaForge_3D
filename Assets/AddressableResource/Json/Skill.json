@@ -2,24 +2,31 @@
   {
     "ID": "Skill_Slash",
     "Name": "Slash",
-    "Description": "A quick slash attack to enemies.",
+    "Description": "A quick slash attack to monsters.",
     "Key": "SkillQ",
     "RequiredLevel": 1,
     "IconAddress": "",
     "Cooldown": 3,
-    "Damage": 10,
-    "ManaCost": 5
+    "Damage": 20,
+    "ManaCost": 10,
+	"SkillType": "Attack",
+	"Duration": 0,
+	"BuffValue": 0
   },
   {
-    "ID": "Skill_Cleave",
-    "Name": "Cleave",
-    "Description": "A Powerful, wide-sweeping attack to monsters",
+    "ID": "Skill_Rage",
+    "Name": "Rage",
+    "Description": "A Reinforce AttackPower",
     "Key": "SkillW",
     "RequiredLevel": 1,
     "IconAddress": "",
-    "Cooldown": 5,
-    "Damage": 20,
-    "ManaCost": 10
+    "Cooldown": 25,
+    "Damage": 0,
+    "ManaCost": 5,
+	"SkillType": "Buff",
+	"Duration": 15,
+	"BuffValue": 10
+	
   },
   {
     "ID": "Skill_Smash",
@@ -28,9 +35,12 @@
     "Key": "SkillE",
     "RequiredLevel": 1,
     "IconAddress": "",
-    "Cooldown": 15,
-    "Damage": 50,
-    "ManaCost": 20
+    "Cooldown": 10,
+    "Damage": 40,
+    "ManaCost": 20,
+	"SkillType": "Attack",
+	"Duration": 0,
+	"BuffValue": 0
   },
   {
     "ID": "Skill_Bladestorm",
@@ -41,6 +51,9 @@
     "IconAddress": "",
     "Cooldown": 30,
     "Damage": 100,
-    "ManaCost": 35
+    "ManaCost": 35,
+	"SkillType": "Attack",
+	"Duration": 0,
+	"BuffValue": 0
   }
 ]

@@ -44,7 +44,7 @@ public class SkillUtil : MonoBehaviour
     }
 
     private void HandleSkill1() => UseSkill("Skill_Slash");
-    private void HandleSkill2() => UseSkill("Skill_Cleave");
+    private void HandleSkill2() => UseSkill("Skill_Rage");
     private void HandleSkill3() => UseSkill("Skill_Smash");
     private void HandleSkill4() => UseSkill("Skill_Bladestorm");
 
@@ -52,6 +52,10 @@ public class SkillUtil : MonoBehaviour
     private void UseSkill(string skillId)
     {
         if (string.IsNullOrEmpty(skillId)) return;
+
+        // 스킬 사용 중에는 플레이어가 다른 행동을 할 수 없게 하는 메서드
+        if (_playerController.IsAttackingAnimPlaying) return;
+
 
         SkillTableData skillData = GameDataManager.Instance.GetData<SkillTableData>(skillId);
 

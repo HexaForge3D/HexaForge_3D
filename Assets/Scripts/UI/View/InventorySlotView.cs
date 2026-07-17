@@ -9,9 +9,9 @@ public class InventorySlotView : MonoBehaviour
     [SerializeField] private TMP_Text Text_Count;
     [SerializeField] private TooltipTrigger TooltipTrigger;
 
-    public void Setup(ItemData item, int count = 0)
+    public void Setup(InventoryItemData data)
     {
-        if (item == null || count <= 0)
+        if (data == null)
         {
             Image_Icon.gameObject.SetActive(false);
             Text_Count.gameObject.SetActive(false);
@@ -20,32 +20,32 @@ public class InventorySlotView : MonoBehaviour
         }
 
         Image_Icon.gameObject.SetActive(true);
-        SpriteLoaderUtil.LoadAsync(Image_Icon, item.IconAddress).Forget();
+        SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();
 
-        bool showCount = item.MaxStack > 1;
+        bool showCount = data.MaxStack > 1;
         Text_Count.gameObject.SetActive(showCount);
 
         if (showCount)
         {
-            Text_Count.text = count.ToString();
+            Text_Count.text = data.Count.ToString();
         }
 
-        string usageHint = GetUsageHint(item.UsageType);
-        string countText = showCount ? $"x{count}" : null;
+        string usageHint = GetUsageHint(data.UsageType);
+        string countText = showCount ? $"x{data.Count}" : null;
 
-        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopPopup);
+        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopUI);
         string priceText = null;
 
         if (isShopOpen)
         {
-            int sellPrice = Mathf.FloorToInt(item.Price * SaveManager.SellPriceRatio);
+            int sellPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio);
             priceText = $"Sell: {sellPrice}G";
         }
 
         TooltipData tooltipData = new TooltipData(
-            item.IconAddress,
-            item.Name,
-            item.Description,
+            data.IconAddress,
+            data.Name,
+            data.Description,
             usageHint,
             countText,
             priceText
