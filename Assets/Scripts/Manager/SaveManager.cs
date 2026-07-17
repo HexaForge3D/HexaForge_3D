@@ -7,6 +7,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
     public const float SellPriceRatio = 0.8f;
+    private const int SkillPointsPerLevel = 4;
 
     public SaveData CurrentSaveData { get; private set; }
 
@@ -417,4 +418,25 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
+    public void AddExp(string slotId, int newExp, int levelBefore, int levelAfter)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return;
+        }
+
+        slot.Exp = newExp;
+
+        if (levelAfter > levelBefore)
+        {
+            int levelsGained = levelAfter - levelBefore;
+            slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
+            Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
+        }
+
+        SaveToFile(CurrentSaveData);
+    }
 }
