@@ -447,4 +447,9 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         SaveToFile(CurrentSaveData);
     }
+
+    public CharacterSaveData GetChararcterData(string slotId)
+    {
+        return FindSlot(slotId);
+    }
 }
