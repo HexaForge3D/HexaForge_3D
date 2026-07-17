@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 // 스킬은 항상 프리팹화 시킬 것
@@ -10,6 +11,11 @@ public class PlayerSkillManager : MonoBehaviour
     [SerializeField] private string id_Skill1; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
     [SerializeField] private GameObject prefab_Skill1Effect;
     [SerializeField] private Transform location_Skill1;
+
+    [Header("Skill2 Settings")]
+    [SerializeField] private string id_Skill2; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill2Effect;
+    [SerializeField] private Transform location_Skill2;
 
     [Header("Skill3 Settings")]
     [SerializeField] private string id_Skill3; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
@@ -66,11 +72,21 @@ public class PlayerSkillManager : MonoBehaviour
 
         GameObject prefabSkill = null;
         Transform skillLocation = null;
-        // 계속 추가하기 스킬은 else if로 추가해주자: Q 스킬
+        
+        // 계속 추가하기 스킬은 else if로 추가해주자
+        
+        // Q 스킬
         if (_currentCastingSkill.ID == id_Skill1)
         {
             prefabSkill = prefab_Skill1Effect;
             skillLocation = location_Skill1;
+        }
+        
+        // W 스킬
+        else if (_currentCastingSkill.ID == id_Skill2)
+        {
+            prefabSkill = prefab_Skill2Effect;
+            skillLocation = location_Skill2;
         }
 
         // E 스킬
@@ -89,19 +105,46 @@ public class PlayerSkillManager : MonoBehaviour
 
         if (prefabSkill != null && skillLocation != null)
         {
-            GameObject spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation);
+            GameObject spawnedSkill;
+
+            if (_currentCastingSkill.SkillType == "Attack")
+            {
+                spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation);
+            }
+            else
+            {
+                spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation, transform);
+            }
 
             SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
-
+            
             if (hitbox != null)
             {
                 hitbox.SetDamage(_currentCastingSkill.Damage);
             }
-
-            else
+            
+            else if (_currentCastingSkill.SkillType == "Attack")
             {
                 Debug.LogWarning("Skill프리팹에 SkillHitBox가 있는지 확인하세요");
             }
+        }
+
+        switch (_currentCastingSkill.SkillType)
+        {
+            case "Attack":
+                break;
+
+            case "Heal":
+                ApplyHeal();
+                break;
+
+            case "Buff":
+                ApplyBuff(_currentCastingSkill, this.GetCancellationTokenOnDestroy()).Forget();
+                break;
+
+            default:
+                Debug.LogWarning($"[PlayerSkillManager] 알 수 없는 스킬 타입: {_currentCastingSkill.SkillType}");
+                break;
         }
     }
 
@@ -110,5 +153,46 @@ public class PlayerSkillManager : MonoBehaviour
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
         _currentCastingSkill = null;
+    }
+
+    private void ApplyHeal()
+    {
+        CharacterSaveData playerData = _playerController.PlayerData;
+        if (playerData == null) return;
+
+        playerData.Hp += _currentCastingSkill.BuffValue;
+        Debug.Log($"<color=green>[Heal] 체력 {_currentCastingSkill.BuffValue} 회복! 현재 HP: {playerData.Hp}</color>");
+    }
+
+    private async UniTaskVoid ApplyBuff(SkillTableData buffData, CancellationToken cancellationToken)
+    {
+        CharacterSaveData playerData = _playerController.PlayerData;
+       
+        if (playerData == null) return;
+
+        bool isAtkBuff = buffData.ID.Contains("Rage") || buffData.ID.Contains("Atk");
+
+        if (isAtkBuff)
+        {
+            playerData.Atk += buffData.BuffValue;
+            Debug.Log($"<color=yellow>[Buff] {buffData.Name} 발동! 공격력 {buffData.BuffValue} 증가 ({buffData.Duration}초)</color>");
+        }
+
+        try
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(buffData.Duration), cancellationToken: cancellationToken);
+        }
+
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+
+        // 버프 효과 원상복구
+        if (isAtkBuff)
+        {
+            playerData.Atk -= buffData.BuffValue;
+            Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {buffData.BuffValue} 감소 원상복구</color>");
+        }
     }
 }

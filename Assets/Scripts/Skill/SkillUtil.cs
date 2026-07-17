@@ -44,7 +44,7 @@ public class SkillUtil : MonoBehaviour
     }
 
     private void HandleSkill1() => UseSkill("Skill_Slash");
-    private void HandleSkill2() => UseSkill("Skill_Cleave");
+    private void HandleSkill2() => UseSkill("Skill_Rage");
     private void HandleSkill3() => UseSkill("Skill_Smash");
     private void HandleSkill4() => UseSkill("Skill_Bladestorm");
 
