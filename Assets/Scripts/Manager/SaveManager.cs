@@ -132,7 +132,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
-    public void UpdataCharacter(CharacterSaveData updateSlot)
+    public void UpdateCharacter(CharacterSaveData updateSlot)
     {
         int index = FindSlotIndex(updateSlot.SlotId);
 
@@ -432,6 +432,14 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         if (levelAfter > levelBefore)
         {
+            if (slot.Skills == null)
+            {
+                slot.Skills = new SkillSaveData
+                {
+                    Skills = new List<SkillProgressData>(),
+                    AvailablePoints = 0
+                };
+            }
             int levelsGained = levelAfter - levelBefore;
             slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
             Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
