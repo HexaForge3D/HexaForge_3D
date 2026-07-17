@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 590899369784165737}
   - component: {fileID: 4977281914898728305}
   - component: {fileID: 3341511053070789526}
-  - component: {fileID: 2007077919153704648}
+  - component: {fileID: 8909180305754444638}
   m_Layer: 7
   m_Name: Prefab_Road_Plane
   m_TagString: Untagged
@@ -91,7 +91,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2007077919153704648
+--- !u!65 &8909180305754444638
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,5 +110,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10.000001, y: 2.220446e-16, z: 10.000001}
-  m_Center: {x: 0, y: 0, z: -0.00000035762787}
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: -0.0000009536743, y: 0, z: 0.0000009536743}

@@ -80,8 +80,6 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_skillKey1))
         {
-            Debug.Log("Q스킬 발동!");
-            // 애니메이션 및, 공격 메서드 추가
             OnSkill1?.Invoke();
         }
 
