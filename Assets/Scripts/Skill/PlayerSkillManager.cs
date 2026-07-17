@@ -70,11 +70,15 @@ public class PlayerSkillManager : MonoBehaviour
     {
         if (_currentCastingSkill == null) return;
 
+        int currentLevel = SkillUtil.Instance.GetSkillLevel(_currentCastingSkill.ID);
+        int calcDamage = SkillUtil.Instance.GetCalculatedDamage(_currentCastingSkill, currentLevel);
+        int calcBuffValue = SkillUtil.Instance.GetCalculatedBuffValue(_currentCastingSkill, currentLevel);
+
         GameObject prefabSkill = null;
         Transform skillLocation = null;
-        
+
         // 계속 추가하기 스킬은 else if로 추가해주자
-        
+
         // Q 스킬
         if (_currentCastingSkill.ID == id_Skill1)
         {
@@ -120,7 +124,8 @@ public class PlayerSkillManager : MonoBehaviour
             
             if (hitbox != null)
             {
-                hitbox.SetDamage(_currentCastingSkill.Damage);
+                //레벨이 반영된   데미지를 스킬 히트박스에 설정
+                hitbox.SetDamage(calcDamage);
             }
             
             else if (_currentCastingSkill.SkillType == "Attack")
@@ -135,11 +140,11 @@ public class PlayerSkillManager : MonoBehaviour
                 break;
 
             case "Heal":
-                ApplyHeal();
+                ApplyHeal(calcBuffValue);
                 break;
 
             case "Buff":
-                ApplyBuff(_currentCastingSkill, this.GetCancellationTokenOnDestroy()).Forget();
+                ApplyBuff(_currentCastingSkill, calcBuffValue, this.GetCancellationTokenOnDestroy()).Forget();
                 break;
 
             default:
@@ -155,16 +160,16 @@ public class PlayerSkillManager : MonoBehaviour
         _currentCastingSkill = null;
     }
 
-    private void ApplyHeal()
+    private void ApplyHeal(int calculatedHealAmount)
     {
         CharacterSaveData playerData = _playerController.PlayerData;
         if (playerData == null) return;
 
-        playerData.Hp += _currentCastingSkill.BuffValue;
-        Debug.Log($"<color=green>[Heal] 체력 {_currentCastingSkill.BuffValue} 회복! 현재 HP: {playerData.Hp}</color>");
+        playerData.Hp += calculatedHealAmount;
+        Debug.Log($"<color=green>[Heal] 체력 {calculatedHealAmount} 회복! 현재 HP: {playerData.Hp}</color>");
     }
 
-    private async UniTaskVoid ApplyBuff(SkillTableData buffData, CancellationToken cancellationToken)
+    private async Cysharp.Threading.Tasks.UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, System.Threading.CancellationToken cancellationToken)
     {
         CharacterSaveData playerData = _playerController.PlayerData;
        

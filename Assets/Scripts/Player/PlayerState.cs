@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState : MonoBehaviour
@@ -77,8 +78,14 @@ public class PlayerState : MonoBehaviour
             for (int i = 0; i < levelUpCount; i++)
             {
                 Debug.Log($"<color=purple>레벨 업! (도달 레벨: {levelBefore + i + 1})</color>");
+
+                if (data.Skills == null) data.Skills = new SkillSaveData();
+                if (data.Skills.Skills == null) data.Skills.Skills = new List<SkillProgressData>();
+
                 OnLevelUp?.Invoke();
             }
+
+            SkillUtil.Instance?.InvokeSkillDataUpdated();
         }
 
         OnExpChanged?.Invoke(data.Exp, MaxExp);
