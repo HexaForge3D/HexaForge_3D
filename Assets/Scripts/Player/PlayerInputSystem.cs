@@ -201,7 +201,6 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_expTestKey))
         {
-            Debug.Log("경험치 테스트 입니다");
             OnExpTest?.Invoke();
         }
     }

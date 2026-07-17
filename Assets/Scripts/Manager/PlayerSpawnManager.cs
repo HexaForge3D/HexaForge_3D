@@ -49,19 +49,29 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
             return;
         }
 
-        CharacterSaveData saveData = new CharacterSaveData
+        CharacterSaveData saveData = FindSaveDataSlot(data.Id);
+
+        if (saveData == null)
         {
-            SlotId = data.Id,
-            IsEmpty = false,
-            Name = data.Name,
-            Job = data.Job,
-            Hp = data.Hp,
-            Mp = data.Mp,
-            Atk = data.Atk,
-            Def = data.Def
-        };
+            Debug.LogError($"[PlayerSpawnManager] {data.Id}에 대한 세이브 데이터를 찾을 수 없습니다.");
+            return;
+        }
 
         controller.InitializePlayerData(saveData);
-        Debug.Log($"[PlayerSpawnManager] 플레이어 생성 및 초기화: {data.Name} ({data.Job}) HP:{data.Hp} MP:{data.Mp} ATK:{data.Atk} DEF:{data.Def}");
+
+        Debug.Log($"[PlayerSpawnManager] 플레이어 생성 및 초기화: {saveData.Name} ({saveData.Job})");
+    }
+
+    private CharacterSaveData FindSaveDataSlot(string slotId)
+    {
+        foreach (CharacterSaveData slot in SaveManager.Instance.CurrentSaveData.Slots)
+        {
+            if (slot.SlotId == slotId)
+            {
+                return slot;
+            }
+        }
+
+        return null;
     }
 }
