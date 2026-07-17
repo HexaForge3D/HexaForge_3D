@@ -58,13 +58,17 @@ public class PlayerState : MonoBehaviour
 
         int levelBefore = LevelFromExp(data.Exp);
 
-        data.Exp += amount;
+        int newExp = data.Exp + amount;
 
-        if (data.Exp > MaxExp) data.Exp = MaxExp;
+        if (newExp > MaxExp) newExp = MaxExp;
+
+        data.Exp = newExp;
 
         Debug.Log($"[PlayerState] 경험치 {amount} 획득! (총 누적 Exp: {data.Exp} / {MaxExp})");
 
         int levelAfter = LevelFromExp(data.Exp);
+
+        SaveManager.Instance.AddExp(data.SlotId, data.Exp, levelBefore, levelAfter);
 
         if (levelAfter > levelBefore)
         {
