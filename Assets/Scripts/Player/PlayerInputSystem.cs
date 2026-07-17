@@ -4,7 +4,7 @@ using System;
 public class PlayerInputSystem : MonoBehaviour
 {
     [Header("Movement Stop")] // S/s 버튼을 누르면 움직임 멈춤과 동시에 목적지 초기화
-    [SerializeField] private KeyCode _playerStop = KeyCode.S;
+    [SerializeField] private KeyCode _playerStop = KeyCode.LeftShift;
 
     [Header("Skill Key")] // 스킬 버튼에 관한 내용
     [SerializeField] private KeyCode _skillKey1 = KeyCode.Q;
@@ -40,6 +40,9 @@ public class PlayerInputSystem : MonoBehaviour
     [Header("System Key")] // 시스템 버튼
     [SerializeField] private KeyCode _systemKey = KeyCode.Escape;
 
+    [Header("Exp Test Key")] // 경험치 주작 버튼
+    [SerializeField] private KeyCode _expTestKey = KeyCode.P;
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -66,6 +69,8 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnMap;
     public static event Action OnSystem;
 
+    public static event Action OnExpTest;
+
     private void Start()
     {
         _playerController = GetComponent<PlayerController>();
@@ -85,22 +90,16 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_skillKey2))
         {
-            Debug.Log("W스킬 발동!");
-            // 애니메이션 및, 공격 메서드 추가
             OnSkill2?.Invoke();
         }
 
         if (Input.GetKeyDown(_skillKey3))
         {
-            Debug.Log("E스킬 발동!");
-            // 애니메이션 및, 공격 메서드 추가
             OnSkill3?.Invoke();
         }
 
         if (Input.GetKeyDown(_skillKey4))
         {
-            Debug.Log("R스킬 발동!");
-            // 애니메이션 및, 공격 메서드 추가
             OnSkill4?.Invoke();
         }
 
@@ -175,42 +174,21 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_inventoryKey))
         {
-            Debug.Log("인벤토리가 열렸습니다.");
-            // 인벤토리 Ui 열고 닫는 내용 추가
             OnInventory?.Invoke();
         }
 
         if (Input.GetKeyDown(_interactionKey))
         {
-            Debug.Log("상호작용 실행");
             OnInteract?.Invoke();
         }
 
         if (Input.GetKeyDown(_systemKey))
         {
-            Debug.Log("시스템창이 열렸습니다.");
-            // 시스템 Ui 열고 닫는 내용 추가
             OnSystem?.Invoke();
         }
 
         if (Input.GetKeyDown(_informationKey))
         {
-            if (_playerController != null && _playerController.PlayerData != null)
-            {
-                CharacterSaveData data = _playerController.PlayerData;
-
-                Debug.Log($"<color=yellow>[플레이어 상태창]</color>\n" +
-                          $"이름: {data.Name}\n" +
-                          $"직업: {data.Job}\n" +
-                          $"HP: {data.Hp}\n" +
-                          $"MP: {data.Mp}\n" +
-                          $"공격력(ATK): {data.Atk}\n" +
-                          $"방어력(DEF): {data.Def}");
-            }
-            else
-            {
-                Debug.LogWarning("플레이어 데이터를 아직 불러오지 못했습니다.");
-            }
             OnInformation?.Invoke();
         }
 
@@ -219,6 +197,12 @@ public class PlayerInputSystem : MonoBehaviour
             Debug.Log("Map을 열었습니다.");
             // MapUi 출력 => 없을 수 있으므로 지워도 될 듯
             OnMap?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_expTestKey))
+        {
+            Debug.Log("경험치 테스트 입니다");
+            OnExpTest?.Invoke();
         }
     }
 

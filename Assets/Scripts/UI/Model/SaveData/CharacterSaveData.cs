@@ -14,6 +14,7 @@ public class CharacterSaveData
     public int Atk;
     public int Def;
     public int Gold;
+    public int Level = 1;
 
     public InventorySaveData Inventory;
     public SkillSaveData Skills;
