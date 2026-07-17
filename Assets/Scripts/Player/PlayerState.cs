@@ -11,6 +11,9 @@ public class PlayerState : MonoBehaviour
     // 스킬 레벨업을 위하여 레벨이 오르면 발생하는 이벤트
     public static event Action OnLevelUp;
 
+    private const int MaxLevel = 100; // 최대레벨은 100으로 수정불가능 하게
+    private const int MaxExp = 80000; // 전체 경험치는 80000으로 설정
+
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
@@ -26,9 +29,23 @@ public class PlayerState : MonoBehaviour
         PlayerInputSystem.OnExpTest -= HandleExpTestKey;
     }
 
+    public int LevelFromExp(int totalExp)
+    {
+        if (totalExp >= MaxExp)
+        {
+            return MaxLevel;
+        }
+
+        float ratio = (float)totalExp / MaxExp;
+
+        int calculatedLevel = 1 + Mathf.FloorToInt(ratio * (MaxLevel - 1));
+
+        return calculatedLevel;
+    }
+
     private void HandleExpTestKey()
     {
-        AddExp(100); // 경험치는 변경가능 Test용이라서
+        AddExp(100);
     }
 
     public void AddExp(int amount)
@@ -37,49 +54,34 @@ public class PlayerState : MonoBehaviour
 
         CharacterSaveData data = _playerController.PlayerData;
 
-        data.Exp += amount;
-        Debug.Log($"[PlayerState] 경험치 {amount} 획득! (임시 계산용 Exp: {data.Exp})");
+        if (data.Exp >= MaxExp) return;
 
-        // 경험치가 레벨업에 필요한 경험치를 초가할 수 있으므로 호출
-        CheckLevelUp();
+        int levelBefore = LevelFromExp(data.Exp);
 
-        int requiredExp = GetRequiredExp(data.Level);
-        OnExpChanged?.Invoke(data.Exp, requiredExp);
-    }
-    private void CheckLevelUp()
-    {
-        CharacterSaveData data = _playerController.PlayerData;
-        int requiredExp = GetRequiredExp(data.Level);
+        int newExp = data.Exp + amount;
 
-        // 연속으로 레벨업 처리
-        while (data.Exp >= requiredExp)
+        if (newExp > MaxExp) newExp = MaxExp;
+
+        data.Exp = newExp;
+
+        Debug.Log($"[PlayerState] 경험치 {amount} 획득! (총 누적 Exp: {data.Exp} / {MaxExp})");
+
+        int levelAfter = LevelFromExp(data.Exp);
+
+        SaveManager.Instance.AddExp(data.SlotId, data.Exp, levelBefore, levelAfter);
+
+        if (levelAfter > levelBefore)
         {
-            data.Exp -= requiredExp; // 필요 경험치만큼 차감
-            data.Level++;            // 레벨 1 증가
+            int levelUpCount = levelAfter - levelBefore;
 
-            Debug.Log($"<color=purple>레벨 업! (현재 레벨: {data.Level})</color>");
-
-            // 레벨업 이벤트 발생 스킬 레벨을 올리기 위하여
-            OnLevelUp?.Invoke();
-
-            requiredExp = GetRequiredExp(data.Level);
-        }
-    }
-
-    private int GetRequiredExp(int level)
-    {
-        int x = level;
-        
-        int y = 0;
-        
-        if (x >= 10)
-        {
-            y = x - 9;
+            for (int i = 0; i < levelUpCount; i++)
+            {
+                Debug.Log($"<color=purple>레벨 업! (도달 레벨: {levelBefore + i + 1})</color>");
+                OnLevelUp?.Invoke();
+            }
         }
 
-        int requiredExp = (x * 200) + (y * 100);
-
-        return requiredExp;
+        OnExpChanged?.Invoke(data.Exp, MaxExp);
     }
 
 }
