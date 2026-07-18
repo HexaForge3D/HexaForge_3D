@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
+        //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
+        CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
 
         if (_spotPoint != null)
         {
