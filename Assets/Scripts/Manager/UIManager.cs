@@ -15,6 +15,7 @@ public enum UIType : byte
     ConfirmPopup,
     GameMenuPopup,
     InventoryPopup,
+    SkillTreePopup,
     ShopUI
 }
 
@@ -53,6 +54,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.ConfirmPopup, "Popup_Confirm" },
         {UIType.GameMenuPopup, "Popup_GameMenu" },
         {UIType.InventoryPopup, "Popup_Inventory" },
+        {UIType.SkillTreePopup, "Popup_SkillTree"},
         {UIType.ShopUI, "UI_Shop" }
     };
 
@@ -68,6 +70,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.ConfirmPopup, UIRootType.Popup },
         {UIType.GameMenuPopup, UIRootType.Popup },
         {UIType.InventoryPopup, UIRootType.Popup },
+        {UIType.SkillTreePopup, UIRootType.Content },
         {UIType.ShopUI, UIRootType.Content }
     };
 

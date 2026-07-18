@@ -188,6 +188,11 @@ public class GameFlowManager
         }
     }
 
+    private void OnSkillTreeKeyPressed()
+    {
+        ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -232,6 +237,7 @@ public class GameFlowManager
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
+        PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
@@ -300,6 +306,13 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowSkillTreeAsync()
+    {
+        SkillTreeView view = await UIManager.Instance.OpenUIAsync<SkillTreeView>(UIType.SkillTreePopup);
+        SkillTreeViewModel viewModel = new SkillTreeViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
 
     // UI 토글화
     private void ToggleUI(UIType uiType, Action showAction)
@@ -327,5 +340,10 @@ public class GameFlowManager
     private void ShowShop()
     {
         ShowShopAsync().Forget();
+    }
+
+    private void ShowSkillTree()
+    {
+        ShowSkillTreeAsync().Forget();
     }
 }
