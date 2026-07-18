@@ -461,4 +461,9 @@ public class SaveManager : BaseMonoManager<SaveManager>
     {
         return FindSlot(slotId);
     }
+
+    public void SaveCurrentState()
+    {
+        SaveToFile(CurrentSaveData);
+    }
 }
