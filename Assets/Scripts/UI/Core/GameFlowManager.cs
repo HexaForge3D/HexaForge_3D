@@ -100,6 +100,20 @@ public class GameFlowManager
         }
     }
 
+    private void OnEquipmentUnequipRequested(string equipSlot)
+    {
+        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+
+        if (success)
+        {
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -355,6 +369,10 @@ public class GameFlowManager
     {
         EquipmentView view = await UIManager.Instance.OpenUIAsync<EquipmentView>(UIType.EquipmentPopup);
         EquipmentViewModel viewModel = new EquipmentViewModel(_currentSlotId);
+
+        view.OnUnequipRequested -= OnEquipmentUnequipRequested;
+        view.OnUnequipRequested += OnEquipmentUnequipRequested;
+
         view.BindViewModel(viewModel);
     }
 
