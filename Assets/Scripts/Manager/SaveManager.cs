@@ -441,6 +441,15 @@ public class SaveManager : BaseMonoManager<SaveManager>
                 };
             }
             int levelsGained = levelAfter - levelBefore;
+
+            if (slot.Skills == null)
+            {
+                slot.Skills = new SkillSaveData
+                {
+                    Skills = new List<SkillProgressData>(),
+                    AvailablePoints = 0
+                };
+            }
             slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
             Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
         }
