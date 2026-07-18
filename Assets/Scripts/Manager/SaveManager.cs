@@ -7,6 +7,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
     public const float SellPriceRatio = 0.8f;
+    private const int SkillPointsPerLevel = 4;
 
     public SaveData CurrentSaveData { get; private set; }
 
@@ -376,7 +377,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
-    public bool SellItem(string slotId, string itemId)
+    public bool SellItem(string slotId, string itemId, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
@@ -396,20 +397,20 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
 
-        if (existingSlot == null || existingSlot.Count < 1)
+        if (existingSlot == null || existingSlot.Count < count)
         {
             Debug.LogWarning($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
             return false;
         }
 
-        existingSlot.Count -= 1;
+        existingSlot.Count -= count;
 
         if (existingSlot.Count <= 0)
         {
             slot.Inventory.Slots.Remove(existingSlot);
         }
 
-        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio);
+        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio) * count;
         slot.Gold += sellPrice;
 
         SaveToFile(CurrentSaveData);
@@ -417,4 +418,34 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
+    public void AddExp(string slotId, int newExp, int levelBefore, int levelAfter)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return;
+        }
+
+        slot.Exp = newExp;
+
+        if (levelAfter > levelBefore)
+        {
+            int levelsGained = levelAfter - levelBefore;
+
+            if (slot.Skills == null)
+            {
+                slot.Skills = new SkillSaveData
+                {
+                    Skills = new List<SkillProgressData>(),
+                    AvailablePoints = 0
+                };
+            }
+            slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
+            Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
+        }
+
+        SaveToFile(CurrentSaveData);
+    }
 }

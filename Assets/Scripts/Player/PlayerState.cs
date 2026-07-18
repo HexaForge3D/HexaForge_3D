@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState : MonoBehaviour
@@ -10,6 +11,10 @@ public class PlayerState : MonoBehaviour
 
     // 스킬 레벨업을 위하여 레벨이 오르면 발생하는 이벤트
     public static event Action OnLevelUp;
+
+    private const int MaxLevel = 100; // 최대레벨은 100으로 수정불가능 하게
+    private const int MaxExp = 1700000; // 전체 경험치는 1,700,000으로 설정 => 1 -> 2 하는 걸 보기 위해서
+    private const float ExpCurve = 0.5f; // 곡선으로 레벨이 올라갈 수록 레벨 업하기 어렵게 수정 => 숫자가 커질 수록 후반부에 편해지지만, 0.5f 기본세팅함
 
     private void Awake()
     {
@@ -26,9 +31,34 @@ public class PlayerState : MonoBehaviour
         PlayerInputSystem.OnExpTest -= HandleExpTestKey;
     }
 
+    public int LevelFromExp(int totalExp)
+    {
+        if (totalExp >= MaxExp)
+        {
+            return MaxLevel;
+        }
+
+        float ratio = (float)totalExp / MaxExp;
+        float curveRatio = Mathf.Pow(ratio, ExpCurve);
+        int calculatedLevel = 1 + Mathf.FloorToInt(curveRatio * (MaxLevel - 1));
+
+        return calculatedLevel;
+    }
+
+    public int ExpForNextLevel(int targetLevel)
+    {
+        if (targetLevel <= 1) return 0;
+        if (targetLevel >= MaxLevel) return MaxExp;
+
+        float targetCurveRatio = (float)(targetLevel - 1) / (MaxLevel - 1);
+        float ratio = Mathf.Pow(targetCurveRatio, 1f / ExpCurve);
+
+        return Mathf.CeilToInt(ratio * MaxExp);
+    }
+
     private void HandleExpTestKey()
     {
-        AddExp(100); // 경험치는 변경가능 Test용이라서
+        AddExp(100);
     }
 
     public void AddExp(int amount)
@@ -37,49 +67,51 @@ public class PlayerState : MonoBehaviour
 
         CharacterSaveData data = _playerController.PlayerData;
 
-        data.Exp += amount;
-        Debug.Log($"[PlayerState] 경험치 {amount} 획득! (임시 계산용 Exp: {data.Exp})");
+        if (data.Exp >= MaxExp) return;
 
-        // 경험치가 레벨업에 필요한 경험치를 초가할 수 있으므로 호출
-        CheckLevelUp();
+        int levelBefore = LevelFromExp(data.Exp);
 
-        int requiredExp = GetRequiredExp(data.Level);
-        OnExpChanged?.Invoke(data.Exp, requiredExp);
-    }
-    private void CheckLevelUp()
-    {
-        CharacterSaveData data = _playerController.PlayerData;
-        int requiredExp = GetRequiredExp(data.Level);
+        int newExp = data.Exp + amount;
 
-        // 연속으로 레벨업 처리
-        while (data.Exp >= requiredExp)
+        if (newExp > MaxExp) newExp = MaxExp;
+
+        data.Exp = newExp;
+
+        int levelAfter = LevelFromExp(data.Exp);
+
+        if (levelAfter >= MaxLevel)
         {
-            data.Exp -= requiredExp; // 필요 경험치만큼 차감
-            data.Level++;            // 레벨 1 증가
-
-            Debug.Log($"<color=purple>레벨 업! (현재 레벨: {data.Level})</color>");
-
-            // 레벨업 이벤트 발생 스킬 레벨을 올리기 위하여
-            OnLevelUp?.Invoke();
-
-            requiredExp = GetRequiredExp(data.Level);
-        }
-    }
-
-    private int GetRequiredExp(int level)
-    {
-        int x = level;
-        
-        int y = 0;
-        
-        if (x >= 10)
-        {
-            y = x - 9;
+            Debug.Log($"[PlayerState] 경험치 {amount} 획득! (만렙입니다 / 총 누적 Exp: {data.Exp} / {MaxExp})");
         }
 
-        int requiredExp = (x * 200) + (y * 100);
+        else
+        {
+            int nextLevelTotalExp = ExpForNextLevel(levelAfter + 1);
+            int remainExp = nextLevelTotalExp - data.Exp;
 
-        return requiredExp;
+            Debug.Log($"[PlayerState] 경험치 {amount} 획득! (총 누적 Exp: {data.Exp} / {MaxExp} | 다음 레벨업까지 남은 경험치: {remainExp})");
+        }
+
+        SaveManager.Instance.AddExp(data.SlotId, data.Exp, levelBefore, levelAfter);
+
+        if (levelAfter > levelBefore)
+        {
+            int levelUpCount = levelAfter - levelBefore;
+
+            for (int i = 0; i < levelUpCount; i++)
+            {
+                Debug.Log($"<color=purple>레벨 업! (도달 레벨: {levelBefore + i + 1})</color>");
+
+                if (data.Skills == null) data.Skills = new SkillSaveData();
+                if (data.Skills.Skills == null) data.Skills.Skills = new List<SkillProgressData>();
+
+                OnLevelUp?.Invoke();
+            }
+
+            SkillUtil.Instance?.InvokeSkillDataUpdated();
+        }
+
+        OnExpChanged?.Invoke(data.Exp, MaxExp);
     }
 
 }
