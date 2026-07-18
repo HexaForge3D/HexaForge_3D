@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -63,23 +64,27 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        bool isPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
-        if (Input.GetMouseButtonDown(0))
+        if (isPointerOverUI == false)
         {
-            OnClickAttack();
-        }
-
-        if (_isAttackAnimPlaying == false)
-        {
-
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0))
             {
-                SetTargetPosition(true);
+                OnClickAttack();
             }
 
-            else if (Input.GetMouseButton(1))
+            if (_isAttackAnimPlaying == false)
             {
-                SetTargetPosition(false);
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    SetTargetPosition(true);
+                }
+
+                else if (Input.GetMouseButton(1))
+                {
+                    SetTargetPosition(false);
+                }
             }
         }
 

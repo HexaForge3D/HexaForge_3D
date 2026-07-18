@@ -9,6 +9,9 @@ public class GameFlowManager
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
+    private string _pendingSellItemId;
+    private int _pendingSellCount;
+
     public async UniTask StartAsync()
     {
         await GameDataManager.Instance.WaitUntilReadyAsync();
@@ -34,6 +37,8 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
+        NPC.OnNPCInteracted -= OnNpcInterated;
+
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
         _inGameViewModel = null;
@@ -63,6 +68,17 @@ public class GameFlowManager
         ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
     }
 
+    private void OnInventorySellRequested(InventoryItemData data, int count)
+    {
+        _pendingSellItemId = data.Id;
+        _pendingSellCount = count;
+
+        int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
+        string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
+
+        ShowConfirmAsync(message, OnSellConfirmed).Forget();
+    }
+
 
     private void OnCreateCharacterRequested(string slotId)
     {
@@ -80,6 +96,25 @@ public class GameFlowManager
         else
         {
             ShowHuntingAreaAsync().Forget();
+        }
+    }
+
+    private void OnNpcInterated(NPC npc)
+    {
+        switch (npc.NPCId)
+        {
+            case NPCId.Store:
+                ToggleUI(UIType.ShopUI, ShowShop);
+                    break;
+            case NPCId.Smithy:
+                Debug.Log("smithy 상호작용");
+                break;
+            case NPCId.MainQuest:
+                Debug.Log("MainQuest 상호작용");
+                break;
+            default:
+                Debug.Log("NPCId 설정이 잘못되었습니다.");
+                break;
         }
     }
 
@@ -114,6 +149,17 @@ public class GameFlowManager
         }
     }
 
+    private void OnSellConfirmed()
+    {
+        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+
+        if (success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
     // 아직 미구독상태
     private void OnShopNpcInteracted()
     {
@@ -140,6 +186,11 @@ public class GameFlowManager
         {
             ShowGameMenuAsync().Forget();
         }
+    }
+
+    private void OnSkillTreeKeyPressed()
+    {
+        ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
     }
 
 
@@ -186,11 +237,11 @@ public class GameFlowManager
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
+        PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-
-        ShowShop();
+        NPC.OnNPCInteracted += OnNpcInterated;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -243,6 +294,7 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+        view.OnSellRequested += OnInventorySellRequested;
         view.BindViewModel(viewModel);
     }
 
@@ -251,6 +303,13 @@ public class GameFlowManager
         ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
         ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
         viewModel.OnGoldChanged += OnShopTransactionCompleted;
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowSkillTreeAsync()
+    {
+        SkillTreeView view = await UIManager.Instance.OpenUIAsync<SkillTreeView>(UIType.SkillTreePopup);
+        SkillTreeViewModel viewModel = new SkillTreeViewModel(_currentSlotId);
         view.BindViewModel(viewModel);
     }
 
@@ -281,5 +340,10 @@ public class GameFlowManager
     private void ShowShop()
     {
         ShowShopAsync().Forget();
+    }
+
+    private void ShowSkillTree()
+    {
+        ShowSkillTreeAsync().Forget();
     }
 }
