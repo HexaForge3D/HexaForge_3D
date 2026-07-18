@@ -30,8 +30,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1f7171b78f2493b42965c3cfb0ac0f12
-    m_Address: Map_Smithy
+  - m_GUID: 249dceac1965afd4baac622ebee73ed4
+    m_Address: Skill_Icon_Warrior2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -42,6 +42,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ecb3cd75d672c54988713eea44e2d1a
     m_Address: UI_HuntingAreaSelect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 414b7d17ed9b69640a20be2e6922b13b
+    m_Address: Skill_Icon_Warrior3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -60,6 +65,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76f1b1a7cad0c544e8312d8366d375b7
+    m_Address: Skill_Icon_Warrior4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 925e2d1f6c8dfa9438b89bff5515645d
     m_Address: UI_Shop
     m_ReadOnly: 0
@@ -72,11 +82,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98a8c94858514784ba615a915f2fdc40
     m_Address: JsonOutput/HuntingArea
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9c336dee3b1af6e4ba542a7bedb2e0ab
-    m_Address: Assets/Prefabs/Map/Map_Essential/Prefab_Village.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -115,8 +120,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: de7be3c352b9ab14eaae679f6895450c
-    m_Address: Map_Store
+  - m_GUID: ea97dde055d9e4e46916aa62b451f2d2
+    m_Address: Skill_Icon_Warrior1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
