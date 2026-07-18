@@ -1,5 +1,15 @@
 ﻿using System;
 
+public enum EquipSlotType
+{
+    Weapon,
+    Helmet,
+    Chest,
+    Pants,
+    Boots,
+    Gloves,
+}
+
 [Serializable]
 public class EquipmentTableData : GameDataBase
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 [Serializable]
 public class CharacterSaveData
@@ -17,5 +16,6 @@ public class CharacterSaveData
 
     public InventorySaveData Inventory;
     public SkillSaveData Skills;
+    public EquippedItemsSaveData Equipped;
 }
 
