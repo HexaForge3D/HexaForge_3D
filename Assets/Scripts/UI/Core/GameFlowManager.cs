@@ -38,6 +38,7 @@ public class GameFlowManager
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
+        PlayerState.OnLevelUp -= OnPlayerLevelUp;
 
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
@@ -160,6 +161,12 @@ public class GameFlowManager
         }
     }
 
+    private void OnPlayerLevelUp()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
+    }
+
     // 아직 미구독상태
     private void OnShopNpcInteracted()
     {
@@ -231,7 +238,7 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
-        _inGameViewModel = new InGameViewModel();
+        _inGameViewModel = new InGameViewModel(_currentSlotId);
 
         view.BindViewModel(_inGameViewModel);
 
@@ -242,6 +249,7 @@ public class GameFlowManager
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
+        PlayerState.OnLevelUp += OnPlayerLevelUp;
     }
 
     private async UniTask ShowHuntingAreaAsync()
