@@ -115,7 +115,7 @@ public class SkillUtil : MonoBehaviour
         
         skillProg.SkillLevel++;
         skillSaveData.AvailablePoints--;
-
+        SaveManager.Instance.SaveCurrentState();
         OnSkillDataUpdated?.Invoke();
     }
     // 스킬 레벨 다운그레이드 메서드
