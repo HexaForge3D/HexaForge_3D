@@ -67,7 +67,7 @@ public class ShopView : BaseOverLayUI
         Text_Message.text = message;
     }
 
-    private void RefreshGold()
+    public void RefreshGold()
     {
         Text_Gold.text = $"Gold: {_viewModel.GetCurrentGold()}G";
     }

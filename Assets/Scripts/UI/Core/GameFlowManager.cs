@@ -158,6 +158,9 @@ public class GameFlowManager
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
+
+            ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
+            shopView?.RefreshGold();
         }
     }
 
@@ -302,7 +305,10 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+
+        view.OnSellRequested -= OnInventorySellRequested;
         view.OnSellRequested += OnInventorySellRequested;
+
         view.BindViewModel(viewModel);
     }
 
