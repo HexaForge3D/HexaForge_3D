@@ -12,6 +12,7 @@ public class TooltipView : MonoBehaviour
     [SerializeField] private TMP_Text Text_Description;
     [SerializeField] private TMP_Text Text_UsageHint;
     [SerializeField] private TMP_Text Text_Count;
+    [SerializeField] private TMP_Text Text_Price;
 
     [SerializeField] private Vector2 CursorOffset = new Vector2(20f, -20f);
 
@@ -40,6 +41,13 @@ public class TooltipView : MonoBehaviour
         if (hasCount)
         {
             Text_Count.text = data.CountText;
+        }
+
+        bool hasPrice = string.IsNullOrEmpty(data.PriceText) == false;
+        Text_Price.gameObject.SetActive(hasPrice);
+        if (hasPrice)
+        {
+            Text_Price.text = data.PriceText;
         }
 
         SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();
