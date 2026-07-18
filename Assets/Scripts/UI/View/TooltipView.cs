@@ -27,8 +27,8 @@ public class TooltipView : MonoBehaviour
         Text_Description.text = data.Description;
 
         bool hasUsageHint = string.IsNullOrEmpty(data.UsageHint) == false;
-        Text_UsageHint.gameObject.SetActive(hasUsageHint);
 
+        Text_UsageHint.gameObject.SetActive(hasUsageHint);
         if (hasUsageHint)
         {
             Text_UsageHint.text = data.UsageHint;
@@ -50,7 +50,32 @@ public class TooltipView : MonoBehaviour
 
     public void UpdatePosition(Vector2 screenPosition)
     {
-        RectTransform_Self.position = screenPosition + CursorOffset;
+        Vector2 targetPosition = screenPosition + CursorOffset;
+
+        float tooltipWidth = RectTransform_Self.rect.width;
+        float tooltipHeight = RectTransform_Self.rect.height;
+
+        if (targetPosition.x + tooltipWidth > Screen.width)
+        {
+            targetPosition.x = Screen.width - tooltipWidth;
+        }
+
+        if (targetPosition.x < 0)
+        {
+            targetPosition.x = 0;
+        }
+
+        if (targetPosition.y - tooltipHeight < 0)
+        {
+            targetPosition.y = tooltipHeight;
+        }
+
+        if (targetPosition.y > Screen.height)
+        {
+            targetPosition.y = Screen.height;
+        }
+
+        RectTransform_Self.position = targetPosition;
     }
 
     public void Hide()
