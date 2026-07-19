@@ -192,13 +192,13 @@ public class SkillUtil : MonoBehaviour
         int calcDamage = GetCalculatedDamage(skillData, currentLevel);
 
         //계산된 마나 소모량으로 차감
-        if (playerData.Mp < calcManaCost)
+        if (playerData.CurrentMp < calcManaCost)
         {
             Debug.Log("마나가 부족합니다!!");
             OnLackMana?.Invoke(skillData.ID);
             return;
         }
-        playerData.Mp -= calcManaCost;
+        playerData.CurrentMp -= calcManaCost;
 
         // 계산된 쿨타임 적용
         _skillCoolTime[skillData.ID] = Time.time + calcCooldown;

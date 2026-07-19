@@ -33,7 +33,7 @@ public class PlayerBattle : MonoBehaviour
     {
         if (_isHpSet == false && _playerController != null && _playerController.PlayerData != null)
         {
-            _currentHp = _playerController.PlayerData.Hp;
+            _currentHp = _playerController.PlayerData.CurrentHp; // 현재 체력으로 수정
             _maxHp = _playerController.PlayerData.Hp;
             _isHpSet = true;
         }
@@ -43,7 +43,7 @@ public class PlayerBattle : MonoBehaviour
     {
         if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
 
-        int atk = _playerController.PlayerData.Atk;
+        int atk = _playerController.GetTotalAtk();
 
         if (_attackPoint != null)
         {
@@ -90,8 +90,8 @@ public class PlayerBattle : MonoBehaviour
 
         _currentHp -= finalDamage;
         _currentHp = Mathf.Max(0, _currentHp);
-
-        _playerController.SetCurrentHp(_currentHp);
+        // SaveData의 CurrentHp를 가져옴
+        _playerController.PlayerData.CurrentHp = _currentHp;
 
         Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {_currentHp} / {_maxHp})");
         // 이벤트를 위한 내용

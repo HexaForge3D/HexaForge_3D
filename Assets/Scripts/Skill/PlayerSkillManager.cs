@@ -169,7 +169,7 @@ public class PlayerSkillManager : MonoBehaviour
         Debug.Log($"<color=green>[Heal] 체력 {calculatedHealAmount} 회복! 현재 HP: {playerData.Hp}</color>");
     }
 
-    private async Cysharp.Threading.Tasks.UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, System.Threading.CancellationToken cancellationToken)
+    private async UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, CancellationToken cancellationToken)
     {
         CharacterSaveData playerData = _playerController.PlayerData;
        
@@ -179,7 +179,7 @@ public class PlayerSkillManager : MonoBehaviour
 
         if (isAtkBuff)
         {
-            playerData.Atk += calculatedBuffValue; // 계산된 버프값 적용
+            _playerController.BuffAtk += calculatedBuffValue; // 계산된 버프값 적용
             Debug.Log($"<color=yellow>[Buff] {buffData.Name} 발동! 공격력 {calculatedBuffValue} 증가 ({buffData.Duration}초)</color>");
         }
 
@@ -194,7 +194,7 @@ public class PlayerSkillManager : MonoBehaviour
         // 버프 효과 원상복구
         if (isAtkBuff)
         {
-            playerData.Atk -= calculatedBuffValue; 
+            _playerController.BuffAtk -= calculatedBuffValue; 
             Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {calculatedBuffValue} 감소 원상복구</color>");
         }
     }

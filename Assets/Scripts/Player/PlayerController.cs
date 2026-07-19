@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
 
+    public int BuffAtk { get; set; }
+
     private void Start()
     {
         _targetPosition = transform.position;
@@ -333,6 +335,13 @@ public class PlayerController : MonoBehaviour
     public void SetAttackAnimPlaying(bool isPlaying)
     {
         _isAttackAnimPlaying = isPlaying;
+    }
+
+    // 버프를 받고 공격했을 때의 데미지
+    public int GetTotalAtk()
+    {
+        if (PlayerData == null) return 0;
+        return PlayerData.Atk + BuffAtk;
     }
 
 }
