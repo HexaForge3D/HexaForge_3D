@@ -10,13 +10,14 @@ public enum UIType : byte
     CharacterSelectUI,
     InGameUI,
     HuntingAreaSelectUI,
+    ShopUI,
     InformationPopup,
     CharacterCreatePopup,
     ConfirmPopup,
     GameMenuPopup,
     InventoryPopup,
     SkillTreePopup,
-    ShopUI
+    EquipmentPopup
 }
 
 public enum UIRootType : byte
@@ -48,6 +49,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.TitleUI, "UI_Title" },
         {UIType.CharacterSelectUI, "UI_CharacterSelect" },
         {UIType.InGameUI, "UI_InGame" },
+        {UIType.ShopUI, "UI_Shop" },
         {UIType.HuntingAreaSelectUI, "UI_HuntingAreaSelect" },
         {UIType.InformationPopup, "Popup_Information" },
         {UIType.CharacterCreatePopup, "Popup_CharacterCreate" },
@@ -55,7 +57,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.GameMenuPopup, "Popup_GameMenu" },
         {UIType.InventoryPopup, "Popup_Inventory" },
         {UIType.SkillTreePopup, "Popup_SkillTree"},
-        {UIType.ShopUI, "UI_Shop" }
+        {UIType.EquipmentPopup, "Popup_Equipment" }
     };
 
     // UI가 배치될 레이어 관리
@@ -65,13 +67,14 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.CharacterSelectUI, UIRootType.Main },
         {UIType.InGameUI, UIRootType.Main },
         {UIType.HuntingAreaSelectUI, UIRootType.Content },
+        {UIType.ShopUI, UIRootType.Content },
         {UIType.InformationPopup, UIRootType.Popup },
         {UIType.CharacterCreatePopup, UIRootType.Popup },
         {UIType.ConfirmPopup, UIRootType.Popup },
         {UIType.GameMenuPopup, UIRootType.Popup },
         {UIType.InventoryPopup, UIRootType.Popup },
         {UIType.SkillTreePopup, UIRootType.Content },
-        {UIType.ShopUI, UIRootType.Content }
+        {UIType.EquipmentPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리

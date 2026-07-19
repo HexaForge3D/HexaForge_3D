@@ -96,6 +96,8 @@ public class SaveManager : BaseMonoManager<SaveManager>
             Slots = new List<InventorySlotSaveData>()
         };
 
+        slot.Equipped = new EquippedItemsSaveData();
+
         slot.Skills = new SkillSaveData
         {
             Skills = new List<SkillProgressData>(),
@@ -128,6 +130,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Gold = 0;
         slot.Inventory = null;
         slot.Skills = null;
+        slot.Equipped = null;
 
         SaveToFile(CurrentSaveData);
         
@@ -467,5 +470,107 @@ public class SaveManager : BaseMonoManager<SaveManager>
     public void SaveCurrentState()
     {
         SaveToFile(CurrentSaveData);
+    }
+
+    public bool EquipItem(string slotId, string itemId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+
+        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
+
+        if (equipmentData == null)
+        {
+            Debug.LogError($"[SaveManager] {itemId}에 대한 장비 데이터를 찾을 수 없습니다.");
+            return false;
+        }
+
+        if (slot.Equipped == null)
+        {
+            slot.Equipped = new EquippedItemsSaveData();
+        }
+
+        string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
+
+        SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
+
+        RemoveItem(slotId, itemId, 1);
+
+        if (string.IsNullOrEmpty(previousItemId) == false)
+        {
+            AddItem(slotId, previousItemId, 1);
+        }
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    public bool UnequipItem(string slotId, string equipSlotName)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Equipped == null)
+        {
+            return false;
+        }
+
+        string itemId = GetEquippedItemId(slot.Equipped, equipSlotName);
+
+        if (string.IsNullOrEmpty(itemId))
+        {
+            return false;
+        }
+
+        SetEquippedItemId(slot.Equipped, equipSlotName, null);
+        AddItem(slotId, itemId, 1);
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    private string GetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot)
+    {
+        switch (equipSlot)
+        {
+            case "Weapon": return equipped.WeaponItemId;
+            case "Helmet": return equipped.HelmetItemId;
+            case "Chest": return equipped.ChestItemId;
+            case "Pants": return equipped.PantsItemId;
+            case "Boots": return equipped.BootsItemId;
+            case "Gloves": return equipped.GlovesItemId;
+            default: return null;
+        }
+    }
+
+    private void SetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot, string itemId)
+    {
+        switch (equipSlot)
+        {
+            case "Weapon": equipped.WeaponItemId = itemId; break;
+            case "Helmet": equipped.HelmetItemId = itemId; break;
+            case "Chest": equipped.ChestItemId = itemId; break;
+            case "Pants": equipped.PantsItemId = itemId; break;
+            case "Boots": equipped.BootsItemId = itemId; break;
+            case "Gloves": equipped.GlovesItemId = itemId; break;
+        }
+    }
+
+    public string GetEquippedItemId(string slotId, string equipSlot)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Equipped == null)
+        {
+            return null;
+        }
+
+        return GetEquippedItemId(slot.Equipped, equipSlot);
     }
 }

@@ -12,6 +12,7 @@ public class InventoryView : BaseOverLayUI
     private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
 
     public Action<InventoryItemData, int> OnSellRequested;
+    public Action<InventoryItemData> OnEquipRequested;
 
     public void BindViewModel(InventoryViewModel viewModel)
     {
@@ -34,7 +35,7 @@ public class InventoryView : BaseOverLayUI
         {
             GameObject slotObject = Instantiate(Prefab_InventorySlot, Transform_SlotParent);
             InventorySlotView slotView = slotObject.GetComponent<InventorySlotView>();
-            slotView.Setup(slotData, RequestSell);
+            slotView.Setup(slotData, RequestSell, RequestEquip);
 
             _spawnedSlots.Add(slotObject);
         }
@@ -43,6 +44,11 @@ public class InventoryView : BaseOverLayUI
     private void RequestSell(InventoryItemData data, int count)
     {
         OnSellRequested?.Invoke(data, count);
+    }
+
+    private void RequestEquip(InventoryItemData data)
+    {
+        OnEquipRequested?.Invoke(data);
     }
 
     private void ClearSlot()

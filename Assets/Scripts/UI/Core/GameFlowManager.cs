@@ -38,6 +38,8 @@ public class GameFlowManager
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
+        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerInputSystem.OnMap -= OnEquipmentKeyPressed;  // 단축키가 없어서 M키에 연결해둔 상태
 
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
@@ -79,11 +81,25 @@ public class GameFlowManager
         ShowConfirmAsync(message, OnSellConfirmed).Forget();
     }
 
-
     private void OnCreateCharacterRequested(string slotId)
     {
         ShowCharacterCreateAsync(slotId).Forget();
     }
+
+    private void OnInventoryEquipRequested(InventoryItemData data)
+    {
+        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+
+        if (success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+        }
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -157,7 +173,16 @@ public class GameFlowManager
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
+
+            ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
+            shopView?.RefreshGold();
         }
+    }
+
+    private void OnPlayerLevelUp()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
     }
 
     // 아직 미구독상태
@@ -191,6 +216,11 @@ public class GameFlowManager
     private void OnSkillTreeKeyPressed()
     {
         ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
+    }
+
+    private void OnEquipmentKeyPressed()
+    {
+        ToggleUI(UIType.EquipmentPopup, ShowEquipment);
     }
 
 
@@ -231,17 +261,19 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
-        _inGameViewModel = new InGameViewModel();
+        _inGameViewModel = new InGameViewModel(_currentSlotId);
 
         view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
+        PlayerInputSystem.OnMap += OnEquipmentKeyPressed; // 현재 단축키가 없어서 M키에 연결해둔 상태
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
+        PlayerState.OnLevelUp += OnPlayerLevelUp;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -294,7 +326,13 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+
+        view.OnSellRequested -= OnInventorySellRequested;
         view.OnSellRequested += OnInventorySellRequested;
+
+        view.OnEquipRequested -= OnInventoryEquipRequested;
+        view.OnEquipRequested += OnInventoryEquipRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -310,6 +348,13 @@ public class GameFlowManager
     {
         SkillTreeView view = await UIManager.Instance.OpenUIAsync<SkillTreeView>(UIType.SkillTreePopup);
         SkillTreeViewModel viewModel = new SkillTreeViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowEquipmentAsync()
+    {
+        EquipmentView view = await UIManager.Instance.OpenUIAsync<EquipmentView>(UIType.EquipmentPopup);
+        EquipmentViewModel viewModel = new EquipmentViewModel(_currentSlotId);
         view.BindViewModel(viewModel);
     }
 
@@ -345,5 +390,10 @@ public class GameFlowManager
     private void ShowSkillTree()
     {
         ShowSkillTreeAsync().Forget();
+    }
+
+    private void ShowEquipment()
+    {
+        ShowEquipmentAsync().Forget();
     }
 }

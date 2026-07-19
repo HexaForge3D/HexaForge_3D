@@ -13,11 +13,13 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
 
     private InventoryItemData _data;
     private Action<InventoryItemData, int> _onSellRequested;
+    private Action<InventoryItemData> _onEquipRequested;
 
-    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested)
+    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested)
     {
         _data = data;
         _onSellRequested = onSellRequested;
+        _onEquipRequested = onEquipRequested;
 
         if (data == null)
         {
@@ -32,7 +34,6 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
 
         bool showCount = data.MaxStack > 1;
         Text_Count.gameObject.SetActive(showCount);
-
         if (showCount)
         {
             Text_Count.text = data.Count.ToString();
@@ -58,7 +59,7 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
             usageHint,
             countText,
             priceText
-            );
+        );
 
         TooltipTrigger.SetData(tooltipData);
     }
@@ -66,17 +67,22 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_data == null) return;
-
         if (eventData.button != PointerEventData.InputButton.Right) return;
 
         bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopUI);
 
-        if (isShopOpen == false) return;
-        
-        bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        int count = isShiftHeld ? _data.Count : 1;
+        if (isShopOpen)
+        {
+            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            int count = isShiftHeld ? _data.Count : 1;
+            _onSellRequested?.Invoke(_data, count);
+            return;
+        }
 
-        _onSellRequested?.Invoke(_data, count);
+        if (_data.UsageType == ItemUsageType.Equipment)
+        {
+            _onEquipRequested?.Invoke(_data);
+        }
     }
 
     private string GetUsageHint(ItemUsageType usageType)
