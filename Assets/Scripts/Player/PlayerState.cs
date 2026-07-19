@@ -164,6 +164,7 @@ public class PlayerState : MonoBehaviour
 
     private async UniTaskVoid ManaRegen(CancellationToken token)
     {
+        int saveCount = 0; // 마나 회복을 1초로 계속 할 경우 버벅임이 있을 수 있으므로 5초로 나누기 위한 카운트 다운 변수
         try
         {
             while (token.IsCancellationRequested == false)
@@ -184,16 +185,29 @@ public class PlayerState : MonoBehaviour
                     {
                         data.CurrentMp = _maxMp;
                     }
+                    
                     Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.Mp} / 최대마나: {_maxMp}</color>");
 
                     OnMpChanged?.Invoke(data.CurrentMp, _maxMp);
+                    saveCount++;
+                   
+                    if (saveCount >= 5) // 5초가 되면
+                    {
+                        SaveManager.Instance.SaveCurrentState();
+                        saveCount = 0; // 저장 후 다시 0초부터 카운트 시작
+                    }
+
+                    else
+                    {
+                        saveCount = 0;
+                    }
+                    SaveManager.Instance.SaveCurrentState();
                 }
             }
         }
 
         catch (OperationCanceledException)
         {
-
         }
     }
 

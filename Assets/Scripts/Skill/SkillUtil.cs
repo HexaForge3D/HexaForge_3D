@@ -206,6 +206,7 @@ public class SkillUtil : MonoBehaviour
         OnSkillSuccess?.Invoke(skillData);
         OnSkillCoolTimeStart?.Invoke(skillData.ID, calcCooldown);
 
+        SaveManager.Instance.SaveCurrentState();
         Debug.Log($"<color=cyan>[SkillUtil] {skillData.Name} 발동! (Lv.{currentLevel})</color> 데미지: {calcDamage}, 남은 마나: {playerData.Mp}");
     }
 }

@@ -97,6 +97,8 @@ public class PlayerBattle : MonoBehaviour
         // 이벤트를 위한 내용
         OnHpChanged?.Invoke(_currentHp, _maxHp);
 
+        SaveManager.Instance.SaveCurrentState();
+
         if (_currentHp <= 0)
         {
             Die();
