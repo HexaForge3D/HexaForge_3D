@@ -81,6 +81,7 @@ public class SkillUtil : MonoBehaviour
             skillProg = new SkillProgressData { SkillId = skillId, SkillLevel = 1 };
             skillList.Add(skillProg);
         }
+
         // 스킬 레벨 반환
         return skillProg.SkillLevel;
     }
@@ -184,19 +185,27 @@ public class SkillUtil : MonoBehaviour
             }
         }
 
-        if (playerData.Mp < skillData.ManaCost)
+        //현재 스킬 레벨 가져오기
+        int currentLevel = GetSkillLevel(skillData.ID);
+        int calcManaCost = GetCalculatedManaCost(skillData, currentLevel);
+        float calcCooldown = GetCalculatedCoolDown(skillData, currentLevel);
+        int calcDamage = GetCalculatedDamage(skillData, currentLevel);
+
+        //계산된 마나 소모량으로 차감
+        if (playerData.CurrentMp < calcManaCost)
         {
             Debug.Log("마나가 부족합니다!!");
-
             OnLackMana?.Invoke(skillData.ID);
             return;
         }
+        playerData.CurrentMp -= calcManaCost;
 
-        playerData.Mp -= skillData.ManaCost;
-        _skillCoolTime[skillData.ID] = Time.time + skillData.CoolDown;
+        // 계산된 쿨타임 적용
+        _skillCoolTime[skillData.ID] = Time.time + calcCooldown;
 
         OnSkillSuccess?.Invoke(skillData);
-        OnSkillCoolTimeStart?.Invoke(skillData.ID, skillData.CoolDown);
-        Debug.Log($"<color=cyan>[SkillUtil] {skillData.Name} 발동!</color> 데미지: {skillData.Damage}, 남은 마나: {playerData.Mp}");
+        OnSkillCoolTimeStart?.Invoke(skillData.ID, calcCooldown);
+
+        Debug.Log($"<color=cyan>[SkillUtil] {skillData.Name} 발동! (Lv.{currentLevel})</color> 데미지: {calcDamage}, 남은 마나: {playerData.Mp}");
     }
 }

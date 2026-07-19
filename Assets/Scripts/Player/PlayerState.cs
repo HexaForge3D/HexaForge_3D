@@ -174,22 +174,19 @@ public class PlayerState : MonoBehaviour
 
                 CharacterSaveData data = _playerController.PlayerData;
 
-                if (data.Mp < _maxMp)
+                if (data.CurrentMp < _maxMp)
                 {
                     int regenAmount = Mathf.Max(1, Mathf.FloorToInt(_maxMp * ManaRegenRate));
 
-                    data.Mp += regenAmount;
+                    data.CurrentMp += regenAmount;
 
-                    if (data.Mp > _maxMp)
+                    if (data.CurrentMp > _maxMp)
                     {
-                        int overAmount = data.Mp - _maxMp;
-                        regenAmount -= overAmount;
-
-                        data.Mp = _maxMp;
+                        data.CurrentMp = _maxMp;
                     }
                     Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.Mp} / 최대마나: {_maxMp}</color>");
 
-                    OnMpChanged?.Invoke(data.Mp, _maxMp);
+                    OnMpChanged?.Invoke(data.CurrentMp, _maxMp);
                 }
             }
         }
