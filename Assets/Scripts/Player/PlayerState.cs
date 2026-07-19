@@ -21,8 +21,6 @@ public class PlayerState : MonoBehaviour
     private const int MaxExp = 1700000; // 전체 경험치는 1,700,000으로 설정 => 1 -> 2 하는 걸 보기 위해서
     private const float ExpCurve = 0.5f; // 곡선으로 레벨이 올라갈 수록 레벨 업하기 어렵게 수정 => 숫자가 커질 수록 후반부에 편해지지만, 0.5f 기본세팅함
 
-    private int _maxMp;
-    private bool _isMpSet = false;
     private CancellationTokenSource _cts;
 
     private const float ManaRegenTimer = 1f;
@@ -37,15 +35,6 @@ public class PlayerState : MonoBehaviour
     {
         _cts = new CancellationTokenSource();
         ManaRegen(_cts.Token).Forget();
-    }
-
-    private void Update()
-    {
-        if (_isMpSet == false && _playerController != null && _playerController.PlayerData != null)
-        {
-            _maxMp = _playerController.PlayerData.Mp;
-            _isMpSet = true;
-        }
     }
 
     private void OnEnable()
@@ -171,24 +160,24 @@ public class PlayerState : MonoBehaviour
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(ManaRegenTimer), cancellationToken: token);
 
-                if (_isMpSet == false || _playerController.PlayerData == null) continue;
+                if (_playerController == null || _playerController.PlayerData == null) continue;
 
                 CharacterSaveData data = _playerController.PlayerData;
 
-                if (data.CurrentMp < _maxMp)
+                if (data.CurrentMp < data.Mp)
                 {
-                    int regenAmount = Mathf.Max(1, Mathf.FloorToInt(_maxMp * ManaRegenRate));
+                    int regenAmount = Mathf.Max(1, Mathf.FloorToInt(data.Mp * ManaRegenRate));
 
                     data.CurrentMp += regenAmount;
 
-                    if (data.CurrentMp > _maxMp)
+                    if (data.CurrentMp > data.Mp)
                     {
-                        data.CurrentMp = _maxMp;
+                        data.CurrentMp = data.Mp;
                     }
                     
-                    Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.Mp} / 최대마나: {_maxMp}</color>");
+                    Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.CurrentMp} / 최대마나: {data.Mp}</color>");
 
-                    OnMpChanged?.Invoke(data.CurrentMp, _maxMp);
+                    OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
                     saveCount++;
                    
                     if (saveCount >= 5) // 5초가 되면

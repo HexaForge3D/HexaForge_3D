@@ -13,10 +13,7 @@ public class PlayerBattle : MonoBehaviour
     [SerializeField] private int _gizmoGridSegments = 10;
 
     private PlayerController _playerController;
-    private int _currentHp;
-    private int _maxHp;
     private bool _isDead = false;
-    private bool _isHpSet = false;
     // 몬스터에게 플레이어가 죽었다는 사실을 알려주기 위한 변수
     public bool IsDead => _isDead;
     // 플레이어 체력 변경시 나오는 이벤트 변수
@@ -27,16 +24,6 @@ public class PlayerBattle : MonoBehaviour
     private void Start()
     {
         _playerController = GetComponent<PlayerController>();
-    }
-
-    private void Update()
-    {
-        if (_isHpSet == false && _playerController != null && _playerController.PlayerData != null)
-        {
-            _currentHp = _playerController.PlayerData.CurrentHp; // 현재 체력으로 수정
-            _maxHp = _playerController.PlayerData.Hp;
-            _isHpSet = true;
-        }
     }
 
     public void ExecuteAttack()
@@ -82,24 +69,23 @@ public class PlayerBattle : MonoBehaviour
     {
         if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
 
-        int def = _playerController.PlayerData.Def;
+        CharacterSaveData data = _playerController.PlayerData;
 
+        int def = _playerController.PlayerData.Def;
         int finalDamage = MonsterDamage - def;
 
         if (finalDamage < 0) finalDamage = 0;
 
-        _currentHp -= finalDamage;
-        _currentHp = Mathf.Max(0, _currentHp);
-        // SaveData의 CurrentHp를 가져옴
-        _playerController.PlayerData.CurrentHp = _currentHp;
+        data.CurrentHp -= finalDamage;
+        data.CurrentHp = Mathf.Max(0, data.CurrentHp);
 
-        Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {_currentHp} / {_maxHp})");
+        Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {data.CurrentHp} / {data.Hp})");
         // 이벤트를 위한 내용
-        OnHpChanged?.Invoke(_currentHp, _maxHp);
+        OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
 
         SaveManager.Instance.SaveCurrentState();
 
-        if (_currentHp <= 0)
+        if (data.CurrentHp <= 0)
         {
             Die();
         }
