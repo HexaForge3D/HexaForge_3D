@@ -455,7 +455,8 @@ MonoBehaviour:
   _informationKey: 99
   _mapKey: 109
   _systemKey: 27
-  _expTestKey: 112
+  _expTestKey: 61
+  _equipMentKey: 112
 --- !u!114 &2214026887260603912
 MonoBehaviour:
   m_ObjectHideFlags: 0
