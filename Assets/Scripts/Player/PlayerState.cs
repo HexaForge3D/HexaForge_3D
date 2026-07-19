@@ -185,12 +185,11 @@ public class PlayerState : MonoBehaviour
                         SaveManager.Instance.SaveCurrentState();
                         saveCount = 0; // 저장 후 다시 0초부터 카운트 시작
                     }
+                }
 
-                    else
-                    {
-                        saveCount = 0;
-                    }
-                    SaveManager.Instance.SaveCurrentState();
+                else
+                {
+                    saveCount = 0;
                 }
             }
         }
