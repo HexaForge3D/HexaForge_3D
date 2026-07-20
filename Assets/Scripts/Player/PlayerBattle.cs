@@ -240,6 +240,21 @@ public class PlayerBattle : MonoBehaviour
 
         CharacterSaveData data = _playerController.PlayerData;
 
+        // 체력이나 마나가 최대인 경우에는 사용할 수 없게끔 수정
+        bool canHealHp = potionData.HpBonus > 0 && data.CurrentHp < data.Hp;
+        bool canHealMp = potionData.MpBonus > 0 && data.CurrentMp < data.Mp;
+
+        if (canHealHp == false && canHealMp == false)
+        {
+            if (potionData.HpBonus > 0 && potionData.MpBonus == 0) Debug.Log("<color=yellow>체력이 이미 최대치입니다.</color>");
+            
+            else if (potionData.MpBonus > 0 && potionData.HpBonus == 0) Debug.Log("<color=yellow>마나가 이미 최대치입니다.</color>");
+           
+            else Debug.Log("<color=yellow>체력과 마나가 이미 최대치입니다.</color>");
+
+            return;
+        }
+
         bool isConsumed = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
 
         if (isConsumed == false)
