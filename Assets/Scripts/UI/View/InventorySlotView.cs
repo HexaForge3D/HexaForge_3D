@@ -58,7 +58,8 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
             data.Description,
             usageHint,
             countText,
-            priceText
+            priceText,
+            null
         );
 
         TooltipTrigger.SetData(tooltipData);

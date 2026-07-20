@@ -40,6 +40,7 @@ public class GameFlowManager
         NPC.OnNPCInteracted -= OnNpcInterated;
         PlayerState.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnMap -= OnEquipmentKeyPressed;  // 단축키가 없어서 M키에 연결해둔 상태
+        SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
 
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
@@ -199,11 +200,12 @@ public class GameFlowManager
         inGameView?.RefreshSkillSlots();
     }
 
-    // 아직 미구독상태
-    private void OnShopNpcInteracted()
+    private void OnSkillDataUpdated()
     {
-        ToggleUI(UIType.ShopUI, ShowShop);
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
     }
+
 
     private void OnInformationKeyPressed()
     {
@@ -288,6 +290,7 @@ public class GameFlowManager
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
         PlayerState.OnLevelUp += OnPlayerLevelUp;
+        SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
     }
 
     private async UniTask ShowHuntingAreaAsync()
