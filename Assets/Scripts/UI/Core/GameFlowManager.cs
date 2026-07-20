@@ -44,6 +44,8 @@ public class GameFlowManager
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead -= OnPlayerDead;
+        SkillUtil.OnLackMana -= OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -94,9 +96,9 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
@@ -104,16 +106,20 @@ public class GameFlowManager
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
     private void OnEquipmentUnequipRequested(string equipSlot)
     {
-        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+        TransactionResult result = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
@@ -121,8 +127,12 @@ public class GameFlowManager
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
@@ -211,15 +221,19 @@ public class GameFlowManager
 
     private void OnSellConfirmed()
     {
-        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+        TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
             ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
             shopView?.RefreshGold();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
@@ -269,8 +283,6 @@ public class GameFlowManager
         inventoryView?.StartItemCoolDown(itemId, coolTime);
     }
 
-
-
     private void OnInformationKeyPressed()
     {
         ToggleUI(UIType.InformationPopup, ShowInformation);
@@ -301,6 +313,17 @@ public class GameFlowManager
     private void OnEquipmentKeyPressed()
     {
         ToggleUI(UIType.EquipmentPopup, ShowEquipment);
+    }
+
+    private void OnLackMana(string skillId)
+    {
+        SystemMessageManager.Instance.Show("Not enough mana.");
+    }
+
+    private void OnSkillCoolTimeFail(string skillId, float remainTime)
+    {
+        Debug.Log($"[GameFlowManager] OnSkillCoolTimeFail 호출됨: {skillId}, {remainTime}");
+        SystemMessageManager.Instance.Show($"Skill is on cooldown. ({remainTime:F1}s)");
     }
 
 
@@ -359,6 +382,8 @@ public class GameFlowManager
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead += OnPlayerDead;
         PlayerBattle.OnPotionUsed += OnPotionUsed;
+        SkillUtil.OnLackMana += OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
     }
 
     private async UniTask ShowHuntingAreaAsync()
