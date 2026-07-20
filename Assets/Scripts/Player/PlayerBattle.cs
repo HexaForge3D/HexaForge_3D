@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 public class PlayerBattle : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class PlayerBattle : MonoBehaviour
     public static event Action<int, int> OnHpChanged;
     // 플레이어 사망시 나오는 이벤트 변수
     public static event Action OnPlayerDead;
+    // 마나 ID와 마나 쿨타임 시간
+    private Dictionary<string, float> _potionCooldowns = new Dictionary<string, float>();
 
     private void Start()
     {
@@ -182,6 +186,47 @@ public class PlayerBattle : MonoBehaviour
             }
             prevPoint = point;
         }
+    }
 
+    public void UsePotion(string itemId)
+    {
+        if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
+
+        ConsumableTableData potionData = GameDataManager.Instance.GetData<ConsumableTableData>(itemId);
+
+        if (_potionCooldowns.TryGetValue(itemId, out float coolTimeEnd))
+        {
+            if (Time.time < coolTimeEnd)
+            {
+                float remainTime = coolTimeEnd - Time.time;
+                Debug.Log($"<color=pink>[체력 포션 쿨타임]</color> {remainTime}초 후에 다시 사용할 수 있습니다.");
+                return;
+            }
+        }
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        bool isConsumed = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+
+        if (isConsumed == false)
+        {
+            Debug.LogWarning("인벤토리에 물약이 존재하지 않습니다");
+            return;
+        }
+
+        if (potionData.HpBonus > 0)
+        {
+            int healAmount = Mathf.FloorToInt(data.Hp * potionData.HpBonus);
+            data.CurrentHp += healAmount;
+
+            data.CurrentHp = Mathf.Min(data.CurrentHp, data.Hp);
+
+            Debug.Log($"<color=green>[체력 회복]</color> +{healAmount} 회복! (현재체력: {data.CurrentHp} / {data.Hp})");
+
+            OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
+        }
+
+        _potionCooldowns[itemId] = Time.time + potionData.CoolTime;
+        SaveManager.Instance.SaveCurrentState();
     }
 }
