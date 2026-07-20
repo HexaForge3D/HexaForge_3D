@@ -88,11 +88,15 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Atk = jobMaster.Atk;
         slot.Def = jobMaster.Def;
         slot.Gold = 0;
+        slot.CurrentHp = jobMaster.Hp; // 현재 체력도 생성되었을 때는 최대 체력으로
+        slot.CurrentMp = jobMaster.Mp; // 현재 마나도 생성되었을 때는 최대 마나로
 
         slot.Inventory = new InventorySaveData
         {
             Slots = new List<InventorySlotSaveData>()
         };
+
+        slot.Equipped = new EquippedItemsSaveData();
 
         slot.Skills = new SkillSaveData
         {
@@ -126,6 +130,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Gold = 0;
         slot.Inventory = null;
         slot.Skills = null;
+        slot.Equipped = null;
 
         SaveToFile(CurrentSaveData);
         
@@ -432,15 +437,27 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         if (levelAfter > levelBefore)
         {
-            if (slot.Skills == null)
-            {
-                slot.Skills = new SkillSaveData
-                {
-                    Skills = new List<SkillProgressData>(),
-                    AvailablePoints = 0
-                };
-            }
             int levelsGained = levelAfter - levelBefore;
+            
+            PlayerTableData playerStats = GameDataManager.Instance.GetData<PlayerTableData>(slot.Job);
+
+            if (playerStats != null)
+            {
+                int gainedHp = playerStats.HpPerLevel * levelsGained;
+                int gainedMp = playerStats.MpPerLevel * levelsGained;
+                int gainedAtk = playerStats.AtkPerLevel * levelsGained;
+                int gainedDef = playerStats.DefPerLevel * levelsGained;
+                // 최대 스탯 영구 증가 (일단은 기초로 잡아놓았습니다 Player.json에서 값 수정하면 됩니다
+                slot.Hp += gainedHp;
+                slot.Mp += gainedMp;
+                slot.Atk += gainedAtk;
+                slot.Def += gainedDef;
+                // 레벨 업을 할 시 현재 체력과 마나는 풀로 차는 것이 아닌 증가한 값 만큼 회복이 됩니다(추가 됩니다)
+                slot.CurrentHp += gainedHp;
+                slot.CurrentMp += gainedMp;
+
+                Debug.Log($"[SaveManager] 레벨업! 최대 체력: {slot.Hp} / 최대 마나: {slot.Mp} / 공격력: {slot.Atk} / 방어력: {slot.Def}");
+            }
 
             if (slot.Skills == null)
             {
@@ -450,6 +467,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
                     AvailablePoints = 0
                 };
             }
+
             slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
             Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
         }
@@ -465,5 +483,156 @@ public class SaveManager : BaseMonoManager<SaveManager>
     public void SaveCurrentState()
     {
         SaveToFile(CurrentSaveData);
+    }
+
+    public bool EquipItem(string slotId, string itemId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
+            return false;
+        }
+
+        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
+
+        if (equipmentData == null)
+        {
+            Debug.LogError($"[SaveManager] {itemId}에 대한 장비 데이터를 찾을 수 없습니다.");
+            return false;
+        }
+
+        if (slot.Equipped == null)
+        {
+            slot.Equipped = new EquippedItemsSaveData();
+        }
+
+        string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
+
+        SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
+
+        RemoveItem(slotId, itemId, 1);
+
+        if (string.IsNullOrEmpty(previousItemId) == false)
+        {
+            AddItem(slotId, previousItemId, 1);
+        }
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    public bool UnequipItem(string slotId, string equipSlotName)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Equipped == null)
+        {
+            return false;
+        }
+
+        string itemId = GetEquippedItemId(slot.Equipped, equipSlotName);
+
+        if (string.IsNullOrEmpty(itemId))
+        {
+            return false;
+        }
+
+        SetEquippedItemId(slot.Equipped, equipSlotName, null);
+        AddItem(slotId, itemId, 1);
+
+        SaveToFile(CurrentSaveData);
+
+        return true;
+    }
+
+    private string GetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot)
+    {
+        switch (equipSlot)
+        {
+            case "Weapon": return equipped.WeaponItemId;
+            case "Helmet": return equipped.HelmetItemId;
+            case "Chest": return equipped.ChestItemId;
+            case "Pants": return equipped.PantsItemId;
+            case "Boots": return equipped.BootsItemId;
+            case "Gloves": return equipped.GlovesItemId;
+            default: return null;
+        }
+    }
+
+    private void SetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot, string itemId)
+    {
+        switch (equipSlot)
+        {
+            case "Weapon": equipped.WeaponItemId = itemId; break;
+            case "Helmet": equipped.HelmetItemId = itemId; break;
+            case "Chest": equipped.ChestItemId = itemId; break;
+            case "Pants": equipped.PantsItemId = itemId; break;
+            case "Boots": equipped.BootsItemId = itemId; break;
+            case "Gloves": equipped.GlovesItemId = itemId; break;
+        }
+    }
+
+    public string GetEquippedItemId(string slotId, string equipSlot)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Equipped == null)
+        {
+            return null;
+        }
+
+        return GetEquippedItemId(slot.Equipped, equipSlot);
+    }
+
+    public int GetFinalAtk(string slotId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return 0;
+
+        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: true);
+
+        return slot.Atk + bonus;
+    }
+
+    public int GetFinalDef(string slotId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return 0;
+
+        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: false);
+
+        return slot.Def + bonus;
+    }
+
+    private int GetEquipmentStatBnous(EquippedItemsSaveData equipped, bool isAtk)
+    {
+        if (equipped == null) return 0;
+
+        int bonus = 0;
+        bonus += GetItemStatBonus(equipped.WeaponItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.HelmetItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.ChestItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.PantsItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.BootsItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.GlovesItemId, isAtk);
+
+        return bonus;
+
+    }
+
+    private int GetItemStatBonus(string itemId, bool isAtk)
+    {
+        if (string.IsNullOrEmpty(itemId)) return 0;
+
+        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
+
+        if (equipmentData == null) return 0;
+
+        return isAtk ? equipmentData.AtkBonus : equipmentData.DefBonus;
     }
 }

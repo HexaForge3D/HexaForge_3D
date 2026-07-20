@@ -37,7 +37,14 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
+        PlayerState.OnMpChanged -= OnPlayerMpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
+        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
+        SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
+        SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
+
+        SaveManager.Instance.SaveCurrentState();
 
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
@@ -79,11 +86,45 @@ public class GameFlowManager
         ShowConfirmAsync(message, OnSellConfirmed).Forget();
     }
 
-
     private void OnCreateCharacterRequested(string slotId)
     {
         ShowCharacterCreateAsync(slotId).Forget();
     }
+
+    private void OnInventoryEquipRequested(InventoryItemData data)
+    {
+        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+
+        if (success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
+        }
+    }
+
+    private void OnEquipmentUnequipRequested(string equipSlot)
+    {
+        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+
+        if (success)
+        {
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
+        }
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -142,11 +183,6 @@ public class GameFlowManager
         Application.Quit();
     }
 
-    private void OnPlayerHpChanged(int currentHp, int maxHp)
-    {
-        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
-    }
-
     private void OnShopTransactionCompleted()
     {
         if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
@@ -164,14 +200,47 @@ public class GameFlowManager
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
+
+            ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
+            shopView?.RefreshGold();
         }
     }
 
-    // 아직 미구독상태
-    private void OnShopNpcInteracted()
+    private void OnSkillDataUpdated()
     {
-        ToggleUI(UIType.ShopUI, ShowShop);
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
     }
+
+    private void OnPlayerHpChanged(int currentHp, int maxHp)
+    {
+        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
+    }
+
+    private void OnPlayerMpChanged(int currentMp, int maxMp)
+    {
+        _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
+    }
+
+    private void OnPlayerLevelUp()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
+    }
+
+    private void OnSkillCoolTimeStart(string skillId, float coolDown)
+    {
+        SkillTableData skillData = GameDataManager.Instance.GetData<SkillTableData>(skillId);
+
+        if (skillData == null) return;
+
+        string keyLabel = skillData.Key.Replace("Skill", "");
+
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.StartSkillCoolDown(keyLabel, coolDown);
+    }
+
+
 
     private void OnInformationKeyPressed()
     {
@@ -198,6 +267,11 @@ public class GameFlowManager
     private void OnSkillTreeKeyPressed()
     {
         ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
+    }
+
+    private void OnEquipmentKeyPressed()
+    {
+        ToggleUI(UIType.EquipmentPopup, ShowEquipment);
     }
 
 
@@ -238,17 +312,22 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
-        _inGameViewModel = new InGameViewModel();
+        _inGameViewModel = new InGameViewModel(_currentSlotId);
 
         view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
+        PlayerInputSystem.OnEquipMent += OnEquipmentKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
+        PlayerState.OnMpChanged += OnPlayerMpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
+        PlayerState.OnLevelUp += OnPlayerLevelUp;
+        SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
+        SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -301,7 +380,13 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+
+        view.OnSellRequested -= OnInventorySellRequested;
         view.OnSellRequested += OnInventorySellRequested;
+
+        view.OnEquipRequested -= OnInventoryEquipRequested;
+        view.OnEquipRequested += OnInventoryEquipRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -317,6 +402,17 @@ public class GameFlowManager
     {
         SkillTreeView view = await UIManager.Instance.OpenUIAsync<SkillTreeView>(UIType.SkillTreePopup);
         SkillTreeViewModel viewModel = new SkillTreeViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowEquipmentAsync()
+    {
+        EquipmentView view = await UIManager.Instance.OpenUIAsync<EquipmentView>(UIType.EquipmentPopup);
+        EquipmentViewModel viewModel = new EquipmentViewModel(_currentSlotId);
+
+        view.OnUnequipRequested -= OnEquipmentUnequipRequested;
+        view.OnUnequipRequested += OnEquipmentUnequipRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -352,5 +448,10 @@ public class GameFlowManager
     private void ShowSkillTree()
     {
         ShowSkillTreeAsync().Forget();
+    }
+
+    private void ShowEquipment()
+    {
+        ShowEquipmentAsync().Forget();
     }
 }

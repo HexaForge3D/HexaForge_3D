@@ -8,6 +8,7 @@ public class SkillProgressData
     public int SkillLevel = 1;
 }
 
+[Serializable]
 public class SkillSaveData
 {
     public List<SkillProgressData> Skills;

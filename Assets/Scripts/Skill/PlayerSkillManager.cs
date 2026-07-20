@@ -33,6 +33,7 @@ public class PlayerSkillManager : MonoBehaviour
 
     // 현재 시전 중인 스킬의 데이터를 기억해둡니다. (애니메이션 이벤트 때 써먹기 위해)
     private SkillTableData _currentCastingSkill;
+    private GameObject _currentSpawnedSkill;
 
     private void Awake()
     {
@@ -69,7 +70,7 @@ public class PlayerSkillManager : MonoBehaviour
     public void SkillAttack()
     {
         if (_currentCastingSkill == null) return;
-
+        
         int currentLevel = SkillUtil.Instance.GetSkillLevel(_currentCastingSkill.ID);
         int calcDamage = SkillUtil.Instance.GetCalculatedDamage(_currentCastingSkill, currentLevel);
         int calcBuffValue = SkillUtil.Instance.GetCalculatedBuffValue(_currentCastingSkill, currentLevel);
@@ -120,6 +121,8 @@ public class PlayerSkillManager : MonoBehaviour
                 spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation, transform);
             }
 
+            _currentSpawnedSkill = spawnedSkill;
+
             SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
             
             if (hitbox != null)
@@ -155,6 +158,12 @@ public class PlayerSkillManager : MonoBehaviour
 
     public void SkillAnimEnd()
     {
+        if (_currentSpawnedSkill != null)
+        {
+            Destroy(_currentSpawnedSkill);
+            _currentSpawnedSkill = null;
+        }
+
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
         _currentCastingSkill = null;
@@ -165,11 +174,18 @@ public class PlayerSkillManager : MonoBehaviour
         CharacterSaveData playerData = _playerController.PlayerData;
         if (playerData == null) return;
 
-        playerData.Hp += calculatedHealAmount;
+        playerData.CurrentHp += calculatedHealAmount;
+
+        if (playerData.CurrentHp > playerData.Hp)
+        {
+            playerData.CurrentHp = playerData.Hp;
+        }
+
         Debug.Log($"<color=green>[Heal] 체력 {calculatedHealAmount} 회복! 현재 HP: {playerData.Hp}</color>");
+        SaveManager.Instance.SaveCurrentState();
     }
 
-    private async Cysharp.Threading.Tasks.UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, System.Threading.CancellationToken cancellationToken)
+    private async UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, CancellationToken cancellationToken)
     {
         CharacterSaveData playerData = _playerController.PlayerData;
        
@@ -179,25 +195,23 @@ public class PlayerSkillManager : MonoBehaviour
 
         if (isAtkBuff)
         {
-            playerData.Atk += buffData.BuffValue;
-            Debug.Log($"<color=yellow>[Buff] {buffData.Name} 발동! 공격력 {buffData.BuffValue} 증가 ({buffData.Duration}초)</color>");
+            _playerController.BuffAtk += calculatedBuffValue; // 계산된 버프값 적용
+            Debug.Log($"<color=yellow>[Buff] {buffData.Name} 발동! 공격력 {calculatedBuffValue} 증가 ({buffData.Duration}초)</color>");
         }
 
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(buffData.Duration), cancellationToken: cancellationToken);
         }
-
         catch (OperationCanceledException)
         {
             return;
         }
-
         // 버프 효과 원상복구
         if (isAtkBuff)
         {
-            playerData.Atk -= buffData.BuffValue;
-            Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {buffData.BuffValue} 감소 원상복구</color>");
+            _playerController.BuffAtk -= calculatedBuffValue; 
+            Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {calculatedBuffValue} 감소 원상복구</color>");
         }
     }
 }

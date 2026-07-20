@@ -26,6 +26,7 @@ public class GameDataManager : BaseMonoManager<GameDataManager>
         await LoadData<PlayerTableData>("Player");
         await LoadData<SkillTableData>("Skill");
         await LoadData<ItemTableData>("Item");
+        await LoadData<EquipmentTableData>("Equipment");
     }
 
     private async UniTask InitializeAsync()

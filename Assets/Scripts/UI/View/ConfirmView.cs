@@ -19,6 +19,14 @@ public class ConfirmView : BaseOverLayUI
         Button_Confirm.onClick.AddListener(OnClickConfirm);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            OnClickConfirm();
+        }
+    }
+
     private void OnClickConfirm()
     {
         _viewModel?.RequestConfirm();
