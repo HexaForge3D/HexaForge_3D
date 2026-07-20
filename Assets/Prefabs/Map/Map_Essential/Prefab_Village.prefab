@@ -1231,7 +1231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: _portalType
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
@@ -2079,7 +2079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: _portalType
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
@@ -3693,7 +3693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: _portalType
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
