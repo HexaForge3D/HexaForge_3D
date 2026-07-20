@@ -133,6 +133,15 @@ public class GameFlowManager
         MapManager.Instance.ChangeMap("Prefab_Village");
     }
 
+    private void OnInventoryUseRequested(InventoryItemData data)
+    {
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle == null) return;
+
+        playerBattle.UsePotion(data.Id);
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -253,6 +262,12 @@ public class GameFlowManager
         ShowDeathAsync().Forget();
     }
 
+    private void OnPotionUsed(string itemId, float coolTime)
+    {
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.Refresh();
+        inventoryView?.StartItemCoolDown(itemId, coolTime);
+    }
 
 
 
@@ -343,6 +358,7 @@ public class GameFlowManager
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead += OnPlayerDead;
+        PlayerBattle.OnPotionUsed += OnPotionUsed;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -401,6 +417,9 @@ public class GameFlowManager
 
         view.OnEquipRequested -= OnInventoryEquipRequested;
         view.OnEquipRequested += OnInventoryEquipRequested;
+
+        view.OnUseRequested -= OnInventoryUseRequested;
+        view.OnUseRequested += OnInventoryUseRequested;
 
         view.BindViewModel(viewModel);
     }

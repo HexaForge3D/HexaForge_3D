@@ -10,9 +10,11 @@ public class InventoryView : BaseOverLayUI
 
     private InventoryViewModel _viewModel;
     private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
+    private readonly Dictionary<string, InventorySlotView> _slotViewsByItemId = new Dictionary<string, InventorySlotView>();
 
     public Action<InventoryItemData, int> OnSellRequested;
     public Action<InventoryItemData> OnEquipRequested;
+    public Action<InventoryItemData> OnUseRequested;
 
     public void BindViewModel(InventoryViewModel viewModel)
     {
@@ -35,9 +37,22 @@ public class InventoryView : BaseOverLayUI
         {
             GameObject slotObject = Instantiate(Prefab_InventorySlot, Transform_SlotParent);
             InventorySlotView slotView = slotObject.GetComponent<InventorySlotView>();
-            slotView.Setup(slotData, RequestSell, RequestEquip);
+            slotView.Setup(slotData, RequestSell, RequestEquip, RequestUse);
+
+            if (slotData != null)
+            {
+                _slotViewsByItemId[slotData.Id] = slotView;
+            }
 
             _spawnedSlots.Add(slotObject);
+        }
+    }
+
+    public void StartItemCoolDown(string itemId, float duration)
+    {
+        if (_slotViewsByItemId.TryGetValue(itemId, out InventorySlotView slotView))
+        {
+            slotView.StartCoolDown(duration);
         }
     }
 
@@ -49,6 +64,11 @@ public class InventoryView : BaseOverLayUI
     private void RequestEquip(InventoryItemData data)
     {
         OnEquipRequested?.Invoke(data);
+    }
+
+    private void RequestUse(InventoryItemData data)
+    {
+        OnUseRequested?.Invoke(data);
     }
 
     private void ClearSlot()

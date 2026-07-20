@@ -61,4 +61,11 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
 
         Debug.Log($"[PlayerSpawnManager] 플레이어 생성 및 초기화: {saveData.Name} ({saveData.Job})");
     }
+
+    public PlayerBattle GetPlayerBattle()
+    {
+        if (_currentPlayer == null) return null;
+
+        return _currentPlayer.GetComponentInChildren<PlayerBattle>();
+    }
 }
