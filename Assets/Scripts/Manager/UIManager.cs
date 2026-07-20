@@ -76,7 +76,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.GameMenuPopup, UIRootType.Popup },
         {UIType.InventoryPopup, UIRootType.Popup },
         {UIType.SkillTreePopup, UIRootType.Content },
-        {UIType.EquipmentPopup, UIRootType.Popup }
+        {UIType.EquipmentPopup, UIRootType.Popup },
+        {UIType.DeathPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리
