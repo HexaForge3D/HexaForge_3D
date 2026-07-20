@@ -28,7 +28,7 @@ public class SkillTreeViewModel
 
         if (saveData == null) return result;
 
-        int characterLevel = PlayerState.LevelFromExp(saveData.Exp);
+        int characterLevel = PlayerLevel.LevelFromExp(saveData.Exp);
 
         Dictionary<string, SkillTableData> table = GameDataManager.Instance.GetAllData<SkillTableData>();
 

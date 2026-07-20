@@ -24,7 +24,7 @@ public class InGameViewModel
         List<SkillData> result = new List<SkillData>();
 
         CharacterSaveData saveData = SaveManager.Instance.GetChararcterData(_slotId);
-        int characterLevel = saveData != null ? PlayerState.LevelFromExp(saveData.Exp) : 0;
+        int characterLevel = saveData != null ? PlayerLevel.LevelFromExp(saveData.Exp) : 0;
 
         foreach (string key in SkillKeys)
         {
