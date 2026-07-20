@@ -24,7 +24,7 @@ public class Portal : MonoBehaviour
     public Portal _partnerPortal { get; set; }
 
 
-    private void OnEnable()
+    private void Start()
     {
         PortalManager.Instance.RegisterPortal(this);
         PlayerInputSystem.OnInteract += Handleinteraction;
