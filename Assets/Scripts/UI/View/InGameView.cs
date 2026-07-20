@@ -14,7 +14,7 @@ public class InGameView : BaseUI
     [SerializeField] private Transform Transform_SkillSlotParent;
     [SerializeField] private GameObject Prefab_SkillSlot;
 
-    private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R" };
+    private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
 
     private InGameViewModel _viewModel;
     private readonly Dictionary<string, SkillSlotView> _skillSlotViews = new Dictionary<string, SkillSlotView>();
