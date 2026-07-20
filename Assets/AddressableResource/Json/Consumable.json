@@ -3,7 +3,7 @@
     "ID": "Item_HealthPotion",
     "Name": "Health Potion",
     "HpBonus": 0.3,
-    "MPBonus":  0,
+    "MpBonus":  0,
 	"CoolTime": 7
   },
   {
