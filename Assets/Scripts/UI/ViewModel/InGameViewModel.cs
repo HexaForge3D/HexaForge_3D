@@ -12,6 +12,7 @@ public class InGameViewModel
     public Action<float> OnHpRatioChanged;
     public Action<int, int> OnHpValueChanged;
     public Action<float> OnMpRatioChanged;
+    public Action<int, int> OnMpValueChanged;
 
     public InGameViewModel(string slotId)
     {
@@ -36,6 +37,25 @@ public class InGameViewModel
         return result;
     }
 
+    public void GetInitialHpMp(out int currentHp, out int maxHp, out int currentMp,  out int maxMp)
+    {
+        CharacterSaveData saveData = SaveManager.Instance.GetChararcterData(_slotId);
+
+        if (saveData == null)
+        {
+            currentHp = 0;
+            maxHp = 0;
+            currentMp = 0;
+            maxMp = 0;
+            return;
+        }
+
+        currentHp = saveData.CurrentHp;
+        maxHp = saveData.Hp;
+        currentMp = saveData.CurrentMp;
+        maxMp = saveData.Mp;
+    }
+
     public void HandleHpChanged(int currentHp, int maxHp)
     {
         float ratio = maxHp > 0 ? (float)currentHp / maxHp : 0f;
@@ -47,5 +67,6 @@ public class InGameViewModel
     {
         float ratio = maxMp > 0 ? (float)currentMp / maxMp : 0f;    
         OnMpRatioChanged?.Invoke(ratio);
+        OnMpValueChanged?.Invoke(currentMp, maxMp);
     }
 }

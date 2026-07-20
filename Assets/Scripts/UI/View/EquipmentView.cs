@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EquipmentView : BaseOverLayUI
@@ -12,6 +13,8 @@ public class EquipmentView : BaseOverLayUI
 
     private EquipmentViewModel _viewModel;
     private Dictionary<string, EquipmentSlotView> _slotViews;
+
+    public Action<string> OnUnequipRequested;
 
     public void BindViewModel(EquipmentViewModel viewModel)
     {
@@ -43,9 +46,8 @@ public class EquipmentView : BaseOverLayUI
         }
     }
 
-    private void OnUnequipRequested(string equipSlot)
+    private void RequestUnequip(string equipSlot)
     {
-        _viewModel.RequestUnequip(equipSlot);
-        Refresh();
+        OnUnequipRequested?.Invoke(equipSlot);
     }
 }

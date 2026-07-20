@@ -33,6 +33,7 @@ public class EquipmentSlotView : MonoBehaviour, IPointerClickHandler
             data.Item.Description,
             "Unequip to Mouse Right Click",
             null,
+            null,
             null
         );
 

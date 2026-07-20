@@ -289,11 +289,15 @@ public class UIManager : BaseMonoManager<UIManager>
     // 기능
     public bool HasActivePopup()
     {
-        foreach(UIType type in _activeUI)
+        foreach (UIType type in _activeUI)
         {
-            if (GetRootType(type) == UIRootType.Popup) return true;
-        }
+            UIRootType rootType = GetRootType(type);
 
+            if (rootType != UIRootType.Main)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -303,7 +307,12 @@ public class UIManager : BaseMonoManager<UIManager>
 
         foreach (UIType type in _activeUI)
         {
-            if (GetRootType(type) == UIRootType.Popup) toClose.Add(type);
+            UIRootType rootType = GetRootType(type);
+
+            if (rootType != UIRootType.Main)
+            {
+                toClose.Add(type);
+            }
         }
 
         foreach (UIType type in toClose)

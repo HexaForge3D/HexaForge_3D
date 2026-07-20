@@ -45,13 +45,23 @@ public class SkillSlotView : MonoBehaviour
         Image_Icon.gameObject.SetActive(true);
         SpriteLoaderUtil.LoadAsync(Image_Icon, skill.IconAddress).Forget();
 
+        int skillLevel = SkillUtil.Instance.GetSkillLevel(skill.Id);
+        SkillTableData skillTableData = GameDataManager.Instance.GetData<SkillTableData>(skill.Id);
+
+        int damage = SkillUtil.Instance.GetCalculatedDamage(skillTableData, skillLevel);
+        int manaCost = SkillUtil.Instance.GetCalculatedManaCost(skillTableData, skillLevel);
+        float coolDown = SkillUtil.Instance.GetCalculatedCoolDown(skillTableData, skillLevel);
+
+        string statsText = $"Damage: {damage}\nMana Cost: {manaCost}\nCooldown: {coolDown}s";
+
         TooltipData tooltipData = new TooltipData(
             skill.IconAddress,
             skill.Name,
             skill.Description,
             null,
             null,
-            null
+            null,
+            statsText
             );
 
         TooltipTrigger.SetData(tooltipData);

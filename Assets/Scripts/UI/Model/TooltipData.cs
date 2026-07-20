@@ -8,8 +8,9 @@ public class TooltipData
     public string UsageHint { get; private set; }
     public string CountText { get; private set; }
     public string PriceText { get; private set; }
+    public string StatsText { get; private set;}
 
-    public TooltipData(string iconAddress, string name, string description, string usageHint, string countText, string priceText)
+    public TooltipData(string iconAddress, string name, string description, string usageHint, string countText, string priceText, string statsText)
     {
         IconAddress = iconAddress;
         Name = name;
@@ -17,5 +18,6 @@ public class TooltipData
         UsageHint = usageHint;
         CountText = countText;
         PriceText = priceText;
+        StatsText = statsText;
     }
 }

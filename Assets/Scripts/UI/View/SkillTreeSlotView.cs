@@ -46,13 +46,22 @@ public class SkillTreeSlotView : MonoBehaviour
         Button_Minus.onClick.AddListener(OnClickMinus);
         Button_Minus.interactable = data.IsUnlocked && data.CurrentLevel > 1;
 
+        SkillTableData skillTableData = GameDataManager.Instance.GetData<SkillTableData>(data.Id);
+
+        int damage = SkillUtil.Instance.GetCalculatedDamage(skillTableData, data.CurrentLevel);
+        int manaCost = SkillUtil.Instance.GetCalculatedManaCost(skillTableData, data.CurrentLevel);
+        float coolDown = SkillUtil.Instance.GetCalculatedCoolDown(skillTableData, data.CurrentLevel);
+
+        string statsText = $"Damage: {damage}\nMana Cost: {manaCost}\nCooldown: {coolDown}s";
+
         TooltipData tooltipData = new TooltipData(
             data.IconAddress,
             data.Name,
             data.Description,
             null,
             null,
-            null
+            null,
+            statsText
             );
 
         TooltipTrigger.SetData(tooltipData);
