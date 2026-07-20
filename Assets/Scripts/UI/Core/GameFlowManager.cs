@@ -42,6 +42,7 @@ public class GameFlowManager
         PlayerState.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
+        SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -175,7 +176,6 @@ public class GameFlowManager
         Application.Quit();
     }
 
-
     private void OnShopTransactionCompleted()
     {
         if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
@@ -219,6 +219,18 @@ public class GameFlowManager
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView?.RefreshSkillSlots();
+    }
+
+    private void OnSkillCoolTimeStart(string skillId, float coolDown)
+    {
+        SkillTableData skillData = GameDataManager.Instance.GetData<SkillTableData>(skillId);
+
+        if (skillData == null) return;
+
+        string keyLabel = skillData.Key.Replace("Skill", "");
+
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.StartSkillCoolDown(keyLabel, coolDown);
     }
 
 
@@ -308,6 +320,7 @@ public class GameFlowManager
         NPC.OnNPCInteracted += OnNpcInterated;
         PlayerState.OnLevelUp += OnPlayerLevelUp;
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
+        SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
     }
 
     private async UniTask ShowHuntingAreaAsync()
