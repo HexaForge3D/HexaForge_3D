@@ -37,9 +37,9 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
-        PlayerState.OnMpChanged -= OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged -= OnPlayerMpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
-        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
@@ -337,9 +337,9 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-        PlayerState.OnMpChanged += OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged += OnPlayerMpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
-        PlayerState.OnLevelUp += OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp += OnPlayerLevelUp;
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead += OnPlayerDead;

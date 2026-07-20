@@ -14,7 +14,7 @@
 
     public int GetLevel(int exp)
     {
-        return PlayerState.LevelFromExp(exp);
+        return PlayerLevel.LevelFromExp(exp);
     }
 
     public int GetFinalAtk()

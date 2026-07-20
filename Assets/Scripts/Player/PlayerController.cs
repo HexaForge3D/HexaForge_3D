@@ -17,9 +17,8 @@ public class PlayerController : MonoBehaviour
     [Header("Layer Masks")]
     [SerializeField] private LayerMask _clickableLayer;
 
-    [Header("Animator")]
-    [SerializeField] private Animator _animator;
 
+    private Animator _animator;
     private CharacterSaveData _playerData;
     public CharacterSaveData PlayerData => _playerData;
 

@@ -1,0 +1,16 @@
+﻿[
+  {
+    "ID": "Item_HealthPotion",
+    "Name": "Health Potion",
+    "HpBonus": 0.3,
+    "MPBonus":  0,
+	"CoolTime": 7
+  },
+  {
+    "ID": "Item_ManaPotion",
+    "Name": "Mana Potion",
+    "HpBonus":  0,
+	"MpBonus": 0.2,
+	"CoolTime": 10
+  }
+]
