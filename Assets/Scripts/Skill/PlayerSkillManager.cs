@@ -165,8 +165,15 @@ public class PlayerSkillManager : MonoBehaviour
         CharacterSaveData playerData = _playerController.PlayerData;
         if (playerData == null) return;
 
-        playerData.Hp += calculatedHealAmount;
+        playerData.CurrentHp += calculatedHealAmount;
+
+        if (playerData.CurrentHp > playerData.Hp)
+        {
+            playerData.CurrentHp = playerData.Hp;
+        }
+
         Debug.Log($"<color=green>[Heal] 체력 {calculatedHealAmount} 회복! 현재 HP: {playerData.Hp}</color>");
+        SaveManager.Instance.SaveCurrentState();
     }
 
     private async UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, CancellationToken cancellationToken)

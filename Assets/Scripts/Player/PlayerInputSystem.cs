@@ -41,7 +41,10 @@ public class PlayerInputSystem : MonoBehaviour
     [SerializeField] private KeyCode _systemKey = KeyCode.Escape;
 
     [Header("Exp Test Key")] // 경험치 주작 버튼
-    [SerializeField] private KeyCode _expTestKey = KeyCode.P;
+    [SerializeField] private KeyCode _expTestKey = KeyCode.Equals;
+
+    [Header("Equipment Key")] // 장비 창 버튼
+    [SerializeField] private KeyCode _equipMentKey = KeyCode.P;
 
     private PlayerController _playerController;
 
@@ -70,6 +73,8 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnSystem;
 
     public static event Action OnExpTest;
+
+    public static event Action OnEquipMent;
 
     private void Start()
     {
@@ -202,6 +207,11 @@ public class PlayerInputSystem : MonoBehaviour
         if (Input.GetKeyDown(_expTestKey))
         {
             OnExpTest?.Invoke();
+        }
+        // 장비창 키
+        if (Input.GetKeyDown(_equipMentKey))
+        {
+            OnEquipMent?.Invoke();
         }
     }
 

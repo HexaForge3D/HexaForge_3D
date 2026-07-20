@@ -437,15 +437,27 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         if (levelAfter > levelBefore)
         {
-            if (slot.Skills == null)
-            {
-                slot.Skills = new SkillSaveData
-                {
-                    Skills = new List<SkillProgressData>(),
-                    AvailablePoints = 0
-                };
-            }
             int levelsGained = levelAfter - levelBefore;
+            
+            PlayerTableData playerStats = GameDataManager.Instance.GetData<PlayerTableData>(slot.Job);
+
+            if (playerStats != null)
+            {
+                int gainedHp = playerStats.HpPerLevel * levelsGained;
+                int gainedMp = playerStats.MpPerLevel * levelsGained;
+                int gainedAtk = playerStats.AtkPerLevel * levelsGained;
+                int gainedDef = playerStats.DefPerLevel * levelsGained;
+                // 최대 스탯 영구 증가 (일단은 기초로 잡아놓았습니다 Player.json에서 값 수정하면 됩니다
+                slot.Hp += gainedHp;
+                slot.Mp += gainedMp;
+                slot.Atk += gainedAtk;
+                slot.Def += gainedDef;
+                // 레벨 업을 할 시 현재 체력과 마나는 풀로 차는 것이 아닌 증가한 값 만큼 회복이 됩니다(추가 됩니다)
+                slot.CurrentHp += gainedHp;
+                slot.CurrentMp += gainedMp;
+
+                Debug.Log($"[SaveManager] 레벨업! 최대 체력: {slot.Hp} / 최대 마나: {slot.Mp} / 공격력: {slot.Atk} / 방어력: {slot.Def}");
+            }
 
             if (slot.Skills == null)
             {
@@ -455,6 +467,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
                     AvailablePoints = 0
                 };
             }
+
             slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
             Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
         }
