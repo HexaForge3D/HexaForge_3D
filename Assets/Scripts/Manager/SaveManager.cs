@@ -87,7 +87,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Mp = jobMaster.Mp;
         slot.Atk = jobMaster.Atk;
         slot.Def = jobMaster.Def;
-        slot.Gold = 0;
+        slot.Gold = 100000;
         slot.CurrentHp = jobMaster.Hp; // 현재 체력도 생성되었을 때는 최대 체력으로
         slot.CurrentMp = jobMaster.Mp; // 현재 마나도 생성되었을 때는 최대 마나로
 

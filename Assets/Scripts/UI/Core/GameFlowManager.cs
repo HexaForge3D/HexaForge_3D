@@ -37,12 +37,13 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
-        PlayerState.OnMpChanged -= OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged -= OnPlayerMpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
-        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
+        PlayerBattle.OnPlayerDead -= OnPlayerDead;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -123,6 +124,13 @@ public class GameFlowManager
             InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
             inforamtionView?.Refresh();
         }
+    }
+
+    private void OnReviveRequested()
+    {
+        UIManager.Instance.CloseUI(UIType.DeathPopup);
+        //PlayerBattle.Revive();
+        MapManager.Instance.ChangeMap("Prefab_Village");
     }
 
 
@@ -240,6 +248,12 @@ public class GameFlowManager
         inGameView?.StartSkillCoolDown(keyLabel, coolDown);
     }
 
+    private void OnPlayerDead()
+    {
+        ShowDeathAsync().Forget();
+    }
+
+
 
 
     private void OnInformationKeyPressed()
@@ -323,11 +337,12 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-        PlayerState.OnMpChanged += OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged += OnPlayerMpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
-        PlayerState.OnLevelUp += OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp += OnPlayerLevelUp;
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
+        PlayerBattle.OnPlayerDead += OnPlayerDead;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -416,6 +431,12 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowDeathAsync()
+    {
+        DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
+        view.Setup(OnReviveRequested);
+    }
+
 
     // UI 토글화
     private void ToggleUI(UIType uiType, Action showAction)
@@ -454,4 +475,5 @@ public class GameFlowManager
     {
         ShowEquipmentAsync().Forget();
     }
+
 }
