@@ -33,6 +33,7 @@ public class PlayerSkillManager : MonoBehaviour
 
     // 현재 시전 중인 스킬의 데이터를 기억해둡니다. (애니메이션 이벤트 때 써먹기 위해)
     private SkillTableData _currentCastingSkill;
+    private GameObject _currentSpawnedSkill;
 
     private void Awake()
     {
@@ -120,6 +121,8 @@ public class PlayerSkillManager : MonoBehaviour
                 spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation, transform);
             }
 
+            _currentSpawnedSkill = spawnedSkill;
+
             SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
             
             if (hitbox != null)
@@ -155,6 +158,12 @@ public class PlayerSkillManager : MonoBehaviour
 
     public void SkillAnimEnd()
     {
+        if (_currentSpawnedSkill != null)
+        {
+            Destroy(_currentSpawnedSkill);
+            _currentSpawnedSkill = null;
+        }
+
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
         _currentCastingSkill = null;
