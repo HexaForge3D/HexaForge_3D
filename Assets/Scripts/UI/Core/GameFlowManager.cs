@@ -37,9 +37,13 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
+        PlayerState.OnMpChanged -= OnPlayerMpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
         PlayerState.OnLevelUp -= OnPlayerLevelUp;
-        PlayerInputSystem.OnMap -= OnEquipmentKeyPressed;  // 단축키가 없어서 M키에 연결해둔 상태
+        PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
+        SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
+
+        SaveManager.Instance.SaveCurrentState();
 
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
@@ -97,6 +101,26 @@ public class GameFlowManager
 
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
+        }
+    }
+
+    private void OnEquipmentUnequipRequested(string equipSlot)
+    {
+        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+
+        if (success)
+        {
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
         }
     }
 
@@ -151,10 +175,6 @@ public class GameFlowManager
         Application.Quit();
     }
 
-    private void OnPlayerHpChanged(int currentHp, int maxHp)
-    {
-        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
-    }
 
     private void OnShopTransactionCompleted()
     {
@@ -179,17 +199,29 @@ public class GameFlowManager
         }
     }
 
+    private void OnSkillDataUpdated()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
+    }
+
+    private void OnPlayerHpChanged(int currentHp, int maxHp)
+    {
+        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
+    }
+
+    private void OnPlayerMpChanged(int currentMp, int maxMp)
+    {
+        _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
+    }
+
     private void OnPlayerLevelUp()
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView?.RefreshSkillSlots();
     }
 
-    // 아직 미구독상태
-    private void OnShopNpcInteracted()
-    {
-        ToggleUI(UIType.ShopUI, ShowShop);
-    }
+
 
     private void OnInformationKeyPressed()
     {
@@ -268,12 +300,14 @@ public class GameFlowManager
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
-        PlayerInputSystem.OnMap += OnEquipmentKeyPressed; // 현재 단축키가 없어서 M키에 연결해둔 상태
+        PlayerInputSystem.OnEquipMent += OnEquipmentKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
+        PlayerState.OnMpChanged += OnPlayerMpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
         PlayerState.OnLevelUp += OnPlayerLevelUp;
+        SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -355,6 +389,10 @@ public class GameFlowManager
     {
         EquipmentView view = await UIManager.Instance.OpenUIAsync<EquipmentView>(UIType.EquipmentPopup);
         EquipmentViewModel viewModel = new EquipmentViewModel(_currentSlotId);
+
+        view.OnUnequipRequested -= OnEquipmentUnequipRequested;
+        view.OnUnequipRequested += OnEquipmentUnequipRequested;
+
         view.BindViewModel(viewModel);
     }
 

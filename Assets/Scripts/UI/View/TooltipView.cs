@@ -13,6 +13,7 @@ public class TooltipView : MonoBehaviour
     [SerializeField] private TMP_Text Text_UsageHint;
     [SerializeField] private TMP_Text Text_Count;
     [SerializeField] private TMP_Text Text_Price;
+    [SerializeField] private TMP_Text Text_Stats;
 
     [SerializeField] private Vector2 CursorOffset = new Vector2(20f, -20f);
 
@@ -28,7 +29,6 @@ public class TooltipView : MonoBehaviour
         Text_Description.text = data.Description;
 
         bool hasUsageHint = string.IsNullOrEmpty(data.UsageHint) == false;
-
         Text_UsageHint.gameObject.SetActive(hasUsageHint);
         if (hasUsageHint)
         {
@@ -37,7 +37,6 @@ public class TooltipView : MonoBehaviour
 
         bool hasCount = string.IsNullOrEmpty(data.CountText) == false;
         Text_Count.gameObject.SetActive(hasCount);
-
         if (hasCount)
         {
             Text_Count.text = data.CountText;
@@ -48,6 +47,13 @@ public class TooltipView : MonoBehaviour
         if (hasPrice)
         {
             Text_Price.text = data.PriceText;
+        }
+
+        bool hasStats = string.IsNullOrEmpty(data.StatsText) == false;
+        Text_Stats.gameObject.SetActive(hasStats);
+        if (hasStats)
+        {
+            Text_Stats.text = data.StatsText;
         }
 
         SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();

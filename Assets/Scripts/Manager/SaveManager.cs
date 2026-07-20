@@ -586,4 +586,53 @@ public class SaveManager : BaseMonoManager<SaveManager>
 
         return GetEquippedItemId(slot.Equipped, equipSlot);
     }
+
+    public int GetFinalAtk(string slotId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return 0;
+
+        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: true);
+
+        return slot.Atk + bonus;
+    }
+
+    public int GetFinalDef(string slotId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return 0;
+
+        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: false);
+
+        return slot.Def + bonus;
+    }
+
+    private int GetEquipmentStatBnous(EquippedItemsSaveData equipped, bool isAtk)
+    {
+        if (equipped == null) return 0;
+
+        int bonus = 0;
+        bonus += GetItemStatBonus(equipped.WeaponItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.HelmetItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.ChestItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.PantsItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.BootsItemId, isAtk);
+        bonus += GetItemStatBonus(equipped.GlovesItemId, isAtk);
+
+        return bonus;
+
+    }
+
+    private int GetItemStatBonus(string itemId, bool isAtk)
+    {
+        if (string.IsNullOrEmpty(itemId)) return 0;
+
+        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
+
+        if (equipmentData == null) return 0;
+
+        return isAtk ? equipmentData.AtkBonus : equipmentData.DefBonus;
+    }
 }
