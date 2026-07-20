@@ -1296,6 +1296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHealth
   maxHealth: 500
+  dropExp: 90
 --- !u!1 &290884568573657154
 GameObject:
   m_ObjectHideFlags: 0

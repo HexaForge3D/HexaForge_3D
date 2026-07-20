@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class MonsterHealth : MonoBehaviour
@@ -7,6 +8,11 @@ public class MonsterHealth : MonoBehaviour
     public int maxHealth = 150;
     private int currentHealth;
     private bool isDead = false;
+
+    [Header("Reward")]
+    public int dropExp = 30;
+
+    public static event Action<int> OnMonsterDied;
 
     private void OnEnable()
     {
@@ -40,6 +46,7 @@ public class MonsterHealth : MonoBehaviour
 
     private void Die()
     {
+        if (isDead) return;
         isDead = true;
         Debug.Log("몬스터 사망");
 
@@ -58,6 +65,8 @@ public class MonsterHealth : MonoBehaviour
             anim.ResetTrigger("Attack");
             anim.SetTrigger("Die");
         }
+
+        OnMonsterDied?.Invoke(dropExp);
 
         Destroy(gameObject, 3f);
     }
