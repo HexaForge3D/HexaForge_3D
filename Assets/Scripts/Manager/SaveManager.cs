@@ -8,6 +8,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
     private const string SaveFileName = "CharacterSaveData.json";
     public const float SellPriceRatio = 0.8f;
     private const int SkillPointsPerLevel = 4;
+    public const int MaxInventorySlots = 63;
 
     public SaveData CurrentSaveData { get; private set; }
 
@@ -284,6 +285,12 @@ public class SaveManager : BaseMonoManager<SaveManager>
         }
         else
         {
+            if (slot.Inventory.Slots.Count >= MaxInventorySlots)
+            {
+                Debug.LogWarning($"[SaveManager] 인벤토리가 가득 찼습니다.");
+                return false;
+            }
+
             slot.Inventory.Slots.Add(new InventorySlotSaveData
             {
                 ItemId = itemId,
@@ -356,6 +363,13 @@ public class SaveManager : BaseMonoManager<SaveManager>
             {
                 Slots = new List<InventorySlotSaveData>()
             };
+        }
+
+        InventorySlotSaveData exitsingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+        if (exitsingSlot == null && slot.Inventory.Slots.Count >= MaxInventorySlots)
+        {
+            Debug.LogWarning("[SaveManager] 인벤토리 가득 찼습니다.");
+            return false;
         }
 
         slot.Gold -= itemMaster.Price;
