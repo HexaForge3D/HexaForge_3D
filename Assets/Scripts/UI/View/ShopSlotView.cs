@@ -34,7 +34,8 @@ public class ShopSlotView : MonoBehaviour
             item.Description,
             usageHint,
             null,
-            priceText
+            priceText,
+            null
             );
 
         TooltipTrigger.SetData(tooltipData);

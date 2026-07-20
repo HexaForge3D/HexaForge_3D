@@ -15,7 +15,17 @@ public partial class MonsterAttackAction : Action
 
     protected override Status OnStart()
     {
-        if (Agent.Value == null || Target.Value == null) return Status.Failure;
+        if (Agent.Value == null || Target.Value == null)
+        {
+            return Status.Failure;
+        }
+
+        Collider targetCollider = Target.Value.GetComponent<Collider>();
+        if (targetCollider == null || targetCollider.enabled == false)
+        {
+            Target.Value = null;
+            return Status.Failure;
+        }
 
         UnityEngine.AI.NavMeshAgent nav = Agent.Value.GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (nav != null && nav.isOnNavMesh) nav.ResetPath();

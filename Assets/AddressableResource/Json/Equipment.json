@@ -4,5 +4,35 @@
     "EquipSlot": "Weapon",
     "AtkBonus": 5,
     "DefBonus": 0
+  },
+  {
+    "ID": "Item_IronHelmet",
+    "EquipSlot": "Helmet",
+    "AtkBonus": 0,
+    "DefBonus": 2
+  },
+  {
+    "ID": "Item_IronChestPlate",
+    "EquipSlot": "Chest",
+    "AtkBonus": 0,
+    "DefBonus": 4
+  },
+  {
+    "ID": "Item_IronPants",
+    "EquipSlot": "Pants",
+    "AtkBonus": 0,
+    "DefBonus": 3
+  },
+  {
+    "ID": "Item_IronBoots",
+    "EquipSlot": "Boots",
+    "AtkBonus": 0,
+    "DefBonus": 2
+  },
+  {
+    "ID": "Item_IronGloves",
+    "EquipSlot": "Gloves",
+    "AtkBonus": 1,
+    "DefBonus": 1
   }
 ]

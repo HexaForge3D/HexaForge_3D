@@ -14,7 +14,7 @@ public class InGameView : BaseUI
     [SerializeField] private Transform Transform_SkillSlotParent;
     [SerializeField] private GameObject Prefab_SkillSlot;
 
-    private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
+    private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R" };
 
     private InGameViewModel _viewModel;
     private readonly Dictionary<string, SkillSlotView> _skillSlotViews = new Dictionary<string, SkillSlotView>();
@@ -25,9 +25,17 @@ public class InGameView : BaseUI
         viewModel.OnHpRatioChanged += OnHpRatioChanged;
         viewModel.OnHpValueChanged += OnHpValueChanged;
         viewModel.OnMpRatioChanged += OnMpRatioChanged;
+        viewModel.OnMpValueChanged += OnMpValueChanged;
 
-        Image_HpBar.fillAmount = 1f;
-        Image_MpBar.fillAmount = 1f;
+        _viewModel.GetInitialHpMp(out int currentHp, out int maxHp, out int currentMp, out int  maxMp);
+
+        float hpRatio = maxHp > 0 ? (float)currentHp / maxHp : 0f;
+        Image_HpBar.fillAmount = hpRatio;
+        Text_HpValue.text = $"{currentHp}/{maxHp}";
+
+        float mpRatio = maxMp > 0 ? (float)currentMp / maxMp : 0f;
+        Image_MpBar.fillAmount = mpRatio;
+        Text_MpValue.text = $"{currentMp}/{maxMp}";
 
         BuildSkillSlots();
     }
@@ -70,11 +78,21 @@ public class InGameView : BaseUI
         Image_MpBar.fillAmount = ratio;
     }
 
+    private void OnMpValueChanged(int currentMp, int maxMp)
+    {
+        Text_MpValue.text = $"{currentMp}/{maxMp}";
+    }
+
     public void StartSkillCoolDown(string keyLabel, float duration)
     {
         if (_skillSlotViews.TryGetValue(keyLabel, out SkillSlotView slotView))
         {
             slotView.StartCoolDown(duration);
         }
+    }
+
+    public void RefreshSkillSlots()
+    {
+        BuildSkillSlots();
     }
 }
