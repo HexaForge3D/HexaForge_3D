@@ -89,7 +89,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapManager
   _mapSpawnPoints:
-  - MapName: 
+  - MapName: A
+    SpawnPoint: {fileID: 0}
+  - MapName: B
+    SpawnPoint: {fileID: 0}
+  - MapName: C
+    SpawnPoint: {fileID: 0}
+  - MapName: D
+    SpawnPoint: {fileID: 0}
+  - MapName: E
     SpawnPoint: {fileID: 0}
 --- !u!1 &1295954592154818130
 GameObject:
