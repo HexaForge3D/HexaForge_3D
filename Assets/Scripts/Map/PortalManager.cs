@@ -6,6 +6,7 @@ public class PortalManager : MonoBehaviour
     public static PortalManager Instance;
 
     private Dictionary<PortalType, Portal> _destinationPortals = new Dictionary<PortalType, Portal>();
+    private List <Portal> _allPortals = new List<Portal>();
 
     private void Awake()
     {
@@ -42,5 +43,17 @@ public class PortalManager : MonoBehaviour
     public Portal GetDestinationPortal(Portal currentPortal)
     {
         return currentPortal._partnerPortal;
+    }
+
+    public Portal GetPortalByType(PortalType type)
+    {
+        foreach (var portal in  _allPortals)
+        {
+            if (portal.PortalType == type)
+                {
+                    return portal;
+                }
+        }
+        return null;
     }
 }

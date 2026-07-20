@@ -87,9 +87,16 @@ public class GameFlowManager
 
     private void OnPortalInteracted(Portal portal)
     {
+        portal.ExitPortal();
         var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
-        if (portal.PortalType != PortalType.Dungeon)
+        if (portal.PortalType != PortalType.DungeonStart && portal.PortalType != PortalType.Village)
         {
+            if (portal.PortalType == PortalType.DungeonClear || portal.PortalType == PortalType.DungeonStart)
+            {
+                var villagePortal = PortalManager.Instance.GetPortalByType(PortalType.Village);
+                MapManager.Instance.TeleportToDestinationPortal(villagePortal);
+                return;
+            }
             if (portal.PortalType == PortalType.None) return;
             MapManager.Instance.TeleportToDestinationPortal(targetPortal);
         }
