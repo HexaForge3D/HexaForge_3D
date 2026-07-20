@@ -17,7 +17,8 @@ public enum UIType : byte
     GameMenuPopup,
     InventoryPopup,
     SkillTreePopup,
-    EquipmentPopup
+    EquipmentPopup,
+    DeathPopup
 }
 
 public enum UIRootType : byte
@@ -57,7 +58,8 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.GameMenuPopup, "Popup_GameMenu" },
         {UIType.InventoryPopup, "Popup_Inventory" },
         {UIType.SkillTreePopup, "Popup_SkillTree"},
-        {UIType.EquipmentPopup, "Popup_Equipment" }
+        {UIType.EquipmentPopup, "Popup_Equipment" },
+        {UIType.DeathPopup, "Popup_Death" }
     };
 
     // UI가 배치될 레이어 관리
