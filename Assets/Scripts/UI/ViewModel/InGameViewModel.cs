@@ -5,7 +5,7 @@ public class InGameViewModel
 {
     private readonly SkillRepository _skillRepository = new SkillRepository();
 
-    private static readonly string[] SkillKeys = { "SkillQ", "SkillW", "SkillE", "SkillR" };
+    private static readonly string[] SkillKeys = { "SkillQ", "SkillW", "SkillE", "SkillR", "SkillA", "SkillS", "SkillD", "SkillF" };
 
     private readonly string _slotId;
 
