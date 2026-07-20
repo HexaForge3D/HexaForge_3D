@@ -41,12 +41,16 @@ public class PlayerState : MonoBehaviour
     {
         PlayerInputSystem.OnExpTest += HandleExpTestKey;
         PlayerBattle.OnPlayerDead += CancelToken;
+
+        MonsterHealth.OnMonsterDied += AddExp;
     }
 
     private void OnDisable()
     {
         PlayerInputSystem.OnExpTest -= HandleExpTestKey;
         PlayerBattle.OnPlayerDead -= CancelToken;
+
+        MonsterHealth.OnMonsterDied -= AddExp;
     }
 
     private void CancelToken()
