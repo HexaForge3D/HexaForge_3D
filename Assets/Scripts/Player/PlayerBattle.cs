@@ -50,11 +50,13 @@ public class PlayerBattle : MonoBehaviour
     private void OnEnable()
     {
         // 물약 마셨다는 이벤트 구독하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat += HandleSuicideCheat;
     }
 
     private void OnDisable()
     {
         // 물약 마셨다는 이벤트 해지하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat -= HandleSuicideCheat;
     }
     private void CancelToken()
     {
@@ -340,5 +342,57 @@ public class PlayerBattle : MonoBehaviour
         catch (OperationCanceledException)
         {
         }
+    }
+
+    private void HandleSuicideCheat()
+    {
+        if (_isDead) return;
+        Debug.Log("<color=red>[Cheat 발동]</color> 플레이어가 즉사합니다.(테스트 용)");
+        TakeDamage(99999999);
+    }
+
+    public void Revive()
+    {
+        if (_isDead == false) return;
+
+        _isDead = false;
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        int lostGold = data.Gold;
+        data.Gold = 0;
+        SaveManager.Instance.SaveCurrentState();
+        Debug.Log($"<color=red>[부활 패널티]</color> 골드를 모두 잃었습니다. (잃은 골드: {lostGold}G)");
+
+        data.CurrentHp = data.Hp;
+        data.CurrentMp = data.Mp;
+
+        OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
+        OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
+
+        NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
+        if (playerAgent != null)
+        {
+            playerAgent.enabled = true;
+        }
+
+        if (_playerController != null)
+        {
+            _playerController.enabled = true;
+            _playerController.FireAnimationTrigger("isRevive");
+        }
+
+        PlayerSpawnManager.Instance.MoveToSpawnPoint(this.gameObject);
+
+        _cts = new CancellationTokenSource();
+        ManaRegen(_cts.Token).Forget();
+
+        Debug.Log("<color=cyan>[부활 완료]</color> 플레이어가 부활했습니다!");
     }
 }

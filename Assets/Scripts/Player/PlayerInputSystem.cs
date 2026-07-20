@@ -50,6 +50,9 @@ public class PlayerInputSystem : MonoBehaviour
     [Header("Gold Cheat Key")] // 골드 치트 키
     [SerializeField] private KeyCode _moneyCheatKey = KeyCode.Minus;
 
+    [Header("Suicide Cheat Key")] // 자살 치트 키
+    [SerializeField] private KeyCode _suicideCheatKey = KeyCode.Slash;
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -81,6 +84,8 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnEquipMent;
 
     public static event Action OnMoneyCheat;
+    public static event Action OnSuicideCheat;
+
 
     private void Start()
     {
@@ -225,6 +230,11 @@ public class PlayerInputSystem : MonoBehaviour
         if (Input.GetKeyDown(_moneyCheatKey))
         {
             OnMoneyCheat?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_suicideCheatKey))
+        {
+            OnSuicideCheat?.Invoke();
         }
     }
 

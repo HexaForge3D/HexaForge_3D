@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.AI;
 
 public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
 {
@@ -60,5 +61,25 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
         controller.InitializePlayerData(saveData);
 
         Debug.Log($"[PlayerSpawnManager] 플레이어 생성 및 초기화: {saveData.Name} ({saveData.Job})");
+    }
+
+    // 죽고 나면 다시 스폰된 위치로 이동할 수 있는 메서드 추가
+    public void MoveToSpawnPoint(GameObject player)
+    {
+        if (player == null) return;
+
+        Vector3 targetPosition = SpawnPoint != null ? SpawnPoint.position : Vector3.zero;
+
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+
+        if (agent != null && agent.isActiveAndEnabled)
+        {
+            agent.Warp(targetPosition);
+        }
+        
+        else
+        {
+            player.transform.position = targetPosition;
+        }
     }
 }
