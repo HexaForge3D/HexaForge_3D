@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryView
   Button_Close: {fileID: 8947904591523702816}
-  SlotCount: 20
+  SlotCount: 63
   Transform_SlotParent: {fileID: 2364099895700987482}
   Prefab_InventorySlot: {fileID: 6859373161002697823, guid: f6ba236ce6b08484cac0a118b7ec19c9, type: 3}
 --- !u!222 &8979991305369509741
@@ -249,8 +249,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -47.5}
-  m_SizeDelta: {x: -10, y: -105}
+  m_AnchoredPosition: {x: 1.25, y: -26.500002}
+  m_SizeDelta: {x: -12.5, y: -147}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740740871691262478
 MonoBehaviour:
@@ -272,8 +272,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 80, y: 80}
-  m_Spacing: {x: 5, y: 5}
+  m_CellSize: {x: 83, y: 83}
+  m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &6077834211888199871
