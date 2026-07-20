@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class PlayerState : MonoBehaviour
+public class PlayerLevel : MonoBehaviour
 {
     private PlayerController _playerController;
 
@@ -14,52 +14,25 @@ public class PlayerState : MonoBehaviour
     // 스킬 레벨업을 위하여 레벨이 오르면 발생하는 이벤트
     public static event Action OnLevelUp;
 
-    // 마나가 변화하면(회복되면) 발생하는 이벤트
-    public static event Action<int, int> OnMpChanged;
-
     private const int MaxLevel = 100; // 최대레벨은 100으로 수정불가능 하게
     private const int MaxExp = 1700000; // 전체 경험치는 1,700,000으로 설정 => 1 -> 2 하는 걸 보기 위해서
     private const float ExpCurve = 0.5f; // 곡선으로 레벨이 올라갈 수록 레벨 업하기 어렵게 수정 => 숫자가 커질 수록 후반부에 편해지지만, 0.5f 기본세팅함
-
-    private CancellationTokenSource _cts;
-
-    private const float ManaRegenTimer = 1f;
-    private const float ManaRegenRate = 0.05f;
 
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
     }
 
-    private void Start()
-    {
-        _cts = new CancellationTokenSource();
-        ManaRegen(_cts.Token).Forget();
-    }
-
     private void OnEnable()
     {
         PlayerInputSystem.OnExpTest += HandleExpTestKey;
-        PlayerBattle.OnPlayerDead += CancelToken;
-
         MonsterHealth.OnMonsterDied += AddExp;
     }
 
     private void OnDisable()
     {
         PlayerInputSystem.OnExpTest -= HandleExpTestKey;
-        PlayerBattle.OnPlayerDead -= CancelToken;
-
         MonsterHealth.OnMonsterDied -= AddExp;
-    }
-
-    private void CancelToken()
-    {
-        if (_cts != null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-        }
     }
 
     public static int LevelFromExp(int totalExp)
@@ -74,15 +47,6 @@ public class PlayerState : MonoBehaviour
         int calculatedLevel = 1 + Mathf.FloorToInt(curveRatio * (MaxLevel - 1));
 
         return calculatedLevel;
-    }
-
-    private void OnDestroy()
-    {
-        if (_cts != null)
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-        }
     }
 
     public int ExpForNextLevel(int targetLevel)
@@ -151,56 +115,6 @@ public class PlayerState : MonoBehaviour
 
             SkillUtil.Instance?.InvokeSkillDataUpdated();
         }
-
         OnExpChanged?.Invoke(data.Exp, MaxExp);
     }
-
-    private async UniTaskVoid ManaRegen(CancellationToken token)
-    {
-        int saveCount = 0; // 마나 회복을 1초로 계속 할 경우 버벅임이 있을 수 있으므로 5초로 나누기 위한 카운트 다운 변수
-        try
-        {
-            while (token.IsCancellationRequested == false)
-            {
-                await UniTask.Delay(TimeSpan.FromSeconds(ManaRegenTimer), cancellationToken: token);
-
-                if (_playerController == null || _playerController.PlayerData == null) continue;
-
-                CharacterSaveData data = _playerController.PlayerData;
-
-                if (data.CurrentMp < data.Mp)
-                {
-                    int regenAmount = Mathf.Max(1, Mathf.FloorToInt(data.Mp * ManaRegenRate));
-
-                    data.CurrentMp += regenAmount;
-
-                    if (data.CurrentMp > data.Mp)
-                    {
-                        data.CurrentMp = data.Mp;
-                    }
-                    
-                    Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.CurrentMp} / 최대마나: {data.Mp}</color>");
-
-                    OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
-                    saveCount++;
-                   
-                    if (saveCount >= 5) // 5초가 되면
-                    {
-                        SaveManager.Instance.SaveCurrentState();
-                        saveCount = 0; // 저장 후 다시 0초부터 카운트 시작
-                    }
-                }
-
-                else
-                {
-                    saveCount = 0;
-                }
-            }
-        }
-
-        catch (OperationCanceledException)
-        {
-        }
-    }
-
 }

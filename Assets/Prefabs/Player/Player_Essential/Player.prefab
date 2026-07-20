@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 2214026887260603912}
   - component: {fileID: 3620765803672697119}
   - component: {fileID: 5902599757116075663}
-  - component: {fileID: 8158710080081288861}
+  - component: {fileID: 6593204276354201254}
   - component: {fileID: 6215523674562784445}
   - component: {fileID: 8646642277259301846}
   - component: {fileID: 1695674800264197086}
@@ -511,7 +511,7 @@ MonoBehaviour:
   id_Skill4: Skill_Bladestorm
   prefab_Skill4Effect: {fileID: 3337160002960658834, guid: 242cbfe4d1ed34247afa2717d4b6a306, type: 3}
   location_Skill4: {fileID: 2029886495377287980}
---- !u!114 &8158710080081288861
+--- !u!114 &6593204276354201254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
