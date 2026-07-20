@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 3fe7437895d856445bd004fd77908377
   m_SerializeEntries:
+  - m_GUID: 12600fde2f6774448b7ea911b217929d
+    m_Address: Map_BossRaid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1541e7891490bbd479f343cae7a19310
     m_Address: JsonOutput/VillageArea
     m_ReadOnly: 0
@@ -30,6 +35,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f7171b78f2493b42965c3cfb0ac0f12
+    m_Address: Map_Smithy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22e6d71a7387acc4bbbfb8733142723a
+    m_Address: Map_NPCEscort
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 249dceac1965afd4baac622ebee73ed4
     m_Address: Skill_Icon_Warrior2
     m_ReadOnly: 0
@@ -37,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2a1d38cacfbc17a4983f1b48fc99b6af
     m_Address: Popup_SkillTree
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 33c6c7e840a942343a666f0dcb57d4c8
+    m_Address: Map_Defence
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -75,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ea0bd75998e94443bccf988bd57602e
+    m_Address: Assets/Prefabs/Map/Field/Field_RoomMaze.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 925e2d1f6c8dfa9438b89bff5515645d
     m_Address: UI_Shop
     m_ReadOnly: 0
@@ -87,6 +112,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98a8c94858514784ba615a915f2fdc40
     m_Address: JsonOutput/HuntingArea
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c336dee3b1af6e4ba542a7bedb2e0ab
+    m_Address: Map_Village
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -132,6 +162,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db3465f0bfc18f744b40149d77a4a257
     m_Address: UI_CharacterSelect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de7be3c352b9ab14eaae679f6895450c
+    m_Address: Map_Store
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
