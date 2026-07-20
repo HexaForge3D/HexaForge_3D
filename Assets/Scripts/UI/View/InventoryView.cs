@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryView : BaseOverLayUI
@@ -9,6 +10,9 @@ public class InventoryView : BaseOverLayUI
 
     private InventoryViewModel _viewModel;
     private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
+
+    public Action<InventoryItemData, int> OnSellRequested;
+    public Action<InventoryItemData> OnEquipRequested;
 
     public void BindViewModel(InventoryViewModel viewModel)
     {
@@ -31,10 +35,20 @@ public class InventoryView : BaseOverLayUI
         {
             GameObject slotObject = Instantiate(Prefab_InventorySlot, Transform_SlotParent);
             InventorySlotView slotView = slotObject.GetComponent<InventorySlotView>();
-            slotView.Setup(slotData);
+            slotView.Setup(slotData, RequestSell, RequestEquip);
 
             _spawnedSlots.Add(slotObject);
         }
+    }
+
+    private void RequestSell(InventoryItemData data, int count)
+    {
+        OnSellRequested?.Invoke(data, count);
+    }
+
+    private void RequestEquip(InventoryItemData data)
+    {
+        OnEquipRequested?.Invoke(data);
     }
 
     private void ClearSlot()

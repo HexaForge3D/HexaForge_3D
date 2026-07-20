@@ -1,22 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 // 스킬은 항상 프리팹화 시킬 것
 public class PlayerSkillManager : MonoBehaviour
 {
-    [Serializable]
-    public struct SkillVFXData
-    {
-        public string skillID; //Json과 이름을 똑같이 해야 함
-        public GameObject vfxPrefab; // 콜라이더랑 SkillHitBOx 스크립트를 붙인 프리팹이 필요
-    }
+    // 스킬을 추가할 때마다 추가해줘야 함
+    [Header("Skill1 Settings")]
+    [SerializeField] private string id_Skill1; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill1Effect;
+    [SerializeField] private Transform location_Skill1;
 
-    [Header("Skill VFX Settings")]
-    [SerializeField] private Transform _attackPoint;
-    [SerializeField] private List<SkillVFXData> _skillVFXList;
+    [Header("Skill2 Settings")]
+    [SerializeField] private string id_Skill2; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill2Effect;
+    [SerializeField] private Transform location_Skill2;
 
-    private Dictionary<string, GameObject> _vfxDictionary = new Dictionary<string, GameObject>();
+    [Header("Skill3 Settings")]
+    [SerializeField] private string id_Skill3; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill3Effect;
+    [SerializeField] private Transform location_Skill3;
+
+    [Header("Skill4 Settings")]
+    [SerializeField] private string id_Skill4; // Skill의 id는 꼭 맞춰야 함 Json파일의 ID와 같이
+    [SerializeField] private GameObject prefab_Skill4Effect;
+    [SerializeField] private Transform location_Skill4;
+
 
     private PlayerController _playerController;
     private PlayerBattle _playerBattle;
@@ -28,14 +38,6 @@ public class PlayerSkillManager : MonoBehaviour
     {
         _playerController = GetComponent<PlayerController>();
         _playerBattle = GetComponent<PlayerBattle>();
-
-        foreach (var data in _skillVFXList)
-        {
-            if (_vfxDictionary.ContainsKey(data.skillID) == false)
-            {
-                _vfxDictionary.Add(data.skillID, data.vfxPrefab);
-            }
-        }
     }
 
     private void OnEnable()
@@ -67,25 +69,87 @@ public class PlayerSkillManager : MonoBehaviour
     public void SkillAttack()
     {
         if (_currentCastingSkill == null) return;
+        
+        int currentLevel = SkillUtil.Instance.GetSkillLevel(_currentCastingSkill.ID);
+        int calcDamage = SkillUtil.Instance.GetCalculatedDamage(_currentCastingSkill, currentLevel);
+        int calcBuffValue = SkillUtil.Instance.GetCalculatedBuffValue(_currentCastingSkill, currentLevel);
 
-        if (_vfxDictionary.TryGetValue(_currentCastingSkill.ID, out GameObject vfxPrefab))
+        GameObject prefabSkill = null;
+        Transform skillLocation = null;
+
+        // 계속 추가하기 스킬은 else if로 추가해주자
+
+        // Q 스킬
+        if (_currentCastingSkill.ID == id_Skill1)
         {
-            if (vfxPrefab != null && _attackPoint != null)
-            {
-                // 1. 이펙트 생성
-                GameObject spawnedVFX = Instantiate(vfxPrefab, _attackPoint.position, transform.rotation);
+            prefabSkill = prefab_Skill1Effect;
+            skillLocation = location_Skill1;
+        }
+        
+        // W 스킬
+        else if (_currentCastingSkill.ID == id_Skill2)
+        {
+            prefabSkill = prefab_Skill2Effect;
+            skillLocation = location_Skill2;
+        }
 
-                // 2. 생성된 이펙트에 있는 SkillHitbox를 찾아서 데미지 발생
-                SkillHitbox hitbox = spawnedVFX.GetComponent<SkillHitbox>();
-                if (hitbox != null)
-                {
-                    hitbox.SetDamage(_currentCastingSkill.Damage);
-                }
-                else
-                {
-                    Debug.LogWarning("이펙트 프리팹에 SkillHitbox 스크립트가 없습니다!");
-                }
+        // E 스킬
+        else if (_currentCastingSkill.ID == id_Skill3)
+        {
+            prefabSkill = prefab_Skill3Effect;
+            skillLocation = location_Skill3;
+        }
+
+        // R 스킬
+        else if (_currentCastingSkill.ID == id_Skill4)
+        {
+            prefabSkill = prefab_Skill4Effect;
+            skillLocation = location_Skill4;
+        }
+
+        if (prefabSkill != null && skillLocation != null)
+        {
+            GameObject spawnedSkill;
+
+            if (_currentCastingSkill.SkillType == "Attack")
+            {
+                spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation);
             }
+            else
+            {
+                spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation, transform);
+            }
+
+            SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
+            
+            if (hitbox != null)
+            {
+                //레벨이 반영된   데미지를 스킬 히트박스에 설정
+                hitbox.SetDamage(calcDamage);
+            }
+            
+            else if (_currentCastingSkill.SkillType == "Attack")
+            {
+                Debug.LogWarning("Skill프리팹에 SkillHitBox가 있는지 확인하세요");
+            }
+        }
+
+        switch (_currentCastingSkill.SkillType)
+        {
+            case "Attack":
+                break;
+
+            case "Heal":
+                ApplyHeal(calcBuffValue);
+                break;
+
+            case "Buff":
+                ApplyBuff(_currentCastingSkill, calcBuffValue, this.GetCancellationTokenOnDestroy()).Forget();
+                break;
+
+            default:
+                Debug.LogWarning($"[PlayerSkillManager] 알 수 없는 스킬 타입: {_currentCastingSkill.SkillType}");
+                break;
         }
     }
 
@@ -94,5 +158,51 @@ public class PlayerSkillManager : MonoBehaviour
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
         _currentCastingSkill = null;
+    }
+
+    private void ApplyHeal(int calculatedHealAmount)
+    {
+        CharacterSaveData playerData = _playerController.PlayerData;
+        if (playerData == null) return;
+
+        playerData.CurrentHp += calculatedHealAmount;
+
+        if (playerData.CurrentHp > playerData.Hp)
+        {
+            playerData.CurrentHp = playerData.Hp;
+        }
+
+        Debug.Log($"<color=green>[Heal] 체력 {calculatedHealAmount} 회복! 현재 HP: {playerData.Hp}</color>");
+        SaveManager.Instance.SaveCurrentState();
+    }
+
+    private async UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, CancellationToken cancellationToken)
+    {
+        CharacterSaveData playerData = _playerController.PlayerData;
+       
+        if (playerData == null) return;
+
+        bool isAtkBuff = buffData.ID.Contains("Rage") || buffData.ID.Contains("Atk");
+
+        if (isAtkBuff)
+        {
+            _playerController.BuffAtk += calculatedBuffValue; // 계산된 버프값 적용
+            Debug.Log($"<color=yellow>[Buff] {buffData.Name} 발동! 공격력 {calculatedBuffValue} 증가 ({buffData.Duration}초)</color>");
+        }
+
+        try
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(buffData.Duration), cancellationToken: cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+        // 버프 효과 원상복구
+        if (isAtkBuff)
+        {
+            _playerController.BuffAtk -= calculatedBuffValue; 
+            Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {calculatedBuffValue} 감소 원상복구</color>");
+        }
     }
 }

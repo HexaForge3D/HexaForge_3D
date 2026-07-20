@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
 
+    public int BuffAtk { get; set; }
+
     private void Start()
     {
         _targetPosition = transform.position;
@@ -43,6 +46,8 @@ public class PlayerController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
+        //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
+        CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
 
         if (_spotPoint != null)
         {
@@ -63,23 +68,27 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        bool isPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
-        if (Input.GetMouseButtonDown(0))
+        if (isPointerOverUI == false)
         {
-            OnClickAttack();
-        }
-
-        if (_isAttackAnimPlaying == false)
-        {
-
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0))
             {
-                SetTargetPosition(true);
+                OnClickAttack();
             }
 
-            else if (Input.GetMouseButton(1))
+            if (_isAttackAnimPlaying == false)
             {
-                SetTargetPosition(false);
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    SetTargetPosition(true);
+                }
+
+                else if (Input.GetMouseButton(1))
+                {
+                    SetTargetPosition(false);
+                }
             }
         }
 
@@ -326,6 +335,13 @@ public class PlayerController : MonoBehaviour
     public void SetAttackAnimPlaying(bool isPlaying)
     {
         _isAttackAnimPlaying = isPlaying;
+    }
+
+    // 버프를 받고 공격했을 때의 데미지
+    public int GetTotalAtk()
+    {
+        if (PlayerData == null) return 0;
+        return PlayerData.Atk + BuffAtk;
     }
 
 }

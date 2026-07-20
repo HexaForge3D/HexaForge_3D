@@ -9,6 +9,9 @@ public class GameFlowManager
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
+    private string _pendingSellItemId;
+    private int _pendingSellCount;
+
     public async UniTask StartAsync()
     {
         await GameDataManager.Instance.WaitUntilReadyAsync();
@@ -34,6 +37,14 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
+        PlayerState.OnMpChanged -= OnPlayerMpChanged;
+        NPC.OnNPCInteracted -= OnNpcInterated;
+        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
+        SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
+
+        SaveManager.Instance.SaveCurrentState();
+
         PlayerSpawnManager.Instance.DeSpawnPlayer();
         _currentSlotId = null;
         _inGameViewModel = null;
@@ -63,11 +74,56 @@ public class GameFlowManager
         ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
     }
 
+    private void OnInventorySellRequested(InventoryItemData data, int count)
+    {
+        _pendingSellItemId = data.Id;
+        _pendingSellCount = count;
+
+        int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
+        string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
+
+        ShowConfirmAsync(message, OnSellConfirmed).Forget();
+    }
 
     private void OnCreateCharacterRequested(string slotId)
     {
         ShowCharacterCreateAsync(slotId).Forget();
     }
+
+    private void OnInventoryEquipRequested(InventoryItemData data)
+    {
+        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+
+        if (success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
+        }
+    }
+
+    private void OnEquipmentUnequipRequested(string equipSlot)
+    {
+        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+
+        if (success)
+        {
+            EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
+            equipmentView?.Refresh();
+
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
+        }
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -80,6 +136,25 @@ public class GameFlowManager
         else
         {
             ShowHuntingAreaAsync().Forget();
+        }
+    }
+
+    private void OnNpcInterated(NPC npc)
+    {
+        switch (npc.NPCId)
+        {
+            case NPCId.Store:
+                ToggleUI(UIType.ShopUI, ShowShop);
+                    break;
+            case NPCId.Smithy:
+                Debug.Log("smithy 상호작용");
+                break;
+            case NPCId.MainQuest:
+                Debug.Log("MainQuest 상호작용");
+                break;
+            default:
+                Debug.Log("NPCId 설정이 잘못되었습니다.");
+                break;
         }
     }
 
@@ -100,10 +175,6 @@ public class GameFlowManager
         Application.Quit();
     }
 
-    private void OnPlayerHpChanged(int currentHp, int maxHp)
-    {
-        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
-    }
 
     private void OnShopTransactionCompleted()
     {
@@ -114,11 +185,43 @@ public class GameFlowManager
         }
     }
 
-    // 아직 미구독상태
-    private void OnShopNpcInteracted()
+    private void OnSellConfirmed()
     {
-        ToggleUI(UIType.ShopUI, ShowShop);
+        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+
+        if (success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+
+            ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
+            shopView?.RefreshGold();
+        }
     }
+
+    private void OnSkillDataUpdated()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
+    }
+
+    private void OnPlayerHpChanged(int currentHp, int maxHp)
+    {
+        _inGameViewModel?.HandleHpChanged(currentHp, maxHp);
+    }
+
+    private void OnPlayerMpChanged(int currentMp, int maxMp)
+    {
+        _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
+    }
+
+    private void OnPlayerLevelUp()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.RefreshSkillSlots();
+    }
+
+
 
     private void OnInformationKeyPressed()
     {
@@ -140,6 +243,16 @@ public class GameFlowManager
         {
             ShowGameMenuAsync().Forget();
         }
+    }
+
+    private void OnSkillTreeKeyPressed()
+    {
+        ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
+    }
+
+    private void OnEquipmentKeyPressed()
+    {
+        ToggleUI(UIType.EquipmentPopup, ShowEquipment);
     }
 
 
@@ -180,17 +293,21 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
-        _inGameViewModel = new InGameViewModel();
+        _inGameViewModel = new InGameViewModel(_currentSlotId);
 
         view.BindViewModel(_inGameViewModel);
 
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
+        PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
+        PlayerInputSystem.OnEquipMent += OnEquipmentKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-
-        ShowShop();
+        PlayerState.OnMpChanged += OnPlayerMpChanged;
+        NPC.OnNPCInteracted += OnNpcInterated;
+        PlayerState.OnLevelUp += OnPlayerLevelUp;
+        SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -243,6 +360,13 @@ public class GameFlowManager
     {
         InventoryView view = await UIManager.Instance.OpenUIAsync<InventoryView>(UIType.InventoryPopup);
         InventoryViewModel viewModel = new InventoryViewModel(_currentSlotId);
+
+        view.OnSellRequested -= OnInventorySellRequested;
+        view.OnSellRequested += OnInventorySellRequested;
+
+        view.OnEquipRequested -= OnInventoryEquipRequested;
+        view.OnEquipRequested += OnInventoryEquipRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -251,6 +375,24 @@ public class GameFlowManager
         ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
         ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
         viewModel.OnGoldChanged += OnShopTransactionCompleted;
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowSkillTreeAsync()
+    {
+        SkillTreeView view = await UIManager.Instance.OpenUIAsync<SkillTreeView>(UIType.SkillTreePopup);
+        SkillTreeViewModel viewModel = new SkillTreeViewModel(_currentSlotId);
+        view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowEquipmentAsync()
+    {
+        EquipmentView view = await UIManager.Instance.OpenUIAsync<EquipmentView>(UIType.EquipmentPopup);
+        EquipmentViewModel viewModel = new EquipmentViewModel(_currentSlotId);
+
+        view.OnUnequipRequested -= OnEquipmentUnequipRequested;
+        view.OnUnequipRequested += OnEquipmentUnequipRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -281,5 +423,15 @@ public class GameFlowManager
     private void ShowShop()
     {
         ShowShopAsync().Forget();
+    }
+
+    private void ShowSkillTree()
+    {
+        ShowSkillTreeAsync().Forget();
+    }
+
+    private void ShowEquipment()
+    {
+        ShowEquipmentAsync().Forget();
     }
 }

@@ -1,16 +1,26 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlotView : MonoBehaviour
+public class InventorySlotView : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image Image_Icon;
     [SerializeField] private TMP_Text Text_Count;
     [SerializeField] private TooltipTrigger TooltipTrigger;
 
-    public void Setup(InventoryItemData data)
+    private InventoryItemData _data;
+    private Action<InventoryItemData, int> _onSellRequested;
+    private Action<InventoryItemData> _onEquipRequested;
+
+    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested)
     {
+        _data = data;
+        _onSellRequested = onSellRequested;
+        _onEquipRequested = onEquipRequested;
+
         if (data == null)
         {
             Image_Icon.gameObject.SetActive(false);
@@ -24,7 +34,6 @@ public class InventorySlotView : MonoBehaviour
 
         bool showCount = data.MaxStack > 1;
         Text_Count.gameObject.SetActive(showCount);
-
         if (showCount)
         {
             Text_Count.text = data.Count.ToString();
@@ -38,8 +47,9 @@ public class InventorySlotView : MonoBehaviour
 
         if (isShopOpen)
         {
-            int sellPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio);
-            priceText = $"Sell: {sellPrice}G";
+            int unitSellPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio);
+            int totalSellPrice = unitSellPrice * data.Count;
+            priceText = $"Sell: {unitSellPrice}G (Right Click) \nSell All: {totalSellPrice}G (Shift + Right Click)";
         }
 
         TooltipData tooltipData = new TooltipData(
@@ -48,10 +58,32 @@ public class InventorySlotView : MonoBehaviour
             data.Description,
             usageHint,
             countText,
-            priceText
-            );
+            priceText,
+            null
+        );
 
         TooltipTrigger.SetData(tooltipData);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (_data == null) return;
+        if (eventData.button != PointerEventData.InputButton.Right) return;
+
+        bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopUI);
+
+        if (isShopOpen)
+        {
+            bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            int count = isShiftHeld ? _data.Count : 1;
+            _onSellRequested?.Invoke(_data, count);
+            return;
+        }
+
+        if (_data.UsageType == ItemUsageType.Equipment)
+        {
+            _onEquipRequested?.Invoke(_data);
+        }
     }
 
     private string GetUsageHint(ItemUsageType usageType)

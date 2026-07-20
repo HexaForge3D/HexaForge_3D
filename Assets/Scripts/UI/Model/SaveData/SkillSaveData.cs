@@ -5,9 +5,10 @@ using System.Collections.Generic;
 public class SkillProgressData
 {
     public string SkillId;
-    public int SkillLevel;
+    public int SkillLevel = 1;
 }
 
+[Serializable]
 public class SkillSaveData
 {
     public List<SkillProgressData> Skills;

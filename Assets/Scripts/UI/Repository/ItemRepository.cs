@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemRepository
@@ -26,14 +27,26 @@ public class ItemRepository
 
     private ItemData ConvertToItemData(ItemTableData tableData)
     {
+        ItemUsageType usageType = ParseUsageType(tableData.UsageType);
+
         return new ItemData(
             tableData.ID,
             tableData.Name,
             tableData.Description,
             tableData.IconAddress,
             tableData.MaxStack,
-            tableData.UsageType,
+            usageType,
             tableData.Price
-            );
+        );
+    }
+
+    private ItemUsageType ParseUsageType(string usageTypeString)
+    {
+        if (Enum.TryParse(usageTypeString, out ItemUsageType result))
+        {
+            return result;
+        }
+
+        return ItemUsageType.None;
     }
 }
