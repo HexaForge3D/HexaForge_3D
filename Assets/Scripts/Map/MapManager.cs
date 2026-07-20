@@ -86,7 +86,7 @@ public class MapManager : MonoBehaviour
                 Debug.LogError("플레이어의 컨트롤러를 가져오지 못했습니다.");
             }
             //_playerTransform.position = targetPosition;
-            Debug.Log($"플레이어가 {targetPosition} 위치로 이동했습니다.");
+            Debug.Log($"플레이어가 {targetPosition} 위치(스폰 위치)로 이동했습니다.");
         }
     }
 }

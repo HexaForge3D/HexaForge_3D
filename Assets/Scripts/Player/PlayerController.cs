@@ -65,6 +65,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
+    }
+
     private void Update()
     {
         bool isPointerOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
@@ -341,6 +351,14 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerData == null) return 0;
         return PlayerData.Atk + BuffAtk;
+    }
+
+    private void ApplyMoneyCheat()
+    {
+        if (PlayerData == null) return;
+
+        SaveManager.Instance.ChangeGold(PlayerData.SlotId, 99999);
+        Debug.Log($"<color=yellow>[Cheat 완료]</color> 99,999G가 추가되었습니다! (현재 소지금: {PlayerData.Gold}G)");
     }
 
 }

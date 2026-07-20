@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using UnityEditor.PackageManager;
 
 public class PlayerInputSystem : MonoBehaviour
 {
@@ -46,6 +47,12 @@ public class PlayerInputSystem : MonoBehaviour
     [Header("Equipment Key")] // 장비 창 버튼
     [SerializeField] private KeyCode _equipMentKey = KeyCode.P;
 
+    [Header("Gold Cheat Key")] // 골드 치트 키
+    [SerializeField] private KeyCode _moneyCheatKey = KeyCode.Minus;
+
+    [Header("Suicide Cheat Key")] // 자살 치트 키
+    [SerializeField] private KeyCode _suicideCheatKey = KeyCode.Slash;
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -75,6 +82,10 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnExpTest;
 
     public static event Action OnEquipMent;
+
+    public static event Action OnMoneyCheat;
+    public static event Action OnSuicideCheat;
+
 
     private void Start()
     {
@@ -208,10 +219,22 @@ public class PlayerInputSystem : MonoBehaviour
         {
             OnExpTest?.Invoke();
         }
+        
         // 장비창 키
         if (Input.GetKeyDown(_equipMentKey))
         {
             OnEquipMent?.Invoke();
+        }
+
+        // 돈 치트 키
+        if (Input.GetKeyDown(_moneyCheatKey))
+        {
+            OnMoneyCheat?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_suicideCheatKey))
+        {
+            OnSuicideCheat?.Invoke();
         }
     }
 
