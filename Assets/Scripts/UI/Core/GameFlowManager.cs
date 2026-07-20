@@ -101,6 +101,9 @@ public class GameFlowManager
 
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
         }
     }
 
@@ -115,6 +118,9 @@ public class GameFlowManager
 
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
+
+            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            inforamtionView?.Refresh();
         }
     }
 
