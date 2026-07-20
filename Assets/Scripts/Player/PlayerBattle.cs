@@ -47,6 +47,15 @@ public class PlayerBattle : MonoBehaviour
         CancelToken();
     }
 
+    private void OnEnable()
+    {
+        // 물약 마셨다는 이벤트 구독하기 (체력, 마나)
+    }
+
+    private void OnDisable()
+    {
+        // 물약 마셨다는 이벤트 해지하기 (체력, 마나)
+    }
     private void CancelToken()
     {
         if (_cts != null)

@@ -96,7 +96,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ea0bd75998e94443bccf988bd57602e
-    m_Address: Assets/Prefabs/Map/Field/Field_RoomMaze.prefab
+    m_Address: Map_RoomMaze
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
