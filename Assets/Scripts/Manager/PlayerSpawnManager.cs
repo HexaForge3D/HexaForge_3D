@@ -82,4 +82,12 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
             player.transform.position = targetPosition;
         }
     }
+
+    //현재 스폰된 플레이어의 PlayerBattle를 조회하는 메서드
+    public PlayerBattle GetPlayerBattle()
+    {
+        if (_currentPlayer == null) return null;
+
+        return _currentPlayer.GetComponentInChildren<PlayerBattle>();
+    }
 }
