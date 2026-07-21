@@ -1,37 +1,47 @@
 [
   {
-    "ID": "area_a",
-    "Name": "Plain A",
+    "ID": "area_npcescort",
+    "Name": "NPCEscort",
     "Description": "This is Wide Plain. So Easy World",
     "ImageAddress": "",
-    "MapName": "A"
+    "MapName": "NPCEscort",
+	"MapType": "Dungeon",
+	"PrefabPath": "Map_NPCEscort"
   },
   {
-    "ID": "area_b",
-    "Name": "Forest B",
+    "ID": "area_roommaze",
+    "Name": "Maze",
     "Description": "This is Forest. Easy World",
     "ImageAddress": "",
-    "MapName": "B"
+    "MapName": "Maze",
+	"MapType": "Dungeon",
+	"PrefabPath": "Map_RoomMaze"
   },
   {
-    "ID": "area_c",
-    "Name": "Mountain C",
+    "ID": "area_defence",
+    "Name": "Defence",
     "Description": "This is Mountain. Normal World",
     "ImageAddress": "",
-    "MapName": "C"
+    "MapName": "Defence",
+	"MapType": "Dungeon",
+	"PrefabPath": "Map_Defence"
   },
   {
-    "ID": "area_d",
-    "Name": "Vally D",
+    "ID": "area_bossraid",
+    "Name": "BossRaid",
     "Description": "This is Deep Vally. Hard World",
     "ImageAddress": "",
-    "MapName": "D"
+    "MapName": "BossRaid",
+	"MapType": "Dungeon",
+	"PrefabPath": "Map_BossRaid"
   },
   {
-    "ID": "area_e",
-    "Name": "Laboratory E",
+    "ID": "area_village",
+    "Name": "Village",
     "Description": "This is Laboratory. Very Hard World",
     "ImageAddress": "",
-    "MapName": "E"
+    "MapName": "Village",
+	"MapType": "Dungeon",
+	"PrefabPath": "Map_Village"
   }
 ]
