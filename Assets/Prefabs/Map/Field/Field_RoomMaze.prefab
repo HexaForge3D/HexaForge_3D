@@ -171,7 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4cdfd3bc85c6834fa65fba4784bcf17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
-  _portalType: 1
+  _portalType: 3
+  _targetMapId: area_village
+  _parentMapName: Maze
 --- !u!114 &5523497042779776084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +322,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4cdfd3bc85c6834fa65fba4784bcf17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
-  _portalType: 1
+  _portalType: 2
+  _targetMapId: 
+  _parentMapName: Maze
 --- !u!114 &259187690381007067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +495,7 @@ Transform:
   m_GameObject: {fileID: 5703497703116208866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12, y: 2, z: -64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
