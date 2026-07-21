@@ -10,7 +10,7 @@ public class EvasionSlotView : MonoBehaviour
 
     private void Awake()
     {
-        Image_CoolDownOverlay.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -22,7 +22,7 @@ public class EvasionSlotView : MonoBehaviour
 
         if (_coolDownRemaining <= 0f)
         {
-            Image_CoolDownOverlay.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
@@ -33,7 +33,7 @@ public class EvasionSlotView : MonoBehaviour
         _coolDownDuration = duration;
         _coolDownRemaining = duration;
 
-        Image_CoolDownOverlay.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         Image_CoolDownOverlay.fillAmount = 1f;
     }
 }
