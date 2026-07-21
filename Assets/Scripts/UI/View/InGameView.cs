@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,16 @@ public class InGameView : BaseUI
     [SerializeField] private GameObject Prefab_SkillSlot;
     [SerializeField] private EvasionSlotView EvasionSlotView;
 
+    [SerializeField] private Button Button_Equipment;
+    [SerializeField] private Button Button_Skill;
+    [SerializeField] private Button Button_Inventory;
+    [SerializeField] private Button Button_CharacterInfo;
+
+    public Action OnCharacterInfoButtonClicked;
+    public Action OnSkillButtonClicked;
+    public Action OnInventoryButtonClicked;
+    public Action OnEquipmentButtonClicked;
+
     private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
 
     private InGameViewModel _viewModel;
@@ -31,6 +42,18 @@ public class InGameView : BaseUI
         viewModel.OnMpValueChanged += OnMpValueChanged;
         viewModel.OnExpRatioChanged += OnExpRatioChanged;
         viewModel.OnExpValueChanged += OnExpValueChanged;
+
+        Button_CharacterInfo.onClick.RemoveListener(OnClickCharacterInfo);
+        Button_CharacterInfo.onClick.AddListener(OnClickCharacterInfo);
+
+        Button_Inventory.onClick.RemoveListener(OnClickInventory);
+        Button_Inventory.onClick.AddListener(OnClickInventory);
+
+        Button_Skill.onClick.RemoveListener(OnClickSkill);
+        Button_Skill.onClick.AddListener(OnClickSkill);
+
+        Button_Equipment.onClick.RemoveListener(OnClickEquipment);
+        Button_Equipment.onClick.AddListener(OnClickEquipment);
 
         _viewModel.GetInitialHpMp(out int currentHp, out int maxHp, out int currentMp, out int  maxMp);
 
@@ -117,5 +140,25 @@ public class InGameView : BaseUI
     public void StartEvasionCoolDown(float duration)
     {
         EvasionSlotView?.StartCoolDown(duration);
+    }
+
+    private void OnClickCharacterInfo()
+    {
+        OnCharacterInfoButtonClicked?.Invoke();
+    }
+
+    private void OnClickSkill()
+    {
+        OnSkillButtonClicked?.Invoke();
+    }
+
+    private void OnClickInventory()
+    {
+        OnInventoryButtonClicked?.Invoke();
+    }
+
+    private void OnClickEquipment()
+    {
+        OnEquipmentButtonClicked?.Invoke(); 
     }
 }

@@ -387,6 +387,18 @@ public class GameFlowManager
 
         view.BindViewModel(_inGameViewModel);
 
+        view.OnCharacterInfoButtonClicked -= OnInformationKeyPressed;
+        view.OnCharacterInfoButtonClicked += OnInformationKeyPressed;
+
+        view.OnEquipmentButtonClicked -= OnEquipmentKeyPressed;
+        view.OnEquipmentButtonClicked += OnEquipmentKeyPressed;
+
+        view.OnInventoryButtonClicked -= OnInventoryKeyPressed;
+        view.OnInventoryButtonClicked += OnInventoryKeyPressed;
+
+        view.OnSkillButtonClicked -= OnSkillTreeKeyPressed;
+        view.OnSkillButtonClicked += OnSkillTreeKeyPressed; 
+
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
