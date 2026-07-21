@@ -28,10 +28,23 @@ public class MonsterHitBox : MonoBehaviour
                 Debug.Log($"{currentPoint.name}으로 공격 성공! 데미지: {finalDamage}");
 
                 PlayerBattle playerBattle = hit.GetComponent<PlayerBattle>();
-                if (playerBattle != null)
+
+                if (playerBattle == null)
                 {
-                    playerBattle.TakeDamage(finalDamage);
+                    DefenceTarget defenceTarget = hit.GetComponent<DefenceTarget>();
+                    if (defenceTarget != null)
+                    {
+                        Debug.Log($"{currentPoint.name}으로 목표 공격 성공! 데미지: {finalDamage}");
+                        defenceTarget.TakeDamage(finalDamage);
+                    }
+                    else
+                    {
+                        Debug.LogError("Target에 Damage를 전달할 수 없습니다.");
+                    }
                 }
+
+                playerBattle.TakeDamage(finalDamage);
+                Debug.Log($"{currentPoint.name}으로 공격 성공! 데미지: {finalDamage}");
             }
         }
     }

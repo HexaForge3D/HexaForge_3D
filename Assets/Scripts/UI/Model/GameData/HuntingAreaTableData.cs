@@ -7,4 +7,6 @@ public class HuntingAreaTableData : GameDataBase
     public string Description;
     public string ImageAddress;
     public string MapName;
+    public string MapType;
+    public string PrefabPath;
 }

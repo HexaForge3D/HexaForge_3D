@@ -3,28 +3,32 @@
     "ID": "area_village",
     "Name": "Village",
     "Description": "This is Villaged",
-    "ImageAddress": "",
-    "MapName": "Village"
+    "PrefabPath": "Map_Village",
+    "MapName": "Village",
+	"SpawnPortalType": 1
   },
   {
     "ID": "area_store",
     "Name": "Store",
     "Description": "This is Store",
-    "ImageAddress": "",
-    "MapName": "Store"
+    "PrefabPath": "Map_Store",
+    "MapName": "Store",
+	"SpawnPortalType": 4
   },
   {
     "ID": "area_smithy",
     "Name": "Smithy",
     "Description": "This is Smithy",
-    "ImageAddress": "",
-    "MapName": "Smithy"
+    "PrefabPath": "Map_Smithy",
+    "MapName": "Smithy",
+	"SpawnPortalType": 6
   },
   {
     "ID": "area_mainquest",
     "Name": "MainQuest",
     "Description": "This is MainQuest",
-    "ImageAddress": "",
-    "MapName": "MainQuest"
+    "PrefabPath": "Map_MainQuest",
+    "MapName": "MainQuest",
+	"SpawnPortalType": 5
   }
 ]

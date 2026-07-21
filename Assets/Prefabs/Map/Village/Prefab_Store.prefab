@@ -289,6 +289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 4
+  _targetMapId: area_village
+  _parentMapName: Store
 --- !u!114 &2219875240587249639
 MonoBehaviour:
   m_ObjectHideFlags: 0
