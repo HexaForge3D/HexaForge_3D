@@ -3,28 +3,28 @@
     "ID": "area_village",
     "Name": "Village",
     "Description": "This is Villaged",
-    "ImageAddress": "",
+    "PrefabPath": "Map_Village",
     "MapName": "Village"
   },
   {
     "ID": "area_store",
     "Name": "Store",
     "Description": "This is Store",
-    "ImageAddress": "",
+    "PrefabPath": "Map_Store",
     "MapName": "Store"
   },
   {
     "ID": "area_smithy",
     "Name": "Smithy",
     "Description": "This is Smithy",
-    "ImageAddress": "",
+    "PrefabPath": "Map_Smithy",
     "MapName": "Smithy"
   },
   {
     "ID": "area_mainquest",
     "Name": "MainQuest",
     "Description": "This is MainQuest",
-    "ImageAddress": "",
+    "PrefabPath": "Map_MainQuest",
     "MapName": "MainQuest"
   }
 ]

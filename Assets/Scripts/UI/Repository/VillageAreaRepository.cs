@@ -23,6 +23,6 @@ public class VillageAreaRepository
 
     private VillageAreaData ConvertToVillageAreaData(VillageAreaTableData tableData)
     {
-        return new VillageAreaData(tableData.ID, tableData.Name, tableData.Description, tableData.ImageAddress, tableData.MapName);
+        return new VillageAreaData(tableData.ID, tableData.Name, tableData.Description, tableData.PrefabPath, tableData.MapName);
     }
 }
