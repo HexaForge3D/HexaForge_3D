@@ -1297,6 +1297,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tooltip
       objectReference: {fileID: 0}
+    - target: {fileID: 960246182470873720, guid: c4decdca31f88e94b9449e306ba10a47, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3739420221857564328, guid: c4decdca31f88e94b9449e306ba10a47, type: 3}
       propertyPath: m_Pivot.x
       value: 0
