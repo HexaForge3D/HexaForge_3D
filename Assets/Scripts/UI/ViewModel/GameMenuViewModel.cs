@@ -14,4 +14,19 @@ public class GameMenuViewModel
     {
         OnQuitGameRequested?.Invoke();
     }
+
+    public void ChangeBGMVolume(float value)
+    {
+        SoundManager.Instance.SetBGMVolume(value);
+    }
+
+    public void ChangeSFXVolume(float value)
+    {
+        SoundManager.Instance.SetSFXVolume(value);
+    }
+
+    public void ChangeUIVolume(float value)
+    {
+        SoundManager.Instance.SetUIVolume(value);
+    }
 }
