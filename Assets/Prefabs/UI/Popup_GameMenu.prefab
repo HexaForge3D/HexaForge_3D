@@ -891,6 +891,7 @@ MonoBehaviour:
   Button_Close: {fileID: 7076273779736000441}
   Button_CharacterSelect: {fileID: 7454249865261833238}
   Button_QuitGame: {fileID: 1797893403185221342}
+  Button_Settings: {fileID: 2471118429908247634}
 --- !u!222 &6365664285167138435
 CanvasRenderer:
   m_ObjectHideFlags: 0
