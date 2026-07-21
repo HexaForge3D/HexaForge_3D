@@ -18,7 +18,7 @@ public class CharacterSlotView : MonoBehaviour
 
         Text_SlotLabel.text = data.IsEmpty ? "Empty Slot (Create)" : data.Character.Name;
 
-        Button_Select.onClick.RemoveAllListeners();
+        Button_Select.onClick.RemoveListener(OnClickSelect);
         Button_Select.onClick.AddListener(OnClickSelect);
     }
 

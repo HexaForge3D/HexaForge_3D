@@ -18,7 +18,7 @@ public class HuntingAreaListItemView : MonoBehaviour
 
         Text_AreaName.text = data.Name;
 
-        Button_Select.onClick.RemoveAllListeners();
+        Button_Select.onClick.RemoveListener(OnClickSelect);
         Button_Select.onClick.AddListener(OnClickSelect);
     }
 

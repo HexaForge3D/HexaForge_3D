@@ -40,7 +40,7 @@ public class ShopSlotView : MonoBehaviour
 
         TooltipTrigger.SetData(tooltipData);
 
-        Button_Buy.onClick.RemoveAllListeners();
+        Button_Buy.onClick.RemoveListener(OnClickBuy);
         Button_Buy.onClick.AddListener(OnClickBuy);
     }
 

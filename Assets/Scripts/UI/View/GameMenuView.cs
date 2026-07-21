@@ -17,26 +17,26 @@ public class GameMenuView : BaseOverLayUI
     {
         _viewModel = viewModel;
 
-        Button_CharacterSelect.onClick.RemoveAllListeners();
+        Button_CharacterSelect.onClick.RemoveListener(OnClickCharacterSelect);
         Button_CharacterSelect.onClick.AddListener(OnClickCharacterSelect);
 
-        Button_QuitGame.onClick.RemoveAllListeners();
+        Button_QuitGame.onClick.RemoveListener(OnClickQuitGame);
         Button_QuitGame.onClick.AddListener(OnClickQuitGame);
 
 
         if (Slider_BGM != null)
         {
-            Slider_BGM.onValueChanged.RemoveAllListeners();
+            Slider_BGM.onValueChanged.RemoveListener(OnChangeBGM);
             Slider_BGM.onValueChanged.AddListener(OnChangeBGM);
         }
         if (Slider_SFX != null)
         {
-            Slider_SFX.onValueChanged.RemoveAllListeners();
+            Slider_SFX.onValueChanged.RemoveListener(OnChangeSFX);
             Slider_SFX.onValueChanged.AddListener(OnChangeSFX);
         }
         if (Slider_UI != null)
         {
-            Slider_UI.onValueChanged.RemoveAllListeners();
+            Slider_UI.onValueChanged.RemoveListener(OnChangeUI);
             Slider_UI.onValueChanged.AddListener(OnChangeUI);
         }
     }

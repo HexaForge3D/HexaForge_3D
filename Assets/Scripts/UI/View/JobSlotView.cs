@@ -18,7 +18,7 @@ public class JobSlotView : MonoBehaviour
 
         Text_JobName.text = job.ID;
 
-        Button_Select.onClick.RemoveAllListeners();
+        Button_Select.onClick.RemoveListener(OnClickSelect);
         Button_Select.onClick.AddListener(OnClickSelect);
     }
 

@@ -20,7 +20,7 @@ public class HuntingAreaSelectView : BaseOverLayUI
         _viewModel = viewModel;
 
         viewModel.OnAreaSelected += OnAreaSelected;
-        Button_Teleport.onClick.RemoveAllListeners();
+        Button_Teleport.onClick.RemoveListener(OnClickTeleport);
         Button_Teleport.onClick.AddListener(OnClickTeleport);
 
         BuildAreaList();

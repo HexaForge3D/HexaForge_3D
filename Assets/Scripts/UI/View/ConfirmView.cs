@@ -15,7 +15,7 @@ public class ConfirmView : BaseOverLayUI
 
         Text_Message.text = viewModel.Message;
 
-        Button_Confirm.onClick.RemoveAllListeners();
+        Button_Confirm.onClick.RemoveListener(OnClickConfirm);
         Button_Confirm.onClick.AddListener(OnClickConfirm);
     }
 

@@ -19,7 +19,7 @@ public class SkillTreeView : BaseOverLayUI
 
         SkillUtil.Instance.OnSkillDataUpdated += Refresh;
 
-        Button_ResetAll.onClick.RemoveAllListeners();
+        Button_ResetAll.onClick.RemoveListener(OnClickResetAll);
         Button_ResetAll.onClick.AddListener(OnClickResetAll);
 
         Refresh();

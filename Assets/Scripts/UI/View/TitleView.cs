@@ -11,7 +11,7 @@ public class TitleView : BaseUI
     {
         _viewModel = viewModel;
 
-        Button_GameStart.onClick.RemoveAllListeners();
+        Button_GameStart.onClick.RemoveListener(OnClickGameStart);
         Button_GameStart.onClick.AddListener(OnClickGameStart);
     }
 
