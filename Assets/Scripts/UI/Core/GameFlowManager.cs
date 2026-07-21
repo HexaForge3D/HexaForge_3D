@@ -65,7 +65,7 @@ public class GameFlowManager
 
     private void OnTeleportRequested(HuntingAreaData data)
     {
-        MapManager.Instance.ChangeMap(data.MapName);
+        MapManager.Instance.ChangeMapAsync(data.Id, PortalType.DungeonStart).Forget();
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
     }
 
@@ -164,22 +164,35 @@ public class GameFlowManager
     private void OnPortalInteracted(Portal portal)
     {
         portal.ExitPortal();
-        var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
-        if (portal.PortalType != PortalType.DungeonStart && portal.PortalType != PortalType.Village)
-        {
-            if (portal.PortalType == PortalType.DungeonClear || portal.PortalType == PortalType.DungeonStart)
-            {
-                var villagePortal = PortalManager.Instance.GetPortalByType(PortalType.Village);
-                MapManager.Instance.TeleportToDestinationPortal(villagePortal);
-                return;
-            }
-            if (portal.PortalType == PortalType.None) return;
-            MapManager.Instance.TeleportToDestinationPortal(targetPortal);
-        }
-        else
+
+        if (portal.PortalType == PortalType.DungeonStart)
         {
             ShowHuntingAreaAsync().Forget();
+            return;
         }
+
+        if (portal.PortalType == PortalType.DungeonClear)
+        {
+            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
+            return;
+        }
+
+        if (portal.PortalType == PortalType.Village)
+        {
+            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+            return;
+        }
+
+        if (string.IsNullOrEmpty(portal.TargetMapId) == false)
+        {
+            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+        }
+
+        else
+        {
+            Debug.LogWarning($"[GameFlowManager] 포탈({portal.name})에 TargetMapId{portal.TargetMapId}가 설정되어 있지 않습니다.");
+        }
+
     }
 
     private void OnNpcInterated(NPC npc)
