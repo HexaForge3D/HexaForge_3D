@@ -7,7 +7,8 @@ public class NPCPointPatrol : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _arrivalThreshold = 1f;
     [SerializeField] private float _detectRadius = 10f;
-    [SerializeField] private string _targetTag = "Monster";
+    [SerializeField] private string _monsterTag = "Monster";
+    [SerializeField] private string _playerTag = "Player";
 
     private NavMeshAgent _navMeshAgent;
     private int _currentIndex = 0;
@@ -15,7 +16,7 @@ public class NPCPointPatrol : MonoBehaviour
     private bool _isPlayerInCollider = false;
     private bool _isStarted = false;
 
-    public static event Action OnPatrolFinished;
+    public static event Action OnClearField;
 
     private void Awake()
     {
@@ -43,21 +44,22 @@ public class NPCPointPatrol : MonoBehaviour
             return;
         }
 
-        if (DetectMonster())
+        bool hasMonster = HasTargetInDetectRadius(_monsterTag);
+        bool hasPlayer = HasTargetInDetectRadius(_playerTag);
+
+        if (hasMonster || !hasPlayer)
         {
-            if (!_navMeshAgent.isStopped)
+            if (_navMeshAgent != null && !_navMeshAgent.isStopped)
             {
                 _navMeshAgent.isStopped = true;
             }
-            return; 
+            return;
         }
-        else
+
+        if (_navMeshAgent != null && _navMeshAgent.isStopped)
         {
-            if (_navMeshAgent.isStopped)
-            {
-                _navMeshAgent.isStopped = false;
-                MoveToNextWaypoint();
-            }
+            _navMeshAgent.isStopped = false;
+            MoveToNextWaypoint();
         }
 
         CheckWaypoint();
@@ -82,13 +84,13 @@ public class NPCPointPatrol : MonoBehaviour
         Debug.Log("플레이어와의 상호작용으로 NPC 패트롤을 시작합니다.");
     }
 
-    private bool DetectMonster()
+    private bool HasTargetInDetectRadius(string targetTag)
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _detectRadius);
 
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.gameObject != gameObject && hitCollider.CompareTag(_targetTag))
+            if (hitCollider.gameObject != gameObject && hitCollider.CompareTag(targetTag))
             {
                 return true;
             }
@@ -121,7 +123,7 @@ public class NPCPointPatrol : MonoBehaviour
                 _isFinished = true;
                 _navMeshAgent.isStopped = true;
                 Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
-                OnPatrolFinished?.Invoke();
+                OnClearField?.Invoke();
                 return;
             }
 
