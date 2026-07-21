@@ -46,6 +46,7 @@ public class GameFlowManager
         PlayerBattle.OnPlayerDead -= OnPlayerDead;
         SkillUtil.OnLackMana -= OnLackMana;
         SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged -= OnPlayerExpChanged;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -254,6 +255,11 @@ public class GameFlowManager
         _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
     }
 
+    private void OnPlayerExpChanged(int currentExp, int maxExp)
+    {
+        _inGameViewModel?.HandleExpChanged(currentExp);
+    }
+
     private void OnPlayerLevelUp()
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
@@ -385,6 +391,7 @@ public class GameFlowManager
         PlayerBattle.OnPotionUsed += OnPotionUsed;
         SkillUtil.OnLackMana += OnLackMana;
         SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged += OnPlayerExpChanged;
     }
 
     private async UniTask ShowHuntingAreaAsync()
