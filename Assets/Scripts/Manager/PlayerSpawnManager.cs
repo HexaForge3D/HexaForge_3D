@@ -90,4 +90,12 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
 
         return _currentPlayer.GetComponentInChildren<PlayerBattle>();
     }
+
+    //현재 스폰된 플레이어의 PlayerLevel을 조회하는 메서드
+    public PlayerLevel GetPlayerLevel()
+    {
+        if (_currentPlayer == null) return null;
+
+        return _currentPlayer.GetComponentInChildren<PlayerLevel>();
+    }
 }

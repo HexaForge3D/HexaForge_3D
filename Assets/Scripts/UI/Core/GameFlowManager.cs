@@ -46,6 +46,8 @@ public class GameFlowManager
         PlayerBattle.OnPlayerDead -= OnPlayerDead;
         SkillUtil.OnLackMana -= OnLackMana;
         SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged -= OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted -= OnEvasionCoolTimeStarted;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -96,7 +98,7 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        TransactionResult result = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = EquipmentManager.Instance.EquipItem(_currentSlotId, data.Id);
 
         if (result == TransactionResult.Success)
         {
@@ -117,7 +119,7 @@ public class GameFlowManager
 
     private void OnEquipmentUnequipRequested(string equipSlot)
     {
-        TransactionResult result = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+        TransactionResult result = EquipmentManager.Instance.UnEquipItem(_currentSlotId, equipSlot);
 
         if (result == TransactionResult.Success)
         {
@@ -151,6 +153,11 @@ public class GameFlowManager
         if (playerBattle == null) return;
 
         playerBattle.UsePotion(data.Id);
+    }
+
+    private void OnSettingsRequested()
+    {
+        ShowSettingAsync().Forget();
     }
 
 
@@ -254,6 +261,11 @@ public class GameFlowManager
         _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
     }
 
+    private void OnPlayerExpChanged(int currentExp, int maxExp)
+    {
+        _inGameViewModel?.HandleExpChanged(currentExp);
+    }
+
     private void OnPlayerLevelUp()
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
@@ -327,6 +339,12 @@ public class GameFlowManager
         SystemMessageManager.Instance.Show($"Skill is on cooldown. ({remainTime:F1}s)");
     }
 
+    private void OnEvasionCoolTimeStarted(float duration)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.StartEvasionCoolDown(duration);
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -385,6 +403,8 @@ public class GameFlowManager
         PlayerBattle.OnPotionUsed += OnPotionUsed;
         SkillUtil.OnLackMana += OnLackMana;
         SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged += OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted += OnEvasionCoolTimeStarted;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -429,6 +449,7 @@ public class GameFlowManager
         GameMenuViewModel viewModel = new GameMenuViewModel();
         viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
         viewModel.OnQuitGameRequested += OnQuitGameRequested;
+        viewModel.OnSettingsRequested += OnSettingsRequested;
 
         view.BindViewModel(viewModel);
     }
@@ -480,6 +501,13 @@ public class GameFlowManager
     {
         DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
         view.Setup(OnReviveRequested);
+    }
+
+    private async UniTask ShowSettingAsync()
+    {
+        SettingView view = await UIManager.Instance.OpenUIAsync<SettingView>(UIType.SettingPopup);
+        SettingsViewModel viewModel = new SettingsViewModel();
+        view.BindViewModel(viewModel);
     }
 
 

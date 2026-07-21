@@ -12,7 +12,7 @@ public class CharacterSelectView : BaseUI
     [SerializeField] private Button Button_Delete;
 
     private CharacterSelectViewModel _viewModel;
-    private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
+    private readonly List<CharacterSlotView> _spawnedSlots = new List<CharacterSlotView>();
 
     public void BindViewModel(CharacterSelectViewModel viewModel)
     {
@@ -42,23 +42,31 @@ public class CharacterSelectView : BaseUI
             CharacterSlotView slotView = slotObject.GetComponent<CharacterSlotView>();
             slotView.Setup(slot, OnSlotClicked);
 
-            _spawnedSlots.Add(slotObject);
+            _spawnedSlots.Add(slotView);
         }
     }
     
     private void ClearSlotList()
     {
-        foreach (GameObject slot in _spawnedSlots)
+        foreach (CharacterSlotView slotView in _spawnedSlots)
         {
-            Destroy(slot);
+            Destroy(slotView.gameObject);
         }
 
         _spawnedSlots.Clear();  
     }
 
-    private void OnSlotClicked(CharacterSlotData slot)
+    private void OnSlotClicked(CharacterSlotData slot, CharacterSlotView clickedSlot)
     {
         _viewModel.SelectSlot(slot);
+
+        if (slot.IsEmpty == false)
+        {
+            foreach (CharacterSlotView slotView in _spawnedSlots)
+            {
+                slotView.SetSelected(slotView == clickedSlot);
+            }
+        }
     }
 
     private void OnSlotSeleted(CharacterSlotData slot)

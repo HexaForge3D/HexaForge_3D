@@ -7,11 +7,12 @@ public class JobSlotView : MonoBehaviour
 {
     [SerializeField] private TMP_Text Text_JobName;
     [SerializeField] private Button Button_Select;
+    [SerializeField] private GameObject Image_SelectedOverlay;
 
     private PlayerTableData _job;
-    private Action<PlayerTableData> _onSelected;
+    private Action<PlayerTableData, JobSlotView> _onSelected;
 
-    public void Setup(PlayerTableData job, Action<PlayerTableData> onSelected)
+    public void Setup(PlayerTableData job, Action<PlayerTableData, JobSlotView> onSelected)
     {
         _job = job;
         _onSelected = onSelected;
@@ -20,10 +21,17 @@ public class JobSlotView : MonoBehaviour
 
         Button_Select.onClick.RemoveListener(OnClickSelect);
         Button_Select.onClick.AddListener(OnClickSelect);
+
+        SetSelected(false);
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        Image_SelectedOverlay.SetActive(isSelected);
     }
 
     private void OnClickSelect()
     {
-        _onSelected?.Invoke(_job);
+        _onSelected?.Invoke(_job, this);
     }
 }
