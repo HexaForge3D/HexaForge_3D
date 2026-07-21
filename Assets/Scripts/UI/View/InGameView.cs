@@ -15,6 +15,7 @@ public class InGameView : BaseUI
 
     [SerializeField] private Transform Transform_SkillSlotParent;
     [SerializeField] private GameObject Prefab_SkillSlot;
+    [SerializeField] private EvasionSlotView EvasionSlotView;
 
     private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
 
@@ -111,5 +112,10 @@ public class InGameView : BaseUI
     public void RefreshSkillSlots()
     {
         BuildSkillSlots();
+    }
+    
+    public void StartEvasionCoolDown(float duration)
+    {
+        EvasionSlotView?.StartCoolDown(duration);
     }
 }

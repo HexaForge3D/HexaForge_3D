@@ -47,6 +47,7 @@ public class GameFlowManager
         SkillUtil.OnLackMana -= OnLackMana;
         SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
         PlayerLevel.OnExpChanged -= OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted -= OnEvasionCoolTimeStarted;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -333,6 +334,12 @@ public class GameFlowManager
         SystemMessageManager.Instance.Show($"Skill is on cooldown. ({remainTime:F1}s)");
     }
 
+    private void OnEvasionCoolTimeStarted(float duration)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.StartEvasionCoolDown(duration);
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -392,6 +399,7 @@ public class GameFlowManager
         SkillUtil.OnLackMana += OnLackMana;
         SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
         PlayerLevel.OnExpChanged += OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted += OnEvasionCoolTimeStarted;
     }
 
     private async UniTask ShowHuntingAreaAsync()
