@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 964121863002047081}
   - component: {fileID: 1387152458522118489}
   - component: {fileID: 5160344965538695031}
+  - component: {fileID: 7567054315908178502}
   m_Layer: 0
   m_Name: DefencePoint
   m_TagString: Untagged
@@ -178,6 +179,19 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7567054315908178502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148525882093162775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 171d5ed1fc5060e448018b79e17a97d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefenceTarget
+  _maxHp: 500
 --- !u!1 &189909828537319557
 GameObject:
   m_ObjectHideFlags: 0
