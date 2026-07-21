@@ -392,6 +392,7 @@ public class GameFlowManager
             return;
         }
 
+        await MapManager.Instance.ChangeMapAsync("area_village");
         await PlayerSpawnManager.Instance.SpawnPlayerAsync(data, jobMaster.PrefabAddress);
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
