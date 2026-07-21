@@ -17,11 +17,52 @@ public class DefenceFieldManager : MonoBehaviour
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 20f;
 
+    public static event Action OnClearField;
+    public static event Action OnFieldFailed;
+
+    private bool _isFailed = false;
+    private bool _isStarted = false;
+
+    private void OnEnable()
+    {
+        DefenceTarget.OnTargetDestroyed += HandleTargetDestroyed;
+        DefenceTarget.OnDefenceStartRequested += HandleDefenceStartRequested;
+    }
+
+    private void OnDisable()
+    {
+        DefenceTarget.OnTargetDestroyed -= HandleTargetDestroyed;
+        DefenceTarget.OnDefenceStartRequested -= HandleDefenceStartRequested;
+    }
+
     private void Start()
     {
-        _clearPortal.SetActive(false);
+        if (_clearPortal != null)
+        {
+            _clearPortal.SetActive(false);
+        }
+    }
+
+    private void HandleDefenceStartRequested()
+    {
+        if (_isStarted)
+        {
+            return;
+        }
+
+        _isStarted = true;
+        Debug.Log("방어 목표 상호작용 감지: 디펜스 시퀀스를 시작합니다.");
         StartDefenceSequence().Forget();
     }
+
+    private void HandleTargetDestroyed()
+    {
+        _isFailed = true;
+        Debug.Log("방어 목표가 파괴되어 디펜스 필드가 실패 처리되었습니다.");
+
+        OnFieldFailed?.Invoke();
+    }
+
     private async UniTask StartDefenceSequence()
     {
         Debug.Log($"{_countdownDuration}초 후 디펜스 시작");
@@ -30,7 +71,7 @@ public class DefenceFieldManager : MonoBehaviour
 
         for (int i = 0; i < _waveCount; i++)
         {
-            if (_defenceTarget == null)
+            if (_isFailed || _defenceTarget == null)
             {
                 Debug.Log("목표가 파괴되었습니다. 실패!");
                 return;
@@ -43,11 +84,16 @@ public class DefenceFieldManager : MonoBehaviour
             await UniTask.Delay((int)(_countdownDuration * 500));
         }
 
-        if (_defenceTarget != null)
+        if (!_isFailed && _defenceTarget != null)
         {
-            _clearPortal.SetActive(true);
+            if (_clearPortal != null)
+            {
+                _clearPortal.SetActive(true);
+            }
             Debug.Log("모든 웨이브 클리어! 클리어 포탈 활성화!");
-        } 
+
+            OnClearField?.Invoke();
+        }
     }
 
     private void SpawnAllDefinedMonsters()
@@ -60,6 +106,4 @@ public class DefenceFieldManager : MonoBehaviour
             }
         }
     }
-
-
 }
