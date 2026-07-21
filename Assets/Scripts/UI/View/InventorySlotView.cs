@@ -9,17 +9,38 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image Image_Icon;
     [SerializeField] private TMP_Text Text_Count;
+    [SerializeField] private Image Image_CoolDownOverlay; 
     [SerializeField] private TooltipTrigger TooltipTrigger;
 
     private InventoryItemData _data;
     private Action<InventoryItemData, int> _onSellRequested;
     private Action<InventoryItemData> _onEquipRequested;
+    private Action<InventoryItemData> _onUseRequested;
 
-    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested)
+    private float _coolDownRemaining;
+    private float _coolDownDuration;
+
+    private void Update()
+    {
+        if (_coolDownRemaining <= 0f) return;
+
+        _coolDownRemaining -= Time.deltaTime;
+        Image_CoolDownOverlay.fillAmount = Mathf.Clamp01(_coolDownRemaining / _coolDownDuration);
+
+        if (_coolDownRemaining <= 0f)
+        {
+            Image_CoolDownOverlay.gameObject.SetActive(false);
+        }
+    }
+
+    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested, Action<InventoryItemData> onUseRequested)
     {
         _data = data;
         _onSellRequested = onSellRequested;
         _onEquipRequested = onEquipRequested;
+        _onUseRequested = onUseRequested;
+
+        Image_CoolDownOverlay.gameObject.SetActive(false);
 
         if (data == null)
         {
@@ -84,6 +105,21 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
         {
             _onEquipRequested?.Invoke(_data);
         }
+        else if (_data.UsageType == ItemUsageType.Consumable)
+        {
+            _onUseRequested?.Invoke(_data);
+        }
+    }
+
+    public void StartCoolDown(float duration)
+    {
+        if (duration <= 0f) return;
+
+        _coolDownDuration = duration;
+        _coolDownRemaining = duration;
+
+        Image_CoolDownOverlay.gameObject.SetActive(true);
+        Image_CoolDownOverlay.fillAmount = 1f;
     }
 
     private string GetUsageHint(ItemUsageType usageType)

@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "ID": "Item_HealthPotion",
     "Name": "Health Potion",
@@ -43,7 +43,8 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
-  },  {
+  },
+  {
     "ID": "Item_IronChestPlate",
     "Name": "Iron ChestPlate",
     "Description": "ChestPlate.",
@@ -51,7 +52,8 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
-  },  {
+  },
+  {
     "ID": "Item_IronPants",
     "Name": "Iron Pants",
     "Description": "Pants.",
@@ -59,7 +61,8 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
-  },  {
+  },
+  {
     "ID": "Item_IronBoots",
     "Name": "Iron Boots",
     "Description": "Boots.",
@@ -67,7 +70,8 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
-  },  {
+  },
+  {
     "ID": "Item_IronGloves",
     "Name": "Iron Gloves",
     "Description": "Gloves.",
@@ -75,5 +79,113 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
+  },
+  {
+    "ID": "Item_SteelSword",
+    "Name": "Steel Sword",
+    "Description": "A liitle Upgrade Sword",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_SteelHelmet",
+    "Name": "Steel Helmet",
+    "Description": "A liitle Upgrade Helmet",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_SteelChestPlate",
+    "Name": "Steel ChestPlate",
+    "Description": "A little Upgrade ChestPlate",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_SteelPants",
+    "Name": "Steel Pants",
+    "Description": "A little Upgrade Pants",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_SteelBoots",
+    "Name": "Steel Boots",
+    "Description": "A little Upgrade Boots",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_SteelGloves",
+    "Name": "Steel Gloves",
+    "Description": "A little Upgrade Gloves",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100
+  },
+  {
+    "ID": "Item_MithrilSword",
+    "Name": "Mithril Sword",
+    "Description": "A High Quality Sword",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilHelmet",
+    "Name": "Mithril Helmet",
+    "Description": "A High Quality Helmet",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilChestPlate",
+    "Name": "Mithril ChestPlate",
+    "Description": "A High Quality ChestPlate",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilPants",
+    "Name": "Mithril Pants",
+    "Description": "A High Quality Pants",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilBoots",
+    "Name": "Mithril Boots",
+    "Description": "A High Quality Boots",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilGloves",
+    "Name": "Mithril Gloves",
+    "Description": "A High Quality Gloves",
+    "IconAddress": "",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500
   }
 ]

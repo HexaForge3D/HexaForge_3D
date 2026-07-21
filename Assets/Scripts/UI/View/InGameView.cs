@@ -7,12 +7,15 @@ public class InGameView : BaseUI
 {
     [SerializeField] private Image Image_HpBar;
     [SerializeField] private Image Image_MpBar;
+    [SerializeField] private Image Image_ExpBar;
 
     [SerializeField] private TMP_Text Text_HpValue;
     [SerializeField] private TMP_Text Text_MpValue;
+    [SerializeField] private TMP_Text Text_ExpValue;
 
     [SerializeField] private Transform Transform_SkillSlotParent;
     [SerializeField] private GameObject Prefab_SkillSlot;
+    [SerializeField] private EvasionSlotView EvasionSlotView;
 
     private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
 
@@ -26,6 +29,8 @@ public class InGameView : BaseUI
         viewModel.OnHpValueChanged += OnHpValueChanged;
         viewModel.OnMpRatioChanged += OnMpRatioChanged;
         viewModel.OnMpValueChanged += OnMpValueChanged;
+        viewModel.OnExpRatioChanged += OnExpRatioChanged;
+        viewModel.OnExpValueChanged += OnExpValueChanged;
 
         _viewModel.GetInitialHpMp(out int currentHp, out int maxHp, out int currentMp, out int  maxMp);
 
@@ -36,6 +41,9 @@ public class InGameView : BaseUI
         float mpRatio = maxMp > 0 ? (float)currentMp / maxMp : 0f;
         Image_MpBar.fillAmount = mpRatio;
         Text_MpValue.text = $"{currentMp}/{maxMp}";
+
+        int initialExp = _viewModel.GetInitialExp();
+        _viewModel.HandleExpChanged(initialExp);
 
         BuildSkillSlots();
     }
@@ -83,6 +91,16 @@ public class InGameView : BaseUI
         Text_MpValue.text = $"{currentMp}/{maxMp}";
     }
 
+    private void OnExpRatioChanged(float ratio)
+    {
+        Image_ExpBar.fillAmount = ratio;
+    }
+
+    private void OnExpValueChanged(int current, int max)
+    {
+        Text_ExpValue.text = $"{current}/{max}";
+    }
+
     public void StartSkillCoolDown(string keyLabel, float duration)
     {
         if (_skillSlotViews.TryGetValue(keyLabel, out SkillSlotView slotView))
@@ -94,5 +112,10 @@ public class InGameView : BaseUI
     public void RefreshSkillSlots()
     {
         BuildSkillSlots();
+    }
+    
+    public void StartEvasionCoolDown(float duration)
+    {
+        EvasionSlotView?.StartCoolDown(duration);
     }
 }

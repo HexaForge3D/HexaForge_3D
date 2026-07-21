@@ -44,6 +44,10 @@ public class GameFlowManager
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead -= OnPlayerDead;
+        SkillUtil.OnLackMana -= OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged -= OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted -= OnEvasionCoolTimeStarted;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -61,7 +65,7 @@ public class GameFlowManager
 
     private void OnTeleportRequested(HuntingAreaData data)
     {
-        MapManager.Instance.ChangeMapAsync(data.Id, PortalType.DungeonStart).Forget();
+        MapManager.Instance.ChangeMap(data.MapName);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
     }
 
@@ -94,9 +98,9 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = EquipmentManager.Instance.EquipItem(_currentSlotId, data.Id);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
@@ -104,16 +108,20 @@ public class GameFlowManager
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
     private void OnEquipmentUnequipRequested(string equipSlot)
     {
-        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+        TransactionResult result = EquipmentManager.Instance.UnEquipItem(_currentSlotId, equipSlot);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
@@ -121,50 +129,56 @@ public class GameFlowManager
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
     private void OnReviveRequested()
     {
         UIManager.Instance.CloseUI(UIType.DeathPopup);
-        //PlayerBattle.Revive();
-        string villagePrefabPath = "area_village";
-        MapManager.Instance.ChangeMapAsync(villagePrefabPath).Forget();
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle != null) playerBattle.Revive();
+    }
+
+    private void OnInventoryUseRequested(InventoryItemData data)
+    {
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle == null) return;
+
+        playerBattle.UsePotion(data.Id);
+    }
+
+    private void OnSettingsRequested()
+    {
+        ShowSettingAsync().Forget();
     }
 
 
     private void OnPortalInteracted(Portal portal)
     {
         portal.ExitPortal();
-
-        if (portal.PortalType == PortalType.DungeonStart)
+        var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
+        if (portal.PortalType != PortalType.DungeonStart && portal.PortalType != PortalType.Village)
         {
-            ShowHuntingAreaAsync().Forget();
-            return;
+            if (portal.PortalType == PortalType.DungeonClear || portal.PortalType == PortalType.DungeonStart)
+            {
+                var villagePortal = PortalManager.Instance.GetPortalByType(PortalType.Village);
+                MapManager.Instance.TeleportToDestinationPortal(villagePortal);
+                return;
+            }
+            if (portal.PortalType == PortalType.None) return;
+            MapManager.Instance.TeleportToDestinationPortal(targetPortal);
         }
-
-        if (portal.PortalType == PortalType.DungeonClear)
-        {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
-            return;
-        }
-
-        if (portal.PortalType == PortalType.Village)
-        {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
-            return;
-        }
-
-        if (string.IsNullOrEmpty(portal.TargetMapId) == false)
-        {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
-        }
-
         else
         {
-            Debug.LogWarning($"[GameFlowManager] 포탈({portal.name})에 TargetMapId{portal.TargetMapId}가 설정되어 있지 않습니다.");
+            ShowHuntingAreaAsync().Forget();
         }
     }
 
@@ -215,15 +229,19 @@ public class GameFlowManager
 
     private void OnSellConfirmed()
     {
-        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+        TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
             ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
             shopView?.RefreshGold();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
@@ -241,6 +259,11 @@ public class GameFlowManager
     private void OnPlayerMpChanged(int currentMp, int maxMp)
     {
         _inGameViewModel?.HandleMpChanged(currentMp, maxMp);
+    }
+
+    private void OnPlayerExpChanged(int currentExp, int maxExp)
+    {
+        _inGameViewModel?.HandleExpChanged(currentExp);
     }
 
     private void OnPlayerLevelUp()
@@ -266,8 +289,12 @@ public class GameFlowManager
         ShowDeathAsync().Forget();
     }
 
-
-
+    private void OnPotionUsed(string itemId, float coolTime)
+    {
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.Refresh();
+        inventoryView?.StartItemCoolDown(itemId, coolTime);
+    }
 
     private void OnInformationKeyPressed()
     {
@@ -299,6 +326,23 @@ public class GameFlowManager
     private void OnEquipmentKeyPressed()
     {
         ToggleUI(UIType.EquipmentPopup, ShowEquipment);
+    }
+
+    private void OnLackMana(string skillId)
+    {
+        SystemMessageManager.Instance.Show("Not enough mana.");
+    }
+
+    private void OnSkillCoolTimeFail(string skillId, float remainTime)
+    {
+        Debug.Log($"[GameFlowManager] OnSkillCoolTimeFail 호출됨: {skillId}, {remainTime}");
+        SystemMessageManager.Instance.Show($"Skill is on cooldown. ({remainTime:F1}s)");
+    }
+
+    private void OnEvasionCoolTimeStarted(float duration)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.StartEvasionCoolDown(duration);
     }
 
 
@@ -335,7 +379,6 @@ public class GameFlowManager
             return;
         }
 
-        await MapManager.Instance.ChangeMapAsync("area_village");
         await PlayerSpawnManager.Instance.SpawnPlayerAsync(data, jobMaster.PrefabAddress);
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
@@ -357,6 +400,11 @@ public class GameFlowManager
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead += OnPlayerDead;
+        PlayerBattle.OnPotionUsed += OnPotionUsed;
+        SkillUtil.OnLackMana += OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
+        PlayerLevel.OnExpChanged += OnPlayerExpChanged;
+        PlayerInputSystem.OnEvasionCoolTimeStarted += OnEvasionCoolTimeStarted;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -401,6 +449,7 @@ public class GameFlowManager
         GameMenuViewModel viewModel = new GameMenuViewModel();
         viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
         viewModel.OnQuitGameRequested += OnQuitGameRequested;
+        viewModel.OnSettingsRequested += OnSettingsRequested;
 
         view.BindViewModel(viewModel);
     }
@@ -415,6 +464,9 @@ public class GameFlowManager
 
         view.OnEquipRequested -= OnInventoryEquipRequested;
         view.OnEquipRequested += OnInventoryEquipRequested;
+
+        view.OnUseRequested -= OnInventoryUseRequested;
+        view.OnUseRequested += OnInventoryUseRequested;
 
         view.BindViewModel(viewModel);
     }
@@ -449,6 +501,13 @@ public class GameFlowManager
     {
         DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
         view.Setup(OnReviveRequested);
+    }
+
+    private async UniTask ShowSettingAsync()
+    {
+        SettingView view = await UIManager.Instance.OpenUIAsync<SettingView>(UIType.SettingPopup);
+        SettingsViewModel viewModel = new SettingsViewModel();
+        view.BindViewModel(viewModel);
     }
 
 

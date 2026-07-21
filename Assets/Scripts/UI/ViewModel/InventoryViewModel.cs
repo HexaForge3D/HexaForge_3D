@@ -48,14 +48,4 @@ public class InventoryViewModel
 
         return null;
     }
-
-    private void SellItem(InventoryItemData data, int count)
-    {
-        bool success = SaveManager.Instance.SellItem(_slotId, data.Id, count);
-
-        if (success)
-        {
-            OnItemSold?.Invoke();
-        }
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class PlayerInputSystem : MonoBehaviour
 {
@@ -46,6 +47,16 @@ public class PlayerInputSystem : MonoBehaviour
     [Header("Equipment Key")] // 장비 창 버튼
     [SerializeField] private KeyCode _equipMentKey = KeyCode.P;
 
+    [Header("Gold Cheat Key")] // 골드 치트 키
+    [SerializeField] private KeyCode _moneyCheatKey = KeyCode.Minus;
+
+    [Header("Suicide Cheat Key")] // 자살 치트 키
+    [SerializeField] private KeyCode _suicideCheatKey = KeyCode.Slash;
+
+    [Header("Evasion Setting")] // 회피스킬은 다른 스킬들과 다르게 마나 소모나 레벨 개념이 없으므로 InputSystem에서 자체 관리
+    [SerializeField] private float _evasionCoolTime = 5f;
+    private float _evasionCoolTimeEnd = 0f;
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -75,6 +86,11 @@ public class PlayerInputSystem : MonoBehaviour
     public static event Action OnExpTest;
 
     public static event Action OnEquipMent;
+
+    public static event Action OnMoneyCheat;
+    public static event Action OnSuicideCheat;
+
+    public static event Action<float> OnEvasionCoolTimeStarted;
 
     private void Start()
     {
@@ -138,9 +154,7 @@ public class PlayerInputSystem : MonoBehaviour
 
         if (Input.GetKeyDown(_evasionKey))
         {
-            Debug.Log("회피 실행");
-            // 회피 메서드 추가
-            OnEvasion?.Invoke();
+            Evasion();
         }
 
         if (Input.GetKeyDown(_skillinfoKey))
@@ -208,15 +222,40 @@ public class PlayerInputSystem : MonoBehaviour
         {
             OnExpTest?.Invoke();
         }
+        
         // 장비창 키
         if (Input.GetKeyDown(_equipMentKey))
         {
             OnEquipMent?.Invoke();
         }
+
+        // 돈 치트 키
+        if (Input.GetKeyDown(_moneyCheatKey))
+        {
+            OnMoneyCheat?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_suicideCheatKey))
+        {
+            OnSuicideCheat?.Invoke();
+        }
     }
 
     private void Evasion()
     {
-        // 추가 구현 예정
+
+        if (Time.time < _evasionCoolTimeEnd)
+        {
+            float remainTime = _evasionCoolTimeEnd - Time.time;
+            Debug.Log($"<color=gray>[회피 쿨타임]</color> {remainTime}초 후에 다시 사용할 수 있습니다.");
+            return;
+        }
+
+        Debug.Log("회피 실행");
+
+        _evasionCoolTimeEnd = Time.time + _evasionCoolTime;
+
+        OnEvasion?.Invoke();
+        OnEvasionCoolTimeStarted?.Invoke(_evasionCoolTime);
     }
 }
