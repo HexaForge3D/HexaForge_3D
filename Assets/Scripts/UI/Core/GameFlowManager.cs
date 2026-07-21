@@ -98,7 +98,7 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        TransactionResult result = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = EquipmentManager.Instance.EquipItem(_currentSlotId, data.Id);
 
         if (result == TransactionResult.Success)
         {
@@ -119,7 +119,7 @@ public class GameFlowManager
 
     private void OnEquipmentUnequipRequested(string equipSlot)
     {
-        TransactionResult result = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+        TransactionResult result = EquipmentManager.Instance.UnEquipItem(_currentSlotId, equipSlot);
 
         if (result == TransactionResult.Success)
         {

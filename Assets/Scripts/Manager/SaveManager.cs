@@ -10,6 +10,7 @@ public enum TransactionResult
     ItemNotFound,
     NotEnoughItems,
     SlotNotFound,
+    LevelNotEnough,
 }
 
 public class SaveManager : BaseMonoManager<SaveManager>
@@ -323,95 +324,6 @@ public class SaveManager : BaseMonoManager<SaveManager>
         SaveToFile(CurrentSaveData);
     }
 
-    private string GetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot)
-    {
-        switch (equipSlot)
-        {
-            case "Weapon": return equipped.WeaponItemId;
-            case "Helmet": return equipped.HelmetItemId;
-            case "Chest": return equipped.ChestItemId;
-            case "Pants": return equipped.PantsItemId;
-            case "Boots": return equipped.BootsItemId;
-            case "Gloves": return equipped.GlovesItemId;
-            default: return null;
-        }
-    }
-
-    private void SetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot, string itemId)
-    {
-        switch (equipSlot)
-        {
-            case "Weapon": equipped.WeaponItemId = itemId; break;
-            case "Helmet": equipped.HelmetItemId = itemId; break;
-            case "Chest": equipped.ChestItemId = itemId; break;
-            case "Pants": equipped.PantsItemId = itemId; break;
-            case "Boots": equipped.BootsItemId = itemId; break;
-            case "Gloves": equipped.GlovesItemId = itemId; break;
-        }
-    }
-
-    public string GetEquippedItemId(string slotId, string equipSlot)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null || slot.Equipped == null)
-        {
-            return null;
-        }
-
-        return GetEquippedItemId(slot.Equipped, equipSlot);
-    }
-
-    public int GetFinalAtk(string slotId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null) return 0;
-
-        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: true);
-
-        return slot.Atk + bonus;
-    }
-
-    public int GetFinalDef(string slotId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null) return 0;
-
-        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: false);
-
-        return slot.Def + bonus;
-    }
-
-    private int GetEquipmentStatBnous(EquippedItemsSaveData equipped, bool isAtk)
-    {
-        if (equipped == null) return 0;
-
-        int bonus = 0;
-        bonus += GetItemStatBonus(equipped.WeaponItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.HelmetItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.ChestItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.PantsItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.BootsItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.GlovesItemId, isAtk);
-
-        return bonus;
-
-    }
-
-    private int GetItemStatBonus(string itemId, bool isAtk)
-    {
-        if (string.IsNullOrEmpty(itemId)) return 0;
-
-        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
-
-        if (equipmentData == null) return 0;
-
-        return isAtk ? equipmentData.AtkBonus : equipmentData.DefBonus;
-    }
-
-
     // 시스템 메세지로 문구를 띄울 메서드 모음
     public TransactionResult AddItem(string slotId, string itemId, int count)
     {
@@ -547,67 +459,6 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return TransactionResult.Success;
     }
 
-    public TransactionResult EquipItem(string slotId, string itemId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null)
-        {
-            return TransactionResult.SlotNotFound;
-        }
-
-        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
-
-        if (equipmentData == null)
-        {
-            return TransactionResult.ItemNotFound;
-        }
-
-        if (slot.Equipped == null)
-        {
-            slot.Equipped = new EquippedItemsSaveData();
-        }
-
-        string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
-
-        SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
-
-        RemoveItem(slotId, itemId, 1);
-
-        if (string.IsNullOrEmpty(previousItemId) == false)
-        {
-            AddItem(slotId, previousItemId, 1);
-        }
-
-        SaveToFile(CurrentSaveData);
-
-        return TransactionResult.Success;
-    }
-
-    public TransactionResult UnequipItem(string slotId, string equipSlotName)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null || slot.Equipped == null)
-        {
-            return TransactionResult.SlotNotFound;
-        }
-
-        string itemId = GetEquippedItemId(slot.Equipped, equipSlotName);
-
-        if (string.IsNullOrEmpty(itemId))
-        {
-            return TransactionResult.ItemNotFound;
-        }
-
-        SetEquippedItemId(slot.Equipped, equipSlotName, null);
-        AddItem(slotId, itemId, 1);
-
-        SaveToFile(CurrentSaveData);
-
-        return TransactionResult.Success;
-    }
-
     public TransactionResult RemoveItem(string slotId, string itemId, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
@@ -645,6 +496,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
             case TransactionResult.NotEnoughItems: return "Not enough items.";
             case TransactionResult.ItemNotFound: return "Item not found.";
             case TransactionResult.SlotNotFound: return "Character not found.";
+            case TransactionResult.LevelNotEnough: return "Level is not Enough.";
             default: return null;
         }
     }
