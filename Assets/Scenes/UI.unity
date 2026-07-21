@@ -739,10 +739,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ManagerContainer
       objectReference: {fileID: 0}
-    - target: {fileID: 3897022714291447029, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -311
-      objectReference: {fileID: 0}
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalPosition.x
       value: 953.0432
