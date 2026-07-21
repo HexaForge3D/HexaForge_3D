@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
 
 public class PlayerController : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool _isAttacking = false;
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
+    private PlayerSkillManager _skillManager;
 
     public int BuffAtk { get; set; }
 
@@ -45,6 +47,8 @@ public class PlayerController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
+        _skillManager = GetComponent<PlayerSkillManager>();
+
         //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
         CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
 
@@ -68,11 +72,13 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
+        PlayerInputSystem.OnEvasion += HandleEvasion;
     }
 
     private void OnDisable()
     {
         PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
+        PlayerInputSystem.OnEvasion -= HandleEvasion;
     }
 
     private void Update()
@@ -359,6 +365,28 @@ public class PlayerController : MonoBehaviour
 
         SaveManager.Instance.ChangeGold(PlayerData.SlotId, 99999);
         Debug.Log($"<color=yellow>[Cheat 완료]</color> 99,999G가 추가되었습니다! (현재 소지금: {PlayerData.Gold}G)");
+    }
+
+    private void HandleEvasion()
+    {
+
+        if (_skillManager != null)
+        {
+            _skillManager.CancelCurrentSkill();
+        }
+
+        LookAtMousePosition();
+
+        _isMoving = false;
+        if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+
+        if (_agent != null)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
+
+        FireAnimationTrigger("Evasion");
     }
 
 }
