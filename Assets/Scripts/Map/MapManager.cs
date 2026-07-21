@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,9 +13,15 @@ public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
 
-    [SerializeField] private List<MapSpawnPoint> _mapSpawnPoints;
-
+    private VillageAreaRepository _mapRepository = new VillageAreaRepository();
+    private HuntingAreaRepository _huntingMapRepository = new HuntingAreaRepository();
+    private GameObject _currentMapInstance;
+    private string _currentMapAddress;
     private PlayerController _playerController;
+
+    private PortalType _lastPortalType = PortalType.None;
+
+    [SerializeField] private List<MapSpawnPoint> _mapSpawnPoints;
 
     private Dictionary<string, Transform> _spawnPointMap;
 
@@ -30,39 +36,117 @@ public class MapManager : MonoBehaviour
         }
 
         Instance = this;
-
-        BuildSpawnPointMap();
     }
 
-    private void BuildSpawnPointMap()
+    public async UniTask ChangeMapAsync(string mapId, PortalType entryPortalType = PortalType.Village)
     {
-        _spawnPointMap = new Dictionary<string, Transform>();
+        _lastPortalType = entryPortalType;
 
-        foreach (MapSpawnPoint entry in _mapSpawnPoints)
+        VillageAreaData mapData = _mapRepository.GetArea(mapId);
+        HuntingAreaData huntingMapData = _huntingMapRepository.GetArea(mapId);
+        if (mapData == null && huntingMapData == null)
         {
-            if (_spawnPointMap.ContainsKey(entry.MapName) == false)
+            Debug.LogWarning($"[MapManager]{mapId}에 대한 맵데이터가 존재하지 않습니다.");
+            return;
+        }
+
+        if (ResourceManager.Inst == null)
+        {
+            Debug.LogError("[MapManager] ResourceManager.Inst (싱글톤)가 씬에 존재하지 않습니다!");
+            return;
+        }
+
+        string prefabPath = mapData == null ? huntingMapData.PrefabPath : mapData.PrefabPath;
+
+        if (string.IsNullOrEmpty(prefabPath))
+        {
+            Debug.LogError($"[MapManager] 맵 데이터({mapId})의 PrefabPath가 비어있습니다!");
+            return;
+        }
+
+        DestroyMap();
+        if (mapData != null)
+        {
+            _currentMapInstance = await ResourceManager.Inst.InstantiateAsync(mapData.PrefabPath);
+            _currentMapAddress = mapData.PrefabPath;
+            InstantiateVillageMap(mapData);
+        }
+        else if (huntingMapData != null)
+        {
+            _currentMapInstance = await ResourceManager.Inst.InstantiateAsync(huntingMapData.PrefabPath);
+            _currentMapAddress = huntingMapData.PrefabPath;
+            InstantiateHuntingMap(huntingMapData);
+        }
+    }
+
+    private void DestroyMap()
+    {
+        if (_currentMapInstance != null)
+        {
+            Destroy(_currentMapInstance);
+            _currentMapInstance = null;
+
+            if (string.IsNullOrEmpty(_currentMapAddress) == false)
             {
-                _spawnPointMap.Add(entry.MapName, entry.SpawnPoint);
+                ResourceManager.Inst.Release(_currentMapAddress);
             }
         }
     }
 
-    public void ChangeMap(string mapName)
+    private void InstantiateVillageMap(VillageAreaData mapData)
     {
-        if (_spawnPointMap.TryGetValue(mapName, out Transform spawnPoint) == false)
+        if (_currentMapInstance == null)
         {
-            Debug.LogError($"[MapManager] {mapName}에 대한 스폰 위치가 등록되어 있지 않습니다.");
+            Debug.LogError($"[MapManager] 맵 생성 실패: {mapData.PrefabPath}");
             return;
         }
 
-        WarpPlayer(spawnPoint.position);
-        Debug.Log($"맵이 {mapName}으로 변경되었습니다.");
+        WarpPlayerToCurrentPortal(mapData);
+
+        Debug.Log($"맵이 {mapData.Name}(으)로 변경되었습니다.");
     }
 
-    public void TeleportToDestinationPortal(Portal targetPortal)
+    private void InstantiateHuntingMap(HuntingAreaData mapData)
     {
-        if (targetPortal == null) Debug.LogError("포탈이 null입니다!");
-        WarpPlayer(targetPortal.transform.position);
+        if (_currentMapInstance == null)
+        {
+            Debug.LogError($"[MapManager] 맵 생성 실패: {mapData.PrefabPath}");
+            return;
+        }
+
+        Portal targetPortal = PortalManager.Instance.GetPortal(mapData.MapName, PortalType.DungeonStart);
+
+        if (targetPortal != null)
+        {
+            WarpPlayer(targetPortal.transform.position);
+        }
+        else
+        {
+            Debug.LogWarning($"[MapManager] {mapData.MapName}에서 스폰할 포탈을 찾지 못했습니다.");
+        }
+
+        Debug.Log($"맵이 {mapData.Name}(으)로 변경되었습니다.");
+    }
+
+    private void WarpPlayerToCurrentPortal(VillageAreaData mapData)
+    {
+        PortalType portalTypeToFind = mapData.SpawnPortalType;
+
+        if (mapData.MapName == "Village")
+        {
+            portalTypeToFind = _lastPortalType;
+        }
+
+        Portal targetPortal = PortalManager.Instance.GetPortal(mapData.MapName, portalTypeToFind);
+
+        if (targetPortal != null)
+        {
+            WarpPlayer(targetPortal.transform.position);
+        }
+        else
+        {
+            Debug.LogWarning($"[MapManager] {mapData.MapName}에서 스폰할 포탈을 찾지 못했습니다.");
+        }
     }
 
     public void SetPlayer(Transform playerTransform)
@@ -84,8 +168,8 @@ public class MapManager : MonoBehaviour
             else
             {
                 Debug.LogError("플레이어의 컨트롤러를 가져오지 못했습니다.");
+                return;
             }
-            //_playerTransform.position = targetPosition;
             Debug.Log($"플레이어가 {targetPosition} 위치로 이동했습니다.");
         }
     }

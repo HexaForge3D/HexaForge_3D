@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 public enum PortalType : byte
 {
@@ -18,13 +19,20 @@ public class Portal : MonoBehaviour
     public static event System.Action<Portal> OnPortalInteracted;
 
     [SerializeField] private PortalType _portalType;
-
     public PortalType PortalType => _portalType;
+
+    [Header("이동할 맵 설정")]
+    [SerializeField] private string _targetMapId;
+    public string TargetMapId => _targetMapId;
+
+    [Header("포탈이 속한 맵 이름")]
+    [SerializeField] private string _parentMapName;
+    public string ParentMapName => _parentMapName;
 
     public Portal _partnerPortal { get; set; }
 
 
-    private void Start()
+    private void OnEnable()
     {
         PortalManager.Instance.RegisterPortal(this);
         PlayerInputSystem.OnInteract += Handleinteraction;
@@ -69,6 +77,7 @@ public class Portal : MonoBehaviour
     public void EnterPortal()
     {
         _isPlayerInCollider = true;
+        
     }
 
     public void ExitPortal()
