@@ -491,6 +491,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 4
+  _targetMapId: area_store
+  _parentMapName: Village
 --- !u!114 &4620733672250897679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,7 +673,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4cdfd3bc85c6834fa65fba4784bcf17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
-  _portalType: 1
+  _portalType: 2
+  _targetMapId: 
+  _parentMapName: Village
 --- !u!114 &2461472566888269976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,6 +825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 5
+  _targetMapId: area_mainquest
+  _parentMapName: Village
 --- !u!114 &2771307782238942937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,6 +1120,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 6
+  _targetMapId: area_smithy
+  _parentMapName: Village
 --- !u!114 &1222221526051328605
 MonoBehaviour:
   m_ObjectHideFlags: 0

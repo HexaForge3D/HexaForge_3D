@@ -554,6 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 6
+  _targetMapId: area_village
+  _parentMapName: Smithy
 --- !u!114 &3154607729838130757
 MonoBehaviour:
   m_ObjectHideFlags: 0

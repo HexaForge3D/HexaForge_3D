@@ -17812,6 +17812,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _portalType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _parentMapName
+      value: Defence
+      objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
       value: PortalPoint(Start)
@@ -23925,6 +23933,18 @@ PrefabInstance:
     - target: {fileID: 437839973595691839, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _portalType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _targetMapId
+      value: area_village
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _parentMapName
+      value: Defence
       objectReference: {fileID: 0}
     - target: {fileID: 8494735209039316031, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: m_Name
