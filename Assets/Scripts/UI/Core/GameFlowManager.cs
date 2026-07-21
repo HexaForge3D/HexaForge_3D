@@ -139,8 +139,9 @@ public class GameFlowManager
     private void OnReviveRequested()
     {
         UIManager.Instance.CloseUI(UIType.DeathPopup);
-        //PlayerBattle.Revive();
-        MapManager.Instance.ChangeMap("Prefab_Village");
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle != null) playerBattle.Revive();
     }
 
     private void OnInventoryUseRequested(InventoryItemData data)
