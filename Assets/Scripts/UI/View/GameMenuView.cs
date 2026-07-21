@@ -5,11 +5,7 @@ public class GameMenuView : BaseOverLayUI
 {
     [SerializeField] private Button Button_CharacterSelect;
     [SerializeField] private Button Button_QuitGame;
-
-    [Header("Volume Sliders")]
-    [SerializeField] private Slider Slider_BGM;
-    [SerializeField] private Slider Slider_SFX;
-    [SerializeField] private Slider Slider_UI;
+    [SerializeField] private Button Button_Settings;
 
     private GameMenuViewModel _viewModel;
 
@@ -17,28 +13,14 @@ public class GameMenuView : BaseOverLayUI
     {
         _viewModel = viewModel;
 
-        Button_CharacterSelect.onClick.RemoveAllListeners();
+        Button_CharacterSelect.onClick.RemoveListener(OnClickCharacterSelect);
         Button_CharacterSelect.onClick.AddListener(OnClickCharacterSelect);
 
-        Button_QuitGame.onClick.RemoveAllListeners();
+        Button_QuitGame.onClick.RemoveListener(OnClickQuitGame);
         Button_QuitGame.onClick.AddListener(OnClickQuitGame);
 
-
-        if (Slider_BGM != null)
-        {
-            Slider_BGM.onValueChanged.RemoveAllListeners();
-            Slider_BGM.onValueChanged.AddListener(OnChangeBGM);
-        }
-        if (Slider_SFX != null)
-        {
-            Slider_SFX.onValueChanged.RemoveAllListeners();
-            Slider_SFX.onValueChanged.AddListener(OnChangeSFX);
-        }
-        if (Slider_UI != null)
-        {
-            Slider_UI.onValueChanged.RemoveAllListeners();
-            Slider_UI.onValueChanged.AddListener(OnChangeUI);
-        }
+        Button_Settings.onClick.RemoveListener(OnClickSettings);
+        Button_Settings.onClick.AddListener(OnClickSettings);
     }
 
     private void OnClickCharacterSelect()
@@ -51,18 +33,9 @@ public class GameMenuView : BaseOverLayUI
         _viewModel?.RequestQuitGame();
     }
 
-    private void OnChangeBGM(float value)
+    private void OnClickSettings()
     {
-        _viewModel?.ChangeBGMVolume(value);
-    }
-
-    private void OnChangeSFX(float value)
-    {
-        _viewModel?.ChangeSFXVolume(value);
-    }
-
-    private void OnChangeUI(float value)
-    {
-        _viewModel?.ChangeUIVolume(value);
+        Debug.Log("[GameMenuView] OnClickSettings 호출됨");
+        _viewModel?.RequestSettings();
     }
 }

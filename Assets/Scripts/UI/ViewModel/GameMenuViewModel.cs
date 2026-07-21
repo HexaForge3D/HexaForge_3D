@@ -4,6 +4,7 @@ public class GameMenuViewModel
 {
     public Action OnBackToCharacterSelectRequested;
     public Action OnQuitGameRequested;
+    public Action OnSettingsRequested;
 
     public void RequestBackToCharacterSelect()
     {
@@ -15,18 +16,8 @@ public class GameMenuViewModel
         OnQuitGameRequested?.Invoke();
     }
 
-    public void ChangeBGMVolume(float value)
+    public void RequestSettings()
     {
-        SoundManager.Instance.SetBGMVolume(value);
-    }
-
-    public void ChangeSFXVolume(float value)
-    {
-        SoundManager.Instance.SetSFXVolume(value);
-    }
-
-    public void ChangeUIVolume(float value)
-    {
-        SoundManager.Instance.SetUIVolume(value);
+        OnSettingsRequested?.Invoke();
     }
 }

@@ -155,6 +155,11 @@ public class GameFlowManager
         playerBattle.UsePotion(data.Id);
     }
 
+    private void OnSettingsRequested()
+    {
+        ShowSettingAsync().Forget();
+    }
+
 
     private void OnPortalInteracted(Portal portal)
     {
@@ -444,6 +449,7 @@ public class GameFlowManager
         GameMenuViewModel viewModel = new GameMenuViewModel();
         viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
         viewModel.OnQuitGameRequested += OnQuitGameRequested;
+        viewModel.OnSettingsRequested += OnSettingsRequested;
 
         view.BindViewModel(viewModel);
     }
@@ -495,6 +501,13 @@ public class GameFlowManager
     {
         DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
         view.Setup(OnReviveRequested);
+    }
+
+    private async UniTask ShowSettingAsync()
+    {
+        SettingView view = await UIManager.Instance.OpenUIAsync<SettingView>(UIType.SettingPopup);
+        SettingsViewModel viewModel = new SettingsViewModel();
+        view.BindViewModel(viewModel);
     }
 
 
