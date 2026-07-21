@@ -257,7 +257,8 @@ public class PlayerBattle : MonoBehaviour
             return;
         }
 
-        bool isConsumed = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+        TransactionResult result = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+        bool isConsumed = result == TransactionResult.Success;
 
         if (isConsumed == false)
         {
