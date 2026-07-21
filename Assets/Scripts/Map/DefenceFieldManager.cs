@@ -15,7 +15,7 @@ public class DefenceFieldManager : MonoBehaviour
     [SerializeField] private GameObject _clearPortal;
     [SerializeField] private GameObject _defenceTarget;
     [SerializeField] private int _waveCount = 5;
-    [SerializeField] private float _countdownDuration = 20f;
+    [SerializeField] private float _countdownDuration = 10f;
 
     public static event Action OnClearField;
     public static event Action OnFieldFailed;
@@ -80,8 +80,8 @@ public class DefenceFieldManager : MonoBehaviour
             SpawnAllDefinedMonsters();
             Debug.Log($"{i + 1} 웨이브 완료");
 
-            Debug.Log($"{i + 2} 웨이브 {(_countdownDuration / 2)}초뒤 시작");
-            await UniTask.Delay((int)(_countdownDuration * 500));
+            Debug.Log($"{i + 2} 웨이브 {(_countdownDuration * 2 )}초뒤 시작");
+            await UniTask.Delay((int)(_countdownDuration * 1000 * 1.5));
         }
 
         if (!_isFailed && _defenceTarget != null)
