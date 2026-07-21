@@ -65,6 +65,7 @@ public class PlayerSkillManager : MonoBehaviour
     public void SkillAnimStart()
     {
         _playerController.SetAttackAnimPlaying(true);
+        _playerController.ToggleNavMeshAgent(false);
     }
 
     public void SkillAttack()
@@ -166,6 +167,7 @@ public class PlayerSkillManager : MonoBehaviour
 
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
+        _playerController.ToggleNavMeshAgent(true);
         _currentCastingSkill = null;
     }
 
@@ -213,5 +215,20 @@ public class PlayerSkillManager : MonoBehaviour
             _playerController.BuffAtk -= calculatedBuffValue; 
             Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {calculatedBuffValue} 감소 원상복구</color>");
         }
+    }
+
+    public void CancelCurrentSkill()
+    {
+        if (_currentSpawnedSkill != null)
+        {
+            Destroy(_currentSpawnedSkill);
+            _currentSpawnedSkill = null;
+        }
+
+        _currentCastingSkill = null;
+
+        _playerController.SetAttackAnimPlaying(false);
+
+        Debug.Log("<color=red>[스킬 캔슬]</color> 시전 중이던 스킬을 취소하고 회피합니다!");
     }
 }
