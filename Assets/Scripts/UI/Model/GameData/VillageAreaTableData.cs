@@ -7,4 +7,5 @@ public class VillageAreaTableData : GameDataBase
     public string Description;
     public string PrefabPath;
     public string MapName;
+    public PortalType SpawnPortalType;
 }
