@@ -65,7 +65,6 @@ public class PlayerSkillManager : MonoBehaviour
     public void SkillAnimStart()
     {
         _playerController.SetAttackAnimPlaying(true);
-        _playerController.ToggleNavMeshAgent(false);
     }
 
     public void SkillAttack()
@@ -167,7 +166,6 @@ public class PlayerSkillManager : MonoBehaviour
 
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
-        _playerController.ToggleNavMeshAgent(true);
         _currentCastingSkill = null;
     }
 
