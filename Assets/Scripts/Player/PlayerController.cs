@@ -6,8 +6,8 @@ using Cysharp.Threading.Tasks;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Setting")]
-    [SerializeField] private float _moveSpeed = 15f;
-    [SerializeField] private float _rotationSpeed = 25f;
+    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _rotationSpeed = 20f;
 
     [Header("Player Camera")]
     [SerializeField] private Camera _playerCamera;
@@ -73,12 +73,20 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion += HandleEvasion;
+
+        DefenceFieldManager.OnDefenceStarted += HandleDefenceStarted;
+        DefenceFieldManager.OnClearField += HandleDefenceEnded;
+        DefenceFieldManager.OnFieldFailed += HandleDefenceEnded;
     }
 
     private void OnDisable()
     {
         PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion -= HandleEvasion;
+
+        DefenceFieldManager.OnDefenceStarted -= HandleDefenceStarted;
+        DefenceFieldManager.OnClearField -= HandleDefenceEnded;
+        DefenceFieldManager.OnFieldFailed -= HandleDefenceEnded;
     }
 
     private void Update()
@@ -405,6 +413,18 @@ public class PlayerController : MonoBehaviour
         {
             _agent.enabled = false;
         }
+    }
+
+    private void HandleDefenceStarted()
+    {
+        gameObject.tag = "Untagged";
+        Debug.Log("디펜스 시작: 플레이어 태그가 Untagged로 변경되었습니다.");
+    }
+
+    private void HandleDefenceEnded()
+    {
+        gameObject.tag = "Player";
+        Debug.Log("디펜스 종료: 플레이어 태그가 Player로 복구되었습니다.");
     }
 
 }

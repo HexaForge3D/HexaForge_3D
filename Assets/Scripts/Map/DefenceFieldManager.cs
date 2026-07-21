@@ -19,6 +19,7 @@ public class DefenceFieldManager : MonoBehaviour
 
     public static event Action OnClearField;
     public static event Action OnFieldFailed;
+    public static event Action OnDefenceStarted; // 디펜스 시작 이벤트: Player 태그를 없애기 위하여
 
     private bool _isFailed = false;
     private bool _isStarted = false;
@@ -52,6 +53,7 @@ public class DefenceFieldManager : MonoBehaviour
 
         _isStarted = true;
         Debug.Log("방어 목표 상호작용 감지: 디펜스 시퀀스를 시작합니다.");
+        OnDefenceStarted?.Invoke();
         StartDefenceSequence().Forget();
     }
 
