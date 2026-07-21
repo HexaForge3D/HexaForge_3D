@@ -19,12 +19,12 @@
 
     public int GetFinalAtk()
     {
-        return SaveManager.Instance.GetFinalAtk(_currentSlotId);
+        return EquipmentManager.Instance.GetFinalAtk(_currentSlotId);
     }
 
     public int GetFinalDef()
     {
-        return SaveManager.Instance.GetFinalDef(_currentSlotId);
+        return EquipmentManager.Instance.GetFinalDef(_currentSlotId);
     }
 
 }
