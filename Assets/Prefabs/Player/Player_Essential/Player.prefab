@@ -415,8 +415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba1f91d78f4ab5409631de4680f7201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  _moveSpeed: 15
-  _rotationSpeed: 25
+  _moveSpeed: 10
+  _rotationSpeed: 20
   _playerCamera: {fileID: 777996260539164698}
   _spotPoint: {fileID: 5074255985663793053}
   _clickableLayer:
@@ -538,7 +538,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 7e12d669de2f02d4193e8cdc92674257, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
