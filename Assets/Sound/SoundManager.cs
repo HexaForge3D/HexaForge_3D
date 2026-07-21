@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Sources")]
     [SerializeField] private AudioSource _bgmSource;
     [SerializeField] private AudioSource _uiSource;
+    [SerializeField] private AudioSource _sfxSource;
     [SerializeField] private AudioClip _buttonClickSound;
     [SerializeField] private AudioMixer _audioMixer;
     private void Awake()
