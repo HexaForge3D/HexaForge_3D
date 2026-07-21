@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 public class PlayerBattle : MonoBehaviour
 {
@@ -18,14 +21,52 @@ public class PlayerBattle : MonoBehaviour
     public bool IsDead => _isDead;
     // 플레이어 체력 변경시 나오는 이벤트 변수
     public static event Action<int, int> OnHpChanged;
+    // 플레이어 마나 변경시 나오는 이벤트 변수
+    public static event Action<int, int> OnMpChanged;
+    // 플레이어 마나 자동 회복에 필요한 값들
+    private CancellationTokenSource _cts;
+    private const float ManaRegenTimer = 1f;
+    private const float ManaRegenRate = 0.05f;
+    // 물약을 마시고 난 뒤의 쿨타임을 알려주는 이벤트 변수
+    public static event Action<string, float> OnPotionUsed;
+
     // 플레이어 사망시 나오는 이벤트 변수
     public static event Action OnPlayerDead;
+    // 마나 ID와 마나 쿨타임 시간
+    private Dictionary<string, float> _potionCooldowns = new Dictionary<string, float>();
 
     private void Start()
     {
         _playerController = GetComponent<PlayerController>();
+        _cts = new CancellationTokenSource();
+        ManaRegen(_cts.Token).Forget();
     }
 
+    private void OnDestroy()
+    {
+        CancelToken();
+    }
+
+    private void OnEnable()
+    {
+        // 물약 마셨다는 이벤트 구독하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat += HandleSuicideCheat;
+    }
+
+    private void OnDisable()
+    {
+        // 물약 마셨다는 이벤트 해지하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat -= HandleSuicideCheat;
+    }
+    private void CancelToken()
+    {
+        if (_cts != null)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _cts = null;
+        }
+    }
     public void ExecuteAttack()
     {
         if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
@@ -85,10 +126,7 @@ public class PlayerBattle : MonoBehaviour
 
         SaveManager.Instance.SaveCurrentState();
 
-        if (data.CurrentHp <= 0)
-        {
-            Die();
-        }
+        if (data.CurrentHp <= 0) Die();
     }
 
     private void Die()
@@ -96,6 +134,8 @@ public class PlayerBattle : MonoBehaviour
         _isDead = true;
         Debug.Log("플레이어가 사망했습니다...");
         OnPlayerDead?.Invoke();
+
+        CancelToken();
 
         if (_playerController != null)
         {
@@ -182,6 +222,178 @@ public class PlayerBattle : MonoBehaviour
             }
             prevPoint = point;
         }
+    }
 
+    public void UsePotion(string itemId)
+    {
+        if (_playerController == null || _playerController.PlayerData == null || _isDead) return;
+
+        ConsumableTableData potionData = GameDataManager.Instance.GetData<ConsumableTableData>(itemId);
+
+        if (_potionCooldowns.TryGetValue(itemId, out float coolTimeEnd))
+        {
+            if (Time.time < coolTimeEnd)
+            {
+                float remainTime = coolTimeEnd - Time.time;
+                Debug.Log($"<color=pink>[체력 포션 쿨타임]</color> {remainTime}초 후에 다시 사용할 수 있습니다.");
+                return;
+            }
+        }
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        // 체력이나 마나가 최대인 경우에는 사용할 수 없게끔 수정
+        bool canHealHp = potionData.HpBonus > 0 && data.CurrentHp < data.Hp;
+        bool canHealMp = potionData.MpBonus > 0 && data.CurrentMp < data.Mp;
+
+        if (canHealHp == false && canHealMp == false)
+        {
+            if (potionData.HpBonus > 0 && potionData.MpBonus == 0) Debug.Log("<color=yellow>체력이 이미 최대치입니다.</color>");
+            
+            else if (potionData.MpBonus > 0 && potionData.HpBonus == 0) Debug.Log("<color=yellow>마나가 이미 최대치입니다.</color>");
+           
+            else Debug.Log("<color=yellow>체력과 마나가 이미 최대치입니다.</color>");
+
+            return;
+        }
+
+        TransactionResult result = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+        bool isConsumed = result == TransactionResult.Success;
+
+        if (isConsumed == false)
+        {
+            Debug.LogWarning("인벤토리에 물약이 존재하지 않습니다");
+            return;
+        }
+
+        bool stateChanged = false;
+
+        if (potionData.HpBonus > 0)
+        {
+            int hpHealAmount = Mathf.FloorToInt(data.Hp * potionData.HpBonus);
+            data.CurrentHp += hpHealAmount;
+            data.CurrentHp = Mathf.Min(data.CurrentHp, data.Hp);
+
+            Debug.Log($"<color=green>[체력 회복]</color> +{hpHealAmount} 회복! (현재체력: {data.CurrentHp} / {data.Hp})");
+
+            OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
+            stateChanged = true;
+        }
+
+        if (potionData.MpBonus > 0)
+        {
+            int mpHealAmount = Mathf.FloorToInt(data.Mp * potionData.MpBonus);
+            data.CurrentMp += mpHealAmount;
+            data.CurrentMp = Mathf.Min(data.CurrentMp, data.Mp);
+
+            Debug.Log($"<color=green>[마나 회복]</color> +{mpHealAmount} 회복! (현재 마나: {data.CurrentMp} / {data.Mp})");
+            OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+            stateChanged = true;
+        }
+
+        if (stateChanged)
+        {
+            _potionCooldowns[itemId] = Time.time + potionData.CoolTime;
+            SaveManager.Instance.SaveCurrentState();
+
+            OnPotionUsed?.Invoke(itemId, potionData.CoolTime);
+        }
+    }
+
+    private async UniTaskVoid ManaRegen(CancellationToken token)
+    {
+        int saveCount = 0;
+        try
+        {
+            while (token.IsCancellationRequested == false)
+            {
+                await UniTask.Delay(TimeSpan.FromSeconds(ManaRegenTimer), cancellationToken: token);
+
+                if (_playerController == null || _playerController.PlayerData == null || _isDead) continue;
+
+                CharacterSaveData data = _playerController.PlayerData;
+
+                if (data.CurrentMp < data.Mp)
+                {
+                    int regenAmount = Mathf.Max(1, Mathf.FloorToInt(data.Mp * ManaRegenRate));
+                    data.CurrentMp += regenAmount;
+
+                    if (data.CurrentMp > data.Mp)
+                    {
+                        data.CurrentMp = data.Mp;
+                    }
+
+                    Debug.Log($"<color=blue>마나가 {regenAmount} 회복되었습니다. 현재마나: {data.CurrentMp} / 최대마나: {data.Mp}</color>");
+
+                    OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+                    saveCount++;
+
+                    if (saveCount >= 5)
+                    {
+                        SaveManager.Instance.SaveCurrentState();
+                        saveCount = 0;
+                    }
+                }
+                else
+                {
+                    saveCount = 0;
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private void HandleSuicideCheat()
+    {
+        if (_isDead) return;
+        Debug.Log("<color=red>[Cheat 발동]</color> 플레이어가 즉사합니다.(테스트 용)");
+        TakeDamage(99999999);
+    }
+
+    public void Revive()
+    {
+        if (_isDead == false) return;
+
+        _isDead = false;
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        int lostGold = data.Gold;
+        data.Gold = 0;
+        SaveManager.Instance.SaveCurrentState();
+        Debug.Log($"<color=red>[부활 패널티]</color> 골드를 모두 잃었습니다. (잃은 골드: {lostGold}G)");
+
+        data.CurrentHp = data.Hp;
+        data.CurrentMp = data.Mp;
+
+        OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
+        OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
+
+        NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
+        if (playerAgent != null)
+        {
+            playerAgent.enabled = true;
+        }
+
+        if (_playerController != null)
+        {
+            _playerController.enabled = true;
+            _playerController.FireAnimationTrigger("isRevive");
+        }
+
+        PlayerSpawnManager.Instance.MoveToSpawnPoint(this.gameObject);
+
+        _cts = new CancellationTokenSource();
+        ManaRegen(_cts.Token).Forget();
+
+        Debug.Log("<color=cyan>[부활 완료]</color> 플레이어가 부활했습니다!");
     }
 }

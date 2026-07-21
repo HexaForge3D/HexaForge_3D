@@ -3,7 +3,9 @@
 public enum PortalType : byte
 {
     None,
-    Dungeon,
+    Village,
+    DungeonStart,
+    DungeonClear,
     Store,
     MainQuest,
     Smithy
@@ -22,7 +24,7 @@ public class Portal : MonoBehaviour
     public Portal _partnerPortal { get; set; }
 
 
-    private void OnEnable()
+    private void Start()
     {
         PortalManager.Instance.RegisterPortal(this);
         PlayerInputSystem.OnInteract += Handleinteraction;
@@ -48,11 +50,8 @@ public class Portal : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (MapManager.Instance != null)
-            {
-                MapManager.Instance.SetPlayer(other.transform);
-                _isPlayerInCollider = true;
-            }
+            MapManager.Instance.SetPlayer(other.transform);
+            EnterPortal();
         }
     }
 
@@ -62,8 +61,21 @@ public class Portal : MonoBehaviour
         {
             if (MapManager.Instance != null)
             {
-                _isPlayerInCollider = false;
+                ExitPortal();
             }
+        }
+    }
+
+    public void EnterPortal()
+    {
+        _isPlayerInCollider = true;
+    }
+
+    public void ExitPortal()
+    {
+        if (MapManager.Instance != null)
+        {
+            _isPlayerInCollider = false;
         }
     }
 }

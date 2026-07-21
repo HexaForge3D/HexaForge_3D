@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,9 +18,8 @@ public class PlayerController : MonoBehaviour
     [Header("Layer Masks")]
     [SerializeField] private LayerMask _clickableLayer;
 
-    [Header("Animator")]
-    [SerializeField] private Animator _animator;
 
+    private Animator _animator;
     private CharacterSaveData _playerData;
     public CharacterSaveData PlayerData => _playerData;
 
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private bool _isAttacking = false;
     private Quaternion _attackTargetRotation;
     private PlayerBattle _playerBattle;
+    private PlayerSkillManager _skillManager;
 
     public int BuffAtk { get; set; }
 
@@ -46,6 +47,8 @@ public class PlayerController : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
+        _skillManager = GetComponent<PlayerSkillManager>();
+
         //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
         CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
 
@@ -64,6 +67,18 @@ public class PlayerController : MonoBehaviour
             _agent.speed = _moveSpeed;
             _agent.updateRotation = false;
         }
+    }
+
+    private void OnEnable()
+    {
+        PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
+        PlayerInputSystem.OnEvasion += HandleEvasion;
+    }
+
+    private void OnDisable()
+    {
+        PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
+        PlayerInputSystem.OnEvasion -= HandleEvasion;
     }
 
     private void Update()
@@ -141,7 +156,7 @@ public class PlayerController : MonoBehaviour
                 {
                     _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
 
-                    if (_agent != null)
+                    if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
                     {
                         _agent.isStopped = true;
                         _agent.ResetPath();
@@ -194,7 +209,7 @@ public class PlayerController : MonoBehaviour
             {
                 _targetPosition = navHit.position;
 
-                if (_agent != null)
+                if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
                 {
                     _isAttacking = false;
                     _agent.SetDestination(_targetPosition);
@@ -226,7 +241,7 @@ public class PlayerController : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (_agent != null)
+        if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
         {
             Vector3 direction = _agent.velocity;
             direction.y = 0f;
@@ -260,7 +275,7 @@ public class PlayerController : MonoBehaviour
             _spotPoint.gameObject.SetActive(false);
         }
 
-        if (_agent != null)
+        if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
         {
             _agent.isStopped = true;
             _agent.ResetPath();
@@ -316,13 +331,14 @@ public class PlayerController : MonoBehaviour
                 {
                     _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
 
-                    if (_agent != null)
+                    if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
                     {
                         _agent.isStopped = true;
                         _agent.ResetPath();
                     }
 
                     _isMoving = false;
+
                     if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
                     _animator.SetBool("isWalking", _isMoving);
 
@@ -342,6 +358,53 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerData == null) return 0;
         return PlayerData.Atk + BuffAtk;
+    }
+
+    private void ApplyMoneyCheat()
+    {
+        if (PlayerData == null) return;
+
+        SaveManager.Instance.ChangeGold(PlayerData.SlotId, 99999);
+        Debug.Log($"<color=yellow>[Cheat 완료]</color> 99,999G가 추가되었습니다! (현재 소지금: {PlayerData.Gold}G)");
+    }
+
+    private void HandleEvasion()
+    {
+        if (_skillManager != null)
+        {
+            _skillManager.CancelCurrentSkill();
+        }
+
+        LookAtMousePosition();
+
+        _isMoving = false;
+        if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
+
+        FireAnimationTrigger("Evasion");
+    }
+    public void EvasionAnimStart()
+    {
+        ToggleNavMeshAgent(false);
+    }
+
+    public void EvasionAnimEnd()
+    {
+        ToggleNavMeshAgent(true);
+    }
+
+    public void ToggleNavMeshAgent(bool isActive)
+    {
+        if (_agent == null) return;
+
+        if (isActive)
+        {
+            _agent.enabled = true;
+            _agent.Warp(transform.position);
+        }
+        else
+        {
+            _agent.enabled = false;
+        }
     }
 
 }

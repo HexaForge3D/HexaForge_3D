@@ -37,12 +37,15 @@ public class GameFlowManager
         Portal.OnPortalInteracted -= OnPortalInteracted;
         PlayerInputSystem.OnSystem -= OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged -= OnPlayerHpChanged;
-        PlayerState.OnMpChanged -= OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged -= OnPlayerMpChanged;
         NPC.OnNPCInteracted -= OnNpcInterated;
-        PlayerState.OnLevelUp -= OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
+        PlayerBattle.OnPlayerDead -= OnPlayerDead;
+        SkillUtil.OnLackMana -= OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -93,9 +96,9 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        bool success = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = SaveManager.Instance.EquipItem(_currentSlotId, data.Id);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
@@ -103,16 +106,20 @@ public class GameFlowManager
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
     private void OnEquipmentUnequipRequested(string equipSlot)
     {
-        bool success = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
+        TransactionResult result = SaveManager.Instance.UnequipItem(_currentSlotId, equipSlot);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             EquipmentView equipmentView = UIManager.Instance.GetUI<EquipmentView>(UIType.EquipmentPopup);
             equipmentView?.Refresh();
@@ -120,17 +127,45 @@ public class GameFlowManager
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
-            InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
-            inforamtionView?.Refresh();
+            InformationView informationView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+            informationView?.Refresh();
         }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
+        }
+    }
+
+    private void OnReviveRequested()
+    {
+        UIManager.Instance.CloseUI(UIType.DeathPopup);
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle != null) playerBattle.Revive();
+    }
+
+    private void OnInventoryUseRequested(InventoryItemData data)
+    {
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle == null) return;
+
+        playerBattle.UsePotion(data.Id);
     }
 
 
     private void OnPortalInteracted(Portal portal)
     {
+        portal.ExitPortal();
         var targetPortal = PortalManager.Instance.GetDestinationPortal(portal);
-        if (portal.PortalType != PortalType.Dungeon)
+        if (portal.PortalType != PortalType.DungeonStart && portal.PortalType != PortalType.Village)
         {
+            if (portal.PortalType == PortalType.DungeonClear || portal.PortalType == PortalType.DungeonStart)
+            {
+                var villagePortal = PortalManager.Instance.GetPortalByType(PortalType.Village);
+                MapManager.Instance.TeleportToDestinationPortal(villagePortal);
+                return;
+            }
             if (portal.PortalType == PortalType.None) return;
             MapManager.Instance.TeleportToDestinationPortal(targetPortal);
         }
@@ -187,15 +222,19 @@ public class GameFlowManager
 
     private void OnSellConfirmed()
     {
-        bool success = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+        TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
             ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
             shopView?.RefreshGold();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
         }
     }
 
@@ -233,7 +272,17 @@ public class GameFlowManager
         inGameView?.StartSkillCoolDown(keyLabel, coolDown);
     }
 
+    private void OnPlayerDead()
+    {
+        ShowDeathAsync().Forget();
+    }
 
+    private void OnPotionUsed(string itemId, float coolTime)
+    {
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.Refresh();
+        inventoryView?.StartItemCoolDown(itemId, coolTime);
+    }
 
     private void OnInformationKeyPressed()
     {
@@ -265,6 +314,17 @@ public class GameFlowManager
     private void OnEquipmentKeyPressed()
     {
         ToggleUI(UIType.EquipmentPopup, ShowEquipment);
+    }
+
+    private void OnLackMana(string skillId)
+    {
+        SystemMessageManager.Instance.Show("Not enough mana.");
+    }
+
+    private void OnSkillCoolTimeFail(string skillId, float remainTime)
+    {
+        Debug.Log($"[GameFlowManager] OnSkillCoolTimeFail 호출됨: {skillId}, {remainTime}");
+        SystemMessageManager.Instance.Show($"Skill is on cooldown. ({remainTime:F1}s)");
     }
 
 
@@ -316,11 +376,15 @@ public class GameFlowManager
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
-        PlayerState.OnMpChanged += OnPlayerMpChanged;
+        PlayerBattle.OnMpChanged += OnPlayerMpChanged;
         NPC.OnNPCInteracted += OnNpcInterated;
-        PlayerState.OnLevelUp += OnPlayerLevelUp;
+        PlayerLevel.OnLevelUp += OnPlayerLevelUp;
         SkillUtil.Instance.OnSkillDataUpdated += OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart += OnSkillCoolTimeStart;
+        PlayerBattle.OnPlayerDead += OnPlayerDead;
+        PlayerBattle.OnPotionUsed += OnPotionUsed;
+        SkillUtil.OnLackMana += OnLackMana;
+        SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -380,6 +444,9 @@ public class GameFlowManager
         view.OnEquipRequested -= OnInventoryEquipRequested;
         view.OnEquipRequested += OnInventoryEquipRequested;
 
+        view.OnUseRequested -= OnInventoryUseRequested;
+        view.OnUseRequested += OnInventoryUseRequested;
+
         view.BindViewModel(viewModel);
     }
 
@@ -407,6 +474,12 @@ public class GameFlowManager
         view.OnUnequipRequested += OnEquipmentUnequipRequested;
 
         view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowDeathAsync()
+    {
+        DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
+        view.Setup(OnReviveRequested);
     }
 
 
@@ -447,4 +520,5 @@ public class GameFlowManager
     {
         ShowEquipmentAsync().Forget();
     }
+
 }

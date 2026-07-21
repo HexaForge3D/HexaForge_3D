@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShopView : BaseOverLayUI
 {
     [SerializeField] private TMP_Text Text_Gold;
-    [SerializeField] private TMP_Text Text_Message;
     [SerializeField] private Transform Transform_SlotParent;
     [SerializeField] private GameObject Prefab_ShopSlot;
 
@@ -16,26 +15,13 @@ public class ShopView : BaseOverLayUI
     {
         _viewModel = viewModel;
 
-        viewModel.OnGoldChanged += OnGoldChanged;
-        viewModel.OnBuyFailed += OnBuyFailed;
-
-        Text_Message.text = string.Empty;
+        viewModel.OnGoldChanged += RefreshGold;
 
         RefreshGold();
-        BuildSlot();
+        BuildSlots();
     }
 
-    private void ClearSlots()
-    {
-        foreach (GameObject slot in _spawnedSlots)
-        {
-            Destroy(slot);
-        }
-
-        _spawnedSlots.Clear();
-    }
-
-    private void BuildSlot()
+    private void BuildSlots()
     {
         ClearSlots();
 
@@ -51,20 +37,19 @@ public class ShopView : BaseOverLayUI
         }
     }
 
+    private void ClearSlots()
+    {
+        foreach (GameObject slot in _spawnedSlots)
+        {
+            Destroy(slot);
+        }
+
+        _spawnedSlots.Clear();
+    }
+
     private void OnBuyClicked(ItemData item)
     {
         _viewModel.BuyItem(item);
-    }
-
-    private void OnGoldChanged()
-    {
-        RefreshGold();
-        Text_Message.text = string.Empty;
-    }
-
-    private void OnBuyFailed(string message)
-    {
-        Text_Message.text = message;
     }
 
     public void RefreshGold()
