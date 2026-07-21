@@ -2,12 +2,24 @@
 using System.IO;
 using UnityEngine;
 
+public enum TransactionResult
+{
+    Success,
+    NotEnoughGold,
+    InventoryFull,
+    ItemNotFound,
+    NotEnoughItems,
+    SlotNotFound,
+    LevelNotEnough,
+}
+
 public class SaveManager : BaseMonoManager<SaveManager>
 {
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
     public const float SellPriceRatio = 0.8f;
     private const int SkillPointsPerLevel = 4;
+    public const int MaxInventorySlots = 63;
 
     public SaveData CurrentSaveData { get; private set; }
 
@@ -87,7 +99,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
         slot.Mp = jobMaster.Mp;
         slot.Atk = jobMaster.Atk;
         slot.Def = jobMaster.Def;
-        slot.Gold = 100000;
+        slot.Gold = 0;
         slot.CurrentHp = jobMaster.Hp; // 현재 체력도 생성되었을 때는 최대 체력으로
         slot.CurrentMp = jobMaster.Mp; // 현재 마나도 생성되었을 때는 최대 마나로
 
@@ -250,179 +262,6 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return true;
     }
 
-    public bool AddItem(string slotId, string itemId, int count)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null)
-        {
-            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return false;
-        }
-
-        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
-
-        if (itemMaster == null)
-        {
-            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
-            return false;
-        }
-
-        if (slot.Inventory == null)
-        {
-            slot.Inventory = new InventorySaveData
-            {
-                Slots = new List<InventorySlotSaveData>()
-            };
-        }
-
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
-
-        if (existingSlot != null && existingSlot.Count + count <= itemMaster.MaxStack)
-        {
-            existingSlot.Count += count;
-        }
-        else
-        {
-            slot.Inventory.Slots.Add(new InventorySlotSaveData
-            {
-                ItemId = itemId,
-                Count = count
-            });
-        }
-
-        SaveToFile(CurrentSaveData);
-
-        return true;
-    }
-
-    public bool RemoveItem(string slotId, string itemId, int count)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null)
-        {
-            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return false;
-        }
-
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
-
-        if (existingSlot == null || existingSlot.Count < count)
-        {
-            Debug.LogError($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
-            return false;
-        }
-
-        existingSlot.Count -= count;
-
-        if (existingSlot.Count <= 0 )
-        {
-            slot.Inventory.Slots.Remove(existingSlot);
-        }
-
-        SaveToFile(CurrentSaveData);
-
-        return true;
-    }
-
-    public bool BuyItem(string slotId, string itemId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null)
-        {
-            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return false;
-        }
-
-        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
-
-        if (itemMaster == null)
-        {
-            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
-            return false;
-        }
-
-        if (slot.Gold < itemMaster.Price)
-        {
-            Debug.LogWarning($"[SaveManager] 골드가 부족합니다. 현재: {slot.Gold}, 필요: {itemMaster.Price}");
-            return false;
-        }
-
-        if (slot.Inventory == null)
-        {
-            slot.Inventory = new InventorySaveData
-            {
-                Slots = new List<InventorySlotSaveData>()
-            };
-        }
-
-        slot.Gold -= itemMaster.Price;
-
-        InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
-
-        Debug.Log($"[SaveManager] BuyItem - itemId: {itemId}, MaxStack: {itemMaster.MaxStack}, existingSlot count: {existingSlot?.Count ?? -1}");
-
-        if (existingSlot != null && existingSlot.Count < itemMaster.MaxStack)
-        {
-            existingSlot.Count += 1;
-        }
-        else
-        {
-            slot.Inventory.Slots.Add(new InventorySlotSaveData
-            {
-                ItemId = itemId,
-                Count = 1
-            });
-        }
-
-        SaveToFile(CurrentSaveData);
-
-        return true;
-    }
-
-    public bool SellItem(string slotId, string itemId, int count)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null)
-        {
-            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return false;
-        }
-        
-        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
-
-        if (itemMaster == null)
-        {
-            Debug.LogError($"[SaveManager] {itemId}에 대한 아이템 데이터를 찾을 수 없습니다.");
-            return false;
-        }
-
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
-
-        if (existingSlot == null || existingSlot.Count < count)
-        {
-            Debug.LogWarning($"[SaveManager] {itemId} 보유 수량이 부족합니다.");
-            return false;
-        }
-
-        existingSlot.Count -= count;
-
-        if (existingSlot.Count <= 0)
-        {
-            slot.Inventory.Slots.Remove(existingSlot);
-        }
-
-        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio) * count;
-        slot.Gold += sellPrice;
-
-        SaveToFile(CurrentSaveData);
-
-        return true;
-    }
-
     public void AddExp(string slotId, int newExp, int levelBefore, int levelAfter)
     {
         CharacterSaveData slot = FindSlot(slotId);
@@ -485,154 +324,180 @@ public class SaveManager : BaseMonoManager<SaveManager>
         SaveToFile(CurrentSaveData);
     }
 
-    public bool EquipItem(string slotId, string itemId)
+    // 시스템 메세지로 문구를 띄울 메서드 모음
+    public TransactionResult AddItem(string slotId, string itemId, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
         if (slot == null)
         {
-            Debug.LogError($"[SaveManager] {slotId}를 찾을 수 없습니다.");
-            return false;
+            return TransactionResult.SlotNotFound;
         }
 
-        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
 
-        if (equipmentData == null)
+        if (itemMaster == null)
         {
-            Debug.LogError($"[SaveManager] {itemId}에 대한 장비 데이터를 찾을 수 없습니다.");
-            return false;
+            return TransactionResult.ItemNotFound;
         }
 
-        if (slot.Equipped == null)
+        if (slot.Inventory == null)
         {
-            slot.Equipped = new EquippedItemsSaveData();
+            slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
         }
 
-        string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
+        InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
 
-        SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
-
-        RemoveItem(slotId, itemId, 1);
-
-        if (string.IsNullOrEmpty(previousItemId) == false)
+        if (existingSlot != null)
         {
-            AddItem(slotId, previousItemId, 1);
+            existingSlot.Count += count;
+        }
+        else
+        {
+            if (slot.Inventory.Slots.Count >= MaxInventorySlots)
+            {
+                return TransactionResult.InventoryFull;
+            }
+
+            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            {
+                ItemId = itemId,
+                Count = count
+            });
         }
 
         SaveToFile(CurrentSaveData);
-
-        return true;
+        return TransactionResult.Success;
     }
 
-    public bool UnequipItem(string slotId, string equipSlotName)
+    public TransactionResult BuyItem(string slotId, string itemId)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
-        if (slot == null || slot.Equipped == null)
+        if (slot == null)
         {
-            return false;
+            return TransactionResult.SlotNotFound;
         }
 
-        string itemId = GetEquippedItemId(slot.Equipped, equipSlotName);
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
 
-        if (string.IsNullOrEmpty(itemId))
+        if (itemMaster == null)
         {
-            return false;
+            return TransactionResult.ItemNotFound;
         }
 
-        SetEquippedItemId(slot.Equipped, equipSlotName, null);
-        AddItem(slotId, itemId, 1);
+        if (slot.Gold < itemMaster.Price)
+        {
+            return TransactionResult.NotEnoughGold;
+        }
+
+        if (slot.Inventory == null)
+        {
+            slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
+        }
+
+        InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+
+        if (existingSlot == null && slot.Inventory.Slots.Count >= MaxInventorySlots)
+        {
+            return TransactionResult.InventoryFull;
+        }
+
+        slot.Gold -= itemMaster.Price;
+
+        if (existingSlot != null)
+        {
+            existingSlot.Count += 1;
+        }
+        else
+        {
+            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            {
+                ItemId = itemId,
+                Count = 1
+            });
+        }
+
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
+
+    public TransactionResult SellItem(string slotId, string itemId, int count)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            return TransactionResult.SlotNotFound;
+        }
+
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
+
+        if (itemMaster == null)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+
+        if (existingSlot == null || existingSlot.Count < count)
+        {
+            return TransactionResult.NotEnoughItems;
+        }
+
+        existingSlot.Count -= count;
+
+        if (existingSlot.Count <= 0)
+        {
+            slot.Inventory.Slots.Remove(existingSlot);
+        }
+
+        int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio) * count;
+        slot.Gold += sellPrice;
+
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
+
+    public TransactionResult RemoveItem(string slotId, string itemId, int count)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null)
+        {
+            return TransactionResult.SlotNotFound;
+        }
+
+        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+
+        if (existingSlot == null || existingSlot.Count < count)
+        {
+            return TransactionResult.NotEnoughItems;
+        }
+
+        existingSlot.Count -= count;
+
+        if (existingSlot.Count <= 0)
+        {
+            slot.Inventory.Slots.Remove(existingSlot);
+        }
 
         SaveToFile(CurrentSaveData);
 
-        return true;
+        return TransactionResult.Success;
     }
 
-    private string GetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot)
+    public static string GetTransactionMessage(TransactionResult result)
     {
-        switch (equipSlot)
+        switch (result)
         {
-            case "Weapon": return equipped.WeaponItemId;
-            case "Helmet": return equipped.HelmetItemId;
-            case "Chest": return equipped.ChestItemId;
-            case "Pants": return equipped.PantsItemId;
-            case "Boots": return equipped.BootsItemId;
-            case "Gloves": return equipped.GlovesItemId;
+            case TransactionResult.NotEnoughGold: return "Not enough gold.";
+            case TransactionResult.InventoryFull: return "Inventory is full.";
+            case TransactionResult.NotEnoughItems: return "Not enough items.";
+            case TransactionResult.ItemNotFound: return "Item not found.";
+            case TransactionResult.SlotNotFound: return "Character not found.";
+            case TransactionResult.LevelNotEnough: return "Level is not Enough.";
             default: return null;
         }
-    }
-
-    private void SetEquippedItemId(EquippedItemsSaveData equipped, string equipSlot, string itemId)
-    {
-        switch (equipSlot)
-        {
-            case "Weapon": equipped.WeaponItemId = itemId; break;
-            case "Helmet": equipped.HelmetItemId = itemId; break;
-            case "Chest": equipped.ChestItemId = itemId; break;
-            case "Pants": equipped.PantsItemId = itemId; break;
-            case "Boots": equipped.BootsItemId = itemId; break;
-            case "Gloves": equipped.GlovesItemId = itemId; break;
-        }
-    }
-
-    public string GetEquippedItemId(string slotId, string equipSlot)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null || slot.Equipped == null)
-        {
-            return null;
-        }
-
-        return GetEquippedItemId(slot.Equipped, equipSlot);
-    }
-
-    public int GetFinalAtk(string slotId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null) return 0;
-
-        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: true);
-
-        return slot.Atk + bonus;
-    }
-
-    public int GetFinalDef(string slotId)
-    {
-        CharacterSaveData slot = FindSlot(slotId);
-
-        if (slot == null) return 0;
-
-        int bonus = GetEquipmentStatBnous(slot.Equipped, isAtk: false);
-
-        return slot.Def + bonus;
-    }
-
-    private int GetEquipmentStatBnous(EquippedItemsSaveData equipped, bool isAtk)
-    {
-        if (equipped == null) return 0;
-
-        int bonus = 0;
-        bonus += GetItemStatBonus(equipped.WeaponItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.HelmetItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.ChestItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.PantsItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.BootsItemId, isAtk);
-        bonus += GetItemStatBonus(equipped.GlovesItemId, isAtk);
-
-        return bonus;
-
-    }
-
-    private int GetItemStatBonus(string itemId, bool isAtk)
-    {
-        if (string.IsNullOrEmpty(itemId)) return 0;
-
-        EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(itemId);
-
-        if (equipmentData == null) return 0;
-
-        return isAtk ? equipmentData.AtkBonus : equipmentData.DefBonus;
     }
 }

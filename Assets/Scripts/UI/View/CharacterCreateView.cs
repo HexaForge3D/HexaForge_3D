@@ -12,7 +12,7 @@ public class CharacterCreateView : BaseOverLayUI
     [SerializeField] private TMP_Text Text_ErrorMessage;
 
     private CharacterCreateViewModel _viewModel;
-    private readonly List<GameObject> _spawnedJobSlots = new List<GameObject>();
+    private readonly List<JobSlotView> _spawnedJobSlots = new List<JobSlotView>();
 
     public void BindViewModel(CharacterCreateViewModel viewModel)
     {
@@ -43,15 +43,15 @@ public class CharacterCreateView : BaseOverLayUI
             JobSlotView slotView = slotObject.GetComponent<JobSlotView>();
             slotView.Setup(job, OnJobSelected);
 
-            _spawnedJobSlots.Add(slotObject);
+            _spawnedJobSlots.Add(slotView);
         }
     }
 
     private void ClearJobList()
     {
-        foreach (GameObject slot in _spawnedJobSlots)
+        foreach (JobSlotView slotView in _spawnedJobSlots)
         {
-            Destroy(slot);
+            Destroy(slotView.gameObject);
         }
 
         _spawnedJobSlots.Clear();
@@ -62,9 +62,14 @@ public class CharacterCreateView : BaseOverLayUI
         _viewModel.SetNickName(value);
     }
 
-    private void OnJobSelected(PlayerTableData job)
+    private void OnJobSelected(PlayerTableData job, JobSlotView clickedSlot)
     {
         _viewModel.SelectJob(job);
+
+        foreach (JobSlotView slotView in _spawnedJobSlots)
+        {
+            slotView.SetSelected(slotView == clickedSlot);
+        }
     }
 
     private void OnClickCreate()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ShopViewModel
 {
@@ -7,7 +8,6 @@ public class ShopViewModel
     private readonly string _slotId;
 
     public Action OnGoldChanged;
-    public Action<string> OnBuyFailed;
 
     public ShopViewModel(string slotId)
     {
@@ -22,20 +22,21 @@ public class ShopViewModel
     public int GetCurrentGold()
     {
         CharacterSaveData data = FindCurrentSlot();
-        return data?.Gold ?? 0;
+        return data != null ? data.Gold : 0;
     }
 
     public void BuyItem(ItemData item)
     {
-        bool success = SaveManager.Instance.BuyItem(_slotId, item.Id);
+        TransactionResult result = SaveManager.Instance.BuyItem(_slotId, item.Id);
 
-        if (success)
+        if (result == TransactionResult.Success)
         {
             OnGoldChanged?.Invoke();
         }
         else
         {
-            OnBuyFailed?.Invoke("Not Enough gold or max stack reached");
+            string message = SaveManager.GetTransactionMessage(result);
+            SystemMessageManager.Instance.Show(message);
         }
     }
 
@@ -43,9 +44,11 @@ public class ShopViewModel
     {
         foreach (CharacterSaveData slot in SaveManager.Instance.CurrentSaveData.Slots)
         {
-            if (slot.SlotId == _slotId) return slot;
+            if (slot.SlotId == _slotId)
+            {
+                return slot;
+            }
         }
-
         return null;
     }
 }

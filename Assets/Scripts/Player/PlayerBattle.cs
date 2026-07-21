@@ -50,11 +50,13 @@ public class PlayerBattle : MonoBehaviour
     private void OnEnable()
     {
         // 물약 마셨다는 이벤트 구독하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat += HandleSuicideCheat;
     }
 
     private void OnDisable()
     {
         // 물약 마셨다는 이벤트 해지하기 (체력, 마나)
+        PlayerInputSystem.OnSuicideCheat -= HandleSuicideCheat;
     }
     private void CancelToken()
     {
@@ -240,7 +242,23 @@ public class PlayerBattle : MonoBehaviour
 
         CharacterSaveData data = _playerController.PlayerData;
 
-        bool isConsumed = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+        // 체력이나 마나가 최대인 경우에는 사용할 수 없게끔 수정
+        bool canHealHp = potionData.HpBonus > 0 && data.CurrentHp < data.Hp;
+        bool canHealMp = potionData.MpBonus > 0 && data.CurrentMp < data.Mp;
+
+        if (canHealHp == false && canHealMp == false)
+        {
+            if (potionData.HpBonus > 0 && potionData.MpBonus == 0) Debug.Log("<color=yellow>체력이 이미 최대치입니다.</color>");
+            
+            else if (potionData.MpBonus > 0 && potionData.HpBonus == 0) Debug.Log("<color=yellow>마나가 이미 최대치입니다.</color>");
+           
+            else Debug.Log("<color=yellow>체력과 마나가 이미 최대치입니다.</color>");
+
+            return;
+        }
+
+        TransactionResult result = SaveManager.Instance.RemoveItem(data.SlotId, itemId, 1);
+        bool isConsumed = result == TransactionResult.Success;
 
         if (isConsumed == false)
         {
@@ -325,5 +343,57 @@ public class PlayerBattle : MonoBehaviour
         catch (OperationCanceledException)
         {
         }
+    }
+
+    private void HandleSuicideCheat()
+    {
+        if (_isDead) return;
+        Debug.Log("<color=red>[Cheat 발동]</color> 플레이어가 즉사합니다.(테스트 용)");
+        TakeDamage(99999999);
+    }
+
+    public void Revive()
+    {
+        if (_isDead == false) return;
+
+        _isDead = false;
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        int lostGold = data.Gold;
+        data.Gold = 0;
+        SaveManager.Instance.SaveCurrentState();
+        Debug.Log($"<color=red>[부활 패널티]</color> 골드를 모두 잃었습니다. (잃은 골드: {lostGold}G)");
+
+        data.CurrentHp = data.Hp;
+        data.CurrentMp = data.Mp;
+
+        OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
+        OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+
+        Collider playerCollider = GetComponent<Collider>();
+        if (playerCollider != null)
+        {
+            playerCollider.enabled = true;
+        }
+
+        NavMeshAgent playerAgent = GetComponent<NavMeshAgent>();
+        if (playerAgent != null)
+        {
+            playerAgent.enabled = true;
+        }
+
+        if (_playerController != null)
+        {
+            _playerController.enabled = true;
+            _playerController.FireAnimationTrigger("isRevive");
+        }
+
+        PlayerSpawnManager.Instance.MoveToSpawnPoint(this.gameObject);
+
+        _cts = new CancellationTokenSource();
+        ManaRegen(_cts.Token).Forget();
+
+        Debug.Log("<color=cyan>[부활 완료]</color> 플레이어가 부활했습니다!");
     }
 }

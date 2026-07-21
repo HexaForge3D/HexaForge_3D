@@ -18,7 +18,7 @@ public class EquipmentViewModel
 
         foreach (string equipSlot in EquipSlots)
         {
-            string itemId = SaveManager.Instance.GetEquippedItemId(_slotId, equipSlot);
+            string itemId = EquipmentManager.Instance.GetEquippedItemId(_slotId, equipSlot);
             ItemData item = string.IsNullOrEmpty(itemId) ? null : _itemRepository.GetItem(itemId);
 
             result.Add(new EquipmentSlotData(equipSlot, item));
@@ -29,6 +29,6 @@ public class EquipmentViewModel
 
     public void RequestUnequip(string equipSlot)
     {
-        SaveManager.Instance.UnequipItem(_slotId, equipSlot);
+        EquipmentManager.Instance.UnEquipItem(_slotId, equipSlot);
     }
 }
