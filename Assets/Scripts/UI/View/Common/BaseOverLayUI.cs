@@ -5,9 +5,15 @@ public class BaseOverLayUI : BaseUI
 {
     [SerializeField] private Button Button_Close;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
-        Button_Close.onClick.AddListener(OnClickClose);
+        base.Awake();
+
+        if (Button_Close != null)
+        {
+            Button_Close.onClick.AddListener(OnClickClose);
+        }
+        
     }
 
     private void OnClickClose()
