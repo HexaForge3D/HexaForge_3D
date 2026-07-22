@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 3620765803672697119}
   - component: {fileID: 5902599757116075663}
   - component: {fileID: 6593204276354201254}
+  - component: {fileID: 2544235617202497145}
   - component: {fileID: 6215523674562784445}
   - component: {fileID: 8646642277259301846}
   - component: {fileID: 1695674800264197086}
@@ -422,6 +423,7 @@ MonoBehaviour:
   _clickableLayer:
     serializedVersion: 2
     m_Bits: 128
+  _evasionDistance: 1.5
 --- !u!114 &7931147197493547932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,6 +461,8 @@ MonoBehaviour:
   _moneyCheatKey: 45
   _suicideCheatKey: 47
   _evasionCoolTime: 5
+  _cheatDungeonClearedKey: 46
+  _cheatDungeonFaildKey: 44
 --- !u!114 &2214026887260603912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,6 +529,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfe3f301560c89d49bfffc2ada7a865f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerState
+--- !u!114 &2544235617202497145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858504871581969533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14d0ea47eb96d844a31451644a94b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
 --- !u!95 &6215523674562784445
 Animator:
   serializedVersion: 7

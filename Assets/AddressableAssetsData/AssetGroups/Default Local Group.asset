@@ -190,6 +190,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb0766f2fd9058d4eb563c76a70fa961
+    m_Address: DroppedItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee9854f30969ccd43bbcbf4e17b73d98
     m_Address: Popup_Inventory
     m_ReadOnly: 0
