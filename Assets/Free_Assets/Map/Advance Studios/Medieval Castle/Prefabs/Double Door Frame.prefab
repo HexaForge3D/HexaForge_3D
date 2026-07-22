@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 8398543115139028837}
   - component: {fileID: 1340833921640493083}
   - component: {fileID: 1894511375813412124}
-  - component: {fileID: 7897153085298674003}
+  - component: {fileID: 3551776620491841945}
   m_Layer: 0
   m_Name: Double Door
   m_TagString: Untagged
@@ -183,7 +183,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7897153085298674003
+--- !u!65 &3551776620491841945
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 3380261333905185100}
   - component: {fileID: 794763580972459285}
   - component: {fileID: 8828999698740358167}
-  - component: {fileID: 3630274918873260322}
+  - component: {fileID: 1413417080133773111}
   m_Layer: 0
   m_Name: Double Door
   m_TagString: Untagged
@@ -295,7 +295,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3630274918873260322
+--- !u!65 &1413417080133773111
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

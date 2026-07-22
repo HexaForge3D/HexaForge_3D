@@ -6,8 +6,8 @@ using Cysharp.Threading.Tasks;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Setting")]
-    [SerializeField] private float _moveSpeed = 15f;
-    [SerializeField] private float _rotationSpeed = 25f;
+    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _rotationSpeed = 20f;
 
     [Header("Player Camera")]
     [SerializeField] private Camera _playerCamera;
@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
     private PlayerBattle _playerBattle;
     private PlayerSkillManager _skillManager;
 
+    private bool _isEvasiving = false;
+
     public int BuffAtk { get; set; }
 
     private void Start()
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
         _skillManager = GetComponent<PlayerSkillManager>();
 
         //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
-        CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
+        //CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
 
         if (_spotPoint != null)
         {
@@ -73,12 +75,20 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion += HandleEvasion;
+
+        DefenceFieldManager.OnDefenceStarted += HandleDefenceStarted;
+        DefenceFieldManager.OnClearField += HandleDefenceEnded;
+        DefenceFieldManager.OnFieldFailed += HandleDefenceEnded;
     }
 
     private void OnDisable()
     {
         PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion -= HandleEvasion;
+
+        DefenceFieldManager.OnDefenceStarted -= HandleDefenceStarted;
+        DefenceFieldManager.OnClearField -= HandleDefenceEnded;
+        DefenceFieldManager.OnFieldFailed -= HandleDefenceEnded;
     }
 
     private void Update()
@@ -384,27 +394,42 @@ public class PlayerController : MonoBehaviour
     }
     public void EvasionAnimStart()
     {
-        ToggleNavMeshAgent(false);
+        if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
+        _isEvasiving = true;
     }
 
     public void EvasionAnimEnd()
     {
-        ToggleNavMeshAgent(true);
+        _isEvasiving = false;
     }
 
-    public void ToggleNavMeshAgent(bool isActive)
+    private void HandleDefenceStarted()
     {
-        if (_agent == null) return;
+        gameObject.tag = "Untagged";
+        Debug.Log("디펜스 시작: 플레이어 태그가 Untagged로 변경되었습니다.");
+    }
 
-        if (isActive)
+    private void HandleDefenceEnded()
+    {
+        gameObject.tag = "Player";
+        Debug.Log("디펜스 종료: 플레이어 태그가 Player로 복구되었습니다.");
+    }
+    private void OnAnimatorMove()
+    {
+        if (_animator == null) return;
+
+        if (_isEvasiving && _agent != null && _agent.isActiveAndEnabled)
         {
-            _agent.enabled = true;
-            _agent.Warp(transform.position);
+            _agent.Move(_animator.deltaPosition);
         }
+
         else
         {
-            _agent.enabled = false;
+            transform.position += _animator.deltaPosition;
         }
     }
-
 }
