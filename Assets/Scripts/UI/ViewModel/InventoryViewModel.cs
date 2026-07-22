@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class InventoryViewModel
 {
@@ -17,6 +18,8 @@ public class InventoryViewModel
     {
         List<InventoryItemData> result = new List<InventoryItemData>();
         CharacterSaveData saveData = FindCurrentSlot();
+
+        Debug.Log($"[InventoryViewModel] saveData null? {saveData == null}, Inventory.Slots.Count: {saveData?.Inventory?.Slots?.Count ?? -1}");
 
         if (saveData != null && saveData.Inventory != null)
         { 
@@ -47,5 +50,11 @@ public class InventoryViewModel
         }
 
         return null;
+    }
+
+    public int GetCurrentGold()
+    {
+        CharacterSaveData data = FindCurrentSlot();
+        return data != null ? data.Gold : 0;
     }
 }

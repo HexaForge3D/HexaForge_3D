@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InventoryView : BaseOverLayUI
@@ -7,6 +8,7 @@ public class InventoryView : BaseOverLayUI
     [SerializeField] private int SlotCount = 20;
     [SerializeField] private Transform Transform_SlotParent;
     [SerializeField] private GameObject Prefab_InventorySlot;
+    [SerializeField] private TMP_Text Text_Gold;
 
     private InventoryViewModel _viewModel;
     private readonly List<GameObject> _spawnedSlots = new List<GameObject>();
@@ -19,16 +21,20 @@ public class InventoryView : BaseOverLayUI
     public void BindViewModel(InventoryViewModel viewModel)
     {
         _viewModel = viewModel;
+        RefreshGold();
         BuildSlots();
     }
 
     public void Refresh()
     {
+        Debug.Log("[InventoryView] Refresh() 호출됨");
+        RefreshGold();
         BuildSlots();
     }
 
     private void BuildSlots()
     {
+        Debug.Log("[InventoryView] Refresh() 호출됨");
         ClearSlot();
 
         List<InventoryItemData> slots = _viewModel.GetInventorySlots(SlotCount);
@@ -79,5 +85,10 @@ public class InventoryView : BaseOverLayUI
         }
 
         _spawnedSlots.Clear();
+    }
+
+    public void RefreshGold()
+    {
+        Text_Gold.text = $"Gold: {_viewModel.GetCurrentGold()}G";
     }
 }

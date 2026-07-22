@@ -249,15 +249,6 @@ public class GameFlowManager
         Application.Quit();
     }
 
-    private void OnShopTransactionCompleted()
-    {
-        if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
-        {
-            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
-            inventoryView?.Refresh();
-        }
-    }
-
     private void OnSellConfirmed()
     {
         TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
@@ -423,6 +414,16 @@ public class GameFlowManager
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView.SetTargetHp(current, max);
     }
+
+    private void OnShopTransactionCompleted()
+    {
+        if (UIManager.Instance.IsActiveUI(UIType.InventoryPopup))
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -594,6 +595,7 @@ public class GameFlowManager
     {
         ShopView view = await UIManager.Instance.OpenUIAsync<ShopView>(UIType.ShopUI);
         ShopViewModel viewModel = new ShopViewModel(_currentSlotId);
+        viewModel.OnGoldChanged -= OnShopTransactionCompleted;
         viewModel.OnGoldChanged += OnShopTransactionCompleted;
         view.BindViewModel(viewModel);
     }
@@ -712,4 +714,5 @@ public class GameFlowManager
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView?.HideDungeonInfo();
     }
+
 }
