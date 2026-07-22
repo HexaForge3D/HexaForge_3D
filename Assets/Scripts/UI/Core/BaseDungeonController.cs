@@ -21,13 +21,17 @@ public abstract class BaseDungeonController : MonoBehaviour
     public static event Action<DungeonReward> OnDungeonCleared;
     public static event Action<DungeonFailReason> OnDungeonFailed;
 
+    public static bool IsInDungeon { get; private set; }
+
     protected virtual void OnEnable()
     {
+        IsInDungeon = true;
         PlayerBattle.OnPlayerDead += HandlePlayerDead;
     }
 
     protected virtual void OnDisable()
     {
+        IsInDungeon = false;
         PlayerBattle.OnPlayerDead -= HandlePlayerDead;  
     }
 

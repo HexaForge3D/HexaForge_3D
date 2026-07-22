@@ -298,6 +298,8 @@ public class GameFlowManager
 
     private void OnPlayerDead()
     {
+        if (BaseDungeonController.IsInDungeon) return;
+
         ShowDeathAsync().Forget();
     }
 
@@ -366,7 +368,7 @@ public class GameFlowManager
     private void OnDungeonFailConfirmed()
     {
         UIManager.Instance.CloseUI(UIType.DungeonFailPopup);
-        MapManager.Instance.ChangeMapAsync("area_village").Forget();
+        ReturnToVillageAsync().Forget();
     }
 
     // 요청 수행 메서드 모음
@@ -572,6 +574,19 @@ public class GameFlowManager
     {
         DungeonFailView view = await UIManager.Instance.OpenUIAsync<DungeonFailView>(UIType.DungeonFailPopup);
         view.Setup(OnDungeonFailConfirmed);
+    }
+
+    private async UniTask ReturnToVillageAsync()
+    {
+        await MapManager.Instance.ChangeMapAsync("area_village");
+
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+        if (playerBattle != null)
+        {
+            playerBattle.Revive();
+            //playerBattle.RestoreFull();
+        }
     }
 
 
