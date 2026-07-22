@@ -51,6 +51,10 @@ public class GameFlowManager
         BaseDungeonController.OnDungeonCleared -= OnDungeonCleared;
         BaseDungeonController.OnDungeonFailed -= OnDungeonFailed;
         PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
+        RoomFieldManager.OnCurrentMonsterCountChanged -= OnMonsterCountChanged;
+        DefenceFieldManager.OnWaveChanged -= OnWaveChanged;
+        DefenceFieldManager.OnCountdownChanged -= OnCountdownChanged;
+        DefenceTarget.OnTargetHpChanged -= OnTargetHpChanged;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -172,6 +176,9 @@ public class GameFlowManager
                 ShowHuntingAreaAsync().Forget();
                 return;
             }
+
+            HideDungeonInfoIfExists();
+
             MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
             return;
         }
@@ -393,6 +400,30 @@ public class GameFlowManager
         ReturnToVillageAsync().Forget();
     }
 
+    private void OnMonsterCountChanged(int current, int total)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.SetMonsterCount(current, total);
+    }
+
+    private void OnWaveChanged(int current, int total)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.SetWave(current, total);    
+    }
+
+    private void OnCountdownChanged(float remainingSeconds)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView.SetCountdown(remainingSeconds);
+    }
+
+    private void OnTargetHpChanged(int current, int max)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView.SetTargetHp(current, max);
+    }
+
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
     {
@@ -468,10 +499,16 @@ public class GameFlowManager
         BaseDungeonController.OnDungeonCleared += OnDungeonCleared;
         BaseDungeonController.OnDungeonFailed += OnDungeonFailed;
         PlayerLevel.OnLevelUp += OnPlayerLevelUp;
+        RoomFieldManager.OnCurrentMonsterCountChanged += OnMonsterCountChanged;
+        DefenceFieldManager.OnWaveChanged += OnWaveChanged;
+        DefenceFieldManager.OnCountdownChanged += OnCountdownChanged;
+        DefenceTarget.OnTargetHpChanged += OnTargetHpChanged;
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
     {
+        HideDungeonInfoIfExists();
+
         await MapManager.Instance.ChangeMapAsync(mapId);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
 
@@ -481,6 +518,8 @@ public class GameFlowManager
 
     private async UniTask ReviveAndChangeMapAsync()
     {
+        HideDungeonInfoIfExists();
+
         await MapManager.Instance.ChangeMapAsync("area_village");
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
@@ -604,6 +643,8 @@ public class GameFlowManager
 
     private async UniTask ReturnToVillageAsync()
     {
+        HideDungeonInfoIfExists();
+
         await MapManager.Instance.ChangeMapAsync("area_village");
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
@@ -656,12 +697,19 @@ public class GameFlowManager
 
     private void OnDungeonCleared(DungeonReward reward)
     {
+        HideDungeonInfoIfExists();
         ShowDungeonClearAsync(reward).Forget();
     }
 
     private void OnDungeonFailed(DungeonFailReason reason)
     {
+        HideDungeonInfoIfExists();
         ShowDungeonFailAsync(reason).Forget();
     }
 
+    private void HideDungeonInfoIfExists()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.HideDungeonInfo();
+    }
 }

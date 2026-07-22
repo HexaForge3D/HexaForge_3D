@@ -21,6 +21,9 @@ public class DefenceFieldManager : BaseDungeonController
     public static event Action OnClearField;
     public static event Action OnFailField;
 
+    public static event Action<int, int> OnWaveChanged;
+    public static event Action<float> OnCountdownChanged;
+
     private bool _isFailed = false;
     private bool _isStarted = false;
 
@@ -63,7 +66,7 @@ public class DefenceFieldManager : BaseDungeonController
     {
         Debug.Log($"{_countdownDuration}초 후 디펜스 시작");
 
-        await UniTask.Delay((int)(_countdownDuration * 1000));
+        await CountdownAsync(_countdownDuration);
 
         for (int i = 0; i < _waveCount; i++)
         {
@@ -73,11 +76,14 @@ public class DefenceFieldManager : BaseDungeonController
                 return;
             }
 
+            OnWaveChanged?.Invoke(i + 1, _waveCount);
+
             SpawnAllDefinedMonsters();
             Debug.Log($"{i + 1} 웨이브 완료");
 
+            float nextWaveDelay = _countdownDuration * 1.5f;
             Debug.Log($"{i + 2} 웨이브 {(_countdownDuration * 2 )}초뒤 시작");
-            await UniTask.Delay((int)(_countdownDuration * 1000 * 1.5));
+            await CountdownAsync(nextWaveDelay);
         }
 
         if (!_isFailed && _defenceTarget != null)
@@ -94,6 +100,20 @@ public class DefenceFieldManager : BaseDungeonController
             OnClearField?.Invoke();
             InvokeCleared(reward);
         }
+    }
+
+    private async UniTask CountdownAsync(float duration)
+    {
+        float remaining = duration;
+
+        while (remaining > 0f)
+        {
+            OnCountdownChanged?.Invoke(remaining);
+            await UniTask.Delay(1000);
+            remaining -= 1f;
+        }
+
+        OnCountdownChanged?.Invoke(0f);
     }
 
     private void SpawnAllDefinedMonsters()

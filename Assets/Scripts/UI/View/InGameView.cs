@@ -23,6 +23,15 @@ public class InGameView : BaseUI
     [SerializeField] private Button Button_Inventory;
     [SerializeField] private Button Button_CharacterInfo;
 
+    [SerializeField] private GameObject Panel_MonsterCount;
+    [SerializeField] private TMP_Text Text_MonsterCount;
+
+    [SerializeField] private GameObject Panel_DefenceInfo;
+    [SerializeField] private TMP_Text Text_Wave;
+    [SerializeField] private TMP_Text Text_Countdown;
+    [SerializeField] private Image Image_TargetHpBar;
+    [SerializeField] private TMP_Text Text_TargetHp;
+
     public Action OnCharacterInfoButtonClicked;
     public Action OnSkillButtonClicked;
     public Action OnInventoryButtonClicked;
@@ -43,12 +52,15 @@ public class InGameView : BaseUI
         viewModel.OnExpRatioChanged += OnExpRatioChanged;
         viewModel.OnExpValueChanged += OnExpValueChanged;
 
+        Panel_MonsterCount.SetActive(false);
+        Panel_DefenceInfo.SetActive(false);
+
         Button_CharacterInfo.onClick.RemoveListener(OnClickCharacterInfo);
         Button_CharacterInfo.onClick.AddListener(OnClickCharacterInfo);
 
         Button_Inventory.onClick.RemoveListener(OnClickInventory);
         Button_Inventory.onClick.AddListener(OnClickInventory);
-
+        
         Button_Skill.onClick.RemoveListener(OnClickSkill);
         Button_Skill.onClick.AddListener(OnClickSkill);
 
@@ -160,5 +172,41 @@ public class InGameView : BaseUI
     private void OnClickEquipment()
     {
         OnEquipmentButtonClicked?.Invoke(); 
+    }
+
+    public void SetMonsterCount(int current, int total)
+    {
+        Panel_MonsterCount.SetActive(true);
+        Text_MonsterCount.text = $"Remain Monster :{current} / {total}";
+    }
+
+    public void SetWave(int current, int total)
+    {
+        Panel_DefenceInfo.SetActive(true);
+        Text_Wave.text = $"Wave {current} / {total}";
+    }
+
+    public void SetCountdown(float remainingSeconds)
+    {
+        Panel_DefenceInfo.SetActive(true);
+
+        int minutes = Mathf.FloorToInt(remainingSeconds / 60f);
+        int seconds = Mathf.FloorToInt(remainingSeconds % 60f);
+        Text_Countdown.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    public void SetTargetHp(int current, int max)
+    {
+        Panel_DefenceInfo.SetActive(true);
+
+        float ratio = max > 0 ? (float)current / max : 0f;
+        Image_TargetHpBar.fillAmount = ratio;
+        Text_TargetHp.text = $"{current}/{max}";
+    }
+
+    public void HideDungeonInfo()
+    {
+        Panel_DefenceInfo.SetActive(false);
+        Panel_MonsterCount.SetActive(false);
     }
 }

@@ -11,6 +11,8 @@ public class DefenceTarget : MonoBehaviour
     public static event Action OnTargetDestroyed;
     public static event Action OnDefenceStartRequested;
 
+    public static event Action<int, int> OnTargetHpChanged;
+
     private void OnEnable()
     {
         PlayerInputSystem.OnInteract += HandleInteraction;
@@ -24,6 +26,7 @@ public class DefenceTarget : MonoBehaviour
     private void Start()
     {
         _currentHp = _maxHp;
+        OnTargetHpChanged?.Invoke(_currentHp, _maxHp);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,6 +64,8 @@ public class DefenceTarget : MonoBehaviour
         _currentHp = Mathf.Max(0, _currentHp);
 
         Debug.Log($"<color=orange>[방어 목표 피격]</color> 남은 체력: {_currentHp} / {_maxHp}");
+
+        OnTargetHpChanged?.Invoke(_currentHp, _maxHp);
 
         if (_currentHp <= 0)
         {
