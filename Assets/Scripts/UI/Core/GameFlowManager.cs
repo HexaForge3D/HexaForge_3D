@@ -50,6 +50,7 @@ public class GameFlowManager
         PlayerInputSystem.OnEvasionCoolTimeStarted -= OnEvasionCoolTimeStarted;
         BaseDungeonController.OnDungeonCleared -= OnDungeonCleared;
         BaseDungeonController.OnDungeonFailed -= OnDungeonFailed;
+        PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -293,6 +294,16 @@ public class GameFlowManager
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView?.RefreshSkillSlots();
+
+        CharacterSaveData data = SaveManager.Instance.GetChararcterData(_currentSlotId);
+
+        if (data == null) return;
+
+        _inGameViewModel?.HandleHpChanged(data.CurrentHp, data.Hp);
+        _inGameViewModel?.HandleMpChanged(data.CurrentMp, data.Mp);
+
+        InformationView inforamtionView = UIManager.Instance.GetUI<InformationView>(UIType.InformationPopup);
+        inforamtionView?.Refresh();
     }
 
     private void OnSkillCoolTimeStart(string skillId, float coolDown)
@@ -456,6 +467,7 @@ public class GameFlowManager
         PlayerInputSystem.OnEvasionCoolTimeStarted += OnEvasionCoolTimeStarted;
         BaseDungeonController.OnDungeonCleared += OnDungeonCleared;
         BaseDungeonController.OnDungeonFailed += OnDungeonFailed;
+        PlayerLevel.OnLevelUp += OnPlayerLevelUp;
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
