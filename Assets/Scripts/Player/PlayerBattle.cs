@@ -406,7 +406,7 @@ public class PlayerBattle : MonoBehaviour
         data.CurrentHp = data.Hp;
         data.CurrentMp = data.Mp;
 
-        OnHpChanged?.Invoke(data.CurrentHp, data.Mp);
+        OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
         OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
 
         SaveManager.Instance.SaveCurrentState();
