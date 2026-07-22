@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 2
-  _targetMapId: 
+  _targetMapId: area_village
   _parentMapName: Maze
 --- !u!114 &259187690381007067
 MonoBehaviour:
