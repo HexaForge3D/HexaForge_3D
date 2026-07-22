@@ -61,6 +61,19 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
         }
 
         string usageHint = GetUsageHint(data.UsageType);
+        string requirementText = null;
+
+        if (data.UsageType == ItemUsageType.Equipment)
+        {
+            EquipmentTableData equipmentData = GameDataManager.Instance.GetData<EquipmentTableData>(data.Id);
+
+            if (equipmentData != null)
+            {
+                int requiredLevel = EquipmentManager.Instance.GetRequiredLevel(equipmentData.Rank);
+                requirementText = $"Requires Level {requiredLevel} ({equipmentData.Rank})";
+            }
+        }
+
         string countText = showCount ? $"x{data.Count}" : null;
 
         bool isShopOpen = UIManager.Instance.IsActiveUI(UIType.ShopUI);
@@ -80,7 +93,8 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
             usageHint,
             countText,
             priceText,
-            null
+            null,
+            requirementText
         );
 
         TooltipTrigger.SetData(tooltipData);

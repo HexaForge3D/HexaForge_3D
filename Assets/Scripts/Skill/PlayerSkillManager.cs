@@ -58,6 +58,9 @@ public class PlayerSkillManager : MonoBehaviour
         // 마우스 방향으로 캐릭터 돌리기 및 이동 정지
         _playerController.LookAtMousePosition();
 
+        // 애니메이션 이벤트를 기다리는 것이 아니라 사용하자 마자 멈추도록
+        _playerController.SetAttackAnimPlaying(true);
+
         // Animator의 Trigger 이름을 Skill.jSON의 ID와 동일하게 맞추기
         _playerController.FireAnimationTrigger(skillData.ID);
     }
@@ -65,13 +68,12 @@ public class PlayerSkillManager : MonoBehaviour
     public void SkillAnimStart()
     {
         _playerController.SetAttackAnimPlaying(true);
-        _playerController.ToggleNavMeshAgent(false);
     }
 
     public void SkillAttack()
     {
         if (_currentCastingSkill == null) return;
-        
+
         int currentLevel = SkillUtil.Instance.GetSkillLevel(_currentCastingSkill.ID);
         int calcDamage = SkillUtil.Instance.GetCalculatedDamage(_currentCastingSkill, currentLevel);
         int calcBuffValue = SkillUtil.Instance.GetCalculatedBuffValue(_currentCastingSkill, currentLevel);
@@ -87,7 +89,7 @@ public class PlayerSkillManager : MonoBehaviour
             prefabSkill = prefab_Skill1Effect;
             skillLocation = location_Skill1;
         }
-        
+
         // W 스킬
         else if (_currentCastingSkill.ID == id_Skill2)
         {
@@ -125,13 +127,13 @@ public class PlayerSkillManager : MonoBehaviour
             _currentSpawnedSkill = spawnedSkill;
 
             SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
-            
+
             if (hitbox != null)
             {
                 //레벨이 반영된   데미지를 스킬 히트박스에 설정
                 hitbox.SetDamage(calcDamage);
             }
-            
+
             else if (_currentCastingSkill.SkillType == "Attack")
             {
                 Debug.LogWarning("Skill프리팹에 SkillHitBox가 있는지 확인하세요");
@@ -167,7 +169,6 @@ public class PlayerSkillManager : MonoBehaviour
 
         // 스킬 사용 후 다시 움직이고 평타나 다른 스킬을 쓸 수 있게 수정
         _playerController.SetAttackAnimPlaying(false);
-        _playerController.ToggleNavMeshAgent(true);
         _currentCastingSkill = null;
     }
 
@@ -190,7 +191,7 @@ public class PlayerSkillManager : MonoBehaviour
     private async UniTaskVoid ApplyBuff(SkillTableData buffData, int calculatedBuffValue, CancellationToken cancellationToken)
     {
         CharacterSaveData playerData = _playerController.PlayerData;
-       
+
         if (playerData == null) return;
 
         bool isAtkBuff = buffData.ID.Contains("Rage") || buffData.ID.Contains("Atk");
@@ -212,7 +213,7 @@ public class PlayerSkillManager : MonoBehaviour
         // 버프 효과 원상복구
         if (isAtkBuff)
         {
-            _playerController.BuffAtk -= calculatedBuffValue; 
+            _playerController.BuffAtk -= calculatedBuffValue;
             Debug.Log($"<color=orange>[Buff] {buffData.Name} 종료! 공격력 {calculatedBuffValue} 감소 원상복구</color>");
         }
     }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System;
+using System.Collections.Generic;
 
-public class NPCPointPatrol : MonoBehaviour
+public class NPCPointPatrol : BaseDungeonController
 {
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _arrivalThreshold = 1f;
@@ -16,8 +17,6 @@ public class NPCPointPatrol : MonoBehaviour
     private bool _isPlayerInCollider = false;
     private bool _isStarted = false;
 
-    public static event Action OnClearField;
-
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -27,13 +26,15 @@ public class NPCPointPatrol : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         PlayerInputSystem.OnInteract += HandleInteraction;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         PlayerInputSystem.OnInteract -= HandleInteraction;
     }
 
@@ -123,7 +124,14 @@ public class NPCPointPatrol : MonoBehaviour
                 _isFinished = true;
                 _navMeshAgent.isStopped = true;
                 Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
-                OnClearField?.Invoke();
+
+                DungeonReward reward = new DungeonReward
+                {
+                    Gold = 100,
+                    ItemIds = new List<string>()
+                };
+                
+                InvokeCleared(reward);
                 return;
             }
 

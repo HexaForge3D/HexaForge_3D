@@ -19,7 +19,9 @@ public enum UIType : byte
     SkillTreePopup,
     EquipmentPopup,
     DeathPopup,
-    SettingPopup
+    SettingPopup,
+    DungeonClearPopup,
+    DungeonFailPopup
 }
 
 public enum UIRootType : byte
@@ -61,7 +63,9 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.SkillTreePopup, "Popup_SkillTree"},
         {UIType.EquipmentPopup, "Popup_Equipment" },
         {UIType.DeathPopup, "Popup_Death" },
-        {UIType.SettingPopup, "Popup_Setting" }
+        {UIType.SettingPopup, "Popup_Setting" },
+        {UIType.DungeonClearPopup, "Popup_DungeonClear" },
+        {UIType.DungeonFailPopup, "Popup_DungeonFail" }
     };
 
     // UI가 배치될 레이어 관리
@@ -80,7 +84,9 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.SkillTreePopup, UIRootType.Content },
         {UIType.EquipmentPopup, UIRootType.Popup },
         {UIType.DeathPopup, UIRootType.Popup },
-        {UIType.SettingPopup, UIRootType.Popup }
+        {UIType.SettingPopup, UIRootType.Popup },
+        {UIType.DungeonClearPopup, UIRootType.Popup },
+        {UIType.DungeonFailPopup, UIRootType.Popup }
     };
 
     // UI가 중복으로 배치될지 한 레이어에 하나만 배치될지 bool값으로 관리

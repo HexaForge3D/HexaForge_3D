@@ -150,6 +150,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb9d32cfb15a7cd488b27a26b0986ea5
+    m_Address: Popup_DungeonFail
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ce6d8e39813adfd468c541a8de643447
     m_Address: JsonOutput/Skill
     m_ReadOnly: 0
@@ -182,6 +187,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee9854f30969ccd43bbcbf4e17b73d98
     m_Address: Popup_Inventory
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0bd39d7d11069844bb5e7f15be09908
+    m_Address: Popup_DungeonClear
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

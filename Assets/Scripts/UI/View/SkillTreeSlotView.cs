@@ -61,7 +61,8 @@ public class SkillTreeSlotView : MonoBehaviour
             null,
             null,
             null,
-            statsText
+            statsText,
+            null
             );
 
         TooltipTrigger.SetData(tooltipData);

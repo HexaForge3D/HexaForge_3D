@@ -222,7 +222,7 @@ public class PlayerInputSystem : MonoBehaviour
         {
             OnExpTest?.Invoke();
         }
-        
+
         // 장비창 키
         if (Input.GetKeyDown(_equipMentKey))
         {

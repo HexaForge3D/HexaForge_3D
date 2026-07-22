@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -9,7 +11,7 @@ public class SpawnPair
     public GameObject _monsterPrefab;
 }
 
-public class DefenceFieldManager : MonoBehaviour
+public class DefenceFieldManager : BaseDungeonController
 {
     [SerializeField] private SpawnPair[] _spawnPairs;
     [SerializeField] private GameObject _clearPortal;
@@ -17,20 +19,19 @@ public class DefenceFieldManager : MonoBehaviour
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
-    public static event Action OnClearField;
-    public static event Action OnFieldFailed;
-
     private bool _isFailed = false;
     private bool _isStarted = false;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         DefenceTarget.OnTargetDestroyed += HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested += HandleDefenceStartRequested;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         DefenceTarget.OnTargetDestroyed -= HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested -= HandleDefenceStartRequested;
     }
@@ -60,7 +61,7 @@ public class DefenceFieldManager : MonoBehaviour
         _isFailed = true;
         Debug.Log("방어 목표가 파괴되어 디펜스 필드가 실패 처리되었습니다.");
 
-        OnFieldFailed?.Invoke();
+        InvokeFailed(DungeonFailReason.NpcDead);
     }
 
     private async UniTask StartDefenceSequence()
@@ -92,7 +93,13 @@ public class DefenceFieldManager : MonoBehaviour
             }
             Debug.Log("모든 웨이브 클리어! 클리어 포탈 활성화!");
 
-            OnClearField?.Invoke();
+            DungeonReward reward = new DungeonReward
+            {
+                Gold = 100,
+                ItemIds = new List<string>()
+            };
+
+            InvokeCleared(reward);
         }
     }
 
