@@ -15,6 +15,7 @@ public class DefenceFieldManager : BaseDungeonController
 {
     [SerializeField] private SpawnPair[] _spawnPairs;
     [SerializeField] private GameObject _defenceTarget;
+    [SerializeField] private Transform _monsterGroup;
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
@@ -98,11 +99,11 @@ public class DefenceFieldManager : BaseDungeonController
 
     private void SpawnAllDefinedMonsters()
     {
-        foreach (var pair in _spawnPairs)
+        foreach (SpawnPair pair in _spawnPairs)
         {
             if (pair._spawnPoint != null && pair._monsterPrefab != null)
             {
-                Instantiate(pair._monsterPrefab, pair._spawnPoint.position, pair._spawnPoint.rotation);
+                Instantiate(pair._monsterPrefab, pair._spawnPoint.position, pair._spawnPoint.rotation, _monsterGroup);
             }
         }
     }

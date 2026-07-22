@@ -13976,6 +13976,7 @@ Transform:
   - {fileID: 6298870064891479407}
   - {fileID: 964121863002047081}
   - {fileID: 8245215790117715352}
+  - {fileID: 8360525535724549069}
   m_Father: {fileID: 6762294132494641815}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7446000124793266978
@@ -14060,6 +14061,7 @@ MonoBehaviour:
   - _spawnPoint: {fileID: 7389017838871812992}
     _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
   _defenceTarget: {fileID: 148525882093162775}
+  _monsterGroup: {fileID: 8360525535724549069}
   _waveCount: 5
   _countdownDuration: 20
 --- !u!1 &3303121894424712445
@@ -35368,6 +35370,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 19.999998, z: 0.75}
   m_Center: {x: 0, y: -1.0354662, z: 0}
+--- !u!1 &5795437958654062099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8360525535724549069}
+  m_Layer: 0
+  m_Name: MonsterGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8360525535724549069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5795437958654062099}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -17.9997, y: 8.58944, z: 10.35156}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6277570592873504032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5899945416786407252
 GameObject:
   m_ObjectHideFlags: 0
