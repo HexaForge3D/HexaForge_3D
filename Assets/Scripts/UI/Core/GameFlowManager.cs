@@ -373,7 +373,7 @@ public class GameFlowManager
     private void OnDungeonClearConfirmed()
     {
         UIManager.Instance.CloseUI(UIType.DungeonClearPopup);
-        MapManager.Instance.ChangeMapAsync("area_village").Forget();
+        ReturnToVillageAsync().Forget();
     }
 
     private void OnDungeonFailConfirmed()
@@ -462,6 +462,9 @@ public class GameFlowManager
     {
         await MapManager.Instance.ChangeMapAsync(mapId);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+        playerBattle?.RestoreFull();
     }
 
     private async UniTask ReviveAndChangeMapAsync()
@@ -596,7 +599,7 @@ public class GameFlowManager
         if (playerBattle != null)
         {
             playerBattle.Revive();
-            //playerBattle.RestoreFull();
+            playerBattle.RestoreFull();
         }
     }
 
