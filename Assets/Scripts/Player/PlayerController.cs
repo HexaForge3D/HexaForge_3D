@@ -263,12 +263,13 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _rotationSpeed * Time.deltaTime);
             }
 
-            if (_agent.pathPending == false && _agent.remainingDistance <= 0.05f)
+            if (_agent.pathPending == false && _agent.remainingDistance <= 0.1f)
             {
                 _isMoving = false;
                 if (_spotPoint != null) _spotPoint.gameObject.SetActive(false);
             }
         }
+
         if (_isAttacking == true)
         {
             _isMoving = false;
@@ -429,10 +430,10 @@ public class PlayerController : MonoBehaviour
             _agent.Move(_animator.deltaPosition * _evasionDistance);
         }
 
-        else
-        {
-            transform.position += _animator.deltaPosition;
-        }
+        //else
+        //{
+        //    transform.position += _animator.deltaPosition;
+        //}
     }
 
     public bool CanEvasion()
