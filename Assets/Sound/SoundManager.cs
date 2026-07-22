@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 
 public class SoundManager : MonoBehaviour
 {
@@ -10,6 +9,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource _bgmSource;
     [SerializeField] private AudioSource _uiSource;
     [SerializeField] private AudioSource _sfxSource;
+
+    [Header("Settings")]
     [SerializeField] private AudioClip _buttonClickSound;
     [SerializeField] private AudioMixer _audioMixer;
     private void Awake()
@@ -19,13 +20,12 @@ public class SoundManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        if (Instance != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
     }
-
-    public void PlayBGM(AudioClip bgmclip, float volume)
+    public void PlayBGM(AudioClip bgmclip, float volume = 1f)
     {
         if (_bgmSource.clip == bgmclip) return;
         _bgmSource.volume = volume;
@@ -39,20 +39,12 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Stop();
     }
 
-    public void PlayUI(AudioClip uiclip, float volume)
+    public void PlayUI(AudioClip uiclip, float volume = 1f)
     {
         if (uiclip == null) return;
         _uiSource.PlayOneShot(uiclip, volume);
     }
 
-    public void OnClickButtonSound()
-    {
-        if (_buttonClickSound == null) return;
-        if (_buttonClickSound != null)
-        {
-            _uiSource.PlayOneShot(_buttonClickSound);
-        }
-    }
 
     public void SetBGMVolume(float sliderValue)
     {
@@ -76,11 +68,11 @@ public class SoundManager : MonoBehaviour
         AudioClip clip = Resources.Load<AudioClip>($"Sounds/BGM/{fileName}");
         if (clip != null)
         {
-            _bgmSource.PlayOneShot(clip);
+            PlayBGM(clip);
         }
         else
         {
-            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resources/Sounds/BGM/");
+            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/BGM/");
         }
     }
     public void PlayUISound(string fileName)
@@ -88,11 +80,11 @@ public class SoundManager : MonoBehaviour
         AudioClip clip = Resources.Load<AudioClip>($"Sounds/UI/{fileName}");
         if (clip != null)
         {
-            _uiSource.PlayOneShot(clip);
+            PlayUI(clip);
         }
         else
         {
-            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resources/Sounds/UI/");
+            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/UI/");
         }
     }
 
@@ -105,7 +97,7 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resources/Sounds/SFX/");
+            Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/SFX/");
         }
     }
 }

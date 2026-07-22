@@ -24,7 +24,7 @@ public class BaseUI : MonoBehaviour
     {
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.OnClickButtonSound();
+            SoundManager.Instance.PlayUISound("ClickSound");
         }        
     }
 

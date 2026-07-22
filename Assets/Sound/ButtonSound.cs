@@ -34,7 +34,7 @@ public class ButtonSound : MonoBehaviour
         switch (_soundType)
         {
             case ButtonSoundType.Click:
-                SoundManager.Instance.OnClickButtonSound();
+                SoundManager.Instance.PlayUISound("ClickSound");
                 break;
             case ButtonSoundType.Buy:
                 SoundManager.Instance.PlayUISound("ItemBuy");
