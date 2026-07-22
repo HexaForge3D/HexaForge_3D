@@ -252,6 +252,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6604432935165860232, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604432935165860232, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6604432935165860232, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: _mapSpawnPoints.Array.data[0].SpawnPoint
       value: 
