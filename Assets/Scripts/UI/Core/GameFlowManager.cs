@@ -183,6 +183,12 @@ public class GameFlowManager
             return;
         }
 
+        if (portal.PortalType == PortalType.FakePortal)
+        {
+            var targetPortal = PortalManager.Instance.GetPortal(portal.ParentMapName, PortalType.DungeonStart);
+            MapManager.Instance.ChangeMapAsync(targetPortal.TargetMapId, PortalType.DungeonStart).Forget();
+        }
+
         if (string.IsNullOrEmpty(portal.TargetMapId) == false)
         {
             MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
