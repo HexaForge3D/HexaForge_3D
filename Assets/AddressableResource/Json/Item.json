@@ -187,5 +187,59 @@
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
+  },
+  {
+    "ID": "Item_EnhancementScroll",
+    "Name": "EnhancementScroll",
+    "Description": "EnhancementScroll",
+    "IconAddress": "Material[Material_EnhancementScroll]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
+  },
+  {
+    "ID": "Item_LeatherPiece",
+    "Name": "LeatherPiece",
+    "Description": "LeatherPiece",
+    "IconAddress": "Material[Material_LeatherPiece]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
+  },
+  {
+    "ID": "Item_IronIngot",
+    "Name": "IronIngot",
+    "Description": "IronIngot",
+    "IconAddress": "Material[Material_IronIngot]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MithrilIngot",
+    "Name": "MithrilIngot",
+    "Description": "MithrilIngot",
+    "IconAddress": "Material[Material_MithrilIngot]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
+  },
+  {
+    "ID": "Item_MysteriousPowder",
+    "Name": "MysteriousPowder",
+    "Description": "MysteriousPowder",
+    "IconAddress": "Material[Material_MysteriousPowder]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
+  },
+  {
+    "ID": "Item_OilofBlessing",
+    "Name": "OilofBlessing",
+    "Description": "OilofBlessing",
+    "IconAddress": "Material[Material_OilofBlessing]",
+    "MaxStack": 99,
+    "UsageType": "Meterial",
+    "Price": 500
   }
 ]

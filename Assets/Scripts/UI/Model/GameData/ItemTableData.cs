@@ -5,7 +5,7 @@ public enum ItemUsageType
     None,
     Consumable,
     Equipment,
-
+    Material
 }
 
 [Serializable]
