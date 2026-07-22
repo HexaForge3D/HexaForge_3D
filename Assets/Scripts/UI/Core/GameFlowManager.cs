@@ -682,6 +682,8 @@ public class GameFlowManager
         {
             playerBattle.Revive();
             playerBattle.RestoreFull();
+
+            PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
         }
     }
 
