@@ -76,9 +76,9 @@ public class PlayerController : MonoBehaviour
         PlayerInputSystem.OnMoneyCheat += ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion += HandleEvasion;
 
-        DefenceFieldManager.OnDefenceStarted += HandleDefenceStarted;
+        DefenceTarget.OnDefenceStartRequested += HandleDefenceStarted;
         DefenceFieldManager.OnClearField += HandleDefenceEnded;
-        DefenceFieldManager.OnFieldFailed += HandleDefenceEnded;
+        DefenceFieldManager.OnFailField += HandleDefenceEnded;
     }
 
     private void OnDisable()
@@ -86,9 +86,9 @@ public class PlayerController : MonoBehaviour
         PlayerInputSystem.OnMoneyCheat -= ApplyMoneyCheat;
         PlayerInputSystem.OnEvasion -= HandleEvasion;
 
-        DefenceFieldManager.OnDefenceStarted -= HandleDefenceStarted;
+        DefenceTarget.OnDefenceStartRequested -= HandleDefenceStarted;
         DefenceFieldManager.OnClearField -= HandleDefenceEnded;
-        DefenceFieldManager.OnFieldFailed -= HandleDefenceEnded;
+        DefenceFieldManager.OnFailField -= HandleDefenceEnded;
     }
 
     private void Update()

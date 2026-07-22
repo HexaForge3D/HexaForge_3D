@@ -19,6 +19,9 @@ public class DefenceFieldManager : BaseDungeonController
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
+    public static event Action OnClearField;
+    public static event Action OnFailField;
+
     private bool _isFailed = false;
     private bool _isStarted = false;
 
@@ -61,6 +64,7 @@ public class DefenceFieldManager : BaseDungeonController
         _isFailed = true;
         Debug.Log("방어 목표가 파괴되어 디펜스 필드가 실패 처리되었습니다.");
 
+        OnFailField?.Invoke();
         InvokeFailed(DungeonFailReason.NpcDead);
     }
 
@@ -99,6 +103,7 @@ public class DefenceFieldManager : BaseDungeonController
                 ItemIds = new List<string>()
             };
 
+            OnClearField?.Invoke();
             InvokeCleared(reward);
         }
     }

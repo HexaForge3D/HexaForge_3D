@@ -17855,6 +17855,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
+      propertyPath: _targetMapId
+      value: area_village
+      objectReference: {fileID: 0}
+    - target: {fileID: 2789950942439257353, guid: a1c917520979eb1458c8cdefa245460d, type: 3}
       propertyPath: _parentMapName
       value: Defence
       objectReference: {fileID: 0}

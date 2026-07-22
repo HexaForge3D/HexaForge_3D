@@ -166,7 +166,12 @@ public class GameFlowManager
 
         if (portal.PortalType == PortalType.DungeonStart)
         {
-            ShowHuntingAreaAsync().Forget();
+            if (portal.ParentMapName == "Village")
+            {
+                ShowHuntingAreaAsync().Forget();
+                return;
+            }
+            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
             return;
         }
 
