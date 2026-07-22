@@ -57,6 +57,11 @@ public class PlayerInputSystem : MonoBehaviour
     [SerializeField] private float _evasionCoolTime = 5f;
     private float _evasionCoolTimeEnd = 0f;
 
+    [Header("Cheat DunGeon Key")] // 던전치트키
+    [SerializeField] private KeyCode _cheatDungeonClearedKey = KeyCode.Period; // 성공 치트키
+    [SerializeField] private KeyCode _cheatDungeonFaildKey = KeyCode.Comma; // 실패 치트키
+
+
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -89,6 +94,9 @@ public class PlayerInputSystem : MonoBehaviour
 
     public static event Action OnMoneyCheat;
     public static event Action OnSuicideCheat;
+
+    public static event Action OnCheatDungeonCleared;
+    public static event Action OnCheatDungeonFailed;
 
     public static event Action<float> OnEvasionCoolTimeStarted;
 
@@ -238,6 +246,16 @@ public class PlayerInputSystem : MonoBehaviour
         if (Input.GetKeyDown(_suicideCheatKey))
         {
             OnSuicideCheat?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_cheatDungeonClearedKey))
+        {
+            OnCheatDungeonCleared?.Invoke();
+        }
+
+        if (Input.GetKeyDown(_cheatDungeonFaildKey))
+        {
+            OnCheatDungeonFailed?.Invoke();
         }
     }
 
