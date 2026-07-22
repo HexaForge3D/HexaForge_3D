@@ -142,7 +142,7 @@ public class MonsterHealth : MonoBehaviour
 
     private async UniTaskVoid SpawnDropItemAsync(string address, ItemTableData item, int amount)
     {
-        Vector3 spawnPos = transform.position + new Vector3( UnityEngine.Random.Range(-1f, 1f), 1.0f, UnityEngine.Random.Range(-1f, 1f));
+        Vector3 spawnPos = transform.position + new Vector3(0f, 0.3f, 0f);
 
         GameObject dropObj = await ResourceManager.Inst.InstantiateAsync(address, null, true);
 
