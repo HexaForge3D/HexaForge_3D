@@ -48,6 +48,8 @@ public class GameFlowManager
         SkillUtil.OnSkillCoolTimeFail -= OnSkillCoolTimeFail;
         PlayerLevel.OnExpChanged -= OnPlayerExpChanged;
         PlayerInputSystem.OnEvasionCoolTimeStarted -= OnEvasionCoolTimeStarted;
+        BaseDungeonController.OnDungeonCleared -= OnDungeonCleared;
+        BaseDungeonController.OnDungeonFailed -= OnDungeonFailed;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -65,8 +67,7 @@ public class GameFlowManager
 
     private void OnTeleportRequested(HuntingAreaData data)
     {
-        MapManager.Instance.ChangeMapAsync(data.Id, PortalType.DungeonStart).Forget();
-        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+        ChangeMapAndCloseAsync(data.Id).Forget();
     }
 
     private void OnDeleteRequested(string slotId)
@@ -141,9 +142,7 @@ public class GameFlowManager
     private void OnReviveRequested()
     {
         UIManager.Instance.CloseUI(UIType.DeathPopup);
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-
-        if (playerBattle != null) playerBattle.Revive();
+        ReviveAndChangeMapAsync().Forget();
     }
 
     private void OnInventoryUseRequested(InventoryItemData data)
@@ -167,7 +166,12 @@ public class GameFlowManager
 
         if (portal.PortalType == PortalType.DungeonStart)
         {
-            ShowHuntingAreaAsync().Forget();
+            if (portal.ParentMapName == "Village")
+            {
+                ShowHuntingAreaAsync().Forget();
+                return;
+            }
+            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
             return;
         }
 
@@ -181,6 +185,12 @@ public class GameFlowManager
         {
             MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
             return;
+        }
+
+        if (portal.PortalType == PortalType.FakePortal)
+        {
+            var targetPortal = PortalManager.Instance.GetPortal(portal.ParentMapName, PortalType.DungeonStart);
+            MapManager.Instance.ChangeMapAsync(targetPortal.TargetMapId, PortalType.DungeonStart).Forget();
         }
 
         if (string.IsNullOrEmpty(portal.TargetMapId) == false)
@@ -358,6 +368,17 @@ public class GameFlowManager
         inGameView?.StartEvasionCoolDown(duration);
     }
 
+    private void OnDungeonClearConfirmed()
+    {
+        UIManager.Instance.CloseUI(UIType.DungeonClearPopup);
+        MapManager.Instance.ChangeMapAsync("area_village").Forget();
+    }
+
+    private void OnDungeonFailConfirmed()
+    {
+        UIManager.Instance.CloseUI(UIType.DungeonFailPopup);
+        MapManager.Instance.ChangeMapAsync("area_village").Forget();
+    }
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -401,6 +422,18 @@ public class GameFlowManager
 
         view.BindViewModel(_inGameViewModel);
 
+        view.OnCharacterInfoButtonClicked -= OnInformationKeyPressed;
+        view.OnCharacterInfoButtonClicked += OnInformationKeyPressed;
+
+        view.OnEquipmentButtonClicked -= OnEquipmentKeyPressed;
+        view.OnEquipmentButtonClicked += OnEquipmentKeyPressed;
+
+        view.OnInventoryButtonClicked -= OnInventoryKeyPressed;
+        view.OnInventoryButtonClicked += OnInventoryKeyPressed;
+
+        view.OnSkillButtonClicked -= OnSkillTreeKeyPressed;
+        view.OnSkillButtonClicked += OnSkillTreeKeyPressed; 
+
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
@@ -419,6 +452,22 @@ public class GameFlowManager
         SkillUtil.OnSkillCoolTimeFail += OnSkillCoolTimeFail;
         PlayerLevel.OnExpChanged += OnPlayerExpChanged;
         PlayerInputSystem.OnEvasionCoolTimeStarted += OnEvasionCoolTimeStarted;
+        BaseDungeonController.OnDungeonCleared += OnDungeonCleared;
+        BaseDungeonController.OnDungeonFailed += OnDungeonFailed;
+    }
+
+    private async UniTask ChangeMapAndCloseAsync(string mapId)
+    {
+        await MapManager.Instance.ChangeMapAsync(mapId);
+        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+    }
+
+    private async UniTask ReviveAndChangeMapAsync()
+    {
+        await MapManager.Instance.ChangeMapAsync("area_village");
+
+        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+        playerBattle?.Revive();
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -524,6 +573,18 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowDungeonClearAsync(DungeonReward reward)
+    {
+        DungeonClearView view = await UIManager.Instance.OpenUIAsync<DungeonClearView>(UIType.DungeonClearPopup);
+        view.Setup(reward.Gold, reward.ItemIds, OnDungeonClearConfirmed);
+    }
+
+    private async UniTask ShowDungeonFailAsync(DungeonFailReason reason)
+    {
+        DungeonFailView view = await UIManager.Instance.OpenUIAsync<DungeonFailView>(UIType.DungeonFailPopup);
+        view.Setup(OnDungeonFailConfirmed);
+    }
+
 
     // UI 토글화
     private void ToggleUI(UIType uiType, Action showAction)
@@ -561,6 +622,16 @@ public class GameFlowManager
     private void ShowEquipment()
     {
         ShowEquipmentAsync().Forget();
+    }
+
+    private void OnDungeonCleared(DungeonReward reward)
+    {
+        ShowDungeonClearAsync(reward).Forget();
+    }
+
+    private void OnDungeonFailed(DungeonFailReason reason)
+    {
+        ShowDungeonFailAsync(reason).Forget();
     }
 
 }

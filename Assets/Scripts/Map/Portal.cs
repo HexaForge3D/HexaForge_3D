@@ -9,7 +9,8 @@ public enum PortalType : byte
     DungeonClear,
     Store,
     MainQuest,
-    Smithy
+    Smithy,
+    FakePortal
 }
 
 public class Portal : MonoBehaviour

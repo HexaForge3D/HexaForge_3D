@@ -13,6 +13,7 @@ public class MonsterHealth : MonoBehaviour
     public int dropExp = 30;
 
     public static event Action<int> OnMonsterDied;
+    public event Action<MonsterHealth> OnMonsterDieCount;
 
     private void OnEnable()
     {
@@ -66,8 +67,9 @@ public class MonsterHealth : MonoBehaviour
             anim.SetTrigger("Die");
         }
 
+        OnMonsterDieCount?.Invoke(this);
         OnMonsterDied?.Invoke(dropExp);
-
+        
         Destroy(gameObject, 3f);
     }
 

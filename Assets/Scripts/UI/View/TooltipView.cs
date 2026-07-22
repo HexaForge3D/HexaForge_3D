@@ -14,6 +14,7 @@ public class TooltipView : MonoBehaviour
     [SerializeField] private TMP_Text Text_Count;
     [SerializeField] private TMP_Text Text_Price;
     [SerializeField] private TMP_Text Text_Stats;
+    [SerializeField] private TMP_Text Text_Requirement;
 
     [SerializeField] private Vector2 CursorOffset = new Vector2(20f, -20f);
 
@@ -54,6 +55,13 @@ public class TooltipView : MonoBehaviour
         if (hasStats)
         {
             Text_Stats.text = data.StatsText;
+        }
+
+        bool hasRequirement = string.IsNullOrEmpty(data.RequirementText) == false;
+        Text_Requirement.gameObject.SetActive(hasRequirement);
+        if (hasRequirement)
+        {
+            Text_Requirement.text = data.RequirementText;
         }
 
         SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();

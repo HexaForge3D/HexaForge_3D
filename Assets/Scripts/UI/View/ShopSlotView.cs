@@ -35,6 +35,7 @@ public class ShopSlotView : MonoBehaviour
             usageHint,
             null,
             priceText,
+            null,
             null
             );
 
