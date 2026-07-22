@@ -2837,6 +2837,7 @@ GameObject:
   - component: {fileID: 3782309597756877889}
   - component: {fileID: 8159528084379604362}
   - component: {fileID: 1392707050479763169}
+  - component: {fileID: 4671457692865748930}
   - component: {fileID: 5153246146540200365}
   m_Layer: 0
   m_Name: PlayerCamera
@@ -2983,6 +2984,18 @@ MonoBehaviour:
   _offset: {x: 0, y: 19.2, z: -11.47}
   _cameraAngle: {x: 58, y: 0, z: 0}
   _transparentMaterial: {fileID: 2100000, guid: 2411438522ca77d4a984f85c9fa60588, type: 2}
+--- !u!114 &4671457692865748930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8101564865326635360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88099bb526ee6ae49b0358c4c4a930a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioListenerSwitcher
 --- !u!54 &5153246146540200365
 Rigidbody:
   m_ObjectHideFlags: 0

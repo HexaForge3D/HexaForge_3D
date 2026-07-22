@@ -20,10 +20,10 @@ public class CharacterSelectView : BaseUI
 
         viewModel.OnSlotSelected += OnSlotSeleted;
 
-        Button_EnterGame.onClick.RemoveAllListeners();
+        Button_EnterGame.onClick.RemoveListener(OnClickEnterGame);
         Button_EnterGame.onClick.AddListener(OnClickEnterGame);
 
-        Button_Delete.onClick.RemoveAllListeners();
+        Button_Delete.onClick.RemoveListener(OnClickDelete);
         Button_Delete.onClick.AddListener(OnClickDelete);
         Button_Delete.interactable = false;
 

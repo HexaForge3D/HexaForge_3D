@@ -374,6 +374,7 @@ GameObject:
   - component: {fileID: 2066146170977321148}
   - component: {fileID: 7351680528483221646}
   - component: {fileID: 2148880718622858822}
+  - component: {fileID: 3949731762111793393}
   m_Layer: 5
   m_Name: Button_Select
   m_TagString: Untagged
@@ -486,6 +487,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3949731762111793393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6853746458497352692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf61479a476d24f85635e0b76d5d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSound
+  _soundType: 1
 --- !u!1 &8121658720088388826
 GameObject:
   m_ObjectHideFlags: 0

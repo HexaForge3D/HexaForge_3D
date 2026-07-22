@@ -20,10 +20,10 @@ public class CharacterCreateView : BaseOverLayUI
 
         viewModel.OnCreateFailed += OnCreateFailed;
 
-        Input_Nickname.onValueChanged.RemoveAllListeners();
+        Input_Nickname.onValueChanged.RemoveListener(OnNickNameChanged);
         Input_Nickname.onValueChanged.AddListener(OnNickNameChanged);
 
-        Button_Create.onClick.RemoveAllListeners();
+        Button_Create.onClick.RemoveListener(OnClickCreate);
         Button_Create.onClick.AddListener(OnClickCreate);
 
         Text_ErrorMessage.text = string.Empty;

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Sounds/BGM.meta
+guid: 493e769c97651604382b0b38457092cd
+========
 guid: 404694273d00f6045a42393cc05a3b62
+>>>>>>>> Dev:Assets/Resources/Sound/BGM.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

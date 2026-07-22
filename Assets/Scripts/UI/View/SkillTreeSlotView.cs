@@ -38,11 +38,11 @@ public class SkillTreeSlotView : MonoBehaviour
 
         Text_Level.text = $"{data.CurrentLevel}/{data.MaxLevel}";
 
-        Button_Plus.onClick.RemoveAllListeners();
+        Button_Plus.onClick.RemoveListener(OnClickPlus);
         Button_Plus.onClick.AddListener(OnClickPlus);
         Button_Plus.interactable = data.IsUnlocked;
 
-        Button_Minus.onClick.RemoveAllListeners();
+        Button_Minus.onClick.RemoveListener(OnClickMinus);
         Button_Minus.onClick.AddListener(OnClickMinus);
         Button_Minus.interactable = data.IsUnlocked && data.CurrentLevel > 1;
 

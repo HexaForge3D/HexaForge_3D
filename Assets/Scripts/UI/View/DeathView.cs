@@ -12,7 +12,7 @@ public class DeathView : BaseUI
     {
         _onReviveClicked = onReviveClicked;
 
-        Button_Revive.onClick.RemoveAllListeners();
+        Button_Revive.onClick.RemoveListener(OnClickRevive);
         Button_Revive.onClick.AddListener(OnClickRevive);
     }
 
