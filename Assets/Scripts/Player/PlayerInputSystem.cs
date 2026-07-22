@@ -243,6 +243,7 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void Evasion()
     {
+        if (_playerController != null && _playerController.CanEvasion() == false) return;
 
         if (Time.time < _evasionCoolTimeEnd)
         {
