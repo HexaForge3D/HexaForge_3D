@@ -13,7 +13,7 @@ public class MonsterHealth : MonoBehaviour
     public int dropExp = 30;
 
     public static event Action<int> OnMonsterDied;
-    public static event Action<MonsterHealth> OnMonsterDieCount;
+    public event Action<MonsterHealth> OnMonsterDieCount;
 
     private void OnEnable()
     {

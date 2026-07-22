@@ -647,6 +647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7883631883260097413}
   - component: {fileID: 8058312393653083356}
+  - component: {fileID: 5255559383287799414}
   m_Layer: 0
   m_Name: Field_RoomMaze
   m_TagString: Untagged
@@ -719,6 +720,20 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 8c529e020759906469addcbb48cd1d83, type: 2}
   m_BuildHeightMesh: 0
+--- !u!114 &5255559383287799414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5703497703116208866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b335f2f3a26de841a7e3ca86f6bca76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomFieldManager
+  _monsterGroupParent: {fileID: 7842039013272493480}
+  _clearPortal: {fileID: 2733161217496626269}
 --- !u!1001 &768092747377023982
 PrefabInstance:
   m_ObjectHideFlags: 0
