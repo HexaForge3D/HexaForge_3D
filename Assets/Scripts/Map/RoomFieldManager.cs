@@ -7,7 +7,6 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 public class RoomFieldManager : BaseDungeonController
 { 
     [SerializeField] private Transform _monsterGroupParent;
-    [SerializeField] private GameObject _clearPortal;
 
     public static event Action OnClearField;
     public static event Action<int, int> OnCurrentMonsterCountChanged;
@@ -29,11 +28,6 @@ public class RoomFieldManager : BaseDungeonController
 
     private void Start()
     {
-        if (_clearPortal != null)
-        {
-            _clearPortal.SetActive(false);
-        }
-
         InitializeRoomMonsters();
     }
 
@@ -55,7 +49,7 @@ public class RoomFieldManager : BaseDungeonController
 
         _activeMonsters.Clear();
 
-        foreach (var monster in foundMonsters)
+        foreach (MonsterHealth monster in foundMonsters)
         {
             if (monster != null)
             {
@@ -107,11 +101,6 @@ public class RoomFieldManager : BaseDungeonController
 
         _isCleared = true;
         Debug.Log("룸 필드의 모든 몬스터를 처치했습니다! 필드 클리어!");
-
-        if (_clearPortal != null)
-        {
-            _clearPortal.SetActive(true);
-        }
 
         DungeonReward reward = new DungeonReward
         {

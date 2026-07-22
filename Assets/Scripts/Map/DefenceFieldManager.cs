@@ -14,7 +14,6 @@ public class SpawnPair
 public class DefenceFieldManager : BaseDungeonController
 {
     [SerializeField] private SpawnPair[] _spawnPairs;
-    [SerializeField] private GameObject _clearPortal;
     [SerializeField] private GameObject _defenceTarget;
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
@@ -37,14 +36,6 @@ public class DefenceFieldManager : BaseDungeonController
         base.OnDisable();
         DefenceTarget.OnTargetDestroyed -= HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested -= HandleDefenceStartRequested;
-    }
-
-    private void Start()
-    {
-        if (_clearPortal != null)
-        {
-            _clearPortal.SetActive(false);
-        }
     }
 
     private void HandleDefenceStartRequested()
@@ -91,11 +82,8 @@ public class DefenceFieldManager : BaseDungeonController
 
         if (!_isFailed && _defenceTarget != null)
         {
-            if (_clearPortal != null)
-            {
-                _clearPortal.SetActive(true);
-            }
-            Debug.Log("모든 웨이브 클리어! 클리어 포탈 활성화!");
+
+            Debug.Log("모든 웨이브 클리어!");
 
             DungeonReward reward = new DungeonReward
             {
