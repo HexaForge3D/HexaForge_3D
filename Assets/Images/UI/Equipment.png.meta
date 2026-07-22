@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Equipment_2
+      name: Consumable_HealthPotion
       rect:
         serializedVersion: 2
         x: 31
@@ -119,7 +119,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_4
+      name: Consumable_ManaPotion
       rect:
         serializedVersion: 2
         x: 99
@@ -141,7 +141,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_16
+      name: Equipment_LeatherChestPlate
       rect:
         serializedVersion: 2
         x: 251
@@ -163,7 +163,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_17
+      name: Equipment_LeatherPants
       rect:
         serializedVersion: 2
         x: 339
@@ -185,7 +185,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_18
+      name: Equipment_LeatherGloves
       rect:
         serializedVersion: 2
         x: 426
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_19
+      name: Equipment_LeatherBoots
       rect:
         serializedVersion: 2
         x: 513
@@ -229,7 +229,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_21
+      name: Equipment_IronSword
       rect:
         serializedVersion: 2
         x: 71
@@ -251,7 +251,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_22
+      name: Equipment_LeatherHelmet
       rect:
         serializedVersion: 2
         x: 162
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_25
+      name: Equipment_SteelSword
       rect:
         serializedVersion: 2
         x: 71
@@ -295,7 +295,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_26
+      name: Equipment_SteelHelmet
       rect:
         serializedVersion: 2
         x: 162
@@ -317,7 +317,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_27
+      name: Equipment_SteelChestPlate
       rect:
         serializedVersion: 2
         x: 251
@@ -339,7 +339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_28
+      name: Equipment_SteelPants
       rect:
         serializedVersion: 2
         x: 339
@@ -361,7 +361,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_29
+      name: Equipment_SteelGloves
       rect:
         serializedVersion: 2
         x: 427
@@ -383,7 +383,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_30
+      name: Equipment_SteelBoots
       rect:
         serializedVersion: 2
         x: 513
@@ -405,7 +405,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_33
+      name: Equipment_MithrilSword
       rect:
         serializedVersion: 2
         x: 71
@@ -427,11 +427,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_34
+      name: Equipment_MithrilHelmet
       rect:
         serializedVersion: 2
         x: 162
-        y: 23
+        y: 24
         width: 72
         height: 72
       alignment: 0
@@ -449,7 +449,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_35
+      name: Equipment_MithrilChestPlate
       rect:
         serializedVersion: 2
         x: 251
@@ -471,7 +471,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_36
+      name: Equipment_MithrilPants
       rect:
         serializedVersion: 2
         x: 339
@@ -493,7 +493,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_37
+      name: Equipment_MithrilGloves
       rect:
         serializedVersion: 2
         x: 427
@@ -515,7 +515,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Equipment_38
+      name: Equipment_MithrilBoots
       rect:
         serializedVersion: 2
         x: 513
@@ -552,45 +552,42 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Equipment_0: 883070124
-      Equipment_1: 1475408227
+      Consumable_HealthPotion: 1691566640
+      Consumable_ManaPotion: -1497530603
       Equipment_10: -23959730
       Equipment_11: -1856420961
       Equipment_12: 828209060
       Equipment_13: 1660199590
       Equipment_14: -1754340934
       Equipment_15: 1815859576
-      Equipment_16: -958209018
-      Equipment_17: 1245644446
-      Equipment_18: -1307083324
-      Equipment_19: -294402738
-      Equipment_2: 1691566640
       Equipment_20: 463851115
-      Equipment_21: 1083959098
-      Equipment_22: -1791038449
       Equipment_23: 1669811778
       Equipment_24: 372901100
-      Equipment_25: -1875558190
-      Equipment_26: -2045998021
-      Equipment_27: 935899412
-      Equipment_28: 1016952227
-      Equipment_29: -258959107
-      Equipment_3: -1676115621
-      Equipment_30: -2097078126
       Equipment_31: -1688225512
       Equipment_32: 950129408
-      Equipment_33: -260112305
-      Equipment_34: -1293363199
-      Equipment_35: -510451426
-      Equipment_36: 1622792320
-      Equipment_37: -648784228
-      Equipment_38: -179958847
-      Equipment_4: -1497530603
       Equipment_5: 1606885328
       Equipment_6: -1498854790
       Equipment_7: 1657993887
       Equipment_8: -2145811735
       Equipment_9: -1955606644
+      Equipment_IronSword: 1083959098
+      Equipment_LeatherBoots: -294402738
+      Equipment_LeatherChestPlate: -958209018
+      Equipment_LeatherGloves: -1307083324
+      Equipment_LeatherHelmet: -1791038449
+      Equipment_LeatherPants: 1245644446
+      Equipment_MithrilBoots: -179958847
+      Equipment_MithrilChestPlate: -510451426
+      Equipment_MithrilGloves: -648784228
+      Equipment_MithrilHelmet: -1293363199
+      Equipment_MithrilPants: 1622792320
+      Equipment_MithrilSword: -260112305
+      Equipment_SteelBoots: -2097078126
+      Equipment_SteelChestPlate: 935899412
+      Equipment_SteelGloves: -258959107
+      Equipment_SteelHelmet: -2045998021
+      Equipment_SteelPants: 1016952227
+      Equipment_SteelSword: -1875558190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
