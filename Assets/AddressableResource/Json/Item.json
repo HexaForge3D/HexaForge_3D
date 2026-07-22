@@ -3,7 +3,7 @@
     "ID": "Item_HealthPotion",
     "Name": "Health Potion",
     "Description": "Restores a small amount of HP.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Consumable_HealthPotion]",
     "MaxStack": 99,
     "UsageType": "Consumable",
     "Price": 20
@@ -12,7 +12,7 @@
     "ID": "Item_ManaPotion",
     "Name": "Mana Potion",
     "Description": "Restores a small amount of MP.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Consumable_ManaPotion]",
     "MaxStack": 99,
     "UsageType": "Consumable",
     "Price": 20
@@ -30,52 +30,52 @@
     "ID": "Item_IronSword",
     "Name": "Iron Sword",
     "Description": "A basic sword forged from iron.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_IronSword]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
   },
   {
-    "ID": "Item_IronHelmet",
-    "Name": "Iron Helmet",
+    "ID": "Item_LeatherHelmet",
+    "Name": "Leather Helmet",
     "Description": "Helmet.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_LeatherHelmet]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
   },
   {
-    "ID": "Item_IronChestPlate",
-    "Name": "Iron ChestPlate",
+    "ID": "Item_LeatherChestPlate",
+    "Name": "Leather ChestPlate",
     "Description": "ChestPlate.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_LeatherChestPlate]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
   },
   {
-    "ID": "Item_IronPants",
-    "Name": "Iron Pants",
+    "ID": "Item_LeatherPants",
+    "Name": "Leather Pants",
     "Description": "Pants.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_LeatherPants]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
   },
   {
-    "ID": "Item_IronBoots",
-    "Name": "Iron Boots",
+    "ID": "Item_LeatherBoots",
+    "Name": "Leather Boots",
     "Description": "Boots.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_LeatherBoots]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
   },
   {
-    "ID": "Item_IronGloves",
-    "Name": "Iron Gloves",
+    "ID": "Item_LeatherGloves",
+    "Name": "Leather Gloves",
     "Description": "Gloves.",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_LeatherGloves]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 20
@@ -84,7 +84,7 @@
     "ID": "Item_SteelSword",
     "Name": "Steel Sword",
     "Description": "A liitle Upgrade Sword",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelSword]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -93,7 +93,7 @@
     "ID": "Item_SteelHelmet",
     "Name": "Steel Helmet",
     "Description": "A liitle Upgrade Helmet",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelHelmet]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -102,7 +102,7 @@
     "ID": "Item_SteelChestPlate",
     "Name": "Steel ChestPlate",
     "Description": "A little Upgrade ChestPlate",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelChestPlate]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -111,7 +111,7 @@
     "ID": "Item_SteelPants",
     "Name": "Steel Pants",
     "Description": "A little Upgrade Pants",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelPants]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -120,7 +120,7 @@
     "ID": "Item_SteelBoots",
     "Name": "Steel Boots",
     "Description": "A little Upgrade Boots",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelBoots]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -129,7 +129,7 @@
     "ID": "Item_SteelGloves",
     "Name": "Steel Gloves",
     "Description": "A little Upgrade Gloves",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_SteelGloves]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 100
@@ -138,7 +138,7 @@
     "ID": "Item_MithrilSword",
     "Name": "Mithril Sword",
     "Description": "A High Quality Sword",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilSword]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
@@ -147,7 +147,7 @@
     "ID": "Item_MithrilHelmet",
     "Name": "Mithril Helmet",
     "Description": "A High Quality Helmet",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilHelmet]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
@@ -156,7 +156,7 @@
     "ID": "Item_MithrilChestPlate",
     "Name": "Mithril ChestPlate",
     "Description": "A High Quality ChestPlate",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilChestPlate]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
@@ -165,7 +165,7 @@
     "ID": "Item_MithrilPants",
     "Name": "Mithril Pants",
     "Description": "A High Quality Pants",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilPants]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
@@ -174,7 +174,7 @@
     "ID": "Item_MithrilBoots",
     "Name": "Mithril Boots",
     "Description": "A High Quality Boots",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilBoots]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
@@ -183,7 +183,7 @@
     "ID": "Item_MithrilGloves",
     "Name": "Mithril Gloves",
     "Description": "A High Quality Gloves",
-    "IconAddress": "",
+    "IconAddress": "Equipment[Equipment_MithrilGloves]",
     "MaxStack": 1,
     "UsageType": "Equipment",
     "Price": 500
