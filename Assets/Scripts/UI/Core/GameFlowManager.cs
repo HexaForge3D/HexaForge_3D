@@ -55,6 +55,8 @@ public class GameFlowManager
         DefenceFieldManager.OnWaveChanged -= OnWaveChanged;
         DefenceFieldManager.OnCountdownChanged -= OnCountdownChanged;
         DefenceTarget.OnTargetHpChanged -= OnTargetHpChanged;
+        MonsterHealth.OnMonsterMoney -= OnMonsterMoneyDropped;
+        MonsterHealth.OnMonsterItem -= OnMonsterItemDropped;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -424,6 +426,29 @@ public class GameFlowManager
         }
     }
 
+    private void OnMonsterMoneyDropped(int amount)
+    {
+        SaveManager.Instance.AddGold(_currentSlotId, amount);
+
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.RefreshGold();
+    }
+
+    private void OnMonsterItemDropped(ItemTableData itemData, int amount)
+    {
+        TransactionResult result = SaveManager.Instance.AddItem(_currentSlotId, itemData.ID, amount);
+
+        if (result == TransactionResult.Success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
+        }
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -504,6 +529,8 @@ public class GameFlowManager
         DefenceFieldManager.OnWaveChanged += OnWaveChanged;
         DefenceFieldManager.OnCountdownChanged += OnCountdownChanged;
         DefenceTarget.OnTargetHpChanged += OnTargetHpChanged;
+        MonsterHealth.OnMonsterMoney += OnMonsterMoneyDropped;
+        MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)

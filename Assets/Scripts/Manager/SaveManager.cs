@@ -487,6 +487,16 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return TransactionResult.Success;
     }
 
+    public void AddGold(string slotId, int amount)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null) return;
+
+        slot.Gold += amount;
+        SaveToFile(CurrentSaveData);
+    }
+
     public static string GetTransactionMessage(TransactionResult result)
     {
         switch (result)
