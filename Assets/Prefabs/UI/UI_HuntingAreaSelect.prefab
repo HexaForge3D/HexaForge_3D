@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 8337573513578393231}
   - component: {fileID: 4312269049211854335}
   - component: {fileID: 6435452944875526839}
+  - component: {fileID: 2524347294964460982}
   m_Layer: 5
   m_Name: Button_Close
   m_TagString: Untagged
@@ -288,6 +289,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2524347294964460982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3496026810969311515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf61479a476d24f85635e0b76d5d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSound
+  _soundType: 1
 --- !u!1 &4305325145850386767
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +960,7 @@ GameObject:
   - component: {fileID: 5859514978942695863}
   - component: {fileID: 6484867732170699578}
   - component: {fileID: 5731608492198126537}
+  - component: {fileID: 6153180269619187850}
   m_Layer: 5
   m_Name: Button_Teleport
   m_TagString: Untagged
@@ -1055,6 +1070,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6153180269619187850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741419004618549289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf61479a476d24f85635e0b76d5d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSound
+  _soundType: 1
 --- !u!1 &8159057467068156456
 GameObject:
   m_ObjectHideFlags: 0
