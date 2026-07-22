@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,9 +13,16 @@ public class MonsterHealth : MonoBehaviour
 
     [Header("Reward")]
     public int dropExp = 30;
+    public int minGold = 10;
+    public int maxGold = 500;
 
     public static event Action<int> OnMonsterDied;
     public event Action<MonsterHealth> OnMonsterDieCount;
+    public static event Action<int> OnMonsterMoney;
+    public static event Action<ItemTableData, int> OnMonsterItem;
+
+    private static List<ItemTableData> droppableItemsCache = null;
+    private static bool isInitializingCache = false;
 
     private void OnEnable()
     {
@@ -28,6 +37,40 @@ public class MonsterHealth : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+
+        if (droppableItemsCache == null && !isInitializingCache)
+        {
+            InitializeDroppableItemsAsync().Forget();
+        }
+
+    }
+
+    private async UniTaskVoid InitializeDroppableItemsAsync()
+    {
+
+        isInitializingCache = true;
+
+        await GameDataManager.Instance.WaitUntilReadyAsync();
+
+        droppableItemsCache = new List<ItemTableData>();
+
+        Dictionary<string, ItemTableData> allItemsDict = GameDataManager.Instance.GetAllData<ItemTableData>();
+
+        if (allItemsDict != null)
+        {
+            foreach (ItemTableData item in allItemsDict.Values)
+            {
+                if (item.UsageType == "Consumable" || item.UsageType == "Material")
+                {
+                    droppableItemsCache.Add(item);
+                }
+            }
+            Debug.Log($"드랍 가능 아이템 {droppableItemsCache.Count}개 캐싱 완료!");
+        }
+        else
+        {
+            Debug.LogError("아이템 데이터를 불러오지 못했습니다.");
+        }
     }
 
     public void TakeDamage(int damageAmount)
@@ -67,10 +110,32 @@ public class MonsterHealth : MonoBehaviour
             anim.SetTrigger("Die");
         }
 
+        CalculateAndDropRewards();
+
         OnMonsterDieCount?.Invoke(this);
         OnMonsterDied?.Invoke(dropExp);
         
         Destroy(gameObject, 3f);
+    }
+
+    private void CalculateAndDropRewards()
+    {
+        int randomGold = UnityEngine.Random.Range(minGold, maxGold + 1);
+        OnMonsterMoney?.Invoke(randomGold);
+
+        if (droppableItemsCache != null && droppableItemsCache.Count > 0)
+        {
+            float dropChance = 0.6f;
+
+            if (UnityEngine.Random.value <= dropChance)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, droppableItemsCache.Count);
+                ItemTableData randomItem = droppableItemsCache[randomIndex];
+                int randomAmount = UnityEngine.Random.Range(1, 11);
+
+                OnMonsterItem?.Invoke(randomItem, randomAmount);
+            }
+        }
     }
 
     private void StopAttackOnPlayerDeath()
