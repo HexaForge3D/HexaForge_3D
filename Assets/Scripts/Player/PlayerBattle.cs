@@ -396,4 +396,21 @@ public class PlayerBattle : MonoBehaviour
 
         Debug.Log("<color=cyan>[부활 완료]</color> 플레이어가 부활했습니다!");
     }
+
+    public void RestoreFull()
+    {
+        if (_playerController == null || _playerController.PlayerData == null) return;
+
+        CharacterSaveData data = _playerController.PlayerData;
+
+        data.CurrentHp = data.Hp;
+        data.CurrentMp = data.Mp;
+
+        OnHpChanged?.Invoke(data.CurrentHp, data.Mp);
+        OnMpChanged?.Invoke(data.CurrentMp, data.Mp);
+
+        SaveManager.Instance.SaveCurrentState();
+
+        Debug.Log("던전에서 나와서 체력이나 마나가 최대로 회복되었습니다.");
+    }
 }
