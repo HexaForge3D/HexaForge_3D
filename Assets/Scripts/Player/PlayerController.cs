@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [Header("Layer Masks")]
     [SerializeField] private LayerMask _clickableLayer;
 
+    [Header("Evasion Setting")]
+    [SerializeField] private float _evasionDistance = 1.5f;
 
     private Animator _animator;
     private CharacterSaveData _playerData;
@@ -102,9 +104,8 @@ public class PlayerController : MonoBehaviour
                 OnClickAttack();
             }
 
-            if (_isAttackAnimPlaying == false)
+            if (_isAttackAnimPlaying == false && _isEvasiving == false)
             {
-
                 if (Input.GetMouseButtonDown(1))
                 {
                     SetTargetPosition(true);
@@ -418,13 +419,14 @@ public class PlayerController : MonoBehaviour
         gameObject.tag = "Player";
         Debug.Log("디펜스 종료: 플레이어 태그가 Player로 복구되었습니다.");
     }
+
     private void OnAnimatorMove()
     {
         if (_animator == null) return;
 
         if (_isEvasiving && _agent != null && _agent.isActiveAndEnabled)
         {
-            _agent.Move(_animator.deltaPosition);
+            _agent.Move(_animator.deltaPosition * _evasionDistance);
         }
 
         else
@@ -432,4 +434,20 @@ public class PlayerController : MonoBehaviour
             transform.position += _animator.deltaPosition;
         }
     }
+
+    public bool CanEvasion()
+    {
+        if (_playerBattle != null && _playerBattle.IsDead) return false;
+
+        if (_animator != null)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo nextStateInfo = _animator.GetNextAnimatorStateInfo(0);
+
+            if (stateInfo.IsName("Die") || stateInfo.IsName("Revive") || nextStateInfo.IsName("Die") || nextStateInfo.IsName("Revive")) return false;
+        }
+
+        return true;
+    }
+
 }
