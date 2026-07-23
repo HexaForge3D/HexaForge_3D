@@ -153,6 +153,24 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public bool CheckRequiredLevelForDungeon(string mapId)
+    {
+        HuntingAreaData huntingMapData = _huntingMapRepository.GetArea(mapId);
+        int requiredLevelForDungeon = huntingMapData.RequiredLevel;
+
+        CharacterSaveData playerData = _playerController.PlayerData;
+        int currentExp = playerData.Exp;
+        int playerLevel = PlayerLevel.LevelFromExp(currentExp);
+        if (playerLevel >= requiredLevelForDungeon)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void SetPlayer(Transform playerTransform)
     {
         _playerController = playerTransform.GetComponent<PlayerController>();
