@@ -228,6 +228,6 @@ public class InGameView : BaseUI
         Text_Countdown.text = string.Empty;
         Image_TargetHpBar.fillAmount = 1f;
         Text_TargetHp.text = string.Empty;
-        Text_MonsterCount.text = string.Empty;
+        Text_MonsterCount.text = "Ramain Monster : 12 /12";
     }
 }
