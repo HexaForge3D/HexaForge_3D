@@ -59,6 +59,7 @@ public class GameFlowManager
         DefenceTarget.OnTargetHpChanged -= OnTargetHpChanged;
         MonsterHealth.OnMonsterMoney -= OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem -= OnMonsterItemDropped;
+        PlayerInteraction.OnItemPickup -= OnItemPickup;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -466,6 +467,25 @@ public class GameFlowManager
         _pendingReturnPortal = null;
     }
 
+    private void OnItemPickup(string slotId, DroppedItem droppedItem)
+    {
+        if (droppedItem == null || droppedItem.ItemData == null) return;
+
+        TransactionResult result = SaveManager.Instance.AddItem(slotId, droppedItem.ItemData.ID, droppedItem.Amount);
+
+        if (result == TransactionResult.Success)
+        {
+            UnityEngine.Object.Destroy(droppedItem.gameObject);
+
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+        else
+        {
+            SystemMessageManager.Instance.Show(SaveManager.GetTransactionMessage(result));
+        }
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -549,6 +569,7 @@ public class GameFlowManager
         DefenceTarget.OnTargetHpChanged += OnTargetHpChanged;
         MonsterHealth.OnMonsterMoney += OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
+        PlayerInteraction.OnItemPickup += OnItemPickup;
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
