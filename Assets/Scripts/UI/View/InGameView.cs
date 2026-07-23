@@ -223,5 +223,11 @@ public class InGameView : BaseUI
     {
         Panel_DefenceInfo.SetActive(false);
         Panel_MonsterCount.SetActive(false);
+
+        Text_Wave.text = "Waiting for Wave";
+        Text_Countdown.text = string.Empty;
+        Image_TargetHpBar.fillAmount = 1f;
+        Text_TargetHp.text = string.Empty;
+        Text_MonsterCount.text = string.Empty;
     }
 }
