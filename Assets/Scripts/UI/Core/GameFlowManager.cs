@@ -192,25 +192,19 @@ public class GameFlowManager
 
         if (portal.PortalType == PortalType.DungeonClear)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, PortalType.DungeonStart, true).Forget();
             return;
         }
 
         if (portal.PortalType == PortalType.Village)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, portal.PortalType, true).Forget();
             return;
-        }
-
-        if (portal.PortalType == PortalType.FakePortal)
-        {
-            var targetPortal = PortalManager.Instance.GetPortal(portal.ParentMapName, PortalType.DungeonStart);
-            MapManager.Instance.ChangeMapAsync(targetPortal.TargetMapId, PortalType.DungeonStart).Forget();
         }
 
         if (string.IsNullOrEmpty(portal.TargetMapId) == false)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, portal.PortalType, false).Forget();
         }
 
         else
@@ -463,7 +457,7 @@ public class GameFlowManager
     {
         if (_pendingReturnPortal == null) return;
 
-        MapManager.Instance.ChangeMapAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType).Forget();
+        ChangeMapWithLoadingAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType, true).Forget();
         _pendingReturnPortal = null;
     }
 
@@ -590,7 +584,7 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync(mapId);
+        await ChangeMapWithLoadingAsync(mapId, PortalType.Village, true);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
@@ -601,7 +595,7 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync("area_village");
+        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
         playerBattle?.Revive();
@@ -740,7 +734,7 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync("area_village");
+        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
 
@@ -753,6 +747,20 @@ public class GameFlowManager
         }
 
         RefreshGoldUI();
+    }
+
+    private async UniTask ChangeMapWithLoadingAsync(string mapId, PortalType entryPortalType, bool useFullScreenLoading)
+    {
+        UniTask loadingTask = UIManager.Instance.ShowLoadingAsync(useFullScreenLoading);
+        UniTask minDisplayTask = UniTask.Delay(500);
+
+        await loadingTask;
+
+        UniTask changeMapTask = MapManager.Instance.ChangeMapAsync(mapId, entryPortalType);
+
+        await UniTask.WhenAll(changeMapTask, minDisplayTask);
+
+        UIManager.Instance.HideLoading();
     }
 
 
