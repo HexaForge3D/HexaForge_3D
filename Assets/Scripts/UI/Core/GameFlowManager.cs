@@ -333,11 +333,13 @@ public class GameFlowManager
 
     private void OnInformationKeyPressed()
     {
+        if (IsGameMenuOpen()) return;
         ToggleUI(UIType.InformationPopup, ShowInformation);
     }
 
     private void OnInventoryKeyPressed()
     {
+        if (IsGameMenuOpen()) return;
         ToggleUI(UIType.InventoryPopup, ShowInventory); 
     }
 
@@ -355,16 +357,19 @@ public class GameFlowManager
 
     private void OnSkillTreeKeyPressed()
     {
+        if (IsGameMenuOpen()) return;
         ToggleUI(UIType.SkillTreePopup, ShowSkillTree);
     }
 
     private void OnEquipmentKeyPressed()
     {
+        if (IsGameMenuOpen()) return;
         ToggleUI(UIType.EquipmentPopup, ShowEquipment);
     }
 
     private void OnMinimapKeyPressed()
     {
+        if (IsGameMenuOpen()) return;
         ToggleUI(UIType.MinimapPopup, ShowMinimap);
     }
 
@@ -817,6 +822,11 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
         ShowDungeonFailAsync(reason).Forget();
+    }
+
+    private bool IsGameMenuOpen()
+    {
+        return UIManager.Instance.IsActiveUI(UIType.GameMenuPopup);
     }
 
 }
