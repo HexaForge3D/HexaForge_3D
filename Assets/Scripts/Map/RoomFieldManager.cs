@@ -115,7 +115,7 @@ public class RoomFieldManager : BaseDungeonController
 
         _isCheatClear = true;
         Debug.Log("[RoomFieldManager] 치트키: 던전 클리어");
-        HandleFieldClear();
+        ClearDungeon();
     }
 
     private void HandleCheatFail()
@@ -127,7 +127,7 @@ public class RoomFieldManager : BaseDungeonController
 
         _isCheatFail = true;
         Debug.Log("[RoomFieldManager] 치트키: 던전 실패");
-        HandleFieldFail();
+        FailDungeon();
     }
 
     private void HandleFieldClear()
@@ -143,18 +143,18 @@ public class RoomFieldManager : BaseDungeonController
         ClearDungeon();
     }
 
-    private void HandleFieldFail()
-    {
-        if (_isCleared || _isFailed)
-        {
-            return;
-        }
+    //private void HandleFieldFail()
+    //{
+    //    if (_isCleared || _isFailed)
+    //    {
+    //        return;
+    //    }
 
-        _isFailed = true;
-        Debug.Log("룸 필드가 치트키에 의해 실패 처리되었습니다.");
+    //    _isFailed = true;
+    //    Debug.Log("룸 필드 클리어 실패");
 
-        FailDungeon();
-    }
+    //    FailDungeon();
+    //}
 
     private void ClearDungeon()
     {

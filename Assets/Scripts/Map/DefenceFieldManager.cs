@@ -80,13 +80,13 @@ public class DefenceFieldManager : BaseDungeonController
     private void HandleCheatClear()
     {
         _isCheatClear = true;
-        Debug.Log("[DefenceFieldManager] 치트키 입력: 던전 강제 클리어 예약");
+        Debug.Log("[DefenceFieldManager] 치트키: 던전 클리어");
     }
 
     private void HandleCheatFail()
     {
         _isCheatFail = true;
-        Debug.Log("[DefenceFieldManager] 치트키 입력: 던전 강제 실패 예약");
+        Debug.Log("[DefenceFieldManager] 치트키: 던전 실패");
     }
 
     private async UniTask StartDefenceSequence()
@@ -121,7 +121,7 @@ public class DefenceFieldManager : BaseDungeonController
             Debug.Log($"{i + 1} 웨이브 완료");
 
             float nextWaveDelay = _countdownDuration;
-            Debug.Log($"{i + 2} 웨이브 {_countdownDuration}초뒤 시작");
+            Debug.Log($"{i + 2} 웨이브 {_countdownDuration}초 뒤 시작");
 
             await CountdownAsync(nextWaveDelay);
         }
