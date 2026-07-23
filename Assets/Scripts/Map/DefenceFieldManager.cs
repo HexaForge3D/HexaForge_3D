@@ -24,22 +24,34 @@ public class DefenceFieldManager : BaseDungeonController
 
     public static event Action<int, int> OnWaveChanged;
     public static event Action<float> OnCountdownChanged;
+    public static event Action<bool> OnStartField;
 
     private bool _isFailed = false;
     private bool _isStarted = false;
 
+    private bool _isCheatClear = false;
+    private bool _isCheatFail = false;
+
     protected override void OnEnable()
     {
         base.OnEnable();
+
         DefenceTarget.OnTargetDestroyed += HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested += HandleDefenceStartRequested;
+
+        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
+        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
+
         DefenceTarget.OnTargetDestroyed -= HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested -= HandleDefenceStartRequested;
+
+        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
+        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
     }
 
     private void HandleDefenceStartRequested()
@@ -51,6 +63,9 @@ public class DefenceFieldManager : BaseDungeonController
 
         _isStarted = true;
         Debug.Log("방어 목표 상호작용 감지: 디펜스 시퀀스를 시작합니다.");
+
+        OnStartField?.Invoke(true);
+
         StartDefenceSequence().Forget();
     }
 
@@ -59,8 +74,19 @@ public class DefenceFieldManager : BaseDungeonController
         _isFailed = true;
         Debug.Log("방어 목표가 파괴되어 디펜스 필드가 실패 처리되었습니다.");
 
-        OnFailField?.Invoke();
-        InvokeFailed(DungeonFailReason.NpcDead);
+        FailDungeon();
+    }
+
+    private void HandleCheatClear()
+    {
+        _isCheatClear = true;
+        Debug.Log("[DefenceFieldManager] 치트키 입력: 던전 강제 클리어 예약");
+    }
+
+    private void HandleCheatFail()
+    {
+        _isCheatFail = true;
+        Debug.Log("[DefenceFieldManager] 치트키 입력: 던전 강제 실패 예약");
     }
 
     private async UniTask StartDefenceSequence()
@@ -71,6 +97,18 @@ public class DefenceFieldManager : BaseDungeonController
 
         for (int i = 0; i < _waveCount; i++)
         {
+            if (_isCheatClear)
+            {
+                ClearDungeon();
+                return;
+            }
+
+            if (_isCheatFail)
+            {
+                FailDungeon();
+                return;
+            }
+
             if (_isFailed || _defenceTarget == null)
             {
                 Debug.Log("목표가 파괴되었습니다. 실패!");
@@ -82,39 +120,30 @@ public class DefenceFieldManager : BaseDungeonController
             SpawnAllDefinedMonsters();
             Debug.Log($"{i + 1} 웨이브 완료");
 
-            float nextWaveDelay = _countdownDuration * 1.5f;
-            Debug.Log($"{i + 2} 웨이브 {(_countdownDuration * 2 )}초뒤 시작");
+            float nextWaveDelay = _countdownDuration;
+            Debug.Log($"{i + 2} 웨이브 {_countdownDuration}초뒤 시작");
+
             await CountdownAsync(nextWaveDelay);
+        }
+
+        if (_isCheatClear)
+        {
+            ClearDungeon();
+            return;
+        }
+
+        if (_isCheatFail)
+        {
+            FailDungeon();
+            return;
         }
 
         if (!_isFailed && _defenceTarget != null)
         {
-
             Debug.Log("모든 웨이브 클리어!");
 
-            DungeonReward reward = new DungeonReward
-            {
-                Gold = 100,
-                ItemIds = new List<string>()
-            };
-
-            OnClearField?.Invoke();
-            InvokeCleared(reward);
+            ClearDungeon();
         }
-    }
-
-    private async UniTask CountdownAsync(float duration)
-    {
-        float remaining = duration;
-
-        while (remaining > 0f)
-        {
-            OnCountdownChanged?.Invoke(remaining);
-            await UniTask.Delay(1000);
-            remaining -= 1f;
-        }
-
-        OnCountdownChanged?.Invoke(0f);
     }
 
     private void SpawnAllDefinedMonsters()
@@ -126,5 +155,51 @@ public class DefenceFieldManager : BaseDungeonController
                 Instantiate(pair._monsterPrefab, pair._spawnPoint.position, pair._spawnPoint.rotation, _monsterGroup);
             }
         }
+    }
+
+    private void ClearDungeon()
+    {
+        DungeonReward reward = new DungeonReward
+        {
+            Gold = 100,
+            ItemIds = new List<string>()
+        };
+
+        OnClearField?.Invoke();
+        InvokeCleared(reward);
+    }
+
+    private void FailDungeon()
+    {
+        OnFailField?.Invoke();
+        InvokeFailed(DungeonFailReason.NpcDead);
+    }
+
+    private async UniTask CountdownAsync(float duration)
+    {
+        float remaining = duration;
+
+        while (remaining > 0f)
+        {
+            if (_isCheatClear)
+            {
+                ClearDungeon();
+                return;
+            }
+
+            if (_isCheatFail)
+            {
+                FailDungeon();
+                return;
+            }
+
+            OnCountdownChanged?.Invoke(remaining);
+
+            await UniTask.Delay(1000);
+
+            remaining -= 1f;
+        }
+
+        OnCountdownChanged?.Invoke(0f);
     }
 }
