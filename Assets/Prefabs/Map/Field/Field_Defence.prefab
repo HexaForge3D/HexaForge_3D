@@ -14045,21 +14045,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DefenceFieldManager
   _spawnPairs:
   - _spawnPoint: {fileID: 3051526789720710940}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 4960571015138840345}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 981414312293757995}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 59176898443711375}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 6896861625254695816}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 1999986071783894522}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 3894310948526421933}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _spawnPoint: {fileID: 7389017838871812992}
-    _monsterPrefab: {fileID: 4414871117303439921, guid: aef9a3e063e740f4d8100584de73ceb4, type: 3}
+    _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   _defenceTarget: {fileID: 148525882093162775}
   _monsterGroup: {fileID: 8360525535724549069}
   _waveCount: 5
