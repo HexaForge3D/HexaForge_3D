@@ -1,41 +1,41 @@
 ﻿[
   {
-    "ID": "Item_IronSword",
+    "ID": "Item_LeatherSword",
     "EquipSlot": "Weapon",
     "AtkBonus": 5,
     "DefBonus": 0,
 	"Rank": 0
   },
   {
-    "ID": "Item_IronHelmet",
+    "ID": "Item_LeatherHelmet",
     "EquipSlot": "Helmet",
     "AtkBonus": 0,
     "DefBonus": 2,
 	"Rank": 0
   },
   {
-    "ID": "Item_IronChestPlate",
+    "ID": "Item_LeatherChestPlate",
     "EquipSlot": "Chest",
     "AtkBonus": 0,
     "DefBonus": 4,
 	"Rank":0
   },
   {
-    "ID": "Item_IronPants",
+    "ID": "Item_LeatherPants",
     "EquipSlot": "Pants",
     "AtkBonus": 0,
     "DefBonus": 3,
 	"Rank": 0
   },
   {
-    "ID": "Item_IronBoots",
+    "ID": "Item_LeatherBoots",
     "EquipSlot": "Boots",
     "AtkBonus": 0,
     "DefBonus": 2,
 	"Rank": 0
   },
   {
-    "ID": "Item_IronGloves",
+    "ID": "Item_LeatherGloves",
     "EquipSlot": "Gloves",
     "AtkBonus": 1,
     "DefBonus": 1,
