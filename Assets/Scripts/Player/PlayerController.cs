@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
         DefenceFieldManager.OnFailField += HandleDefenceEnded;
 
         PlayerLevel.OnLevelUp += HandleLevelUp;
+        MinimapView.OnMoveToPortalRequested += HanldeMoveToPortal;
     }
 
     private void OnDisable()
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour
         DefenceFieldManager.OnFailField -= HandleDefenceEnded;
 
         PlayerLevel.OnLevelUp -= HandleLevelUp;
+
+        MinimapView.OnMoveToPortalRequested -= HanldeMoveToPortal;
     }
 
     private void Update()
@@ -474,5 +477,42 @@ public class PlayerController : MonoBehaviour
 
         _levelUpEffect.SetActive(false);
         _levelUpEffect.SetActive(true);
+    }
+
+    private void HanldeMoveToPortal(Vector3 destination)
+    {
+        if (_playerBattle != null && _playerBattle.IsDead) return;
+
+        if (NavMesh.SamplePosition(destination, out NavMeshHit navHit, 3.0f, NavMesh.AllAreas))
+        {
+            _targetPosition = navHit.position;
+
+            if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
+            {
+                _isAttacking = false;
+                _agent.SetDestination(_targetPosition);
+                _agent.isStopped = false;
+            }
+
+            if (_spotPoint != null)
+            {
+                _spotPoint.position = _targetPosition + Vector3.up * 0.05f;
+                _spotPoint.gameObject.SetActive(true);
+
+                ParticleSystem[] particleSystems = _spotPoint.GetComponentsInChildren<ParticleSystem>(true);
+                foreach (ParticleSystem ps in particleSystems)
+                {
+                    ps.gameObject.SetActive(true);
+                }
+
+                if (particleSystems.Length > 0)
+                {
+                    particleSystems[0].Play(true);
+                }
+            }
+
+            _isMoving = true;
+            _animator.SetBool("isWalking", _isMoving);
+        }
     }
 }

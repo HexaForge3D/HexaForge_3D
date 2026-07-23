@@ -61,7 +61,6 @@ public class PlayerInputSystem : MonoBehaviour
     [SerializeField] private KeyCode _cheatDungeonClearedKey = KeyCode.Period; // 성공 치트키
     [SerializeField] private KeyCode _cheatDungeonFaildKey = KeyCode.Comma; // 실패 치트키
 
-
     private PlayerController _playerController;
 
     public static event Action OnSkill1;
@@ -107,153 +106,157 @@ public class PlayerInputSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_playerStop))
+
+        if (Input.GetKeyDown(_systemKey))
+        {
+            OnSystem?.Invoke();
+            return;
+        }
+
+        bool isGameMenuOpen = UIManager.Instance != null && UIManager.Instance.IsActiveUI(UIType.GameMenuPopup);
+
+        if (Input.GetKeyDown(_playerStop) && (isGameMenuOpen == false))
         {
             _playerController.MoveStop();
         }
 
-        if (Input.GetKeyDown(_skillKey1))
+        if (Input.GetKeyDown(_skillKey1) && (isGameMenuOpen == false))
         {
             OnSkill1?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey2))
+        if (Input.GetKeyDown(_skillKey2) && (isGameMenuOpen == false))
         {
             OnSkill2?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey3))
+        if (Input.GetKeyDown(_skillKey3) && (isGameMenuOpen == false))
         {
             OnSkill3?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey4))
+        if (Input.GetKeyDown(_skillKey4) && (isGameMenuOpen == false))
         {
             OnSkill4?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey5))
+        if (Input.GetKeyDown(_skillKey5) && (isGameMenuOpen == false))
         {
             Debug.Log("A스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
             OnSkill5?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey6))
+        if (Input.GetKeyDown(_skillKey6) && (isGameMenuOpen == false))
         {
             Debug.Log("S스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
             OnSkill6?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey7))
+        if (Input.GetKeyDown(_skillKey7) && (isGameMenuOpen == false))
         {
             Debug.Log("D스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
             OnSkill7?.Invoke();
         }
 
-        if (Input.GetKeyDown(_skillKey8))
+        if (Input.GetKeyDown(_skillKey8) && (isGameMenuOpen == false))
         {
             Debug.Log("F스킬 발동!");
             // 애니메이션 및, 공격 메서드 추가
             OnSkill8?.Invoke();
         }
 
-        if (Input.GetKeyDown(_evasionKey))
+        if (Input.GetKeyDown(_evasionKey) && (isGameMenuOpen == false))
         {
             Evasion();
         }
 
-        if (Input.GetKeyDown(_skillinfoKey))
+        if (Input.GetKeyDown(_skillinfoKey) && (isGameMenuOpen == false))
         {
             Debug.Log("스킬 정보창 출력");
             OnSkillinfo?.Invoke();
         }
 
-        if (Input.GetKeyDown(_itemKey1))
+        if (Input.GetKeyDown(_itemKey1) && (isGameMenuOpen == false))
         {
             Debug.Log("아이템1 사용");
             // 아이템1 사용 메서드 추가
             OnItem1?.Invoke();
         }
 
-        if (Input.GetKeyDown(_itemKey2))
+        if (Input.GetKeyDown(_itemKey2) && (isGameMenuOpen == false))
         {
             Debug.Log("아이템2 사용");
             // 아이템2 사용 메서드 추가
             OnItem2?.Invoke();
         }
 
-        if (Input.GetKeyDown(_itemKey3))
+        if (Input.GetKeyDown(_itemKey3) && (isGameMenuOpen == false))
         {
             Debug.Log("아이템3 사용");
             // 아이템3 사용 메서드 추가
             OnItem3?.Invoke();
         }
 
-        if (Input.GetKeyDown(_itemKey4))
+        if (Input.GetKeyDown(_itemKey4) && (isGameMenuOpen == false))
         {
             Debug.Log("아이템4 사용");
             // 아이템4 사용 메서드 추가
             OnItem4?.Invoke();
         }
 
-        if (Input.GetKeyDown(_inventoryKey))
+        if (Input.GetKeyDown(_inventoryKey) && (isGameMenuOpen == false))
         {
             OnInventory?.Invoke();
         }
 
-        if (Input.GetKeyDown(_interactionKey))
+        if (Input.GetKeyDown(_interactionKey) && (isGameMenuOpen == false))
         {
             OnInteract?.Invoke();
         }
 
-        if (Input.GetKeyDown(_systemKey))
-        {
-            OnSystem?.Invoke();
-        }
-
-        if (Input.GetKeyDown(_informationKey))
+        if (Input.GetKeyDown(_informationKey) && (isGameMenuOpen == false))
         {
             OnInformation?.Invoke();
         }
 
-        if (Input.GetKeyDown(_mapKey))
+        if (Input.GetKeyDown(_mapKey) && (isGameMenuOpen == false))
         {
             Debug.Log("Map을 열었습니다.");
             // MapUi 출력 => 없을 수 있으므로 지워도 될 듯
             OnMap?.Invoke();
         }
 
-        if (Input.GetKeyDown(_expTestKey))
+        if (Input.GetKeyDown(_expTestKey) && (isGameMenuOpen == false))
         {
             OnExpTest?.Invoke();
         }
 
         // 장비창 키
-        if (Input.GetKeyDown(_equipMentKey))
+        if (Input.GetKeyDown(_equipMentKey) && (isGameMenuOpen == false))
         {
             OnEquipMent?.Invoke();
         }
 
         // 돈 치트 키
-        if (Input.GetKeyDown(_moneyCheatKey))
+        if (Input.GetKeyDown(_moneyCheatKey) && (isGameMenuOpen == false))
         {
             OnMoneyCheat?.Invoke();
         }
 
-        if (Input.GetKeyDown(_suicideCheatKey))
+        if (Input.GetKeyDown(_suicideCheatKey) && (isGameMenuOpen == false))
         {
             OnSuicideCheat?.Invoke();
         }
 
-        if (Input.GetKeyDown(_cheatDungeonClearedKey))
+        if (Input.GetKeyDown(_cheatDungeonClearedKey) && (isGameMenuOpen == false))
         {
             OnCheatDungeonCleared?.Invoke();
         }
 
-        if (Input.GetKeyDown(_cheatDungeonFaildKey))
+        if (Input.GetKeyDown(_cheatDungeonFaildKey) && (isGameMenuOpen == false))
         {
             OnCheatDungeonFailed?.Invoke();
         }

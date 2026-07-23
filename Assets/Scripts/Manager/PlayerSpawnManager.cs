@@ -8,10 +8,17 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
     [SerializeField] private Transform SpawnPoint;
 
     private GameObject _currentPlayer;
-
+    private bool _isSpawnPlayer = false;
     public async UniTask<GameObject> SpawnPlayerAsync(PlayerData data, string prefabAddress)
     {
         DeSpawnPlayer();
+
+        if (_isSpawnPlayer)
+        {
+            Debug.LogWarning("[PlayerSpawnManager] 이미 플레이어가 생성 중이거나 존재합니다.");
+            return _currentPlayer;
+        }
+        _isSpawnPlayer = true;
 
         GameObject prefab = await Addressables.LoadAssetAsync<GameObject>(prefabAddress).ToUniTask();
 
