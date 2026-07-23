@@ -13,7 +13,7 @@ public class HuntingAreaSelectView : BaseOverLayUI
     [SerializeField] private Button Button_Teleport;
 
     private HuntingAreaSelectViewModel _viewModel;
-    private readonly List<GameObject> _spawnListItems = new List<GameObject>();
+    private readonly List<HuntingAreaListItemView> _spawnListItems = new List<HuntingAreaListItemView>();
 
     public void BindViewModel(HuntingAreaSelectViewModel viewModel)
     {
@@ -31,6 +31,8 @@ public class HuntingAreaSelectView : BaseOverLayUI
         ClearAreaList();
 
         List<HuntingAreaData> areaList = _viewModel.GetAreaList();
+        HuntingAreaListItemView firstItem = null;
+        HuntingAreaData firstData = null;
 
         foreach (HuntingAreaData data in areaList)
         {
@@ -38,23 +40,39 @@ public class HuntingAreaSelectView : BaseOverLayUI
             HuntingAreaListItemView itemView = itemObject.GetComponent<HuntingAreaListItemView>();
             itemView.Setup(data, OnAreaItemClicked);
 
-            _spawnListItems.Add(itemObject);
+            if (firstItem == null)
+            {
+                firstItem = itemView;
+                firstData = data;
+            }
+
+            _spawnListItems.Add(itemView);
+        }
+
+        if (firstItem != null)
+        {
+            OnAreaItemClicked(firstData, firstItem);
         }
     }
 
     private void ClearAreaList()
     {
-        foreach (GameObject item in _spawnListItems)
+        foreach (HuntingAreaListItemView item in _spawnListItems)
         {
-            Destroy(item);
+            Destroy(item.gameObject);
         }
 
         _spawnListItems.Clear();
     }
 
-    private void OnAreaItemClicked(HuntingAreaData data)
+    private void OnAreaItemClicked(HuntingAreaData data, HuntingAreaListItemView clickedItem)
     {
         _viewModel.SelectArea(data);
+
+        foreach (HuntingAreaListItemView item in _spawnListItems)
+        {
+            item.SetSelected(item == clickedItem);
+        }
     }
 
     private void OnAreaSelected(HuntingAreaData data)
