@@ -34,6 +34,13 @@ public class DefenceFieldManager : BaseDungeonController
     private bool _isCheatClear = false;
     private bool _isCheatFail = false;
 
+    public static DefenceFieldManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();
