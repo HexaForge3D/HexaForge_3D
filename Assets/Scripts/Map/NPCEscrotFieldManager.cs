@@ -8,9 +8,9 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     public static event Action OnClearField;
     public static event Action OnFailField;
+    public static event Action OnStartField;
 
     private bool _isFailed = false;
-    private bool _isStarted = false;
 
     private bool _isCheatClear = false;
     private bool _isCheatFail = false;
@@ -33,6 +33,11 @@ public class NPCEscortFieldManager : BaseDungeonController
 
         PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
         PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
+    }
+
+    private void Start()
+    {
+        OnStartField?.Invoke();
     }
 
     private void HandleCheatClear()

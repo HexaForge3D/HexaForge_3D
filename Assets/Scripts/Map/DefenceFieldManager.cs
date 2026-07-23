@@ -24,7 +24,7 @@ public class DefenceFieldManager : BaseDungeonController
 
     public static event Action<int, int> OnWaveChanged;
     public static event Action<float> OnCountdownChanged;
-    public static event Action<bool> OnStartField;
+    public static event Action OnStartField;
 
     private bool _isFailed = false;
     private bool _isStarted = false;
@@ -64,7 +64,7 @@ public class DefenceFieldManager : BaseDungeonController
         _isStarted = true;
         Debug.Log("방어 목표 상호작용 감지: 디펜스 시퀀스를 시작합니다.");
 
-        OnStartField?.Invoke(true);
+        OnStartField?.Invoke();
 
         StartDefenceSequence().Forget();
     }
