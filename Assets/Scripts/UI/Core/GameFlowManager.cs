@@ -550,6 +550,9 @@ public class GameFlowManager
         view.OnSkillButtonClicked -= OnSkillTreeKeyPressed;
         view.OnSkillButtonClicked += OnSkillTreeKeyPressed; 
 
+        view.OnMinimapButtonClicked -= OnMinimapKeyPressed;
+        view.OnMinimapButtonClicked += OnMinimapKeyPressed;
+
         PlayerInputSystem.OnInformation += OnInformationKeyPressed;
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;

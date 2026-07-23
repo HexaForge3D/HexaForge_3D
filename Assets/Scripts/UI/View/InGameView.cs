@@ -22,6 +22,7 @@ public class InGameView : BaseUI
     [SerializeField] private Button Button_Skill;
     [SerializeField] private Button Button_Inventory;
     [SerializeField] private Button Button_CharacterInfo;
+    [SerializeField] private Button Button_Minimap;
 
     [SerializeField] private GameObject Panel_MonsterCount;
     [SerializeField] private TMP_Text Text_MonsterCount;
@@ -36,6 +37,7 @@ public class InGameView : BaseUI
     public Action OnSkillButtonClicked;
     public Action OnInventoryButtonClicked;
     public Action OnEquipmentButtonClicked;
+    public Action OnMinimapButtonClicked;
 
     private static readonly string[] SkillKeyLabels = { "Q", "W", "E", "R", "A", "S", "D", "F" };
 
@@ -66,6 +68,9 @@ public class InGameView : BaseUI
 
         Button_Equipment.onClick.RemoveListener(OnClickEquipment);
         Button_Equipment.onClick.AddListener(OnClickEquipment);
+
+        Button_Minimap.onClick.RemoveListener(OnClickMinimap);
+        Button_Minimap.onClick.AddListener(OnClickMinimap);
 
         _viewModel.GetInitialHpMp(out int currentHp, out int maxHp, out int currentMp, out int  maxMp);
 
@@ -172,6 +177,11 @@ public class InGameView : BaseUI
     private void OnClickEquipment()
     {
         OnEquipmentButtonClicked?.Invoke(); 
+    }
+
+    private void OnClickMinimap()
+    {
+        OnMinimapButtonClicked?.Invoke();
     }
 
     public void SetMonsterCount(int current, int total)
