@@ -153,6 +153,11 @@ public class InGameView : BaseUI
     {
         BuildSkillSlots();
     }
+
+    public void ResetEvasionSlot()
+    {
+        EvasionSlotView.gameObject.SetActive(false);
+    }
     
     public void StartEvasionCoolDown(float duration)
     {

@@ -534,6 +534,8 @@ public class GameFlowManager
 
         InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
 
+        view.ResetEvasionSlot();
+
         _inGameViewModel = new InGameViewModel(_currentSlotId);
 
         view.BindViewModel(_inGameViewModel);
