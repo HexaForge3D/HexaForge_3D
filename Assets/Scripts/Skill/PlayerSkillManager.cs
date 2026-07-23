@@ -124,6 +124,11 @@ public class PlayerSkillManager : MonoBehaviour
                 spawnedSkill = Instantiate(prefabSkill, skillLocation.position, transform.rotation, transform);
             }
 
+            if (!string.IsNullOrEmpty(_currentCastingSkill.SFXName))
+            {
+                SoundManager.Instance.PlaySFXSound(_currentCastingSkill.SFXName);
+            }
+
             _currentSpawnedSkill = spawnedSkill;
 
             SkillHitbox hitbox = spawnedSkill.GetComponent<SkillHitbox>();
