@@ -20,8 +20,10 @@ public class SkillUtil : MonoBehaviour
     public static event Action<string, float> OnSkillCoolTimeFail;
     // 마나가 부족할 때
     public static event Action<string> OnLackMana;
-    //UI에서 스킬 데이터가 변경되었을 때 UI를 갱신하기 위해서 이벤트 발생
+    // UI에서 스킬 데이터가 변경되었을 때 UI를 갱신하기 위해서 이벤트 발생
     public event Action OnSkillDataUpdated;
+    // 쿨타임이 초기화되었다는 것을 이벤트로 발생
+    public static event Action OnSkillCoolTimeReset;
 
     private void Awake()
     {
@@ -221,5 +223,12 @@ public class SkillUtil : MonoBehaviour
 
         SaveManager.Instance.SaveCurrentState();
         Debug.Log($"<color=cyan>[SkillUtil] {skillData.Name} 발동! (Lv.{currentLevel})</color> 데미지: {calcDamage}, 남은 마나: {playerData.Mp}");
+    }
+
+    public void ResetAllSkillCoolTime()
+    {
+        _skillCoolTime.Clear();
+        OnSkillCoolTimeReset?.Invoke();
+        Debug.Log("모든 스킬의 쿨타임이 초기화되었습니다");
     }
 }
