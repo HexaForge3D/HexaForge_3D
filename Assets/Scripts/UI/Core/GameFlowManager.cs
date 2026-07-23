@@ -590,6 +590,14 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
+        bool isRequiredLevel = MapManager.Instance.CheckRequiredLevelForDungeon(mapId);
+
+        if (isRequiredLevel == false)
+        {
+            //[TODO] 레벨부족 메시지 띄우기
+            return;
+        }
+
         await MapManager.Instance.ChangeMapAsync(mapId);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
 

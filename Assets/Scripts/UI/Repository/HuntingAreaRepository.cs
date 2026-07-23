@@ -23,6 +23,6 @@ public class HuntingAreaRepository
 
     private HuntingAreaData ConvertToHuntingAreaData(HuntingAreaTableData tableData)
     {
-        return new HuntingAreaData(tableData.ID, tableData.Name, tableData.Description, tableData.ImageAddress, tableData.MapName, tableData.MapType, tableData.PrefabPath);
+        return new HuntingAreaData(tableData.ID, tableData.Name, tableData.Description, tableData.ImageAddress, tableData.MapName, tableData.MapType, tableData.PrefabPath, tableData.RequiredLevel);
     }
 }
