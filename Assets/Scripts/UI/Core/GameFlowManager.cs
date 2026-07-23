@@ -623,7 +623,7 @@ public class GameFlowManager
     {
         HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
-        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
+        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
 
         view.BindViewModel(viewModel);
