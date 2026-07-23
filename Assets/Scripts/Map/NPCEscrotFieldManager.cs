@@ -8,7 +8,7 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     public static event Action OnClearField;
     public static event Action OnFailField;
-    public static event Action OnStartField;
+    public static event Action<string> OnStartField;
 
     private bool _isFailed = false;
 
@@ -37,7 +37,7 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     private void Start()
     {
-        OnStartField?.Invoke();
+        OnStartField?.Invoke("NPCEscortBGM");
     }
 
     private void HandleCheatClear()

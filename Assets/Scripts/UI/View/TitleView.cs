@@ -7,6 +7,13 @@ public class TitleView : BaseUI
 
     private TitleViewModel _viewModel;
 
+    private void Start()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBGMSound("TitleBGM");
+        }
+    }
     public void BindViewModel(TitleViewModel viewModel)
     {
         _viewModel = viewModel;

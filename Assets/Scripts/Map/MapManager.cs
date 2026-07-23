@@ -25,6 +25,8 @@ public class MapManager : MonoBehaviour
 
     private Dictionary<string, Transform> _spawnPointMap;
 
+    public static event System.Action<string> OnStartField;
+
 
     private void Awake()
     {
@@ -102,6 +104,8 @@ public class MapManager : MonoBehaviour
         }
 
         WarpPlayerToCurrentPortal(mapData);
+        
+        OnStartField?.Invoke("VillageBGM");
 
         Debug.Log($"맵이 {mapData.Name}(으)로 변경되었습니다.");
     }

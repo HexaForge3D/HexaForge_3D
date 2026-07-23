@@ -11,7 +11,7 @@ public class RoomFieldManager : BaseDungeonController
     public static event Action OnClearField;
     public static event Action OnFailField;
     public static event Action<int, int> OnCurrentMonsterCountChanged;
-    public static event Action OnStartField;
+    public static event Action<string> OnStartField;
 
     private List<MonsterHealth> _activeMonsters = new List<MonsterHealth>();
     private int _totalMonsterCount = 0;
@@ -42,7 +42,7 @@ public class RoomFieldManager : BaseDungeonController
     private void Start()
     {
         InitializeRoomMonsters();
-        OnStartField?.Invoke();
+        OnStartField?.Invoke("MazeBGM");
     }
 
     private void InitializeRoomMonsters()
