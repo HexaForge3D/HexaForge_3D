@@ -5,6 +5,7 @@ using System;
 public class NPCEscortFieldManager : BaseDungeonController
 {
     [SerializeField] private NPCPatrolController _npcPatrolController;
+    [SerializeField] public GameObject _itemGroup;
 
     public static event Action OnClearField;
     public static event Action OnFailField;
@@ -14,6 +15,13 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     private bool _isCheatClear = false;
     private bool _isCheatFail = false;
+
+    public static NPCEscortFieldManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     protected override void OnEnable()
     {

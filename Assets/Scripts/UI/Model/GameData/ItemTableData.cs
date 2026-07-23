@@ -17,4 +17,5 @@ public class ItemTableData : GameDataBase
     public int MaxStack;
     public string UsageType;
     public int Price;
+    public string UseSFXName;
 }

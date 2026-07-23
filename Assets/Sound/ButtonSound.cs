@@ -6,8 +6,7 @@ public enum ButtonSoundType
 {
     None,
     Click,
-    Buy,
-    Sell
+    Buy
 }
 [RequireComponent(typeof(Button))]
 public class ButtonSound : MonoBehaviour
@@ -34,13 +33,10 @@ public class ButtonSound : MonoBehaviour
         switch (_soundType)
         {
             case ButtonSoundType.Click:
-                SoundManager.Instance.PlayUISound("ClickSound");
+                SoundManager.Instance.PlayUISound("Click_Sound");
                 break;
             case ButtonSoundType.Buy:
-                SoundManager.Instance.PlayUISound("ItemBuy");
-                break;
-            case ButtonSoundType.Sell:
-                SoundManager.Instance.PlayUISound("ItemSell");
+                SoundManager.Instance.PlayUISound("Item_Buy_Sound");
                 break;
             case ButtonSoundType.None:
             default:

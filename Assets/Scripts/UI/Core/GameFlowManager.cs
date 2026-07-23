@@ -83,12 +83,12 @@ public class GameFlowManager
     private void OnDeleteRequested(string slotId)
     {
         _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed).Forget();
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed,"Click_Sound").Forget();
     }
 
     private void OnQuitGameRequested()
     {
-        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed,"Click_Sound").Forget();
     }
 
     private void OnInventorySellRequested(InventoryItemData data, int count)
@@ -99,7 +99,7 @@ public class GameFlowManager
         int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
         string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
 
-        ShowConfirmAsync(message, OnSellConfirmed).Forget();
+        ShowConfirmAsync(message, OnSellConfirmed,"Item_Buy_Sound").Forget();
     }
 
     private void OnCreateCharacterRequested(string slotId)
@@ -186,31 +186,25 @@ public class GameFlowManager
             HideDungeonInfoIfExists();
 
             _pendingReturnPortal = portal;
-            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed).Forget();
+            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed,"Click_Sound").Forget();
             return;
         }
 
         if (portal.PortalType == PortalType.DungeonClear)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, PortalType.DungeonStart, true).Forget();
             return;
         }
 
         if (portal.PortalType == PortalType.Village)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, portal.PortalType, true).Forget();
             return;
-        }
-
-        if (portal.PortalType == PortalType.FakePortal)
-        {
-            var targetPortal = PortalManager.Instance.GetPortal(portal.ParentMapName, PortalType.DungeonStart);
-            MapManager.Instance.ChangeMapAsync(targetPortal.TargetMapId, PortalType.DungeonStart).Forget();
         }
 
         if (string.IsNullOrEmpty(portal.TargetMapId) == false)
         {
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, portal.PortalType).Forget();
+            ChangeMapWithLoadingAsync(portal.TargetMapId, portal.PortalType, false).Forget();
         }
 
         else
@@ -349,6 +343,8 @@ public class GameFlowManager
 
     private void OnEscapeKeyPressed()
     {
+        if (UIManager.Instance.IsActiveUI(UIType.DungeonClearPopup) || UIManager.Instance.IsActiveUI(UIType.DungeonFailPopup)) return;
+
         if (UIManager.Instance.HasActivePopup())
         {
             UIManager.Instance.CloseAllPopups();
@@ -463,7 +459,7 @@ public class GameFlowManager
     {
         if (_pendingReturnPortal == null) return;
 
-        MapManager.Instance.ChangeMapAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType).Forget();
+        ChangeMapWithLoadingAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType, true).Forget();
         _pendingReturnPortal = null;
     }
 
@@ -590,7 +586,15 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync(mapId);
+        bool isRequiredLevel = MapManager.Instance.CheckRequiredLevelForDungeon(mapId);
+
+        if (isRequiredLevel == false)
+        {
+            //[TODO] 레벨부족 메시지 띄우기
+            return;
+        }
+
+        await ChangeMapWithLoadingAsync(mapId, PortalType.Village, true);
         UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
@@ -601,7 +605,7 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync("area_village");
+        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
         playerBattle?.Revive();
@@ -619,7 +623,7 @@ public class GameFlowManager
     {
         HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
-        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
+        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
 
         view.BindViewModel(viewModel);
@@ -644,10 +648,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowConfirmAsync(string message, Action onConfirmed)
+    private async UniTask ShowConfirmAsync(string message, Action onConfirmed,string confirmUISoundName)
     {
         ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
-        ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed);
+        ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed, confirmUISoundName);
         view.BindViewModel(viewModel);
     }
 
@@ -740,7 +744,7 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await MapManager.Instance.ChangeMapAsync("area_village");
+        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
 
@@ -753,6 +757,20 @@ public class GameFlowManager
         }
 
         RefreshGoldUI();
+    }
+
+    private async UniTask ChangeMapWithLoadingAsync(string mapId, PortalType entryPortalType, bool useFullScreenLoading)
+    {
+        UniTask loadingTask = UIManager.Instance.ShowLoadingAsync(useFullScreenLoading);
+        UniTask minDisplayTask = UniTask.Delay(500);
+
+        await loadingTask;
+
+        UniTask changeMapTask = MapManager.Instance.ChangeMapAsync(mapId, entryPortalType);
+
+        await UniTask.WhenAll(changeMapTask, minDisplayTask);
+
+        UIManager.Instance.HideLoading();
     }
 
 

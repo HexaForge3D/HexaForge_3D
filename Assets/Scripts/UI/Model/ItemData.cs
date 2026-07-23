@@ -9,8 +9,9 @@ public class ItemData
     public int MaxStack { get; private set; }
     public ItemUsageType UsageType { get; private set; }
     public int Price { get; private set; }
+    public string UseSFXName {  get; private set; }
 
-    public ItemData(string id, string name, string description, string iconAddress, int maxStack, ItemUsageType usageType, int price)
+    public ItemData(string id, string name, string description, string iconAddress, int maxStack, ItemUsageType usageType, int price, string useSFXName)
     {
         Id = id;
         Name = name;
@@ -19,5 +20,6 @@ public class ItemData
         MaxStack = maxStack;
         UsageType = usageType;
         Price = price;
+        UseSFXName = useSFXName;
     }
 }

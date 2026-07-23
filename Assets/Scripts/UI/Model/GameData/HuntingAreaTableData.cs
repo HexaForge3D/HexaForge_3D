@@ -9,4 +9,5 @@ public class HuntingAreaTableData : GameDataBase
     public string MapName;
     public string MapType;
     public string PrefabPath;
+    public int RequiredLevel;
 }

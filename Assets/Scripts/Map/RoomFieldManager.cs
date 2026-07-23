@@ -7,6 +7,8 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 public class RoomFieldManager : BaseDungeonController
 { 
     [SerializeField] private Transform _monsterGroupParent;
+    [SerializeField] public GameObject _itemGroup;
+
 
     public static event Action OnClearField;
     public static event Action OnFailField;
@@ -21,6 +23,13 @@ public class RoomFieldManager : BaseDungeonController
 
     private bool _isCheatClear = false;
     private bool _isCheatFail = false;
+
+    public static RoomFieldManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     protected override void OnEnable()
     {

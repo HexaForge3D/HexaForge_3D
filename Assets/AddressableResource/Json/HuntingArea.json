@@ -6,7 +6,8 @@
     "ImageAddress": "",
     "MapName": "NPCEscort",
 	"MapType": "Dungeon",
-	"PrefabPath": "Map_NPCEscort"
+	"PrefabPath": "Map_NPCEscort",
+	"RequiredLevel": 0
   },
   {
     "ID": "area_roommaze",
@@ -15,7 +16,8 @@
     "ImageAddress": "",
     "MapName": "Maze",
 	"MapType": "Dungeon",
-	"PrefabPath": "Map_RoomMaze"
+	"PrefabPath": "Map_RoomMaze",
+	"RequiredLevel": 10
   },
   {
     "ID": "area_defence",
@@ -24,7 +26,8 @@
     "ImageAddress": "",
     "MapName": "Defence",
 	"MapType": "Dungeon",
-	"PrefabPath": "Map_Defence"
+	"PrefabPath": "Map_Defence",
+	"RequiredLevel": 20
   },
   {
     "ID": "area_bossraid",
@@ -33,7 +36,8 @@
     "ImageAddress": "",
     "MapName": "BossRaid",
 	"MapType": "Dungeon",
-	"PrefabPath": "Map_BossRaid"
+	"PrefabPath": "Map_BossRaid",
+	"RequiredLevel": 40
   },
   {
     "ID": "area_village",

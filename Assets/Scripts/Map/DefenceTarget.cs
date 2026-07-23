@@ -7,6 +7,7 @@ public class DefenceTarget : MonoBehaviour
     private int _currentHp;
     private bool _isDestroyed = false;
     private bool _isPlayerInCollider = false;
+    private bool _hasRequestedStart = false;
 
     public static event Action OnTargetDestroyed;
     public static event Action OnDefenceStartRequested;
@@ -47,11 +48,12 @@ public class DefenceTarget : MonoBehaviour
 
     private void HandleInteraction()
     {
-        if (!_isPlayerInCollider || _isDestroyed)
+        if (!_isPlayerInCollider || _isDestroyed || _hasRequestedStart)
         {
             return;
         }
 
+        _hasRequestedStart = true;
         Debug.Log("<color=green>[방어 목표 상호작용]</color> 디펜스 시작 요청을 보냅니다.");
         OnDefenceStartRequested?.Invoke();
     }

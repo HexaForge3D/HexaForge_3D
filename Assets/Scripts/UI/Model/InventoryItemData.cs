@@ -10,6 +10,7 @@ public class InventoryItemData
     public ItemUsageType UsageType { get; private set; }
     public int Price { get; private set; }
     public int Count { get; private set; }
+    public string UseSFXName { get; private set; }
 
     public InventoryItemData(ItemData item, int count)
     {
@@ -21,5 +22,6 @@ public class InventoryItemData
         UsageType = item.UsageType;
         Price = item.Price;
         Count = count;
+        UseSFXName = item.UseSFXName;
     }
 }

@@ -7,8 +7,9 @@
     public string MapName { get; private set; }
     public string MapType { get; private set; }
     public string PrefabPath { get; private set; }
+    public int RequiredLevel { get; private set; }
 
-    public HuntingAreaData(string id, string name, string description, string imageAddress, string mapName, string mapType, string prefabPath)
+    public HuntingAreaData(string id, string name, string description, string imageAddress, string mapName, string mapType, string prefabPath, int requiredLevel)
     {
         Id = id;
         Name = name;
@@ -17,5 +18,6 @@
         MapName = mapName;
         MapType = mapType;
         PrefabPath = prefabPath;
+        RequiredLevel = requiredLevel;
     }
 }
