@@ -19,6 +19,8 @@ public class DefenceFieldManager : BaseDungeonController
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
+    [SerializeField]public GameObject _itemGroup;
+
     public static event Action OnClearField;
     public static event Action OnFailField;
 

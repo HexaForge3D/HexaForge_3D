@@ -19487,6 +19487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomFieldManager
   _monsterGroupParent: {fileID: 7842039013272493480}
+  _itemGroup: {fileID: 3692919251726966161}
 --- !u!1 &6347817245297324185
 GameObject:
   m_ObjectHideFlags: 0

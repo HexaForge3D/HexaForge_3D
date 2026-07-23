@@ -7,6 +7,8 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 public class RoomFieldManager : BaseDungeonController
 { 
     [SerializeField] private Transform _monsterGroupParent;
+    [SerializeField] public GameObject _itemGroup;
+
 
     public static event Action OnClearField;
     public static event Action OnFailField;

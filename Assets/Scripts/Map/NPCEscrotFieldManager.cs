@@ -5,6 +5,7 @@ using System;
 public class NPCEscortFieldManager : BaseDungeonController
 {
     [SerializeField] private NPCPatrolController _npcPatrolController;
+    [SerializeField] public GameObject _itemGroup;
 
     public static event Action OnClearField;
     public static event Action OnFailField;

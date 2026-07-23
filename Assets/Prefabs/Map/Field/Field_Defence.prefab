@@ -14096,6 +14096,7 @@ MonoBehaviour:
   _monsterGroup: {fileID: 8360525535724549069}
   _waveCount: 5
   _countdownDuration: 20
+  _itemGroup: {fileID: 1057827679499765391}
 --- !u!1 &3303121894424712445
 GameObject:
   m_ObjectHideFlags: 0
