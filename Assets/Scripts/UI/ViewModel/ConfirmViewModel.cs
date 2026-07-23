@@ -6,10 +6,13 @@ public class ConfirmViewModel
 
     public string Message { get; }
 
-    public ConfirmViewModel(string message, Action onConfirmed)
+    public string ConfirmUISoundName { get; }
+    public ConfirmViewModel(string message, Action onConfirmed, string confirmUISoundName)
     {
         Message = message;
         _onConfirmed = onConfirmed;
+
+        ConfirmUISoundName = confirmUISoundName;
     }
 
     public void RequestConfirm()

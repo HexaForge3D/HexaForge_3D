@@ -8,6 +8,7 @@ public class SkillTableData : GameDataBase
     public string Key;
     public int RequiredLevel;
     public string IconAddress;
+    public string SFXName; // 스킬 시전 시 재생할 사운드 이름
     public float CoolDown;
     public int Damage;
     public int ManaCost;
