@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
@@ -24,6 +25,22 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnEnable()
+    {
+        DefenceFieldManager.OnStartField += PlayBGMSound;
+        NPCEscortFieldManager.OnStartField += PlayBGMSound;
+        RoomFieldManager.OnStartField += PlayBGMSound;
+        MapManager.OnStartField += PlayBGMSound;
+    }
+
+    private void OnDisable()
+    {
+        DefenceFieldManager.OnStartField -= PlayBGMSound;
+        NPCEscortFieldManager.OnStartField -= PlayBGMSound;
+        RoomFieldManager.OnStartField -= PlayBGMSound;
+        MapManager.OnStartField -= PlayBGMSound;
     }
     public void PlayBGM(AudioClip bgmclip, float volume = 1f)
     {
