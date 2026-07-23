@@ -3,13 +3,15 @@ using UnityEngine.AI;
 using System;
 using System.Collections.Generic;
 
-public class NPCPointPatrol : BaseDungeonController
+public class NPCPatrolController : MonoBehaviour
 {
     [SerializeField] private Transform[] _waypoints;
     [SerializeField] private float _arrivalThreshold = 1f;
     [SerializeField] private float _detectRadius = 10f;
     [SerializeField] private string _monsterTag = "Monster";
     [SerializeField] private string _playerTag = "Player";
+
+    public static event Action OnPatrolFinished;
 
     private NavMeshAgent _navMeshAgent;
     private int _currentIndex = 0;
@@ -26,15 +28,13 @@ public class NPCPointPatrol : BaseDungeonController
         }
     }
 
-    protected override void OnEnable()
+    private void OnEnable()
     {
-        base.OnEnable();
         PlayerInputSystem.OnInteract += HandleInteraction;
     }
 
-    protected override void OnDisable()
+    private void OnDisable()
     {
-        base.OnDisable();
         PlayerInputSystem.OnInteract -= HandleInteraction;
     }
 
@@ -76,6 +76,11 @@ public class NPCPointPatrol : BaseDungeonController
 
     private void StartPatrol()
     {
+        if (_isStarted)
+        {
+            return;
+        }
+
         _isStarted = true;
         if (_navMeshAgent != null)
         {
@@ -125,13 +130,7 @@ public class NPCPointPatrol : BaseDungeonController
                 _navMeshAgent.isStopped = true;
                 Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
 
-                DungeonReward reward = new DungeonReward
-                {
-                    Gold = 100,
-                    ItemIds = new List<string>()
-                };
-                
-                InvokeCleared(reward);
+                OnPatrolFinished?.Invoke();
                 return;
             }
 
