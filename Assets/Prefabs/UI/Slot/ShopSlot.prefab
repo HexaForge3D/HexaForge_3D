@@ -902,6 +902,7 @@ GameObject:
   - component: {fileID: 2897145917952114689}
   - component: {fileID: 1969009217583186818}
   - component: {fileID: 211799844760647968}
+  - component: {fileID: 8678057081002248934}
   m_Layer: 5
   m_Name: Button_Buy
   m_TagString: Untagged
@@ -1013,3 +1014,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8678057081002248934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7120969105351732326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bf61479a476d24f85635e0b76d5d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonSound
+  _soundType: 2

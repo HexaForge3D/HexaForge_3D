@@ -163,6 +163,7 @@ public class UIManager : BaseMonoManager<UIManager>
             return;
         }
 
+        TooltipManager.Instance.Hide();
         ui.gameObject.SetActive(false);
         _activeUI.Remove(uiType);
     }

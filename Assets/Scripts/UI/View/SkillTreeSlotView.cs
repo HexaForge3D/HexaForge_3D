@@ -10,6 +10,7 @@ public class SkillTreeSlotView : MonoBehaviour
     [SerializeField] private GameObject Image_LockOverLay;
     [SerializeField] private TMP_Text Text_Level;
     [SerializeField] private TMP_Text Text_RequiredLevel;
+    [SerializeField] private TMP_Text Text_SkillName;
     [SerializeField] private Button Button_Plus;
     [SerializeField] private Button Button_Minus;
     [SerializeField] private TooltipTrigger TooltipTrigger;
@@ -26,6 +27,8 @@ public class SkillTreeSlotView : MonoBehaviour
 
         SpriteLoaderUtil.LoadAsync(Image_Icon, data.IconAddress).Forget();
 
+        Text_SkillName.text = data.Name;
+
         Image_LockOverLay.SetActive(data.IsUnlocked == false);
 
         bool showRequiredLevel = data.IsUnlocked == false;
@@ -33,7 +36,7 @@ public class SkillTreeSlotView : MonoBehaviour
 
         if (showRequiredLevel)
         {
-            Text_RequiredLevel.text = $"Req. Lv {data.RequiredLevel}";
+            Text_RequiredLevel.text = $"Required\nLv {data.RequiredLevel}";
         }
 
         Text_Level.text = $"{data.CurrentLevel}/{data.MaxLevel}";

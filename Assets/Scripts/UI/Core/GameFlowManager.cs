@@ -83,12 +83,12 @@ public class GameFlowManager
     private void OnDeleteRequested(string slotId)
     {
         _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed).Forget();
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed,"Click_Sound").Forget();
     }
 
     private void OnQuitGameRequested()
     {
-        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed).Forget();
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed,"Click_Sound").Forget();
     }
 
     private void OnInventorySellRequested(InventoryItemData data, int count)
@@ -99,7 +99,7 @@ public class GameFlowManager
         int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
         string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
 
-        ShowConfirmAsync(message, OnSellConfirmed).Forget();
+        ShowConfirmAsync(message, OnSellConfirmed,"Item_Buy_Sound").Forget();
     }
 
     private void OnCreateCharacterRequested(string slotId)
@@ -186,7 +186,7 @@ public class GameFlowManager
             HideDungeonInfoIfExists();
 
             _pendingReturnPortal = portal;
-            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed).Forget();
+            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed,"Click_Sound").Forget();
             return;
         }
 
@@ -343,6 +343,8 @@ public class GameFlowManager
 
     private void OnEscapeKeyPressed()
     {
+        if (UIManager.Instance.IsActiveUI(UIType.DungeonClearPopup) || UIManager.Instance.IsActiveUI(UIType.DungeonFailPopup)) return;
+
         if (UIManager.Instance.HasActivePopup())
         {
             UIManager.Instance.CloseAllPopups();
@@ -621,7 +623,7 @@ public class GameFlowManager
     {
         HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
-        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
+        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
 
         view.BindViewModel(viewModel);
@@ -646,10 +648,10 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowConfirmAsync(string message, Action onConfirmed)
+    private async UniTask ShowConfirmAsync(string message, Action onConfirmed,string confirmUISoundName)
     {
         ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
-        ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed);
+        ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed, confirmUISoundName);
         view.BindViewModel(viewModel);
     }
 

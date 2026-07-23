@@ -29,6 +29,10 @@ public class ConfirmView : BaseOverLayUI
 
     private void OnClickConfirm()
     {
+        if (_viewModel !=  null && !string.IsNullOrEmpty(_viewModel.ConfirmUISoundName))
+        {
+            SoundManager.Instance.PlayUISound(_viewModel.ConfirmUISoundName);
+        } 
         _viewModel?.RequestConfirm();
         UIManager.Instance.CloseUI(UIType.ConfirmPopup);
     }
