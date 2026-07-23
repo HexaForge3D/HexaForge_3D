@@ -11,6 +11,7 @@ public class GameFlowManager
 
     private string _pendingSellItemId;
     private int _pendingSellCount;
+    private Portal _pendingReturnPortal;
 
     public async UniTask StartAsync()
     {
@@ -175,13 +176,15 @@ public class GameFlowManager
         {
             if (portal.ParentMapName == "Village")
             {
+                
                 ShowHuntingAreaAsync().Forget();
                 return;
             }
 
             HideDungeonInfoIfExists();
 
-            MapManager.Instance.ChangeMapAsync(portal.TargetMapId, PortalType.DungeonStart).Forget();
+            _pendingReturnPortal = portal;
+            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed).Forget();
             return;
         }
 
@@ -449,6 +452,14 @@ public class GameFlowManager
         }
     }
 
+    private void OnVillageReturnConfirmed()
+    {
+        if (_pendingReturnPortal == null) return;
+
+        MapManager.Instance.ChangeMapAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType).Forget();
+        _pendingReturnPortal = null;
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -682,6 +693,8 @@ public class GameFlowManager
         {
             playerBattle.Revive();
             playerBattle.RestoreFull();
+
+            PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
         }
     }
 
