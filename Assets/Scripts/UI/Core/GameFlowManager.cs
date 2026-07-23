@@ -486,6 +486,15 @@ public class GameFlowManager
         }
     }
 
+    private void RefreshGoldUI()
+    {
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.RefreshGold();
+
+        ShopView shopView = UIManager.Instance.GetUI<ShopView>(UIType.ShopUI);
+        shopView?.RefreshGold();
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -591,6 +600,14 @@ public class GameFlowManager
 
         PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
         playerBattle?.Revive();
+
+        RefreshGoldUI();
+    }
+
+    private void HideDungeonInfoIfExists()
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.HideDungeonInfo();
     }
 
     private async UniTask ShowHuntingAreaAsync()
@@ -729,6 +746,8 @@ public class GameFlowManager
 
             PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
         }
+
+        RefreshGoldUI();
     }
 
 
@@ -785,12 +804,6 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
         ShowDungeonFailAsync(reason).Forget();
-    }
-
-    private void HideDungeonInfoIfExists()
-    {
-        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
-        inGameView?.HideDungeonInfo();
     }
 
 }
