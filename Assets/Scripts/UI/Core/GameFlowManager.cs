@@ -42,6 +42,7 @@ public class GameFlowManager
         NPC.OnNPCInteracted -= OnNpcInterated;
         PlayerLevel.OnLevelUp -= OnPlayerLevelUp;
         PlayerInputSystem.OnEquipMent -= OnEquipmentKeyPressed;
+        PlayerInputSystem.OnMap -= OnMinimapKeyPressed;
         SkillUtil.Instance.OnSkillDataUpdated -= OnSkillDataUpdated;
         SkillUtil.OnSkillCoolTimeStart -= OnSkillCoolTimeStart;
         PlayerBattle.OnPlayerDead -= OnPlayerDead;
@@ -367,6 +368,11 @@ public class GameFlowManager
         ToggleUI(UIType.EquipmentPopup, ShowEquipment);
     }
 
+    private void OnMinimapKeyPressed()
+    {
+        ToggleUI(UIType.MinimapPopup, ShowMinimap);
+    }
+
     private void OnLackMana(string skillId)
     {
         SystemMessageManager.Instance.Show("Not enough mana.");
@@ -519,6 +525,7 @@ public class GameFlowManager
         PlayerInputSystem.OnInventory += OnInventoryKeyPressed;
         PlayerInputSystem.OnSkillinfo += OnSkillTreeKeyPressed;
         PlayerInputSystem.OnEquipMent += OnEquipmentKeyPressed;
+        PlayerInputSystem.OnMap += OnMinimapKeyPressed;
         Portal.OnPortalInteracted += OnPortalInteracted;
         PlayerInputSystem.OnSystem += OnEscapeKeyPressed;
         PlayerBattle.OnHpChanged += OnPlayerHpChanged;
@@ -656,6 +663,11 @@ public class GameFlowManager
         view.BindViewModel(viewModel);
     }
 
+    private async UniTask ShowMinimapAsync()
+    {
+        await UIManager.Instance.OpenUIAsync<MinimapView>(UIType.MinimapPopup);
+    }
+
     private async UniTask ShowDeathAsync()
     {
         DeathView view = await UIManager.Instance.OpenUIAsync<DeathView>(UIType.DeathPopup);
@@ -735,6 +747,11 @@ public class GameFlowManager
     private void ShowEquipment()
     {
         ShowEquipmentAsync().Forget();
+    }
+
+    private void ShowMinimap()
+    {
+        ShowMinimapAsync().Forget();
     }
 
     private void OnDungeonCleared(DungeonReward reward)
