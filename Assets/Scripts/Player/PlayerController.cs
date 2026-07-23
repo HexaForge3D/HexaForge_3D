@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [Header("Evasion Setting")]
     [SerializeField] private float _evasionDistance = 1.5f;
 
+    [Header("LevelUp Effect")]
+    [SerializeField] private GameObject _levelUpEffect;
+
     private Animator _animator;
     private CharacterSaveData _playerData;
     public CharacterSaveData PlayerData => _playerData;
@@ -61,6 +64,11 @@ public class PlayerController : MonoBehaviour
             _spotPoint.gameObject.SetActive(false);
         }
 
+        if (_levelUpEffect != null)
+        {
+            _levelUpEffect.SetActive(false);
+        }
+
         if (_rb != null)
         {
             _rb.isKinematic = true;
@@ -81,6 +89,8 @@ public class PlayerController : MonoBehaviour
         DefenceTarget.OnDefenceStartRequested += HandleDefenceStarted;
         DefenceFieldManager.OnClearField += HandleDefenceEnded;
         DefenceFieldManager.OnFailField += HandleDefenceEnded;
+
+        PlayerLevel.OnLevelUp += HandleLevelUp;
     }
 
     private void OnDisable()
@@ -91,6 +101,8 @@ public class PlayerController : MonoBehaviour
         DefenceTarget.OnDefenceStartRequested -= HandleDefenceStarted;
         DefenceFieldManager.OnClearField -= HandleDefenceEnded;
         DefenceFieldManager.OnFailField -= HandleDefenceEnded;
+
+        PlayerLevel.OnLevelUp -= HandleLevelUp;
     }
 
     private void Update()
@@ -456,4 +468,11 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
+    private void HandleLevelUp()
+    {
+        if (_levelUpEffect == null) return;
+
+        _levelUpEffect.SetActive(false);
+        _levelUpEffect.SetActive(true);
+    }
 }
