@@ -35,7 +35,8 @@ public class ItemRepository
             tableData.IconAddress,
             tableData.MaxStack,
             usageType,
-            tableData.Price
+            tableData.Price,
+            tableData.UseSFXName
         );
     }
 
