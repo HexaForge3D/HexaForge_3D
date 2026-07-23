@@ -133,7 +133,27 @@ public class MonsterHealth : MonoBehaviour
                 ItemTableData randomItem = droppableItemsCache[randomIndex];
                 int randomAmount = UnityEngine.Random.Range(1, 11);
 
-                OnMonsterItem?.Invoke(randomItem, randomAmount);
+                string dropItemPrefabAddress = "DroppedItem";
+
+                SpawnDropItemAsync(dropItemPrefabAddress, randomItem, randomAmount).Forget();
+            }
+        }
+    }
+
+    private async UniTaskVoid SpawnDropItemAsync(string address, ItemTableData item, int amount)
+    {
+        Vector3 spawnPos = transform.position + new Vector3(0f, 0.3f, 0f);
+
+        GameObject dropObj = await ResourceManager.Inst.InstantiateAsync(address, null, true);
+
+        if (dropObj != null)
+        {
+            dropObj.transform.position = spawnPos;
+
+            DroppedItem droppedItem = dropObj.GetComponent<DroppedItem>();
+            if (droppedItem != null)
+            {
+                droppedItem.SetUp(item, amount);
             }
         }
     }

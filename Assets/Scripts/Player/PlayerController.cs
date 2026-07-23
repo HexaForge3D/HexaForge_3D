@@ -145,6 +145,11 @@ public class PlayerController : MonoBehaviour
     public void InitializePlayerData(CharacterSaveData playerData)
     {
         _playerData = playerData;
+
+        if (SkillUtil.Instance != null)
+        {
+            SkillUtil.Instance.ResetAllSkillCoolTime();
+        }
     }
 
     public void OnClickAttack()
