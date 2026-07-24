@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 5902599757116075663}
   - component: {fileID: 6593204276354201254}
   - component: {fileID: 2544235617202497145}
+  - component: {fileID: 3205332479801261261}
   - component: {fileID: 6215523674562784445}
   - component: {fileID: 8646642277259301846}
   - component: {fileID: 1695674800264197086}
@@ -546,6 +547,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e14d0ea47eb96d844a31451644a94b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+--- !u!114 &3205332479801261261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858504871581969533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2684ea503a92a224fba1632b99a427ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFootStep
+  _currentMapTag: Grass
 --- !u!95 &6215523674562784445
 Animator:
   serializedVersion: 7
