@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2502758251938677734}
@@ -56,10 +56,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1655131196211674671}
+  - component: {fileID: 5321379750585244236}
   - component: {fileID: 1533189016009170616}
   - component: {fileID: -3147223898107446844}
   - component: {fileID: 3450089565736012662}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: IronIngot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +84,20 @@ Transform:
   - {fileID: 240267548857261476}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5321379750585244236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3299334060660534633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79bc7e1a7a042cb4f9d998f228cb2c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DroppedItem
+  Text_ItemName: {fileID: 872115731150484851}
+  NameAnchor: {fileID: 6086505151438060759}
 --- !u!54 &1533189016009170616
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -150,7 +165,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4903131487977926130
 GameObject:
