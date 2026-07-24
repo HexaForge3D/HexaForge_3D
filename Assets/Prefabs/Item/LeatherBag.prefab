@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 4623366095418965920}
   - component: {fileID: 2090872292623541214}
   - component: {fileID: -846091482888304853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeatherBag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4014205944271311640
 GameObject:
