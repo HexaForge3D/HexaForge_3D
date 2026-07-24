@@ -19,9 +19,12 @@ public class NPCPatrolController : MonoBehaviour
     private bool _isPlayerInCollider = false;
     private bool _isStarted = false;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponentInChildren<Animator>();
         if (_navMeshAgent != null)
         {
             _navMeshAgent.isStopped = true;
@@ -40,8 +43,9 @@ public class NPCPatrolController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isStarted || _isFinished)
+        if ((_isStarted == false) || _isFinished)
         {
+            SetAnimation(false, false);
             return;
         }
 
@@ -50,10 +54,11 @@ public class NPCPatrolController : MonoBehaviour
 
         if (hasMonster || !hasPlayer)
         {
-            if (_navMeshAgent != null && !_navMeshAgent.isStopped)
+            if (_navMeshAgent != null && (_navMeshAgent.isStopped == false))
             {
                 _navMeshAgent.isStopped = true;
             }
+            SetAnimation(false, true);
             return;
         }
 
@@ -63,12 +68,13 @@ public class NPCPatrolController : MonoBehaviour
             MoveToNextWaypoint();
         }
 
+        SetAnimation(true, false);
         CheckWaypoint();
     }
 
     private void HandleInteraction()
     {
-        if (_isPlayerInCollider && !_isStarted)
+        if (_isPlayerInCollider && (_isStarted == false))
         {
             StartPatrol();
         }
@@ -130,6 +136,8 @@ public class NPCPatrolController : MonoBehaviour
                 _navMeshAgent.isStopped = true;
                 Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
 
+                SetAnimation(false, false);
+
                 OnPatrolFinished?.Invoke();
                 return;
             }
@@ -159,5 +167,14 @@ public class NPCPatrolController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _detectRadius);
+    }
+
+    private void SetAnimation(bool isWalk, bool isScary)
+    {
+        if (_animator != null)
+        {
+            _animator.SetBool("IsWalk", isWalk);
+            _animator.SetBool("IsScary", isScary);
+        }
     }
 }

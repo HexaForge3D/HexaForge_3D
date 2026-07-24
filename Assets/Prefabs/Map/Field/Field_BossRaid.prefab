@@ -20586,6 +20586,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7554c05f096c2324b95ca6d0983bce9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossFieldManager
+  _rewardGold: 100
+  _rewardItems:
+  - ItemId: Item_MithrilHelmet
+    Count: 1
+  - ItemId: Item_SteelGloves
+    Count: 1
   _dummyBossObejct: {fileID: 4355416238702581507}
   _bossSpawnPoint: {fileID: 1522149228449314082}
   _bossPrefab: {fileID: 4414871117303439921, guid: 92782fcbbdcab4f4099ab4632ab6627a, type: 3}

@@ -81,11 +81,7 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = new DungeonReward
-        {
-            Gold = 100,
-            ItemIds = new List<string>()
-        };
+        DungeonReward reward = CreateReward();
 
         OnClearField?.Invoke();
         InvokeCleared(reward);

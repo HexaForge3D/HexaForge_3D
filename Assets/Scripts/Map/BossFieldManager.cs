@@ -265,13 +265,7 @@ public class BossFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = new DungeonReward
-        {
-            Gold = 5000,
-            ItemIds = new List<string>()
-        };
-
-        UnsubscribeBossEvents();
+        DungeonReward reward = CreateReward();
 
         OnClearField?.Invoke();
         InvokeCleared(reward);
