@@ -43,6 +43,22 @@ public class SoundManager : MonoBehaviour
         RoomFieldManager.OnStartField -= PlayBGMSound;
         MapManager.OnStartField -= PlayBGMSound;
     }
+
+    private void Start()
+    {
+        float savedBGM = PlayerPrefs.GetFloat("Saved_BGM_Volume", 1f);
+        float savedSFX = PlayerPrefs.GetFloat("Saved_SFX_Volume", 1f);
+        float savedUI = PlayerPrefs.GetFloat("Saved_UI_Volume", 1f);
+
+        SetBGMVolume(savedBGM);
+        SetSFXVolume(savedSFX);
+        SetUIVolume(savedUI);
+    }
+
+    public void StopBGM()
+    {
+        _bgmSource.Stop();
+    }
     public void PlayBGM(AudioClip bgmclip, float volume = 1f)
     {
         if (_bgmSource.clip == bgmclip) return;
@@ -58,29 +74,28 @@ public class SoundManager : MonoBehaviour
         _uiSource.PlayOneShot(uiclip, volume);
     }
 
-
-
-    public void StopBGM()
-    {
-        _bgmSource.Stop();
-    }
-
     public void SetBGMVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("BGM_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_BGM_Volume", sliderValue);
     }
 
     public void SetSFXVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("SFX_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_SFX_Volume", sliderValue);
     }
 
     public void SetUIVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("UI_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_UI_Volume", sliderValue);
     }
     public void PlayBGMSound(string fileName)
     {
