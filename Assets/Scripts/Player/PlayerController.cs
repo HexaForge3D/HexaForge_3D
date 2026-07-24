@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using TMPro;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using Cysharp.Threading.Tasks;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,9 +25,14 @@ public class PlayerController : MonoBehaviour
     [Header("LevelUp Effect")]
     [SerializeField] private GameObject _levelUpEffect;
 
+    [Header("World Space UI")]
+    [SerializeField] private TMP_Text Text_NickName;
+    [SerializeField] private Transform NicknameAnchor;
+
     private Animator _animator;
     private CharacterSaveData _playerData;
     public CharacterSaveData PlayerData => _playerData;
+    private Camera _mainCamera;
 
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
@@ -49,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        _mainCamera = GameObject.FindGameObjectWithTag("PlayerCamera")?.GetComponent<Camera>();
         _targetPosition = transform.position;
         _animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
@@ -157,6 +164,19 @@ public class PlayerController : MonoBehaviour
         _animator.SetBool("isWalking", _isMoving);
     }
 
+    private void LateUpdate()
+    {
+        if (_mainCamera == null)
+        {
+            _mainCamera = GameObject.FindGameObjectWithTag("PlayerCamera")?.GetComponent<Camera>();
+        }
+
+        if (NicknameAnchor != null && _mainCamera != null)
+        {
+            NicknameAnchor.forward = _mainCamera.transform.forward;
+        }
+    }
+
     public void InitializePlayerData(CharacterSaveData playerData)
     {
         _playerData = playerData;
@@ -164,6 +184,11 @@ public class PlayerController : MonoBehaviour
         if (SkillUtil.Instance != null)
         {
             SkillUtil.Instance.ResetAllSkillCoolTime();
+        }
+
+        if (Text_NickName != null)
+        {
+            Text_NickName.text = playerData.Name;
         }
     }
 
