@@ -794,6 +794,7 @@ public class GameFlowManager
 
     private void ShowInventory()
     {
+        SoundManager.Instance.PlayUISound("Inventory_Open_Sound");
         ShowInventoryAsync().Forget();
     }
 
