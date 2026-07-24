@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
@@ -51,17 +52,18 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Play();
     }
 
-    public void StopBGM()
-    {
-        _bgmSource.Stop();
-    }
-
     public void PlayUI(AudioClip uiclip, float volume = 1f)
     {
         if (uiclip == null) return;
         _uiSource.PlayOneShot(uiclip, volume);
     }
 
+
+
+    public void StopBGM()
+    {
+        _bgmSource.Stop();
+    }
 
     public void SetBGMVolume(float sliderValue)
     {
@@ -104,17 +106,56 @@ public class SoundManager : MonoBehaviour
             Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/UI/");
         }
     }
-
-    public void PlaySFXSound(string fileName)
+    public void PlaySFX(AudioClip sfxclip, float volume = 1f, bool useRandomPitch = false)
+    {
+        if (sfxclip == null) return;
+        {
+            _sfxSource.pitch = useRandomPitch ? Random.Range(0.9f, 1f) : 1f;
+            _sfxSource.PlayOneShot(sfxclip, volume);
+        }
+    }
+    public void PlaySFXSound(string fileName, float volume = 1f, bool useRandomPitch = false)
     {
         AudioClip clip = Resources.Load<AudioClip>($"Sounds/SFX/{fileName}");
         if (clip != null)
         {
-            _sfxSource.PlayOneShot(clip);
+            PlaySFX(clip, volume, useRandomPitch);
         }
         else
         {
             Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/SFX/");
+        }
+    }
+
+    public void PlaySFX(AudioClip clip, Transform targetTransform,float volume = 1f, bool useRandomPitch = false)
+    {
+        if (clip == null) return;
+
+        GameObject tempAudioObj = new GameObject($"TempSFX_{clip.name}");
+        tempAudioObj.transform.position = targetTransform.position;
+        tempAudioObj.transform.SetParent(targetTransform);
+
+        AudioSource tempSource = tempAudioObj.AddComponent<AudioSource>();
+        tempSource.clip = clip;
+        tempSource.volume = volume;
+        tempSource.spatialBlend = 1f;
+        tempSource.pitch = useRandomPitch ? Random.Range(0.9f, 1.1f) : 1f;
+
+        tempSource.Play();
+
+        Destroy( tempAudioObj, clip.length );
+    }
+
+    public void PlaySFXSound(string fileName, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
+    {
+        AudioClip clip = Resources.Load<AudioClip>($"Sound/SFX/{fileName}");
+        if (clip != null)
+        {
+            PlaySFX(clip, targetTransform, volume, useRandomPitch);
+        }
+        else
+        {
+            Debug.LogWarning($"PlaySFX sound: {fileName} = null");
         }
     }
 }
