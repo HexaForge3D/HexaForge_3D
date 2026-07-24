@@ -15,6 +15,7 @@ public class BossFieldManager : BaseDungeonController
 
 
     [Header("보스 설정")]
+    [SerializeField] private GameObject _dummyBossObejct;
     [SerializeField] private Transform _bossSpawnPoint;
     [SerializeField] private GameObject _bossPrefab;
     [SerializeField] private float _countdownDuration = 5f;
@@ -77,6 +78,11 @@ public class BossFieldManager : BaseDungeonController
     {
         OnStartField?.Invoke("BossBGM");
         Debug.Log("<color=cyan>[BossFieldManager] 보스 대기 중... NPC와 상호작용하여 전투를 시작하세요.</color>");
+
+        if (_dummyBossObejct !=  null)
+        {
+            _dummyBossObejct.SetActive(true);
+        }
     }
 
     private void HandleInteractionRequested()
@@ -129,6 +135,11 @@ public class BossFieldManager : BaseDungeonController
         {
             Debug.LogError("[BossFieldManager] 보스 프리팹 또는 스폰 포인트가 설정되지 않았습니다!");
             return;
+        }
+
+        if (_dummyBossObejct != null)
+        {
+            Destroy(_dummyBossObejct);
         }
 
         _spawnedBoss = Instantiate(_bossPrefab, _bossSpawnPoint.position, _bossSpawnPoint.rotation);
