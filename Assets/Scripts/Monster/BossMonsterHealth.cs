@@ -4,13 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
 
-[System.Serializable]
-public class BossMonsterData
-{
-    [Header("Boss Sound Setting")]
-    public string _bossHitSoundName = "BossMonster_TakeDamage_Sound";
-    public string _bossDieSoundName = "BossMonster_Die_Sound";
-}
+
 public class BossMonsterHealth : MonoBehaviour
 {
     [Header("Boss Data")]
@@ -215,5 +209,13 @@ public class BossMonsterHealth : MonoBehaviour
         }
 
         Debug.Log($"{gameObject.name} : 뇌 재부팅 완료! 기억이 지워졌으므로 순찰로 복귀합니다.");
+    }
+
+    [System.Serializable]
+    public class BossMonsterData
+    {
+        [Header("Boss Sound Setting")]
+        public string _bossHitSoundName = "BossMonster_TakeDamage_Sound";
+        public string _bossDieSoundName = "BossMonster_Die_Sound";
     }
 }
