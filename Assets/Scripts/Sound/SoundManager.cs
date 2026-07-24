@@ -171,7 +171,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFXSound(string fileName, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
     {
-        AudioClip clip = Resources.Load<AudioClip>($"Sound/SFX/{fileName}");
+        AudioClip clip = Resources.Load<AudioClip>($"Sounds/SFX/{fileName}");
         if (clip != null)
         {
             PlaySFX(clip, targetTransform, volume, useRandomPitch);
