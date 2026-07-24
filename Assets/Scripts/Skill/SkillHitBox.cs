@@ -24,6 +24,13 @@ public class SkillHitbox : MonoBehaviour
                 // 몬스터에게 데미지를 입힘
                 monster.TakeDamage(_damage);
             }
+
+            BossMonsterHealth bossMonster = other.GetComponent<BossMonsterHealth>();
+            if (bossMonster != null)
+            {
+                // 보스몬스터에게 데미지를 입힘
+                bossMonster.TakeDamage(_damage);
+            }
         }
     }
 }
