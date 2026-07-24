@@ -1,204 +1,224 @@
 ﻿[
-    {
-        "ID": "Item_HealthPotion",
-        "Name": "Health Potion",
-        "Description": "Restores a small amount of HP.",
-        "IconAddress": "Equipment[Consumable_HealthPotion]",
-        "UseSFXName": "Drink_Potion_Sound",
-        "MaxStack": 99,
-        "UsageType": "Consumable",
-        "Price": 20
-    },
-    {
-        "ID": "Item_ManaPotion",
-        "Name": "Mana Potion",
-        "Description": "Restores a small amount of MP.",
-        "IconAddress": "Equipment[Consumable_ManaPotion]",
-        "UseSFXName": "Drink_Potion_Sound",
-        "MaxStack": 99,
-        "UsageType": "Consumable",
-        "Price": 20
-    },
-    {
-        "ID": "Item_IronSword",
-        "Name": "Iron Sword",
-        "Description": "A basic sword forged from iron.",
-        "IconAddress": "Equipment[Equipment_IronSword]",
-        "UseSFXName": "Equipped_Sword_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_LeatherHelmet",
-        "Name": "Leather Helmet",
-        "Description": "Helmet.",
-        "IconAddress": "Equipment[Equipment_LeatherHelmet]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_LeatherChestPlate",
-        "Name": "Leather ChestPlate",
-        "Description": "ChestPlate.",
-        "IconAddress": "Equipment[Equipment_LeatherChestPlate]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_LeatherPants",
-        "Name": "Leather Pants",
-        "Description": "Pants.",
-        "IconAddress": "Equipment[Equipment_LeatherPants]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_LeatherBoots",
-        "Name": "Leather Boots",
-        "Description": "Boots.",
-        "IconAddress": "Equipment[Equipment_LeatherBoots]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_LeatherGloves",
-        "Name": "Leather Gloves",
-        "Description": "Gloves.",
-        "IconAddress": "Equipment[Equipment_LeatherGloves]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 20
-    },
-    {
-        "ID": "Item_SteelSword",
-        "Name": "Steel Sword",
-        "Description": "A liitle Upgrade Sword",
-        "IconAddress": "Equipment[Equipment_SteelSword]",
-        "UseSFXName": "Equipped_Sword_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_SteelHelmet",
-        "Name": "Steel Helmet",
-        "Description": "A liitle Upgrade Helmet",
-        "IconAddress": "Equipment[Equipment_SteelHelmet]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_SteelChestPlate",
-        "Name": "Steel ChestPlate",
-        "Description": "A little Upgrade ChestPlate",
-        "IconAddress": "Equipment[Equipment_SteelChestPlate]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_SteelPants",
-        "Name": "Steel Pants",
-        "Description": "A little Upgrade Pants",
-        "IconAddress": "Equipment[Equipment_SteelPants]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_SteelBoots",
-        "Name": "Steel Boots",
-        "Description": "A little Upgrade Boots",
-        "IconAddress": "Equipment[Equipment_SteelBoots]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_SteelGloves",
-        "Name": "Steel Gloves",
-        "Description": "A little Upgrade Gloves",
-        "IconAddress": "Equipment[Equipment_SteelGloves]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 100
-    },
-    {
-        "ID": "Item_MithrilSword",
-        "Name": "Mithril Sword",
-        "Description": "A High Quality Sword",
-        "IconAddress": "Equipment[Equipment_MithrilSword]",
-        "UseSFXName": "Equipped_Sword_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
-    {
-        "ID": "Item_MithrilHelmet",
-        "Name": "Mithril Helmet",
-        "Description": "A High Quality Helmet",
-        "IconAddress": "Equipment[Equipment_MithrilHelmet]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
-    {
-        "ID": "Item_MithrilChestPlate",
-        "Name": "Mithril ChestPlate",
-        "Description": "A High Quality ChestPlate",
-        "IconAddress": "Equipment[Equipment_MithrilChestPlate]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
-    {
-        "ID": "Item_MithrilPants",
-        "Name": "Mithril Pants",
-        "Description": "A High Quality Pants",
-        "IconAddress": "Equipment[Equipment_MithrilPants]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
-    {
-        "ID": "Item_MithrilBoots",
-        "Name": "Mithril Boots",
-        "Description": "A High Quality Boots",
-        "IconAddress": "Equipment[Equipment_MithrilBoots]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
-    {
-        "ID": "Item_MithrilGloves",
-        "Name": "Mithril Gloves",
-        "Description": "A High Quality Gloves",
-        "IconAddress": "Equipment[Equipment_MithrilGloves]",
-        "UseSFXName": "Equipped_Armor_Sound",
-        "MaxStack": 1,
-        "UsageType": "Equipment",
-        "Price": 500
-    },
+  {
+    "ID": "Item_HealthPotion",
+    "Name": "Health Potion",
+    "Description": "Restores a small amount of HP.",
+    "IconAddress": "Equipment[Consumable_HealthPotion]",
+    "UseSFXName": "Drink_Potion_Sound",
+    "MaxStack": 99,
+    "UsageType": "Consumable",
+    "Price": 20,
+    "DropPrefabAddress": "Item_HealthPotion"
+  },
+  {
+    "ID": "Item_ManaPotion",
+    "Name": "Mana Potion",
+    "Description": "Restores a small amount of MP.",
+    "IconAddress": "Equipment[Consumable_ManaPotion]",
+    "UseSFXName": "Drink_Potion_Sound",
+    "MaxStack": 99,
+    "UsageType": "Consumable",
+    "Price": 20,
+    "DropPrefabAddress": "Item_ManaPotion"
+  },
+  {
+    "ID": "Item_IronSword",
+    "Name": "Iron Sword",
+    "Description": "A basic sword forged from iron.",
+    "IconAddress": "Equipment[Equipment_IronSword]",
+    "UseSFXName": "Equipped_Sword_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_LeatherHelmet",
+    "Name": "Leather Helmet",
+    "Description": "Helmet.",
+    "IconAddress": "Equipment[Equipment_LeatherHelmet]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_LeatherChestPlate",
+    "Name": "Leather ChestPlate",
+    "Description": "ChestPlate.",
+    "IconAddress": "Equipment[Equipment_LeatherChestPlate]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_LeatherPants",
+    "Name": "Leather Pants",
+    "Description": "Pants.",
+    "IconAddress": "Equipment[Equipment_LeatherPants]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_LeatherBoots",
+    "Name": "Leather Boots",
+    "Description": "Boots.",
+    "IconAddress": "Equipment[Equipment_LeatherBoots]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_LeatherGloves",
+    "Name": "Leather Gloves",
+    "Description": "Gloves.",
+    "IconAddress": "Equipment[Equipment_LeatherGloves]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 20,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelSword",
+    "Name": "Steel Sword",
+    "Description": "A liitle Upgrade Sword",
+    "IconAddress": "Equipment[Equipment_SteelSword]",
+    "UseSFXName": "Equipped_Sword_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelHelmet",
+    "Name": "Steel Helmet",
+    "Description": "A liitle Upgrade Helmet",
+    "IconAddress": "Equipment[Equipment_SteelHelmet]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelChestPlate",
+    "Name": "Steel ChestPlate",
+    "Description": "A little Upgrade ChestPlate",
+    "IconAddress": "Equipment[Equipment_SteelChestPlate]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelPants",
+    "Name": "Steel Pants",
+    "Description": "A little Upgrade Pants",
+    "IconAddress": "Equipment[Equipment_SteelPants]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelBoots",
+    "Name": "Steel Boots",
+    "Description": "A little Upgrade Boots",
+    "IconAddress": "Equipment[Equipment_SteelBoots]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_SteelGloves",
+    "Name": "Steel Gloves",
+    "Description": "A little Upgrade Gloves",
+    "IconAddress": "Equipment[Equipment_SteelGloves]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 100,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilSword",
+    "Name": "Mithril Sword",
+    "Description": "A High Quality Sword",
+    "IconAddress": "Equipment[Equipment_MithrilSword]",
+    "UseSFXName": "Equipped_Sword_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilHelmet",
+    "Name": "Mithril Helmet",
+    "Description": "A High Quality Helmet",
+    "IconAddress": "Equipment[Equipment_MithrilHelmet]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilChestPlate",
+    "Name": "Mithril ChestPlate",
+    "Description": "A High Quality ChestPlate",
+    "IconAddress": "Equipment[Equipment_MithrilChestPlate]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilPants",
+    "Name": "Mithril Pants",
+    "Description": "A High Quality Pants",
+    "IconAddress": "Equipment[Equipment_MithrilPants]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilBoots",
+    "Name": "Mithril Boots",
+    "Description": "A High Quality Boots",
+    "IconAddress": "Equipment[Equipment_MithrilBoots]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
+  {
+    "ID": "Item_MithrilGloves",
+    "Name": "Mithril Gloves",
+    "Description": "A High Quality Gloves",
+    "IconAddress": "Equipment[Equipment_MithrilGloves]",
+    "UseSFXName": "Equipped_Armor_Sound",
+    "MaxStack": 1,
+    "UsageType": "Equipment",
+    "Price": 500,
+    "DropPrefabAddress": ""
+  },
   {
     "ID": "Item_EnhancementScroll",
     "Name": "EnhancementScroll",
@@ -206,7 +226,8 @@
     "IconAddress": "Material[Material_EnhancementScroll]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_EnhancementScroll"
   },
   {
     "ID": "Item_LeatherPiece",
@@ -215,7 +236,8 @@
     "IconAddress": "Material[Material_LeatherPiece]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_LeatherPiece"
   },
   {
     "ID": "Item_IronIngot",
@@ -224,7 +246,8 @@
     "IconAddress": "Material[Material_IronIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_IronIngot"
   },
   {
     "ID": "Item_MithrilIngot",
@@ -233,7 +256,8 @@
     "IconAddress": "Material[Material_MithrilIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_MithrilIngot"
   },
   {
     "ID": "Item_MysteriousPowder",
@@ -242,15 +266,17 @@
     "IconAddress": "Material[Material_MysteriousPowder]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_MysteriousPowder"
   },
   {
     "ID": "Item_OilofBlessing",
     "Name": "OilofBlessing",
     "Description": "OilofBlessing",
     "IconAddress": "Material[Material_OilofBlessing]",
-    "MaxStack": 99, 
+    "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500
+    "Price": 500,
+    "DropPrefabAddress": "Item_OilofBlessing"
   }
 ]

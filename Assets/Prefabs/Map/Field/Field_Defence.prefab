@@ -14017,6 +14017,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207c6644be1b5db4cabb19b092484767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefenceFieldManager
+  _rewardGold: 100
+  _rewardItems:
+  - ItemId: Item_IronIngot
+    Count: 55
   _spawnPairs:
   - _spawnPoint: {fileID: 3051526789720710940}
     _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}

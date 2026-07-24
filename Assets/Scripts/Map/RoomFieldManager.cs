@@ -149,6 +149,11 @@ public class RoomFieldManager : BaseDungeonController
         _isCleared = true;
         Debug.Log("룸 필드의 모든 몬스터를 처치했습니다! 필드 클리어!");
 
+        DungeonReward reward = CreateReward();
+
+        OnClearField?.Invoke();
+        InvokeCleared(reward);
+
         ClearDungeon();
     }
 
@@ -167,11 +172,7 @@ public class RoomFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = new DungeonReward
-        {
-            Gold = 100,
-            ItemIds = new List<string>()
-        };
+        DungeonReward reward = CreateReward();
 
         OnClearField?.Invoke();
         InvokeCleared(reward);

@@ -14,32 +14,32 @@ public class DungeonClearView : BaseUI
     private Action _onConfirmClicked;
     private readonly List<GameObject> _spawnedRewardSlots = new List<GameObject>();
 
-    public void Setup(int gold, List<string> itemIds, Action onConfirmClicked)
+    public void Setup(int gold, List<RewardItem> items, Action onConfirmClicked)
     {
         _onConfirmClicked = onConfirmClicked;
 
         Text_Gold.text = $"+{gold}G";
 
-        BuildRewardSlots(itemIds);
+        BuildRewardSlots(items);
 
         Button_Confirm.onClick.RemoveAllListeners();
         Button_Confirm.onClick.AddListener(OnClickConfirm);
     }
 
-    private void BuildRewardSlots(List<string> itemIds)
+    private void BuildRewardSlots(List<RewardItem> items)
     {
         ClearRewardSlots();
 
-        if (itemIds == null)
+        if (items == null)
         {
             return;
         }
 
         ItemRepository itemRepository = new ItemRepository();
 
-        foreach (string itemId in itemIds)
+        foreach (RewardItem rewardItem in items)
         {
-            ItemData item = itemRepository.GetItem(itemId);
+            ItemData item = itemRepository.GetItem(rewardItem.ItemId);
 
             if (item == null)
             {
@@ -48,7 +48,7 @@ public class DungeonClearView : BaseUI
 
             GameObject slotObject = Instantiate(Prefab_RewardItemSlot, Transform_ItemRewardParent);
             RewardItemSlotView slotView = slotObject.GetComponent<RewardItemSlotView>();
-            slotView.Setup(item);
+            slotView.Setup(item, rewardItem.Count);
 
             _spawnedRewardSlots.Add(slotObject);
         }

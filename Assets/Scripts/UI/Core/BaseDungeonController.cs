@@ -10,10 +10,17 @@ public enum DungeonFailReason
 }
 
 [Serializable]
+public class RewardItem
+{
+    public string ItemId;
+    public int Count = 1;
+}
+
+[Serializable]
 public class DungeonReward
 {
     public int Gold;
-    public List<string> ItemIds;
+    public List<RewardItem> Items;
 }
 
 public abstract class BaseDungeonController : MonoBehaviour
@@ -22,6 +29,10 @@ public abstract class BaseDungeonController : MonoBehaviour
     public static event Action<DungeonFailReason> OnDungeonFailed;
 
     public static bool IsInDungeon { get; private set; }
+
+    [Header("Dungeon Reward")]
+    [SerializeField] private int _rewardGold = 100;
+    [SerializeField] private List<RewardItem> _rewardItems = new List<RewardItem>();  
 
     protected virtual void OnEnable()
     {
@@ -52,5 +63,15 @@ public abstract class BaseDungeonController : MonoBehaviour
         Debug.Log($"[BaseDungeonController] 던전 실패. 사유: {reason}");
         OnDungeonFailed?.Invoke(reason);
         SoundManager.Instance.PlayUISound("Dungeon_Failed_Sound");
+    }
+
+    protected DungeonReward CreateReward()
+    {
+        Debug.Log($"[BaseDungeonController] CreateReward - Gold: {_rewardGold}, ItemIds.Count: {_rewardItems.Count}");
+        return new DungeonReward
+        {
+            Gold = _rewardGold,
+            Items = new List<RewardItem>(_rewardItems)
+        };
     }
 }
