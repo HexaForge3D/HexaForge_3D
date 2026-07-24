@@ -96,6 +96,12 @@ public class PlayerBattle : MonoBehaviour
                         {
                             monster.TakeDamage(atk);
                         }
+
+                        BossMonsterHealth bossMonster = hitCollider.GetComponent<BossMonsterHealth>();
+                        if (bossMonster != null)
+                        {
+                            bossMonster.TakeDamage(atk);
+                        }
                     }
                 }
             }
