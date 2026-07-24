@@ -115,6 +115,11 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
             return;
         }
 
+        if (_coolDownRemaining > 0f)
+        {
+            return;
+        }
+
         if (!string.IsNullOrEmpty(_data.UseSFXName))
         {
             SoundManager.Instance.PlaySFXSound(_data.UseSFXName);
