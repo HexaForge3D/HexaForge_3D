@@ -1,6 +1,6 @@
 ﻿[
   {
-    "ID": "Item_LeatherSword",
+    "ID": "Item_IronSword",
     "EquipSlot": "Weapon",
     "AtkBonus": 5,
     "DefBonus": 0,

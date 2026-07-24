@@ -105,13 +105,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 70bbb6b1f533fe042b17931e957c1463
+    m_Address: Item_MysteriousPowder
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 76f1b1a7cad0c544e8312d8366d375b7
     m_Address: Skill_Icon_Warrior4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 777dea950022aa64d82b787e651dae15
+    m_Address: Item_IronIngot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ea0bd75998e94443bccf988bd57602e
     m_Address: Map_RoomMaze
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8f7bf75d0d5c21845863bb36383c6a7e
+    m_Address: Item_OilofBlessing
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -160,6 +175,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4ffac2663afc7c4f967c3cf8f1cefb4
+    m_Address: Item_HealthPotion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bc1090cb736d2c84bad3f8a6708b720d
     m_Address: JsonOutput/Item
     m_ReadOnly: 0
@@ -185,13 +205,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8f733af1a3fb11488889ce39317f789
+    m_Address: Item_EnhancementScroll
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: db3465f0bfc18f744b40149d77a4a257
     m_Address: UI_CharacterSelect
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db75cfc77a6bd2048bbd0af3df50057a
+    m_Address: Item_ManaPotion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: de7be3c352b9ab14eaae679f6895450c
     m_Address: Map_Store
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e857c4e60a250d244a60183173bb310d
+    m_Address: Item_MithrilIngot
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -207,6 +242,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee9854f30969ccd43bbcbf4e17b73d98
     m_Address: Popup_Inventory
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f04d0667152b04647ab508aeb6a22325
+    m_Address: Item_LeatherBag
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

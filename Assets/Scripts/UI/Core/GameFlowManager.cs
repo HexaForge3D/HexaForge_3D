@@ -343,6 +343,8 @@ public class GameFlowManager
 
     private void OnEscapeKeyPressed()
     {
+        if (UIManager.Instance.IsActiveUI(UIType.DungeonClearPopup) || UIManager.Instance.IsActiveUI(UIType.DungeonFailPopup)) return;
+
         if (UIManager.Instance.HasActivePopup())
         {
             UIManager.Instance.CloseAllPopups();
@@ -621,7 +623,7 @@ public class GameFlowManager
     {
         HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
 
-        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel();
+        HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
 
         view.BindViewModel(viewModel);

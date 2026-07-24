@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2489721653960365379}
   - component: {fileID: 3589759891438361362}
+  - component: {fileID: 8961936859514944566}
+  - component: {fileID: 5580717889242214776}
   m_Layer: 0
   m_Name: SmithNpc
   m_TagString: Untagged
@@ -59,6 +61,42 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8961936859514944566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964116009324947530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786105a2a799bc24984e7bdab4363c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC
+  _npcId: 3
+--- !u!136 &5580717889242214776
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964116009324947530}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.0276885
+  m_Height: 2.0617063
+  m_Direction: 1
+  m_Center: {x: 0.014833331, y: 0.53085315, z: 0}
 --- !u!1 &1601263046819442942
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +156,7 @@ Transform:
   m_GameObject: {fileID: 1610352429743738611}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0.59351003}
+  m_LocalPosition: {x: -0, y: 0.53, z: 0.758}
   m_LocalScale: {x: 0.9365708, y: 0.9365708, z: 0.9365708}
   m_ConstrainProportionsScale: 0
   m_Children: []

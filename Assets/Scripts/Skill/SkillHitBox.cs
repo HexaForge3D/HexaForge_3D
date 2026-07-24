@@ -26,6 +26,13 @@ public class SkillHitbox : MonoBehaviour
 
                 SoundManager.Instance.PlaySFXSound("Monster_TakeDamage_Sound", other.transform, 1f, true);
             }
+
+            BossMonsterHealth bossMonster = other.GetComponent<BossMonsterHealth>();
+            if (bossMonster != null)
+            {
+                // 보스몬스터에게 데미지를 입힘
+                bossMonster.TakeDamage(_damage);
+            }
         }
     }
 }
