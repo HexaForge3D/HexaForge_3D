@@ -69,9 +69,11 @@ public class DefenceTarget : MonoBehaviour
 
         OnTargetHpChanged?.Invoke(_currentHp, _maxHp);
 
+        SoundManager.Instance.PlaySFXSound("Defence_Target_TakeDamage_Sound", this.transform, 1f, true);
         if (_currentHp <= 0)
         {
             DestroyTarget();
+            SoundManager.Instance.PlaySFXSound("Destroy_Defence_Target_TakeDamage_Sound", this.transform, 1f, true);
         }
     }
 

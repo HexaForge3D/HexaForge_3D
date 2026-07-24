@@ -44,11 +44,13 @@ public abstract class BaseDungeonController : MonoBehaviour
     {
         Debug.Log($"[BaseDungeonController] 던전 클리어. 보상: {reward.Gold}");
         OnDungeonCleared?.Invoke(reward);
+        SoundManager.Instance.PlayUISound("Dungeon_Clear_Sound");
     }
 
     protected static void InvokeFailed(DungeonFailReason reason)
     {
         Debug.Log($"[BaseDungeonController] 던전 실패. 사유: {reason}");
         OnDungeonFailed?.Invoke(reason);
+        SoundManager.Instance.PlayUISound("Dungeon_Failed_Sound");
     }
 }

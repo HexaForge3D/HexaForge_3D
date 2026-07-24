@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour
 {
@@ -42,6 +43,22 @@ public class SoundManager : MonoBehaviour
         RoomFieldManager.OnStartField -= PlayBGMSound;
         MapManager.OnStartField -= PlayBGMSound;
     }
+
+    private void Start()
+    {
+        float savedBGM = PlayerPrefs.GetFloat("Saved_BGM_Volume", 1f);
+        float savedSFX = PlayerPrefs.GetFloat("Saved_SFX_Volume", 1f);
+        float savedUI = PlayerPrefs.GetFloat("Saved_UI_Volume", 1f);
+
+        SetBGMVolume(savedBGM);
+        SetSFXVolume(savedSFX);
+        SetUIVolume(savedUI);
+    }
+
+    public void StopBGM()
+    {
+        _bgmSource.Stop();
+    }
     public void PlayBGM(AudioClip bgmclip, float volume = 1f)
     {
         if (_bgmSource.clip == bgmclip) return;
@@ -51,34 +68,34 @@ public class SoundManager : MonoBehaviour
         _bgmSource.Play();
     }
 
-    public void StopBGM()
-    {
-        _bgmSource.Stop();
-    }
-
     public void PlayUI(AudioClip uiclip, float volume = 1f)
     {
         if (uiclip == null) return;
         _uiSource.PlayOneShot(uiclip, volume);
     }
 
-
     public void SetBGMVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("BGM_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_BGM_Volume", sliderValue);
     }
 
     public void SetSFXVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("SFX_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_SFX_Volume", sliderValue);
     }
 
     public void SetUIVolume(float sliderValue)
     {
         float value = Mathf.Clamp(sliderValue, 0.0001f, 1f);
         _audioMixer.SetFloat("UI_Volume", Mathf.Log10(value) * 20);
+
+        PlayerPrefs.SetFloat("Saved_UI_Volume", sliderValue);
     }
     public void PlayBGMSound(string fileName)
     {
@@ -104,17 +121,56 @@ public class SoundManager : MonoBehaviour
             Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/UI/");
         }
     }
-
-    public void PlaySFXSound(string fileName)
+    public void PlaySFX(AudioClip sfxclip, float volume = 1f, bool useRandomPitch = false)
+    {
+        if (sfxclip == null) return;
+        {
+            _sfxSource.pitch = useRandomPitch ? Random.Range(0.9f, 1f) : 1f;
+            _sfxSource.PlayOneShot(sfxclip, volume);
+        }
+    }
+    public void PlaySFXSound(string fileName, float volume = 1f, bool useRandomPitch = false)
     {
         AudioClip clip = Resources.Load<AudioClip>($"Sounds/SFX/{fileName}");
         if (clip != null)
         {
-            _sfxSource.PlayOneShot(clip);
+            PlaySFX(clip, volume, useRandomPitch);
         }
         else
         {
             Debug.LogWarning($"SoundManager: AudioClip '{fileName}' not found in Resource/Sounds/SFX/");
+        }
+    }
+
+    public void PlaySFX(AudioClip clip, Transform targetTransform,float volume = 1f, bool useRandomPitch = false)
+    {
+        if (clip == null) return;
+
+        GameObject tempAudioObj = new GameObject($"TempSFX_{clip.name}");
+        tempAudioObj.transform.position = targetTransform.position;
+        tempAudioObj.transform.SetParent(targetTransform);
+
+        AudioSource tempSource = tempAudioObj.AddComponent<AudioSource>();
+        tempSource.clip = clip;
+        tempSource.volume = volume;
+        tempSource.spatialBlend = 1f;
+        tempSource.pitch = useRandomPitch ? Random.Range(0.9f, 1.1f) : 1f;
+
+        tempSource.Play();
+
+        Destroy( tempAudioObj, clip.length );
+    }
+
+    public void PlaySFXSound(string fileName, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
+    {
+        AudioClip clip = Resources.Load<AudioClip>($"Sound/SFX/{fileName}");
+        if (clip != null)
+        {
+            PlaySFX(clip, targetTransform, volume, useRandomPitch);
+        }
+        else
+        {
+            Debug.LogWarning($"PlaySFX sound: {fileName} = null");
         }
     }
 }
