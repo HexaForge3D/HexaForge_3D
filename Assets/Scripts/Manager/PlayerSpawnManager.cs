@@ -25,6 +25,7 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
         if (prefab == null)
         {
             Debug.LogError($"[PlayerSpawnManager] {prefabAddress} 주소에 프리팹이 없습니다.");
+            _isSpawnPlayer = false;
             return null;
         }
 
@@ -34,6 +35,8 @@ public class PlayerSpawnManager : BaseMonoManager<PlayerSpawnManager>
         InitializePlayer(instance, data);
 
         _currentPlayer = instance;
+
+        _isSpawnPlayer = false;
 
         return instance;
     }
