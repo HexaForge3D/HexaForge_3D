@@ -24,7 +24,7 @@ public class SkillHitbox : MonoBehaviour
                 // 몬스터에게 데미지를 입힘
                 monster.TakeDamage(_damage);
 
-                SoundManager.Instance.PlaySFXSound("Monster_TakeDamage_Sound", other.transform, 1f, true);
+                SoundManager.Instance.PlaySFXSound("Skill_TakeDamage_Sound", other.transform, 1f, true);
             }
 
             BossMonsterHealth bossMonster = other.GetComponent<BossMonsterHealth>();
@@ -32,6 +32,8 @@ public class SkillHitbox : MonoBehaviour
             {
                 // 보스몬스터에게 데미지를 입힘
                 bossMonster.TakeDamage(_damage);
+
+                SoundManager.Instance.PlaySFXSound("Skill_TakeDamage_Sound", other.transform, 1f, true);
             }
         }
     }

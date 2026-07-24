@@ -1,11 +1,16 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
+
 public class MonsterHealth : MonoBehaviour
 {
+    [Header("Monster Data")]
+    [SerializeField] private MonsterData _monsterData;
+
     [Header("체력 설정")]
     public int maxHealth = 150;
     private int currentHealth;
@@ -23,6 +28,8 @@ public class MonsterHealth : MonoBehaviour
 
     private static List<ItemTableData> droppableItemsCache = null;
     private static bool isInitializingCache = false;
+
+    private CancellationTokenSource _cts;
 
     private void OnEnable()
     {
@@ -43,6 +50,8 @@ public class MonsterHealth : MonoBehaviour
             InitializeDroppableItemsAsync().Forget();
         }
 
+        _cts = new CancellationTokenSource();
+        RandomIdleSoundRoutine(_cts.Token).Forget();
     }
 
     private async UniTaskVoid InitializeDroppableItemsAsync()
@@ -82,9 +91,14 @@ public class MonsterHealth : MonoBehaviour
 
         Debug.Log($"[몬스터 피격] -{damageAmount} 데미지 (남은체력: {currentHealth} / {maxHealth}");
 
+        string _myHitSound = _monsterData._monsterHitSoundName;
+        SoundManager.Instance.PlaySFXSound(_myHitSound, this.transform, 1f, true);
+
+        string myDieSound = _monsterData._monsterDieSoundName;
         if (currentHealth <= 0)
         {
             Die();
+            SoundManager.Instance.PlaySFXSound(myDieSound, this.transform, 1f, true);
         }
     }
 
@@ -201,4 +215,36 @@ public class MonsterHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} : 뇌 재부팅 완료! 기억이 지워졌으므로 순찰로 복귀합니다.");
     }
+    private async UniTaskVoid RandomIdleSoundRoutine(CancellationToken token)
+    {
+        try
+        {
+            while (isDead == false && token.IsCancellationRequested == false)
+            {
+                float randomDelay = UnityEngine.Random.Range(3f, 7f);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(randomDelay), cancellationToken: token);
+
+                if (isDead) break;
+
+                if (_monsterData != null && string.IsNullOrEmpty(_monsterData._monsterHowlingSoundName) == false)
+                {
+                    SoundManager.Instance.PlaySFXSound(_monsterData._monsterHowlingSoundName, this.transform, 1f, true);
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("사운드루프가 강제종료됩니다");
+        }
+    }
+
+}
+[System.Serializable]
+public class MonsterData
+{
+    [Header("Monster Sound Setting")]
+    public string _monsterHitSoundName = "Monster_TakeDamage_Sound";
+    public string _monsterDieSoundName = "Monster_Die_Sound";
+    public string _monsterHowlingSoundName = "Monster_Howling_Sound";
 }

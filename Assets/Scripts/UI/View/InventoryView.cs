@@ -18,6 +18,13 @@ public class InventoryView : BaseOverLayUI
     public Action<InventoryItemData> OnEquipRequested;
     public Action<InventoryItemData> OnUseRequested;
 
+    private void OnDisable()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUISound("Inventory_Close_Sound");
+        }
+    }
     public void BindViewModel(InventoryViewModel viewModel)
     {
         _viewModel = viewModel;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using Random = UnityEngine.Random;
@@ -15,6 +16,8 @@ public class SoundManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private AudioClip _buttonClickSound;
     [SerializeField] private AudioMixer _audioMixer;
+
+    private Dictionary<string, float> _soundPlayTimes = new Dictionary<string, float>();
     private void Awake()
     {
         if (Instance == null)
@@ -112,6 +115,11 @@ public class SoundManager : MonoBehaviour
     public void PlayUISound(string fileName)
     {
         AudioClip clip = Resources.Load<AudioClip>($"Sounds/UI/{fileName}");
+
+        if (_soundPlayTimes.TryGetValue(fileName, out float lastPlayedTime))
+        {
+            if (Time.time - lastPlayedTime < 0.1f) return;
+        }
         if (clip != null)
         {
             PlayUI(clip);
@@ -163,7 +171,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFXSound(string fileName, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
     {
-        AudioClip clip = Resources.Load<AudioClip>($"Sound/SFX/{fileName}");
+        AudioClip clip = Resources.Load<AudioClip>($"Sounds/SFX/{fileName}");
         if (clip != null)
         {
             PlaySFX(clip, targetTransform, volume, useRandomPitch);
