@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using TMPro;
+using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using Cysharp.Threading.Tasks;
-using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
