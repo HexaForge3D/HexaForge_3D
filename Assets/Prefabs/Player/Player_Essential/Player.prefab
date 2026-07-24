@@ -405,6 +405,7 @@ Transform:
   - {fileID: 2029886495377287980}
   - {fileID: 9019347661769024548}
   - {fileID: 2531479432149697088}
+  - {fileID: 4281285168523638448}
   m_Father: {fileID: 7570861225482397971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3890863442705419813
@@ -559,7 +560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2684ea503a92a224fba1632b99a427ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFootStep
-  _currentMapTag: Grass
 --- !u!95 &6215523674562784445
 Animator:
   serializedVersion: 7
@@ -3130,6 +3130,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2682177833937796932}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8094461508734984399
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4281285168523638448}
+  - component: {fileID: 5595069793941636629}
+  - component: {fileID: 8130348036825376349}
+  m_Layer: 0
+  m_Name: AudioListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4281285168523638448
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094461508734984399}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.6000001, z: 0}
+  m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 45551724372801223}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &5595069793941636629
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094461508734984399}
+  m_Enabled: 1
+--- !u!114 &8130348036825376349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8094461508734984399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88099bb526ee6ae49b0358c4c4a930a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioListenerSwitcher
 --- !u!1 &8101564865326635360
 GameObject:
   m_ObjectHideFlags: 0
@@ -3140,7 +3193,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1623294892060166380}
   - component: {fileID: 777996260539164698}
-  - component: {fileID: 3782309597756877889}
   - component: {fileID: 8159528084379604362}
   - component: {fileID: 1392707050479763169}
   - component: {fileID: 4671457692865748930}
@@ -3218,14 +3270,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3782309597756877889
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8101564865326635360}
-  m_Enabled: 1
 --- !u!114 &8159528084379604362
 MonoBehaviour:
   m_ObjectHideFlags: 0
