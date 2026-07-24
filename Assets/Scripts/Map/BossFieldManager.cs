@@ -40,6 +40,7 @@ public class BossFieldManager : BaseDungeonController
     public static event Action<string> OnStartField;
     public static event Action<float> OnCountdownChanged;
     public static event Action<int, int> OnBossHpChanged;
+    public static event Action<string> OnBossRecallMonster;
 
     private GameObject _spawnedBoss;
     private BossMonsterHealth _bossHealth;
@@ -199,6 +200,7 @@ public class BossFieldManager : BaseDungeonController
             return;
         }
 
+        OnBossRecallMonster?.Invoke("Boss_RecallMonster");
         Debug.Log($"<color=orange>[BossFieldManager] 보스 체력 조건 달성! {groupName} 몬스터들을 소환합니다.</color>");
 
         foreach (var pair in spawnPairs)
