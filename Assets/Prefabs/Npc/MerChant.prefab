@@ -1577,6 +1577,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2295728964958443276}
   - component: {fileID: 7080960614503575856}
+  - component: {fileID: 801078832529838901}
+  - component: {fileID: 7747112126707537020}
   m_Layer: 0
   m_Name: MerChant
   m_TagString: Untagged
@@ -1594,7 +1596,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -40.704617, y: 0.00000003284076, z: -43.9322}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6523838426401678315}
@@ -1623,6 +1625,42 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &801078832529838901
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125265287339806638}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.83317065
+  m_Height: 2.3070936
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6535468, z: 0.33317065}
+--- !u!114 &7747112126707537020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125265287339806638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786105a2a799bc24984e7bdab4363c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC
+  _npcId: 1
 --- !u!1 &7222043738051925265
 GameObject:
   m_ObjectHideFlags: 0
