@@ -99,7 +99,9 @@ public class GameFlowManager
         int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
         string message = $"Sell {data.Name} X {count} for {totalPrice}G?";
 
-        ShowConfirmAsync(message, OnSellConfirmed,"Item_Buy_Sound").Forget();
+        string sellSoundName = (count == 1) ? "Item_Sell_Sound" : "All_Item_Sell_Sound";
+
+        ShowConfirmAsync(message, OnSellConfirmed, sellSoundName).Forget();
     }
 
     private void OnCreateCharacterRequested(string slotId)
@@ -113,6 +115,11 @@ public class GameFlowManager
 
         if (result == TransactionResult.Success)
         {
+            if (!string.IsNullOrEmpty(data.UseSFXName))
+            {
+                SoundManager.Instance.PlayUISound(data.UseSFXName);
+            }
+
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
 
