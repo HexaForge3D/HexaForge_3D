@@ -4008,7 +4008,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4414871117353324496}
@@ -4144,14 +4144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: 2526050477347474807, guid: 99f40a9e01cc7b34d983849ac60fcd39, type: 2}
+  m_Graph: {fileID: 2526050477347474807, guid: 058ffa13e6301d142a664c467d1e26c2, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 312138339817881858
   - rid: 312138365541810282
   - rid: 312138497893597685
   - rid: 312138497893597686
   - rid: 312138497893598160
-  m_OriginalGraph: {fileID: 2526050477347474807, guid: 99f40a9e01cc7b34d983849ac60fcd39, type: 2}
+  m_OriginalGraph: {fileID: 2526050477347474807, guid: 058ffa13e6301d142a664c467d1e26c2, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -4180,7 +4180,7 @@ MonoBehaviour:
           m_Value0: 4345574515795816933
           m_Value1: 14419878264557771408
         Name: AttackRange
-        m_Value: 2.5
+        m_Value: 7
     - rid: 312138497893597686
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -4250,9 +4250,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHitBox
   weaponPoints:
   - {fileID: 1031761753317549976}
-  hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  hitRadius: 6
+  minDamage: 300
+  maxDamage: 500
 --- !u!114 &-7798877612820797921
 MonoBehaviour:
   m_ObjectHideFlags: 0
