@@ -1,8 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Cysharp.Threading.Tasks;
 
 public class BossMonsterHealth : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class BossMonsterHealth : MonoBehaviour
     public int _dropExp = 3000;
     public int _minGold = 10000;
     public int _maxGold = 50000;
+
+    public event Action<int, int> OnBossHpChanged;
 
     public static event Action<int> OnBossMonsterDied;
     public event Action<BossMonsterHealth> OnBossMonsterDieCount;
@@ -42,12 +44,10 @@ public class BossMonsterHealth : MonoBehaviour
         {
             InitializeDroppableItemsAsync().Forget();
         }
-
     }
 
     private async UniTaskVoid InitializeDroppableItemsAsync()
     {
-
         isInitializingCache = true;
 
         await GameDataManager.Instance.WaitUntilReadyAsync();
@@ -81,6 +81,8 @@ public class BossMonsterHealth : MonoBehaviour
         _currentHealth = Mathf.Max(0, _currentHealth);
 
         Debug.Log($"[몬스터 피격] -{damageAmount} 데미지 (남은체력: {_currentHealth} / {_maxHealth}");
+
+        OnBossHpChanged?.Invoke(_currentHealth, _maxHealth);
 
         if (_currentHealth <= 0)
         {
