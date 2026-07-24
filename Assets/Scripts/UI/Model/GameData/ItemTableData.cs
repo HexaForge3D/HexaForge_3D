@@ -18,4 +18,5 @@ public class ItemTableData : GameDataBase
     public string UsageType;
     public int Price;
     public string UseSFXName;
+    public string DropPrefabAddress;
 }
