@@ -31,6 +31,10 @@ public class SettingView : BaseOverLayUI
         Toggle_Fullscreen.onValueChanged.RemoveListener(OnFullscreenChanged);
         Toggle_Fullscreen.onValueChanged.AddListener(OnFullscreenChanged);
 
+        Slider_BGM.value = PlayerPrefs.GetFloat("Saved_BGM_Volume", 1f);
+        Slider_SFX.value = PlayerPrefs.GetFloat("Saved_SFX_Volume", 1f);
+        Slider_UI.value = PlayerPrefs.GetFloat("Saved_UI_Volume", 1f);
+
         Slider_BGM.onValueChanged.RemoveListener(OnChangeBGM);
         Slider_BGM.onValueChanged.AddListener(OnChangeBGM);
 

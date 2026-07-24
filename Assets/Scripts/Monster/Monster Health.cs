@@ -133,9 +133,11 @@ public class MonsterHealth : MonoBehaviour
                 ItemTableData randomItem = droppableItemsCache[randomIndex];
                 int randomAmount = UnityEngine.Random.Range(1, 11);
 
-                string dropItemPrefabAddress = "DroppedItem";
+                if (string.IsNullOrEmpty(randomItem.DropPrefabAddress) == false)
+                {
+                    SpawnDropItemAsync(randomItem.DropPrefabAddress, randomItem, randomAmount).Forget();
 
-                SpawnDropItemAsync(dropItemPrefabAddress, randomItem, randomAmount).Forget();
+                }
             }
         }
     }
