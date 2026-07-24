@@ -4,8 +4,18 @@ using UnityEngine;
 using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
 
+[System.Serializable]
+public class BossMonsterData
+{
+    [Header("Boss Sound Setting")]
+    public string _bossHitSoundName = "BossMonster_TakeDamage_Sound";
+    public string _bossDieSoundName = "BossMonster_Die_Sound";
+}
 public class BossMonsterHealth : MonoBehaviour
 {
+    [Header("Boss Data")]
+    [SerializeField] private BossMonsterData _bossMonsterData;
+
     [Header("체력 설정")]
     public int _maxHealth = 50000;
     private int _currentHealth;
@@ -84,9 +94,14 @@ public class BossMonsterHealth : MonoBehaviour
 
         OnBossHpChanged?.Invoke(_currentHealth, _maxHealth);
 
+        string myHitSound = _bossMonsterData._bossHitSoundName;
+        SoundManager.Instance.PlaySFXSound(myHitSound, this.transform, 1f, true);
+
+        string myDieSound = _bossMonsterData._bossDieSoundName;
         if (_currentHealth <= 0)
         {
             Die();
+            SoundManager.Instance.PlaySFXSound(myDieSound, this.transform, 1f, true);
         }
     }
 

@@ -4,8 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Serializable]
+public class MonsterData
+{
+    [Header("Monster Sound Setting")]
+    public string _monsterHitSoundName = "Monster_TakeDamage_Sound";
+    public string _monsterDieSoundName = "Monster_Die_Sound";
+}
 public class MonsterHealth : MonoBehaviour
 {
+    [Header("Monster Data")]
+    [SerializeField] private MonsterData _monsterData;
+
     [Header("체력 설정")]
     public int maxHealth = 150;
     private int currentHealth;
@@ -82,9 +92,14 @@ public class MonsterHealth : MonoBehaviour
 
         Debug.Log($"[몬스터 피격] -{damageAmount} 데미지 (남은체력: {currentHealth} / {maxHealth}");
 
+        string _myHitSound = _monsterData._monsterHitSoundName;
+        SoundManager.Instance.PlaySFXSound(_myHitSound, this.transform, 1f, true);
+
+        string myDieSound = _monsterData._monsterDieSoundName;
         if (currentHealth <= 0)
         {
             Die();
+            SoundManager.Instance.PlaySFXSound(myDieSound, this.transform, 1f, true);
         }
     }
 
