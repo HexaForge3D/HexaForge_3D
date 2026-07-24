@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000045776367, y: -30.7807}
+  m_AnchoredPosition: {x: 0.000045776367, y: -38}
   m_SizeDelta: {x: -53.612, y: 36.6472}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7451886709002567363
@@ -111,7 +111,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.4654, y: -2.0779}
-  m_SizeDelta: {x: 367.7234, y: 165.5051}
+  m_SizeDelta: {x: 367.7234, y: 279.1645}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7629526385409296488
 CanvasRenderer:
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -459,10 +459,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 5602547678056592990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.646698, y: -2.3867}
-  m_SizeDelta: {x: -83.3566, y: 138.58}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -2.7711}
+  m_SizeDelta: {x: 316.6434, y: 242.3009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8341350958335988462
 MonoBehaviour:
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 80, y: 80}
+  m_CellSize: {x: 50, y: 50}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -725,8 +725,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 34.3}
-  m_SizeDelta: {x: -53.612, y: 19.6354}
+  m_AnchoredPosition: {x: 0, y: 38.7}
+  m_SizeDelta: {x: -53.612, y: 31.0527}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7299841724367447973
 CanvasRenderer:
@@ -1021,8 +1021,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 226, y: 18}
-  m_SizeDelta: {x: 400, y: 300}
+  m_AnchoredPosition: {x: 226, y: 4}
+  m_SizeDelta: {x: 400, y: 428.9596}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2399634347962475542
 CanvasRenderer:
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonClearView
   Text_Gold: {fileID: 820451509387273469}
-  Transform_ItemRewardParent: {fileID: 3795132370957764862}
+  Transform_ItemRewardParent: {fileID: 3716782231039866373}
   Prefab_RewardItemSlot: {fileID: 1126191469157508415, guid: d647f4cb05cafd54fad9112636aa397e, type: 3}
   Button_Confirm: {fileID: 4542939142607940164}
 --- !u!222 &6048409572311267085
