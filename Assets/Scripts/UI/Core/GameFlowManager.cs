@@ -731,7 +731,7 @@ public class GameFlowManager
     private async UniTask ShowDungeonClearAsync(DungeonReward reward)
     {
         DungeonClearView view = await UIManager.Instance.OpenUIAsync<DungeonClearView>(UIType.DungeonClearPopup);
-        view.Setup(reward.Gold, reward.ItemIds, OnDungeonClearConfirmed);
+        view.Setup(reward.Gold, reward.Items, OnDungeonClearConfirmed);
     }
 
     private async UniTask ShowDungeonFailAsync(DungeonFailReason reason)
@@ -820,6 +820,22 @@ public class GameFlowManager
     private void OnDungeonCleared(DungeonReward reward)
     {
         HideDungeonInfoIfExists();
+
+        SaveManager.Instance.AddGold(_currentSlotId, reward.Gold);
+
+        if (reward.Items != null)
+        {
+            foreach (RewardItem item in reward.Items)
+            {
+                SaveManager.Instance.AddItem(_currentSlotId, item.ItemId, item.Count);
+            }
+        }
+
+        RefreshGoldUI();
+
+        InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+        inventoryView?.Refresh();
+
         ShowDungeonClearAsync(reward).Forget();
     }
 
