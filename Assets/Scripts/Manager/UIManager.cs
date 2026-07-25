@@ -85,7 +85,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.ConfirmPopup, UIRootType.Popup },
         {UIType.GameMenuPopup, UIRootType.Popup },
         {UIType.InventoryPopup, UIRootType.Popup },
-        {UIType.SkillTreePopup, UIRootType.Content },
+        {UIType.SkillTreePopup, UIRootType.Popup },
         {UIType.EquipmentPopup, UIRootType.Popup },
         {UIType.MinimapPopup, UIRootType.Popup },
         {UIType.DeathPopup, UIRootType.Popup },
@@ -110,6 +110,7 @@ public class UIManager : BaseMonoManager<UIManager>
     private readonly Dictionary<UIType, BaseUI> _uiDic = new Dictionary<UIType, BaseUI>();
     private readonly HashSet<UIType> _activeUI = new HashSet<UIType>();
     private readonly Dictionary<UIRootType, UIType> _activeUIByRoot = new Dictionary<UIRootType, UIType>();
+    public Canvas DragLayerCanvas => Canvas_Front;
 
     // UI를 열기 위해선 무조건 이 메서드를 통해서 열려야 함.
     public async UniTask<T> OpenUIAsync<T>(UIType uiType) where T : BaseUI

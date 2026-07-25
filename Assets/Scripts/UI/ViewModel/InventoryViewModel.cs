@@ -19,24 +19,29 @@ public class InventoryViewModel
         List<InventoryItemData> result = new List<InventoryItemData>();
         CharacterSaveData saveData = FindCurrentSlot();
 
-        Debug.Log($"[InventoryViewModel] saveData null? {saveData == null}, Inventory.Slots.Count: {saveData?.Inventory?.Slots?.Count ?? -1}");
-
         if (saveData != null && saveData.Inventory != null)
-        { 
-            foreach (InventorySlotSaveData invSlot in saveData.Inventory.Slots)
+        {
+            for (int i = 0; i < saveData.Inventory.Slots.Count; i++)
             {
+                InventorySlotSaveData invSlot = saveData.Inventory.Slots[i];
+
+                if (invSlot == null || string.IsNullOrEmpty(invSlot.ItemId))
+                {
+                    result.Add(null);
+                    continue;
+                }
+
                 ItemData item = _itemRepository.GetItem(invSlot.ItemId);
 
                 if (item != null)
                 {
-                    result.Add(new InventoryItemData(item, invSlot.Count));
+                    result.Add(new InventoryItemData(item, invSlot.Count, i));
                 }
-            }   
-        }
-
-        while (result.Count < slotCount)
-        {
-            result.Add(null);
+                else
+                {
+                    result.Add(null);
+                }
+            }
         }
 
         return result;

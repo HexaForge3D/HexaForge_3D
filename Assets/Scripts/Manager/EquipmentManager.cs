@@ -13,7 +13,7 @@ public class EquipmentManager : BaseMonoManager<EquipmentManager>
         }
     }
 
-    public TransactionResult EquipItem(string slotId, string itemId)
+    public TransactionResult EquipItem(string slotId, string itemId, int slotIndex)
     {
         CharacterSaveData slot = SaveManager.Instance.GetChararcterData(slotId);
         if (slot == null) return TransactionResult.SlotNotFound;
@@ -37,7 +37,7 @@ public class EquipmentManager : BaseMonoManager<EquipmentManager>
         string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
         SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
 
-        SaveManager.Instance.SwapInventorySlot(slotId, itemId, previousItemId);
+        SaveManager.Instance.SwapInventorySlot(slotId, slotIndex, previousItemId);   // 인덱스 기반으로 교체
 
         SaveManager.Instance.SaveCurrentState();
         return TransactionResult.Success;
