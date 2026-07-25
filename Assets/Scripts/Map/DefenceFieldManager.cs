@@ -1,7 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -13,13 +11,15 @@ public class SpawnPair
 
 public class DefenceFieldManager : BaseDungeonController
 {
+    [Header("몬스터 및 아이템 스폰루트")]
+    [SerializeField] private Transform _monsterGroup;
+    [SerializeField] public GameObject _itemGroup;
+
     [SerializeField] private SpawnPair[] _spawnPairs;
     [SerializeField] private GameObject _defenceTarget;
-    [SerializeField] private Transform _monsterGroup;
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
-    [SerializeField]public GameObject _itemGroup;
 
     public static event Action OnClearField;
     public static event Action OnFailField;
