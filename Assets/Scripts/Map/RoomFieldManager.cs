@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.XR.OpenVR;
 using UnityEngine;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class RoomFieldManager : BaseDungeonController
-{ 
+{
+    [Header("몬스터 및 아이템 스폰루트")]
     [SerializeField] private Transform _monsterGroupParent;
     [SerializeField] public GameObject _itemGroup;
-
 
     public static event Action OnClearField;
     public static event Action OnFailField;
@@ -149,26 +147,8 @@ public class RoomFieldManager : BaseDungeonController
         _isCleared = true;
         Debug.Log("룸 필드의 모든 몬스터를 처치했습니다! 필드 클리어!");
 
-        DungeonReward reward = CreateReward();
-
-        OnClearField?.Invoke();
-        InvokeCleared(reward);
-
         ClearDungeon();
     }
-
-    //private void HandleFieldFail()
-    //{
-    //    if (_isCleared || _isFailed)
-    //    {
-    //        return;
-    //    }
-
-    //    _isFailed = true;
-    //    Debug.Log("룸 필드 클리어 실패");
-
-    //    FailDungeon();
-    //}
 
     private void ClearDungeon()
     {

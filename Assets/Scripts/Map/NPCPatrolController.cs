@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System;
-using System.Collections.Generic;
 
 public class NPCPatrolController : MonoBehaviour
 {
+    [Header("NPC경로오브젝트")]
     [SerializeField] private Transform[] _waypoints;
+
     [SerializeField] private float _arrivalThreshold = 1f;
     [SerializeField] private float _detectRadius = 10f;
     [SerializeField] private string _monsterTag = "Monster";
     [SerializeField] private string _playerTag = "Player";
 
     public static event Action OnPatrolFinished;
+    public static event Action<int, int> OnWaypointChanged;
 
     private NavMeshAgent _navMeshAgent;
     private int _currentIndex = 0;
@@ -93,7 +95,9 @@ public class NPCPatrolController : MonoBehaviour
             _navMeshAgent.isStopped = false;
         }
         MoveToNextWaypoint();
-        Debug.Log("플레이어와의 상호작용으로 NPC 패트롤을 시작합니다.");
+        HandleWaypointChanged();
+
+        Debug.Log("플레이어 상호작용! NPC 패트롤을 시작합니다.");
     }
 
     private bool HasTargetInDetectRadius(string targetTag)
@@ -144,7 +148,18 @@ public class NPCPatrolController : MonoBehaviour
 
             _currentIndex++;
             MoveToNextWaypoint();
+            HandleWaypointChanged();
         }
+    }
+
+    private void HandleWaypointChanged()
+    {
+        if (_waypoints == null || _waypoints.Length == 0)
+        { 
+            return; 
+        }
+
+        OnWaypointChanged?.Invoke(_currentIndex + 1, _waypoints.Length);
     }
 
     private void OnTriggerEnter(Collider other)

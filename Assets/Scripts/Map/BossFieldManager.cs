@@ -12,34 +12,33 @@ public class BossSpawnPair
 
 public class BossFieldManager : BaseDungeonController
 {
-
-
     [Header("보스 설정")]
-    [SerializeField] private GameObject _dummyBossObejct;
+    [SerializeField] private GameObject _dummyBossPrefab;
     [SerializeField] private Transform _bossSpawnPoint;
     [SerializeField] private GameObject _bossPrefab;
-    [SerializeField] private float _countdownDuration = 5f;
+    [SerializeField] private float _countdownToStart = 5f;
 
     [Header("소환 반경 및 부모 설정")]
     [SerializeField] private float _spawnRadius = 5f;
-    [SerializeField] private Transform _monsterGroup;
+    [SerializeField] private Transform _monsterSpawnGroup;
 
     [Header("체력 구간별 소환 그룹 및 소환 포인트")]
-    [SerializeField] private Transform _group1SpawnPoint;
+    [SerializeField] private Transform _groupSpawnPoint1;
     [SerializeField] private List<BossSpawnPair> _group1SpawnPairs;
 
-    [SerializeField] private Transform _group2SpawnPoint;
+    [SerializeField] private Transform _groupSpawnPoint2;
     [SerializeField] private List<BossSpawnPair> _group2SpawnPairs;
 
-    [SerializeField] private Transform _group3SpawnPoint;
+    [SerializeField] private Transform _groupSpawnPoint3;
     [SerializeField] private List<BossSpawnPair> _group3SpawnPairs;
 
-    public static event Action OnBattleBossStartField;
+    public static event Action OnBossFieldBattleStart;
     public static event Action OnClearField;
     public static event Action OnFailField;
     public static event Action<string> OnStartField;
     public static event Action<float> OnCountdownChanged;
     public static event Action<int, int> OnBossHpChanged;
+    public static event Action<string> OnBossRecallMonster;
 
     private GameObject _spawnedBoss;
     private BossMonsterHealth _bossHealth;
@@ -79,9 +78,9 @@ public class BossFieldManager : BaseDungeonController
         OnStartField?.Invoke("BossBGM");
         Debug.Log("<color=cyan>[BossFieldManager] 보스 대기 중... NPC와 상호작용하여 전투를 시작하세요.</color>");
 
-        if (_dummyBossObejct !=  null)
+        if (_dummyBossPrefab !=  null)
         {
-            _dummyBossObejct.SetActive(true);
+            _dummyBossPrefab.SetActive(true);
         }
     }
 
@@ -99,9 +98,9 @@ public class BossFieldManager : BaseDungeonController
 
     private async UniTaskVoid StartBossFieldSequence()
     {
-        OnBattleBossStartField?.Invoke();
+        OnBossFieldBattleStart?.Invoke();
 
-        float remainingTime = _countdownDuration;
+        float remainingTime = _countdownToStart;
         while (remainingTime > 0f)
         {
             if (_isCleared || _isFailed)
@@ -137,16 +136,16 @@ public class BossFieldManager : BaseDungeonController
             return;
         }
 
-        if (_dummyBossObejct != null)
+        if (_dummyBossPrefab != null)
         {
-            Destroy(_dummyBossObejct);
+            Destroy(_dummyBossPrefab);
         }
 
         _spawnedBoss = Instantiate(_bossPrefab, _bossSpawnPoint.position, _bossSpawnPoint.rotation);
 
-        if (_monsterGroup != null)
+        if (_monsterSpawnGroup != null)
         {
-            _spawnedBoss.transform.SetParent(_monsterGroup);
+            _spawnedBoss.transform.SetParent(_monsterSpawnGroup);
         }
 
         _bossHealth = _spawnedBoss.GetComponent<BossMonsterHealth>();
@@ -175,19 +174,19 @@ public class BossFieldManager : BaseDungeonController
         if (hpPercentage <= 75f && !_isSpawnGroup1)
         {
             _isSpawnGroup1 = true;
-            SpawnMonsterGroup(_group1SpawnPoint, _group1SpawnPairs, "그룹 1 (75% 구간)");
+            SpawnMonsterGroup(_groupSpawnPoint1, _group1SpawnPairs, "그룹 1 (75% 구간)");
         }
 
         if (hpPercentage <= 50f && !_isSpawnGroup2)
         {
             _isSpawnGroup2 = true;
-            SpawnMonsterGroup(_group2SpawnPoint, _group2SpawnPairs, "그룹 2 (50% 구간)");
+            SpawnMonsterGroup(_groupSpawnPoint2, _group2SpawnPairs, "그룹 2 (50% 구간)");
         }
 
         if (hpPercentage <= 25f && !_isSpawnGroup3)
         {
             _isSpawnGroup3 = true;
-            SpawnMonsterGroup(_group3SpawnPoint, _group3SpawnPairs, "그룹 3 (25% 구간)");
+            SpawnMonsterGroup(_groupSpawnPoint3, _group3SpawnPairs, "그룹 3 (25% 구간)");
         }
     }
 
@@ -199,6 +198,7 @@ public class BossFieldManager : BaseDungeonController
             return;
         }
 
+        OnBossRecallMonster?.Invoke("Boss_RecallMonster");
         Debug.Log($"<color=orange>[BossFieldManager] 보스 체력 조건 달성! {groupName} 몬스터들을 소환합니다.</color>");
 
         foreach (var pair in spawnPairs)
@@ -209,9 +209,16 @@ public class BossFieldManager : BaseDungeonController
                 Vector3 spawnPosition = baseSpawnPoint.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
 
                 GameObject monsterInstance = Instantiate(pair.MonsterPrefab, spawnPosition, baseSpawnPoint.rotation);
-                if (_monsterGroup != null)
+                
+                MonsterHealth monsterHealth = monsterInstance.GetComponent<MonsterHealth>();
+                if (monsterHealth != null)
                 {
-                    monsterInstance.transform.SetParent(_monsterGroup);
+                    monsterHealth.DisableItemDrop();
+                }
+                
+                if (_monsterSpawnGroup != null)
+                {
+                    monsterInstance.transform.SetParent(_monsterSpawnGroup);
                 }
             }
         }

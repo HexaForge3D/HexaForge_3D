@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 public class NPCEscortFieldManager : BaseDungeonController
 {
+    [Header("호위목표NPC")]
     [SerializeField] private NPCPatrolController _npcPatrolController;
+
+    [Header("몬스터 및 아이템 스폰루트")]
+    [SerializeField] private Transform _monsterGroup;
     [SerializeField] public GameObject _itemGroup;
 
     public static event Action OnClearField;
