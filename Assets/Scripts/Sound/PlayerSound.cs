@@ -25,4 +25,9 @@ public class PlayerSound : MonoBehaviour
     {
         SoundManager.Instance.PlaySFXSound("Player_Level_Up_Sound", 1f, false);
     }
+
+    public void PlayerReviveSound()
+    {
+        SoundManager.Instance.PlaySFXSound("Player_Revive_Sound", 1f, false);
+    }
 }
