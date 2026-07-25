@@ -30,6 +30,8 @@ public class MonsterHealth : MonoBehaviour
     private static bool isInitializingCache = false;
 
     private CancellationTokenSource _cts;
+    // 보스레이드에서 사용되는지 확인하는 변수
+    private bool _isBossMinion = false;
 
     private void OnEnable()
     {
@@ -80,6 +82,11 @@ public class MonsterHealth : MonoBehaviour
         {
             Debug.LogError("아이템 데이터를 불러오지 못했습니다.");
         }
+    }
+
+    public void DisableItemDrop()
+    {
+        _isBossMinion = true;
     }
 
     public void TakeDamage(int damageAmount)
@@ -136,6 +143,11 @@ public class MonsterHealth : MonoBehaviour
     {
         int randomGold = UnityEngine.Random.Range(minGold, maxGold + 1);
         OnMonsterMoney?.Invoke(randomGold);
+
+        if (_isBossMinion)
+        {
+            return;
+        }
 
         if (droppableItemsCache != null && droppableItemsCache.Count > 0)
         {
