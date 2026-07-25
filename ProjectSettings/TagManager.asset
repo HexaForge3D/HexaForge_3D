@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Monster
   - PlayerCamera
+  - Dirt
+  - Stone
   layers:
   - Default
   - TransparentFX
