@@ -145,6 +145,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99895e54d60fb3440a76a1591dc1eb26
+    m_Address: Popup_Help
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9c336dee3b1af6e4ba542a7bedb2e0ab
     m_Address: Map_Village
     m_ReadOnly: 0
