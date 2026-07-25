@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public enum TransactionResult
@@ -108,6 +109,8 @@ public class SaveManager : BaseMonoManager<SaveManager>
             Slots = new List<InventorySlotSaveData>()
         };
 
+        EnsureInventorySize(slot);
+
         slot.Equipped = new EquippedItemsSaveData();
 
         slot.Skills = new SkillSaveData
@@ -191,25 +194,29 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return -1;
     }
 
-    private InventorySlotSaveData FindInventorySlot(CharacterSaveData slot, string itemId)
-    {
-        foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
-        {
-            if (invSlot.ItemId == itemId) return invSlot;
-
-        }
-
-        return null;
-    }
-
     private InventorySlotSaveData FindAvailableInventorySlot(CharacterSaveData slot, string itemId, int maxStack)
     {
         foreach (InventorySlotSaveData invSlot in slot.Inventory.Slots)
         {
-            if (invSlot.ItemId == itemId && invSlot.Count < maxStack) return invSlot;
+            if (IsEmptySlot(invSlot) == false && invSlot.ItemId == itemId && invSlot.Count < maxStack)
+            {
+                return invSlot;
+            }
+        }
+        return null;
+    }
+
+    private int FindEmptySlotIndex(List<InventorySlotSaveData> slots)
+    {
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (IsEmptySlot(slots[i]))
+            {
+                return i;
+            }
         }
 
-        return null;
+        return -1;
     }
 
 
@@ -235,6 +242,15 @@ public class SaveManager : BaseMonoManager<SaveManager>
     {
         string json = File.ReadAllText(GetPath());
         SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+        foreach (CharacterSaveData slot in data.Slots)
+        {
+            if (slot.IsEmpty == false)
+            {
+                EnsureInventorySize(slot);
+            }
+        }
+
         Debug.Log($"[SaveManager] 세이브 로드 완료: {GetPath()}");
         return data;
     }
@@ -325,6 +341,11 @@ public class SaveManager : BaseMonoManager<SaveManager>
     }
 
     // 시스템 메세지로 문구를 띄울 메서드 모음
+    private bool IsEmptySlot(InventorySlotSaveData slot)
+    {
+        return slot == null || string.IsNullOrEmpty(slot.ItemId);
+    }
+
     public TransactionResult AddItem(string slotId, string itemId, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
@@ -341,45 +362,43 @@ public class SaveManager : BaseMonoManager<SaveManager>
             return TransactionResult.ItemNotFound;
         }
 
-        if (slot.Inventory == null)
-        {
-            slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
-        }
+        EnsureInventorySize(slot);
 
         int remaining = count;
 
-        while (remaining > 0)
+        for (int i = 0; i < slot.Inventory.Slots.Count && remaining > 0; i++)
         {
-            InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+            InventorySlotSaveData existing = slot.Inventory.Slots[i];
 
-            if (existingSlot != null)
+            if (IsEmptySlot(existing) == false && existing.ItemId == itemId && existing.Count < itemMaster.MaxStack)
             {
-
-                int availableSpace = itemMaster.MaxStack - existingSlot.Count;
+                int availableSpace = itemMaster.MaxStack - existing.Count;
                 int addAmount = Mathf.Min(availableSpace, remaining);
 
-                existingSlot.Count += addAmount;
+                existing.Count += addAmount;
                 remaining -= addAmount;
             }
+        }
 
-            else
+        for (int i = 0; i < slot.Inventory.Slots.Count && remaining > 0; i++)
+        {
+            if (IsEmptySlot(slot.Inventory.Slots[i]))
             {
-                if (slot.Inventory.Slots.Count >= MaxInventorySlots)
-                {
-                    SaveToFile(CurrentSaveData);
-                    return TransactionResult.InventoryFull;
-                }
-
                 int addAmount = Mathf.Min(itemMaster.MaxStack, remaining);
 
-                slot.Inventory.Slots.Add(new InventorySlotSaveData
+                slot.Inventory.Slots[i] = new InventorySlotSaveData
                 {
                     ItemId = itemId,
                     Count = addAmount
-                });
+                };
 
                 remaining -= addAmount;
             }
+        }
+
+        if (remaining > 0)
+        {
+            return TransactionResult.InventoryFull;
         }
 
         SaveToFile(CurrentSaveData);
@@ -407,19 +426,9 @@ public class SaveManager : BaseMonoManager<SaveManager>
             return TransactionResult.NotEnoughGold;
         }
 
-        if (slot.Inventory == null)
-        {
-            slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
-        }
+        EnsureInventorySize(slot);
 
         InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
-
-        if (existingSlot == null && slot.Inventory.Slots.Count >= MaxInventorySlots)
-        {
-            return TransactionResult.InventoryFull;
-        }
-
-        slot.Gold -= itemMaster.Price;
 
         if (existingSlot != null)
         {
@@ -427,45 +436,64 @@ public class SaveManager : BaseMonoManager<SaveManager>
         }
         else
         {
-            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            int emptyIndex = FindEmptySlotIndex(slot.Inventory.Slots);
+
+            if (emptyIndex == -1)
+            {
+                return TransactionResult.InventoryFull;
+            }
+
+            slot.Inventory.Slots[emptyIndex] = new InventorySlotSaveData
             {
                 ItemId = itemId,
                 Count = 1
-            });
+            };
         }
+
+        slot.Gold -= itemMaster.Price;
 
         SaveToFile(CurrentSaveData);
         return TransactionResult.Success;
     }
 
-    public TransactionResult SellItem(string slotId, string itemId, int count)
+    public TransactionResult SellItem(string slotId, int slotIndex, int count)
     {
         CharacterSaveData slot = FindSlot(slotId);
 
-        if (slot == null)
+        if (slot == null || slot.Inventory == null)
         {
             return TransactionResult.SlotNotFound;
         }
 
-        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(itemId);
+        if (slotIndex < 0 || slotIndex >= slot.Inventory.Slots.Count)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        InventorySlotSaveData targetSlot = slot.Inventory.Slots[slotIndex];
+
+        if (IsEmptySlot(targetSlot))
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(targetSlot.ItemId);
 
         if (itemMaster == null)
         {
             return TransactionResult.ItemNotFound;
         }
 
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
-
-        if (existingSlot == null || existingSlot.Count < count)
+        if (targetSlot.Count < count)
         {
             return TransactionResult.NotEnoughItems;
         }
 
-        existingSlot.Count -= count;
+        targetSlot.Count -= count;
 
-        if (existingSlot.Count <= 0)
+        if (targetSlot.Count <= 0)
         {
-            slot.Inventory.Slots.Remove(existingSlot);
+            slot.Inventory.Slots[slotIndex] = new InventorySlotSaveData { ItemId = "", Count = 0 };
         }
 
         int sellPrice = Mathf.FloorToInt(itemMaster.Price * SellPriceRatio) * count;
@@ -479,27 +507,61 @@ public class SaveManager : BaseMonoManager<SaveManager>
     {
         CharacterSaveData slot = FindSlot(slotId);
 
-        if (slot == null)
+        if (slot == null || slot.Inventory == null)
         {
             return TransactionResult.SlotNotFound;
         }
 
-        InventorySlotSaveData existingSlot = FindInventorySlot(slot, itemId);
+        int remaining = count;
 
-        if (existingSlot == null || existingSlot.Count < count)
+        for (int i = 0; i < slot.Inventory.Slots.Count && remaining > 0; i++)
+        {
+            InventorySlotSaveData existing = slot.Inventory.Slots[i];
+
+            if (IsEmptySlot(existing) == false && existing.ItemId == itemId)
+            {
+                int removeAmount = Mathf.Min(existing.Count, remaining);
+                existing.Count -= removeAmount;
+                remaining -= removeAmount;
+
+                if (existing.Count <= 0)
+                {
+                    slot.Inventory.Slots[i] = new InventorySlotSaveData { ItemId = "", Count = 0 };
+                }
+            }
+        }
+
+        if (remaining > 0)
         {
             return TransactionResult.NotEnoughItems;
         }
 
-        existingSlot.Count -= count;
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
 
-        if (existingSlot.Count <= 0)
+    public TransactionResult RemoveItemAtSlot(string slotId, int slotIndex)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Inventory == null)
         {
-            slot.Inventory.Slots.Remove(existingSlot);
+            return TransactionResult.SlotNotFound;
         }
 
-        SaveToFile(CurrentSaveData);
+        if (slotIndex < 0 || slotIndex >= slot.Inventory.Slots.Count)
+        {
+            return TransactionResult.ItemNotFound;
+        }
 
+        if (slot.Inventory.Slots[slotIndex] == null)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        slot.Inventory.Slots[slotIndex] = null;
+
+        SaveToFile(CurrentSaveData);
         return TransactionResult.Success;
     }
 
@@ -536,6 +598,95 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return TransactionResult.Success;
     }
 
+    public TransactionResult MoveOrMergeInventorySlot(string slotId, int fromIndex, int toIndex)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Inventory == null)
+        {
+            return TransactionResult.SlotNotFound;
+        }
+
+        List<InventorySlotSaveData> slots = slot.Inventory.Slots;
+
+        if (fromIndex < 0 || fromIndex >= MaxInventorySlots || toIndex < 0 || toIndex >= MaxInventorySlots)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        InventorySlotSaveData fromSlot = slots[fromIndex];
+
+        if (IsEmptySlot(fromSlot))
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        InventorySlotSaveData toSlot = slots[toIndex];
+
+        if (IsEmptySlot(toSlot))
+        {
+            slots[toIndex] = fromSlot;
+            slots[fromIndex] = new InventorySlotSaveData { ItemId = "", Count = 0 };
+        }
+        else
+        {
+            ItemTableData itemMaster = GameDataManager.Instance.GetData<ItemTableData>(fromSlot.ItemId);
+
+            if (fromSlot.ItemId == toSlot.ItemId && itemMaster != null)
+            {
+                int availableSpace = itemMaster.MaxStack - toSlot.Count;
+                int moveAmount = Mathf.Min(availableSpace, fromSlot.Count);
+
+                toSlot.Count += moveAmount;
+                fromSlot.Count -= moveAmount;
+
+                if (fromSlot.Count <= 0)
+                {
+                    slots[fromIndex] = new InventorySlotSaveData { ItemId = "", Count = 0 };
+                }
+            }
+            else
+            {
+                slots[fromIndex] = toSlot;
+                slots[toIndex] = fromSlot;
+            }
+        }
+
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
+
+    public TransactionResult SwapInventorySlot(string slotId, int slotIndex, string newItemId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Inventory == null)
+        {
+            return TransactionResult.SlotNotFound;
+        }
+
+        if (slotIndex < 0 || slotIndex >= slot.Inventory.Slots.Count)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        if (string.IsNullOrEmpty(newItemId) == false)
+        {
+            slot.Inventory.Slots[slotIndex] = new InventorySlotSaveData
+            {
+                ItemId = newItemId,
+                Count = 1
+            };
+        }
+        else
+        {
+            slot.Inventory.Slots[slotIndex] = new InventorySlotSaveData { ItemId = "", Count = 0 };
+        }
+
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
+
     public void AddGold(string slotId, int amount)
     {
         CharacterSaveData slot = FindSlot(slotId);
@@ -557,6 +708,19 @@ public class SaveManager : BaseMonoManager<SaveManager>
             case TransactionResult.SlotNotFound: return "Character not found.";
             case TransactionResult.LevelNotEnough: return "Level is not Enough.";
             default: return null;
+        }
+    }
+
+    private void EnsureInventorySize(CharacterSaveData slot)
+    {
+        if (slot.Inventory == null)
+        {
+            slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
+        }
+
+        while (slot.Inventory.Slots.Count < MaxInventorySlots)
+        {
+            slot.Inventory.Slots.Add(new InventorySlotSaveData { ItemId = "", Count = 0 });
         }
     }
 }

@@ -11,8 +11,9 @@ public class InventoryItemData
     public int Price { get; private set; }
     public int Count { get; private set; }
     public string UseSFXName { get; private set; }
+    public int SlotIndex { get; private set; }
 
-    public InventoryItemData(ItemData item, int count)
+    public InventoryItemData(ItemData item, int count, int slotIndex)
     {
         Id = item.Id;
         Name = item.Name;
@@ -23,5 +24,6 @@ public class InventoryItemData
         Price = item.Price;
         Count = count;
         UseSFXName = item.UseSFXName;
+        SlotIndex = slotIndex;
     }
 }

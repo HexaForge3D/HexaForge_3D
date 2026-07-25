@@ -17,6 +17,8 @@ public class InventoryView : BaseOverLayUI
     public Action<InventoryItemData, int> OnSellRequested;
     public Action<InventoryItemData> OnEquipRequested;
     public Action<InventoryItemData> OnUseRequested;
+    public Action<int, int> OnSlotDropped;
+    public Action<int> OnDiscardRequested;
 
     private void OnDisable()
     {
@@ -41,16 +43,17 @@ public class InventoryView : BaseOverLayUI
 
     private void BuildSlots()
     {
-        Debug.Log("[InventoryView] Refresh() 호출됨");
         ClearSlot();
 
         List<InventoryItemData> slots = _viewModel.GetInventorySlots(SlotCount);
 
-        foreach (InventoryItemData slotData in slots)
+        for (int i = 0; i < slots.Count; i++)
         {
+            InventoryItemData slotData = slots[i];
+
             GameObject slotObject = Instantiate(Prefab_InventorySlot, Transform_SlotParent);
             InventorySlotView slotView = slotObject.GetComponent<InventorySlotView>();
-            slotView.Setup(slotData, RequestSell, RequestEquip, RequestUse);
+            slotView.Setup(slotData, RequestSell, RequestEquip, RequestUse, RequestSlotDrop, RequestDiscard, i);
 
             if (slotData != null)
             {
@@ -82,6 +85,16 @@ public class InventoryView : BaseOverLayUI
     private void RequestUse(InventoryItemData data)
     {
         OnUseRequested?.Invoke(data);
+    }
+
+    private void RequestSlotDrop(int fromIndex, int toIndex)
+    {
+        OnSlotDropped?.Invoke(fromIndex, toIndex);
+    }
+
+    private void RequestDiscard(int slotIndex)
+    {
+        OnDiscardRequested?.Invoke(slotIndex);
     }
 
     private void ClearSlot()

@@ -9,8 +9,9 @@ public class GameFlowManager
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
-    private string _pendingSellItemId;
+    private int _pendingSellSlotIndex;
     private int _pendingSellCount;
+    private int _pendingDiscardSlotIndex;
     private Portal _pendingReturnPortal;
 
     public async UniTask StartAsync()
@@ -94,7 +95,7 @@ public class GameFlowManager
 
     private void OnInventorySellRequested(InventoryItemData data, int count)
     {
-        _pendingSellItemId = data.Id;
+        _pendingSellSlotIndex = data.SlotIndex;
         _pendingSellCount = count;
 
         int totalPrice = Mathf.FloorToInt(data.Price * SaveManager.SellPriceRatio) * count;
@@ -105,6 +106,12 @@ public class GameFlowManager
         ShowConfirmAsync(message, OnSellConfirmed, sellSoundName).Forget();
     }
 
+    private void OnInventoryDiscardRequested(int slotIndex)
+    {
+        _pendingDiscardSlotIndex = slotIndex;
+        ShowConfirmAsync("Discard this item?", OnDiscardConfirmed, "Click_Sound").Forget();
+    }
+
     private void OnCreateCharacterRequested(string slotId)
     {
         ShowCharacterCreateAsync(slotId).Forget();
@@ -112,7 +119,7 @@ public class GameFlowManager
 
     private void OnInventoryEquipRequested(InventoryItemData data)
     {
-        TransactionResult result = EquipmentManager.Instance.EquipItem(_currentSlotId, data.Id);
+        TransactionResult result = EquipmentManager.Instance.EquipItem(_currentSlotId, data.Id, data.SlotIndex);
 
         if (result == TransactionResult.Success)
         {
@@ -265,7 +272,7 @@ public class GameFlowManager
 
     private void OnSellConfirmed()
     {
-        TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellItemId, _pendingSellCount);
+        TransactionResult result = SaveManager.Instance.SellItem(_currentSlotId, _pendingSellSlotIndex, _pendingSellCount);
 
         if (result == TransactionResult.Success)
         {
@@ -507,6 +514,28 @@ public class GameFlowManager
         shopView?.RefreshGold();
     }
 
+    private void OnInventorySlotDropped(int fromIndex, int toIndex)
+    {
+        TransactionResult result = SaveManager.Instance.MoveOrMergeInventorySlot(_currentSlotId, fromIndex, toIndex);
+
+        if (result == TransactionResult.Success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
+    private void OnDiscardConfirmed()
+    {
+        TransactionResult result = SaveManager.Instance.RemoveItemAtSlot(_currentSlotId, _pendingDiscardSlotIndex);
+
+        if (result == TransactionResult.Success)
+        {
+            InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
+            inventoryView?.Refresh();
+        }
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -724,6 +753,12 @@ public class GameFlowManager
 
         view.OnUseRequested -= OnInventoryUseRequested;
         view.OnUseRequested += OnInventoryUseRequested;
+
+        view.OnSlotDropped -= OnInventorySlotDropped;
+        view.OnSlotDropped += OnInventorySlotDropped;
+
+        view.OnDiscardRequested -= OnInventoryDiscardRequested;
+        view.OnDiscardRequested += OnInventoryDiscardRequested;
 
         view.BindViewModel(viewModel);
     }

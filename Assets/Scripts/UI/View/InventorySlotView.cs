@@ -5,17 +5,23 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlotView : MonoBehaviour, IPointerClickHandler
+public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     [SerializeField] private Image Image_Icon;
     [SerializeField] private TMP_Text Text_Count;
-    [SerializeField] private Image Image_CoolDownOverlay; 
+    [SerializeField] private Image Image_CoolDownOverlay;
     [SerializeField] private TooltipTrigger TooltipTrigger;
 
     private InventoryItemData _data;
     private Action<InventoryItemData, int> _onSellRequested;
     private Action<InventoryItemData> _onEquipRequested;
     private Action<InventoryItemData> _onUseRequested;
+    private Action<int, int> _onSlotDropped;
+    private Action<int> _onDiscardRequested;
+
+    private int _slotIndex;  
+    private static InventorySlotView _draggedSlot; 
+    private GameObject _dragIcon; 
 
     private float _coolDownRemaining;
     private float _coolDownDuration;
@@ -33,12 +39,15 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested, Action<InventoryItemData> onUseRequested)
+    public void Setup(InventoryItemData data, Action<InventoryItemData, int> onSellRequested, Action<InventoryItemData> onEquipRequested, Action<InventoryItemData> onUseRequested, Action<int, int> onSlotDropped, Action<int> onDiscardRequested, int slotIndex)
     {
         _data = data;
         _onSellRequested = onSellRequested;
         _onEquipRequested = onEquipRequested;
         _onUseRequested = onUseRequested;
+        _onSlotDropped = onSlotDropped;
+        _onDiscardRequested = onDiscardRequested;
+        _slotIndex = slotIndex;
 
         Image_CoolDownOverlay.gameObject.SetActive(false);
 
@@ -115,16 +124,6 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if (_coolDownRemaining > 0f)
-        {
-            return;
-        }
-
-        if (!string.IsNullOrEmpty(_data.UseSFXName))
-        {
-            SoundManager.Instance.PlaySFXSound(_data.UseSFXName);
-        }
-
         if (_data.UsageType == ItemUsageType.Equipment)
         {
             _onEquipRequested?.Invoke(_data);
@@ -133,6 +132,81 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler
         {
             _onUseRequested?.Invoke(_data);
         }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (_data == null) return;
+
+        _draggedSlot = this;
+
+        Color color = Image_Icon.color;
+        color.a = 0.3f;
+        Image_Icon.color = color;
+
+        Transform dragParent = UIManager.Instance.DragLayerCanvas != null
+            ? UIManager.Instance.DragLayerCanvas.transform
+            : transform.root;
+
+        _dragIcon = new GameObject("DragIcon");
+        _dragIcon.transform.SetParent(dragParent);
+        _dragIcon.transform.SetAsLastSibling();
+
+        Image dragImage = _dragIcon.AddComponent<Image>();
+        dragImage.sprite = Image_Icon.sprite;
+        dragImage.raycastTarget = false;
+
+        RectTransform dragRect = _dragIcon.GetComponent<RectTransform>();
+        dragRect.sizeDelta = Image_Icon.rectTransform.rect.size;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (_dragIcon != null)
+        {
+            _dragIcon.transform.position = eventData.position;
+        }
+        else
+        {
+            Debug.LogWarning("[InventorySlotView] OnDrag - _dragIcon이 null입니다!");
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Color color = Image_Icon.color;
+        color.a = 1f;
+        Image_Icon.color = color;
+
+        bool droppedOnValidTarget = eventData.pointerEnter != null && eventData.pointerEnter.GetComponentInParent<InventorySlotView>() != null;
+
+        if (droppedOnValidTarget == false && _data != null)
+        {
+            _onDiscardRequested?.Invoke(_slotIndex);
+        }
+
+        if (_dragIcon != null)
+        {
+            Destroy(_dragIcon);
+        }
+
+        _draggedSlot = null;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (_draggedSlot == null || _draggedSlot == this)
+        {
+            return;
+        }
+
+        if (_draggedSlot._dragIcon != null) 
+        {
+            Destroy(_draggedSlot._dragIcon);
+            _draggedSlot._dragIcon = null;
+        }
+
+        _onSlotDropped?.Invoke(_draggedSlot._slotIndex, _slotIndex);
     }
 
     public void StartCoolDown(float duration)
