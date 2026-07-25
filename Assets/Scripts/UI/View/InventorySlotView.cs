@@ -152,12 +152,24 @@ public class InventorySlotView : MonoBehaviour, IPointerClickHandler, IBeginDrag
         _dragIcon.transform.SetParent(dragParent);
         _dragIcon.transform.SetAsLastSibling();
 
+        RectTransform dragRect = _dragIcon.AddComponent<RectTransform>();
+        dragRect.sizeDelta = Image_Icon.rectTransform.rect.size;
+
         Image dragImage = _dragIcon.AddComponent<Image>();
         dragImage.sprite = Image_Icon.sprite;
         dragImage.raycastTarget = false;
 
-        RectTransform dragRect = _dragIcon.GetComponent<RectTransform>();
-        dragRect.sizeDelta = Image_Icon.rectTransform.rect.size;
+        if (Text_Count.gameObject.activeSelf) 
+        {
+            TMP_Text dragText = Instantiate(Text_Count, _dragIcon.transform);  
+            dragText.raycastTarget = false;
+
+            RectTransform textRect = dragText.rectTransform;
+            textRect.anchorMin = new Vector2(1f, 0f);
+            textRect.anchorMax = new Vector2(1f, 0f);
+            textRect.pivot = new Vector2(1f, 0f);
+            textRect.anchoredPosition = Vector2.zero;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
