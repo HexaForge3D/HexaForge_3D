@@ -209,6 +209,13 @@ public class BossFieldManager : BaseDungeonController
                 Vector3 spawnPosition = baseSpawnPoint.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
 
                 GameObject monsterInstance = Instantiate(pair.MonsterPrefab, spawnPosition, baseSpawnPoint.rotation);
+                
+                MonsterHealth monsterHealth = monsterInstance.GetComponent<MonsterHealth>();
+                if (monsterHealth != null)
+                {
+                    monsterHealth.DisableItemDrop();
+                }
+                
                 if (_monsterSpawnGroup != null)
                 {
                     monsterInstance.transform.SetParent(_monsterSpawnGroup);
