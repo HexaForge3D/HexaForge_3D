@@ -64,6 +64,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayBGM(AudioClip bgmclip, float volume = 1f)
     {
+        if (SoundManager.Instance == null) return;
         if (_bgmSource.clip == bgmclip) return;
         _bgmSource.volume = volume;
         _bgmSource.clip = bgmclip;
@@ -73,6 +74,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayUI(AudioClip uiclip, float volume = 1f)
     {
+        if (SoundManager.Instance == null) return;
         if (uiclip == null) return;
         _uiSource.PlayOneShot(uiclip, volume);
     }
@@ -131,6 +133,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlaySFX(AudioClip sfxclip, float volume = 1f, bool useRandomPitch = false)
     {
+        if (SoundManager.Instance == null) return;
         if (sfxclip == null) return;
         {
             _sfxSource.pitch = useRandomPitch ? Random.Range(0.9f, 1f) : 1f;
@@ -152,6 +155,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip, Transform targetTransform,float volume = 1f, bool useRandomPitch = false)
     {
+        if (SoundManager.Instance == null) return;
         if (clip == null) return;
 
         GameObject tempAudioObj = new GameObject($"TempSFX_{clip.name}");
