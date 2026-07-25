@@ -221,7 +221,7 @@
   },
   {
     "ID": "Item_EnhancementScroll",
-    "Name": "EnhancementScroll",
+    "Name": "Enhancement Scroll",
     "Description": "EnhancementScroll",
     "IconAddress": "Material[Material_EnhancementScroll]",
     "MaxStack": 99,
@@ -232,7 +232,7 @@
   {
     "ID": "Item_LeatherPiece",
     "Name": "LeatherPiece",
-    "Description": "LeatherPiece",
+    "Description": "Leather Piece",
     "IconAddress": "Material[Material_LeatherPiece]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -242,7 +242,7 @@
   {
     "ID": "Item_IronIngot",
     "Name": "IronIngot",
-    "Description": "IronIngot",
+    "Description": "Iron Ingot",
     "IconAddress": "Material[Material_IronIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -251,7 +251,7 @@
   },
   {
     "ID": "Item_MithrilIngot",
-    "Name": "MithrilIngot",
+    "Name": "Mithril Ingot",
     "Description": "MithrilIngot",
     "IconAddress": "Material[Material_MithrilIngot]",
     "MaxStack": 99,
@@ -261,7 +261,7 @@
   },
   {
     "ID": "Item_MysteriousPowder",
-    "Name": "MysteriousPowder",
+    "Name": "Mysterious Powder",
     "Description": "MysteriousPowder",
     "IconAddress": "Material[Material_MysteriousPowder]",
     "MaxStack": 99,
@@ -271,7 +271,7 @@
   },
   {
     "ID": "Item_OilofBlessing",
-    "Name": "OilofBlessing",
+    "Name": "Oil of Blessing",
     "Description": "OilofBlessing",
     "IconAddress": "Material[Material_OilofBlessing]",
     "MaxStack": 99,
