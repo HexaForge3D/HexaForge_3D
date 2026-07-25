@@ -391,7 +391,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5544361883394102867}
@@ -431,6 +431,7 @@ MonoBehaviour:
   _levelUpEffect: {fileID: 7703096485356862085}
   Text_NickName: {fileID: 606579349450424045}
   NicknameAnchor: {fileID: 2531479432149697088}
+  _playerSound: {fileID: 0}
 --- !u!114 &7931147197493547932
 MonoBehaviour:
   m_ObjectHideFlags: 0

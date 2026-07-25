@@ -28,8 +28,6 @@ public class MonsterHealth : MonoBehaviour
 
     private static List<ItemTableData> droppableItemsCache = null;
     private static bool isInitializingCache = false;
-
-    private CancellationTokenSource _cts;
     // 보스레이드에서 사용되는지 확인하는 변수
     private bool _isBossMinion = false;
 
@@ -52,8 +50,7 @@ public class MonsterHealth : MonoBehaviour
             InitializeDroppableItemsAsync().Forget();
         }
 
-        _cts = new CancellationTokenSource();
-        RandomIdleSoundRoutine(_cts.Token).Forget();
+        RandomIdleSoundRoutine(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     private async UniTaskVoid InitializeDroppableItemsAsync()

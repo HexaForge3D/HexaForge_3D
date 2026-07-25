@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 2090872292623541214}
   - component: {fileID: -846091482888304853}
   m_Layer: 8
-  m_Name: LeatherBag
+  m_Name: LeatherPiece
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -309,8 +309,6 @@ GameObject:
   - component: {fileID: 2200533517169888366}
   - component: {fileID: 3670644339174469505}
   - component: {fileID: 5584407455975545539}
-  - component: {fileID: 5858063288842116809}
-  - component: {fileID: 2926206631448694719}
   m_Layer: 0
   m_Name: LeatherBag
   m_TagString: Untagged
@@ -390,42 +388,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5858063288842116809
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014205944271311640}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4900941637167043141, guid: 9fa892827b67b43868cce2b04ec1decd, type: 3}
---- !u!114 &2926206631448694719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4014205944271311640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79bc7e1a7a042cb4f9d998f228cb2c1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DroppedItem
-  Text_ItemName: {fileID: 5540033876512774790}
-  NameAnchor: {fileID: 2071113530713415753}
 --- !u!1 &5613311537677141285
 GameObject:
   m_ObjectHideFlags: 0
