@@ -16702,6 +16702,7 @@ MonoBehaviour:
   - ItemId: Item_IronSword
     Count: 1
   _npcPatrolController: {fileID: 8247241499568329226}
+  _monsterGroup: {fileID: 5571236329405468491}
   _itemGroup: {fileID: 3872847445261677635}
 --- !u!1 &3089512803287617897
 GameObject:
@@ -86976,13 +86977,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7491376220125168780}
   - {fileID: 2622478326768468787}
   - {fileID: 4328236486448956777}
   - {fileID: 2722820717916139491}
   - {fileID: 5571236329405468491}
   - {fileID: 3375428221849538419}
   - {fileID: 8681759210900364130}
-  - {fileID: 7491376220125168780}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8766546561538275954

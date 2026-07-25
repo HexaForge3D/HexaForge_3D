@@ -20592,23 +20592,23 @@ MonoBehaviour:
     Count: 1
   - ItemId: Item_SteelGloves
     Count: 1
-  _dummyBossObejct: {fileID: 4355416238702581507}
+  _dummyBossPrefab: {fileID: 4355416238702581507}
   _bossSpawnPoint: {fileID: 1522149228449314082}
   _bossPrefab: {fileID: 4414871117303439921, guid: 92782fcbbdcab4f4099ab4632ab6627a, type: 3}
-  _countdownDuration: 5
+  _countdownToStart: 5
   _spawnRadius: 5
-  _monsterGroup: {fileID: 629649624119771141}
-  _group1SpawnPoint: {fileID: 5245468860067867810}
+  _monsterSpawnGroup: {fileID: 629649624119771141}
+  _groupSpawnPoint1: {fileID: 5245468860067867810}
   _group1SpawnPairs:
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  _group2SpawnPoint: {fileID: 8786897743950560589}
+  _groupSpawnPoint2: {fileID: 8786897743950560589}
   _group2SpawnPairs:
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  _group3SpawnPoint: {fileID: 3897354176287780158}
+  _groupSpawnPoint3: {fileID: 3897354176287780158}
   _group3SpawnPairs:
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
