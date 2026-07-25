@@ -37,6 +37,10 @@ public class InGameView : BaseUI
     [SerializeField] private Image Image_BossHpBar;
     [SerializeField] private TMP_Text Text_BossHp;
 
+    [SerializeField] private GameObject Panel_EscortInfo;
+    [SerializeField] private Image Image_EscortProgressBar;
+    [SerializeField] private TMP_Text Text_EscortProgress;
+
     public Action OnCharacterInfoButtonClicked;
     public Action OnSkillButtonClicked;
     public Action OnInventoryButtonClicked;
@@ -61,6 +65,7 @@ public class InGameView : BaseUI
         Panel_MonsterCount.SetActive(false);
         Panel_DefenceInfo.SetActive(false);
         Panel_BossHp.SetActive(false);
+        Panel_EscortInfo.SetActive(false);
 
         Button_CharacterInfo.onClick.RemoveListener(OnClickCharacterInfo);
         Button_CharacterInfo.onClick.AddListener(OnClickCharacterInfo);
@@ -229,6 +234,7 @@ public class InGameView : BaseUI
         Panel_DefenceInfo.SetActive(false);
         Panel_MonsterCount.SetActive(false);
         Panel_BossHp.SetActive(false);
+        Panel_EscortInfo.SetActive(false);
 
         Text_Wave.text = "Waiting for Wave";
         Text_Countdown.text = string.Empty;
@@ -236,6 +242,8 @@ public class InGameView : BaseUI
         Text_TargetHp.text = string.Empty;
         Text_MonsterCount.text = "Ramain Monster : 12 / 12";
         Text_BossHp.text = string.Empty;
+        Image_EscortProgressBar.fillAmount = 0f;
+        Text_EscortProgress.text = string.Empty;
     }
 
     public void SetBossHp(int current, int max)
@@ -244,5 +252,15 @@ public class InGameView : BaseUI
         float ratio = max > 0 ? (float)current / max : 0f;
         Image_BossHpBar.fillAmount = ratio;
         Text_BossHp.text = $"{current} / {max}";
+    }
+
+    public void SetEscortProgress(int current, int total)
+    {
+        Panel_EscortInfo.SetActive(true);
+
+        float ratio = total > 0 ? (float)current / total : 0f;
+        Image_EscortProgressBar.fillAmount = ratio;
+
+        Text_EscortProgress.text = $"Escort Progress: {current} / {total}";
     }
 }
