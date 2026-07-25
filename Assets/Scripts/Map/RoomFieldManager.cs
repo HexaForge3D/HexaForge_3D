@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.XR.OpenVR;
 using UnityEngine;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class RoomFieldManager : BaseDungeonController
-{ 
+{
+    [Header("몬스터 및 아이템 스폰루트")]
     [SerializeField] private Transform _monsterGroupParent;
     [SerializeField] public GameObject _itemGroup;
-
 
     public static event Action OnClearField;
     public static event Action OnFailField;
