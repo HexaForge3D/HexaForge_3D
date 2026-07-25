@@ -503,6 +503,39 @@ public class SaveManager : BaseMonoManager<SaveManager>
         return TransactionResult.Success;
     }
 
+    public TransactionResult SwapInventorySlot(string slotId, string oldItemId, string newItemId)
+    {
+        CharacterSaveData slot = FindSlot(slotId);
+
+        if (slot == null || slot.Inventory == null)
+        {
+            return TransactionResult.SlotNotFound;
+        }
+
+        int index = slot.Inventory.Slots.FindIndex(s => s.ItemId == oldItemId);
+
+        if (index == -1)
+        {
+            return TransactionResult.ItemNotFound;
+        }
+
+        if (string.IsNullOrEmpty(newItemId) == false)
+        {
+            slot.Inventory.Slots[index] = new InventorySlotSaveData
+            {
+                ItemId = newItemId,
+                Count = 1
+            };
+        }
+        else
+        {
+            slot.Inventory.Slots.RemoveAt(index);
+        }
+
+        SaveToFile(CurrentSaveData);
+        return TransactionResult.Success;
+    }
+
     public void AddGold(string slotId, int amount)
     {
         CharacterSaveData slot = FindSlot(slotId);
