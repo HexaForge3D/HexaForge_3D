@@ -104,7 +104,7 @@ public class MapManager : MonoBehaviour
         }
 
         WarpPlayerToCurrentPortal(mapData);
-        
+
         OnStartField?.Invoke("VillageBGM");
 
         Debug.Log($"맵이 {mapData.Name}(으)로 변경되었습니다.");
@@ -174,6 +174,7 @@ public class MapManager : MonoBehaviour
     public void SetPlayer(Transform playerTransform)
     {
         _playerController = playerTransform.GetComponent<PlayerController>();
+
     }
 
     private void WarpPlayer(Vector3 targetPosition)
@@ -194,5 +195,14 @@ public class MapManager : MonoBehaviour
             }
             Debug.Log($"플레이어가 {targetPosition} 위치로 이동했습니다.");
         }
+    }
+    public string GetCurrentMapTag()
+    {
+        if (_currentMapInstance != null)
+        {
+            return _currentMapInstance.tag;
+        }
+
+        return "Grass";
     }
 }

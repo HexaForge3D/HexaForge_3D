@@ -11,6 +11,8 @@ public static class SpriteLoaderUtil
 
         Sprite sprite = await Addressables.LoadAssetAsync<Sprite>(iconAddress).ToUniTask();
 
+        if (target == null) return;
+
         if (sprite != null)
         {
             target.sprite = sprite;

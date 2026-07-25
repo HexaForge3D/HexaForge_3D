@@ -126,13 +126,18 @@ public class PlayerBattle : MonoBehaviour
         data.CurrentHp -= finalDamage;
         data.CurrentHp = Mathf.Max(0, data.CurrentHp);
 
+        SoundManager.Instance.PlaySFXSound("Player_TakeDamage_Sound", this.transform, 1f, true);
         Debug.Log($"<color=red>[플레이어 피격]</color> -{finalDamage} 데미지 (남은체력: {data.CurrentHp} / {data.Hp})");
         // 이벤트를 위한 내용
         OnHpChanged?.Invoke(data.CurrentHp, data.Hp);
 
         SaveManager.Instance.SaveCurrentState();
 
-        if (data.CurrentHp <= 0) Die();
+        if (data.CurrentHp <= 0)
+        {
+            Die();
+            SoundManager.Instance.PlaySFXSound("Player_Die_Sound", this.transform, 1f, true);
+        }
     }
 
     private void Die()

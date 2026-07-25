@@ -346,24 +346,40 @@ public class SaveManager : BaseMonoManager<SaveManager>
             slot.Inventory = new InventorySaveData { Slots = new List<InventorySlotSaveData>() };
         }
 
-        InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+        int remaining = count;
 
-        if (existingSlot != null)
+        while (remaining > 0)
         {
-            existingSlot.Count += count;
-        }
-        else
-        {
-            if (slot.Inventory.Slots.Count >= MaxInventorySlots)
+            InventorySlotSaveData existingSlot = FindAvailableInventorySlot(slot, itemId, itemMaster.MaxStack);
+
+            if (existingSlot != null)
             {
-                return TransactionResult.InventoryFull;
+
+                int availableSpace = itemMaster.MaxStack - existingSlot.Count;
+                int addAmount = Mathf.Min(availableSpace, remaining);
+
+                existingSlot.Count += addAmount;
+                remaining -= addAmount;
             }
 
-            slot.Inventory.Slots.Add(new InventorySlotSaveData
+            else
             {
-                ItemId = itemId,
-                Count = count
-            });
+                if (slot.Inventory.Slots.Count >= MaxInventorySlots)
+                {
+                    SaveToFile(CurrentSaveData);
+                    return TransactionResult.InventoryFull;
+                }
+
+                int addAmount = Mathf.Min(itemMaster.MaxStack, remaining);
+
+                slot.Inventory.Slots.Add(new InventorySlotSaveData
+                {
+                    ItemId = itemId,
+                    Count = addAmount
+                });
+
+                remaining -= addAmount;
+            }
         }
 
         SaveToFile(CurrentSaveData);

@@ -19,6 +19,7 @@ public class SystemMessageView : MonoBehaviour
 
     public void Show(string message)
     {
+        SoundManager.Instance.PlayUISound("Error_Sound");
         Debug.Log($"[SystemMessageView] Show 호출됨: '{message}', activeInHierarchy: {gameObject.activeInHierarchy}");
         ShowAsync(message).Forget();
     }
