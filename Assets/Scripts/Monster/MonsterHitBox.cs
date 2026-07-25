@@ -60,4 +60,12 @@ public class MonsterHitBox : MonoBehaviour
         }
         
     }
+
+    public void MonsterAttackSound()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFXSound("Monster_Attack_Sound", this.transform, 1f, true);
+        }
+    }
 }

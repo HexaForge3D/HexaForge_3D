@@ -14021,6 +14021,8 @@ MonoBehaviour:
   _rewardItems:
   - ItemId: Item_IronIngot
     Count: 55
+  _monsterGroup: {fileID: 8360525535724549069}
+  _itemGroup: {fileID: 1057827679499765391}
   _spawnPairs:
   - _spawnPoint: {fileID: 3051526789720710940}
     _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
@@ -14039,10 +14041,8 @@ MonoBehaviour:
   - _spawnPoint: {fileID: 7389017838871812992}
     _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
   _defenceTarget: {fileID: 148525882093162775}
-  _monsterGroup: {fileID: 8360525535724549069}
   _waveCount: 5
   _countdownDuration: 20
-  _itemGroup: {fileID: 1057827679499765391}
 --- !u!1 &3303121894424712445
 GameObject:
   m_ObjectHideFlags: 0
@@ -15207,7 +15207,7 @@ GameObject:
   - component: {fileID: 8300203432961432393}
   m_Layer: 0
   m_Name: Field_Defence
-  m_TagString: Untagged
+  m_TagString: Stone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

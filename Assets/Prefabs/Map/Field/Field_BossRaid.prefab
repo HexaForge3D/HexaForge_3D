@@ -960,7 +960,7 @@ GameObject:
   - component: {fileID: 2122880302566266012}
   m_Layer: 7
   m_Name: Field_BossRaid
-  m_TagString: Untagged
+  m_TagString: Dirt
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

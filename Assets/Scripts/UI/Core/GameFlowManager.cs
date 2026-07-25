@@ -375,6 +375,7 @@ public class GameFlowManager
     private void OnMinimapKeyPressed()
     {
         ToggleUI(UIType.MinimapPopup, ShowMinimap);
+        SoundManager.Instance.PlayUISound("MiniMap_Sound");
     }
 
     private void OnLackMana(string skillId)

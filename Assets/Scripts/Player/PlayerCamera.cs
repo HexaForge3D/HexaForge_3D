@@ -157,4 +157,12 @@ public class PlayerCamera : MonoBehaviour
         Gizmos.DrawLine(startPos + right * _checkRadius, endPos + right * _checkRadius);
         Gizmos.DrawLine(startPos - right * _checkRadius, endPos - right * _checkRadius);
     }
+
+    public void WarpToTarget()
+    {
+        if (Target == null) return;
+        transform.position = Target.transform.position + _offset;
+        transform.rotation = Quaternion.Euler(_cameraAngle);
+    }
+
 }
