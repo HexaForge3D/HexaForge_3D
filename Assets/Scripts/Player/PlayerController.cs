@@ -357,6 +357,9 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = targetPosition;
         }
+
+        PlayerCamera playerCamera = GameObject.FindGameObjectWithTag("PlayerCamera")?.GetComponent<PlayerCamera>();
+        playerCamera?.WarpToTarget();
     }
 
     public void FireAnimationTrigger(string animationName)
