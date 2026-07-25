@@ -60,6 +60,7 @@ public class GameFlowManager
         MonsterHealth.OnMonsterMoney -= OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem -= OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup -= OnItemPickup;
+        BossFieldManager.OnBossHpChanged -= OnBossHpChanged;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -83,12 +84,12 @@ public class GameFlowManager
     private void OnDeleteRequested(string slotId)
     {
         _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed,"Click_Sound").Forget();
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed, "Click_Sound").Forget();
     }
 
     private void OnQuitGameRequested()
     {
-        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed,"Click_Sound").Forget();
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed, "Click_Sound").Forget();
     }
 
     private void OnInventorySellRequested(InventoryItemData data, int count)
@@ -175,6 +176,11 @@ public class GameFlowManager
     {
         ShowSettingAsync().Forget();
     }
+    
+    private void OnHelpRequeted()
+    {
+        ShowHelpAsync().Forget();
+    }
 
 
     private void OnPortalInteracted(Portal portal)
@@ -185,15 +191,15 @@ public class GameFlowManager
         {
             if (portal.ParentMapName == "Village")
             {
-                
+
                 ShowHuntingAreaAsync().Forget();
                 return;
             }
 
-            HideDungeonInfoIfExists();
+            //HideDungeonInfoIfExists();
 
             _pendingReturnPortal = portal;
-            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed,"Click_Sound").Forget();
+            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed, "Click_Sound").Forget();
             return;
         }
 
@@ -227,7 +233,7 @@ public class GameFlowManager
         {
             case NPCId.Store:
                 ToggleUI(UIType.ShopUI, ShowShop);
-                    break;
+                break;
             case NPCId.Smithy:
                 Debug.Log("smithy 상호작용");
                 break;
@@ -345,7 +351,7 @@ public class GameFlowManager
 
     private void OnInventoryKeyPressed()
     {
-        ToggleUI(UIType.InventoryPopup, ShowInventory); 
+        ToggleUI(UIType.InventoryPopup, ShowInventory);
     }
 
     private void OnEscapeKeyPressed()
@@ -416,7 +422,7 @@ public class GameFlowManager
     private void OnWaveChanged(int current, int total)
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
-        inGameView?.SetWave(current, total);    
+        inGameView?.SetWave(current, total);
     }
 
     private void OnCountdownChanged(float remainingSeconds)
@@ -467,6 +473,8 @@ public class GameFlowManager
     {
         if (_pendingReturnPortal == null) return;
 
+        HideDungeonInfoIfExists();
+
         ChangeMapWithLoadingAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType, true).Forget();
         _pendingReturnPortal = null;
     }
@@ -513,7 +521,7 @@ public class GameFlowManager
 
     private async UniTask ShowCharacterSelectAsync()
     {
-        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI, useFullScreenLoading: false);
+        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI);
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
@@ -525,18 +533,28 @@ public class GameFlowManager
 
     private async UniTask ShowInGameAsync(PlayerData data)
     {
+        await UIManager.Instance.ShowLoadingAsync(false);
+
         PlayerTableData jobMaster = GameDataManager.Instance.GetData<PlayerTableData>(data.Job);
-        
+
         if (jobMaster == null)
         {
             Debug.LogError($"[GameFlowManager] {data.Job}에 대한 직업 마스터 데이터를 찾을 수 없습니다.");
+            UIManager.Instance.HideLoading();
             return;
         }
+
+        UIManager.Instance.HideLoading();
+
+        UniTask loadingTask = UIManager.Instance.ShowLoadingAsync(true);
+        UniTask minDisplayTask = UniTask.Delay(500);
+
+        await loadingTask;
 
         await MapManager.Instance.ChangeMapAsync("area_village");
         await PlayerSpawnManager.Instance.SpawnPlayerAsync(data, jobMaster.PrefabAddress);
 
-        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
+        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI);
 
         view.ResetEvasionSlot();
 
@@ -554,7 +572,7 @@ public class GameFlowManager
         view.OnInventoryButtonClicked += OnInventoryKeyPressed;
 
         view.OnSkillButtonClicked -= OnSkillTreeKeyPressed;
-        view.OnSkillButtonClicked += OnSkillTreeKeyPressed; 
+        view.OnSkillButtonClicked += OnSkillTreeKeyPressed;
 
         view.OnMinimapButtonClicked -= OnMinimapKeyPressed;
         view.OnMinimapButtonClicked += OnMinimapKeyPressed;
@@ -588,37 +606,50 @@ public class GameFlowManager
         MonsterHealth.OnMonsterMoney += OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup += OnItemPickup;
+        BossFieldManager.OnBossHpChanged += OnBossHpChanged;
+
+        await minDisplayTask;
+        UIManager.Instance.HideLoading();
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
     {
-        HideDungeonInfoIfExists();
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        bool isRequiredLevel = MapManager.Instance.CheckRequiredLevelForDungeon(mapId);
-
-        if (isRequiredLevel == false)
+        try
         {
-            //[TODO] 레벨부족 메시지 띄우기
-            return;
+            await MapManager.Instance.ChangeMapAsync(mapId);
+
+            UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+            playerBattle?.RestoreFull();
         }
-
-        await ChangeMapWithLoadingAsync(mapId, PortalType.Village, true);
-        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
-
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-        playerBattle?.RestoreFull();
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private async UniTask ReviveAndChangeMapAsync()
     {
         HideDungeonInfoIfExists();
 
-        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-        playerBattle?.Revive();
+        try
+        {
+            await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
 
-        RefreshGoldUI();
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+            playerBattle?.Revive();
+
+            RefreshGoldUI();
+        }
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private void HideDungeonInfoIfExists()
@@ -629,7 +660,7 @@ public class GameFlowManager
 
     private async UniTask ShowHuntingAreaAsync()
     {
-        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
+        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI);
 
         HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
@@ -642,21 +673,21 @@ public class GameFlowManager
         InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationPopup);
 
         InformationViewModel viewModel = new InformationViewModel(_currentSlotId);
-        
+
         view.BindViewModel(viewModel);
 
     }
 
     private async UniTask ShowCharacterCreateAsync(string slotId)
     {
-        CharacterCreateView view  = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreatePopup);
+        CharacterCreateView view = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreatePopup);
         CharacterCreateViewModel viewModel = new CharacterCreateViewModel(slotId);
         viewModel.OnCharacterCreated += OnCharacterCreated;
 
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowConfirmAsync(string message, Action onConfirmed,string confirmUISoundName)
+    private async UniTask ShowConfirmAsync(string message, Action onConfirmed, string confirmUISoundName)
     {
         ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
         ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed, confirmUISoundName);
@@ -670,8 +701,14 @@ public class GameFlowManager
         viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
         viewModel.OnQuitGameRequested += OnQuitGameRequested;
         viewModel.OnSettingsRequested += OnSettingsRequested;
+        viewModel.OnHelpRequested += OnHelpRequeted;
 
         view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowHelpAsync()
+    {
+        HelpView view = await UIManager.Instance.OpenUIAsync<HelpView>(UIType.HelpPopup);
     }
 
     private async UniTask ShowInventoryAsync()
@@ -752,19 +789,27 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-
-        if (playerBattle != null)
+        try
         {
-            playerBattle.Revive();
-            playerBattle.RestoreFull();
+            await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
 
-            PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+            if (playerBattle != null)
+            {
+                playerBattle.Revive();
+                playerBattle.RestoreFull();
+                PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
+            }
+
+            RefreshGoldUI();
         }
-
-        RefreshGoldUI();
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private async UniTask ChangeMapWithLoadingAsync(string mapId, PortalType entryPortalType, bool useFullScreenLoading)
@@ -852,6 +897,12 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
         ShowDungeonFailAsync(reason).Forget();
+    }
+
+    private void OnBossHpChanged(int current, int max)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.SetBossHp(current, max);
     }
 
 }

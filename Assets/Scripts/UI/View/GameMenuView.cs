@@ -4,8 +4,9 @@ using UnityEngine;
 public class GameMenuView : BaseOverLayUI
 {
     [SerializeField] private Button Button_CharacterSelect;
-    [SerializeField] private Button Button_QuitGame;
     [SerializeField] private Button Button_Settings;
+    [SerializeField] private Button Button_Help;
+    [SerializeField] private Button Button_QuitGame;
 
     private GameMenuViewModel _viewModel;
 
@@ -21,6 +22,9 @@ public class GameMenuView : BaseOverLayUI
 
         Button_Settings.onClick.RemoveListener(OnClickSettings);
         Button_Settings.onClick.AddListener(OnClickSettings);
+
+        Button_Help.onClick.RemoveListener(OnClickHelp);
+        Button_Help.onClick.AddListener(OnClickHelp);
     }
 
     private void OnClickCharacterSelect()
@@ -35,7 +39,11 @@ public class GameMenuView : BaseOverLayUI
 
     private void OnClickSettings()
     {
-        Debug.Log("[GameMenuView] OnClickSettings 호출됨");
         _viewModel?.RequestSettings();
+    }
+
+    private void OnClickHelp()
+    {
+        _viewModel?.RequestHelp();
     }
 }

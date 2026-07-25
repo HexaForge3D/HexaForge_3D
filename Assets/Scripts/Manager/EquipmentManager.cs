@@ -37,12 +37,7 @@ public class EquipmentManager : BaseMonoManager<EquipmentManager>
         string previousItemId = GetEquippedItemId(slot.Equipped, equipmentData.EquipSlot);
         SetEquippedItemId(slot.Equipped, equipmentData.EquipSlot, itemId);
 
-        SaveManager.Instance.RemoveItem(slotId, itemId, 1);
-        
-        if (string.IsNullOrEmpty(previousItemId) == false)
-        {
-            SaveManager.Instance.AddItem(slotId, previousItemId, 1);
-        }
+        SaveManager.Instance.SwapInventorySlot(slotId, itemId, previousItemId);
 
         SaveManager.Instance.SaveCurrentState();
         return TransactionResult.Success;
