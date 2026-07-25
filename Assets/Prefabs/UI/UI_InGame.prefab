@@ -3054,7 +3054,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Project the NPC.
+  m_text: '- Protect the NPC.
 
 '
   m_isRightToLeft: 0
