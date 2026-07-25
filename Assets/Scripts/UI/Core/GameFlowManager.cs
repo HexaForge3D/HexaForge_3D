@@ -191,7 +191,7 @@ public class GameFlowManager
                 return;
             }
 
-            HideDungeonInfoIfExists();
+            //HideDungeonInfoIfExists();
 
             _pendingReturnPortal = portal;
             ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed, "Click_Sound").Forget();
@@ -467,6 +467,8 @@ public class GameFlowManager
     {
         if (_pendingReturnPortal == null) return;
 
+        HideDungeonInfoIfExists();
+
         ChangeMapWithLoadingAsync(_pendingReturnPortal.TargetMapId, _pendingReturnPortal.PortalType, true).Forget();
         _pendingReturnPortal = null;
     }
@@ -513,7 +515,7 @@ public class GameFlowManager
 
     private async UniTask ShowCharacterSelectAsync()
     {
-        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI, useFullScreenLoading: false);
+        CharacterSelectView view = await UIManager.Instance.OpenUIAsync<CharacterSelectView>(UIType.CharacterSelectUI);
 
         CharacterSelectViewModel viewModel = new CharacterSelectViewModel();
         viewModel.OnEnterGameRequested += OnEnterGameRequested;
@@ -525,18 +527,28 @@ public class GameFlowManager
 
     private async UniTask ShowInGameAsync(PlayerData data)
     {
+        await UIManager.Instance.ShowLoadingAsync(false);
+
         PlayerTableData jobMaster = GameDataManager.Instance.GetData<PlayerTableData>(data.Job);
 
         if (jobMaster == null)
         {
             Debug.LogError($"[GameFlowManager] {data.Job}에 대한 직업 마스터 데이터를 찾을 수 없습니다.");
+            UIManager.Instance.HideLoading();
             return;
         }
+
+        UIManager.Instance.HideLoading();
+
+        UniTask loadingTask = UIManager.Instance.ShowLoadingAsync(true);
+        UniTask minDisplayTask = UniTask.Delay(500);
+
+        await loadingTask;
 
         await MapManager.Instance.ChangeMapAsync("area_village");
         await PlayerSpawnManager.Instance.SpawnPlayerAsync(data, jobMaster.PrefabAddress);
 
-        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI, useFullScreenLoading: true);
+        InGameView view = await UIManager.Instance.OpenUIAsync<InGameView>(UIType.InGameUI);
 
         view.ResetEvasionSlot();
 
@@ -589,37 +601,49 @@ public class GameFlowManager
         MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup += OnItemPickup;
         BossFieldManager.OnBossHpChanged += OnBossHpChanged;
+
+        await minDisplayTask;
+        UIManager.Instance.HideLoading();
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
     {
-        HideDungeonInfoIfExists();
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        bool isRequiredLevel = MapManager.Instance.CheckRequiredLevelForDungeon(mapId);
-
-        if (isRequiredLevel == false)
+        try
         {
-            //[TODO] 레벨부족 메시지 띄우기
-            return;
+            await MapManager.Instance.ChangeMapAsync(mapId);
+
+            UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
+
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+            playerBattle?.RestoreFull();
         }
-
-        await ChangeMapWithLoadingAsync(mapId, PortalType.Village, true);
-        UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
-
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-        playerBattle?.RestoreFull();
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private async UniTask ReviveAndChangeMapAsync()
     {
         HideDungeonInfoIfExists();
 
-        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-        playerBattle?.Revive();
+        try
+        {
+            await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
 
-        RefreshGoldUI();
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+            playerBattle?.Revive();
+
+            RefreshGoldUI();
+        }
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private void HideDungeonInfoIfExists()
@@ -630,7 +654,7 @@ public class GameFlowManager
 
     private async UniTask ShowHuntingAreaAsync()
     {
-        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI, useFullScreenLoading: false);
+        HuntingAreaSelectView view = await UIManager.Instance.OpenUIAsync<HuntingAreaSelectView>(UIType.HuntingAreaSelectUI);
 
         HuntingAreaSelectViewModel viewModel = new HuntingAreaSelectViewModel(_currentSlotId);
         viewModel.OnTeleportRequested += OnTeleportRequested;
@@ -753,19 +777,27 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
 
-        await ChangeMapWithLoadingAsync("area_village", PortalType.Village, true);
+        await UIManager.Instance.ShowLoadingAsync(true);
 
-        PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
-
-        if (playerBattle != null)
+        try
         {
-            playerBattle.Revive();
-            playerBattle.RestoreFull();
+            await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
 
-            PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
+            PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
+
+            if (playerBattle != null)
+            {
+                playerBattle.Revive();
+                playerBattle.RestoreFull();
+                PlayerSpawnManager.Instance.MoveToSpawnPoint(playerBattle.gameObject);
+            }
+
+            RefreshGoldUI();
         }
-
-        RefreshGoldUI();
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
     private async UniTask ChangeMapWithLoadingAsync(string mapId, PortalType entryPortalType, bool useFullScreenLoading)
