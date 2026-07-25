@@ -176,6 +176,11 @@ public class GameFlowManager
     {
         ShowSettingAsync().Forget();
     }
+    
+    private void OnHelpRequeted()
+    {
+        ShowHelpAsync().Forget();
+    }
 
 
     private void OnPortalInteracted(Portal portal)
@@ -696,8 +701,14 @@ public class GameFlowManager
         viewModel.OnBackToCharacterSelectRequested += OnMenuCharacterSelectRequested;
         viewModel.OnQuitGameRequested += OnQuitGameRequested;
         viewModel.OnSettingsRequested += OnSettingsRequested;
+        viewModel.OnHelpRequested += OnHelpRequeted;
 
         view.BindViewModel(viewModel);
+    }
+
+    private async UniTask ShowHelpAsync()
+    {
+        HelpView view = await UIManager.Instance.OpenUIAsync<HelpView>(UIType.HelpPopup);
     }
 
     private async UniTask ShowInventoryAsync()
