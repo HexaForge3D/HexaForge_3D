@@ -33,6 +33,10 @@ public class InGameView : BaseUI
     [SerializeField] private Image Image_TargetHpBar;
     [SerializeField] private TMP_Text Text_TargetHp;
 
+    [SerializeField] private GameObject Panel_BossHp;
+    [SerializeField] private Image Image_BossHpBar;
+    [SerializeField] private TMP_Text Text_BossHp;
+
     public Action OnCharacterInfoButtonClicked;
     public Action OnSkillButtonClicked;
     public Action OnInventoryButtonClicked;
@@ -56,6 +60,7 @@ public class InGameView : BaseUI
 
         Panel_MonsterCount.SetActive(false);
         Panel_DefenceInfo.SetActive(false);
+        Panel_BossHp.SetActive(false);
 
         Button_CharacterInfo.onClick.RemoveListener(OnClickCharacterInfo);
         Button_CharacterInfo.onClick.AddListener(OnClickCharacterInfo);
@@ -223,11 +228,21 @@ public class InGameView : BaseUI
     {
         Panel_DefenceInfo.SetActive(false);
         Panel_MonsterCount.SetActive(false);
+        Panel_BossHp.SetActive(false);
 
         Text_Wave.text = "Waiting for Wave";
         Text_Countdown.text = string.Empty;
         Image_TargetHpBar.fillAmount = 1f;
         Text_TargetHp.text = string.Empty;
         Text_MonsterCount.text = "Ramain Monster : 12 / 12";
+        Text_BossHp.text = string.Empty;
+    }
+
+    public void SetBossHp(int current, int max)
+    {
+        Panel_BossHp.SetActive(true);
+        float ratio = max > 0 ? (float)current / max : 0f;
+        Image_BossHpBar.fillAmount = ratio;
+        Text_BossHp.text = $"{current} / {max}";
     }
 }

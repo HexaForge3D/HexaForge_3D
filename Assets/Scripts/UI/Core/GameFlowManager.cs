@@ -60,6 +60,7 @@ public class GameFlowManager
         MonsterHealth.OnMonsterMoney -= OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem -= OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup -= OnItemPickup;
+        BossFieldManager.OnBossHpChanged -= OnBossHpChanged;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -83,12 +84,12 @@ public class GameFlowManager
     private void OnDeleteRequested(string slotId)
     {
         _pendingDeleteSlotId = slotId;
-        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed,"Click_Sound").Forget();
+        ShowConfirmAsync("Delete this Character?", OnDeleteConfirmed, "Click_Sound").Forget();
     }
 
     private void OnQuitGameRequested()
     {
-        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed,"Click_Sound").Forget();
+        ShowConfirmAsync("Quit the Game?", OnQuitGameConfirmed, "Click_Sound").Forget();
     }
 
     private void OnInventorySellRequested(InventoryItemData data, int count)
@@ -185,7 +186,7 @@ public class GameFlowManager
         {
             if (portal.ParentMapName == "Village")
             {
-                
+
                 ShowHuntingAreaAsync().Forget();
                 return;
             }
@@ -193,7 +194,7 @@ public class GameFlowManager
             HideDungeonInfoIfExists();
 
             _pendingReturnPortal = portal;
-            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed,"Click_Sound").Forget();
+            ShowConfirmAsync("Return to Village?", OnVillageReturnConfirmed, "Click_Sound").Forget();
             return;
         }
 
@@ -227,7 +228,7 @@ public class GameFlowManager
         {
             case NPCId.Store:
                 ToggleUI(UIType.ShopUI, ShowShop);
-                    break;
+                break;
             case NPCId.Smithy:
                 Debug.Log("smithy 상호작용");
                 break;
@@ -345,7 +346,7 @@ public class GameFlowManager
 
     private void OnInventoryKeyPressed()
     {
-        ToggleUI(UIType.InventoryPopup, ShowInventory); 
+        ToggleUI(UIType.InventoryPopup, ShowInventory);
     }
 
     private void OnEscapeKeyPressed()
@@ -415,7 +416,7 @@ public class GameFlowManager
     private void OnWaveChanged(int current, int total)
     {
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
-        inGameView?.SetWave(current, total);    
+        inGameView?.SetWave(current, total);
     }
 
     private void OnCountdownChanged(float remainingSeconds)
@@ -525,7 +526,7 @@ public class GameFlowManager
     private async UniTask ShowInGameAsync(PlayerData data)
     {
         PlayerTableData jobMaster = GameDataManager.Instance.GetData<PlayerTableData>(data.Job);
-        
+
         if (jobMaster == null)
         {
             Debug.LogError($"[GameFlowManager] {data.Job}에 대한 직업 마스터 데이터를 찾을 수 없습니다.");
@@ -553,7 +554,7 @@ public class GameFlowManager
         view.OnInventoryButtonClicked += OnInventoryKeyPressed;
 
         view.OnSkillButtonClicked -= OnSkillTreeKeyPressed;
-        view.OnSkillButtonClicked += OnSkillTreeKeyPressed; 
+        view.OnSkillButtonClicked += OnSkillTreeKeyPressed;
 
         view.OnMinimapButtonClicked -= OnMinimapKeyPressed;
         view.OnMinimapButtonClicked += OnMinimapKeyPressed;
@@ -587,6 +588,7 @@ public class GameFlowManager
         MonsterHealth.OnMonsterMoney += OnMonsterMoneyDropped;
         MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup += OnItemPickup;
+        BossFieldManager.OnBossHpChanged += OnBossHpChanged;
     }
 
     private async UniTask ChangeMapAndCloseAsync(string mapId)
@@ -641,21 +643,21 @@ public class GameFlowManager
         InformationView view = await UIManager.Instance.OpenUIAsync<InformationView>(UIType.InformationPopup);
 
         InformationViewModel viewModel = new InformationViewModel(_currentSlotId);
-        
+
         view.BindViewModel(viewModel);
 
     }
 
     private async UniTask ShowCharacterCreateAsync(string slotId)
     {
-        CharacterCreateView view  = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreatePopup);
+        CharacterCreateView view = await UIManager.Instance.OpenUIAsync<CharacterCreateView>(UIType.CharacterCreatePopup);
         CharacterCreateViewModel viewModel = new CharacterCreateViewModel(slotId);
         viewModel.OnCharacterCreated += OnCharacterCreated;
 
         view.BindViewModel(viewModel);
     }
 
-    private async UniTask ShowConfirmAsync(string message, Action onConfirmed,string confirmUISoundName)
+    private async UniTask ShowConfirmAsync(string message, Action onConfirmed, string confirmUISoundName)
     {
         ConfirmView view = await UIManager.Instance.OpenUIAsync<ConfirmView>(UIType.ConfirmPopup);
         ConfirmViewModel viewModel = new ConfirmViewModel(message, onConfirmed, confirmUISoundName);
@@ -851,6 +853,12 @@ public class GameFlowManager
     {
         HideDungeonInfoIfExists();
         ShowDungeonFailAsync(reason).Forget();
+    }
+
+    private void OnBossHpChanged(int current, int max)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.SetBossHp(current, max);
     }
 
 }
