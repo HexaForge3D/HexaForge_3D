@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private CharacterSaveData _playerData;
     public CharacterSaveData PlayerData => _playerData;
     private Camera _mainCamera;
+    public PlayerSound _playerSound;
 
     private Vector3 _targetPosition;
     private Vector3 _lastSetDestination = Vector3.zero;
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _playerBattle = GetComponent<PlayerBattle>();
         _skillManager = GetComponent<PlayerSkillManager>();
+        _playerSound = GetComponent<PlayerSound>();
 
         //일단 테스트용으로 데이터를 가져오도록 함. 나중에 로그인 후 캐릭터 선택 시, 선택한 캐릭터의 데이터를 가져오도록 수정 필요
         //CharacterSaveData testData = SaveManager.Instance.GetChararcterData("Slot_00");
@@ -502,6 +504,8 @@ public class PlayerController : MonoBehaviour
 
         _levelUpEffect.SetActive(false);
         _levelUpEffect.SetActive(true);
+        _playerSound.PlayerLevelUpSound();
+
     }
 
     private void HanldeMoveToPortal(Vector3 destination)
