@@ -50,6 +50,8 @@ public class DefenceFieldManager : BaseDungeonController
 
         PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
         PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
+
+        OnDungeonFailed += HandleDungeonFailedEvent;
     }
 
     public void Start()
@@ -66,6 +68,8 @@ public class DefenceFieldManager : BaseDungeonController
 
         PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
         PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
+
+        OnDungeonFailed -= HandleDungeonFailedEvent;
     }
 
     private void HandleDefenceStartRequested()
@@ -91,6 +95,14 @@ public class DefenceFieldManager : BaseDungeonController
         FailDungeon();
     }
 
+    private void HandleDungeonFailedEvent(DungeonFailReason reason)
+    {
+        if (_isFailed) return;
+
+        _isFailed = true;
+        Debug.Log($"[DefenceFieldManager] 던전 실패 (사유: {reason}). 디펜스 시퀀스를 중단합니다.");
+    }
+
     private void HandleCheatClear()
     {
         _isCheatClear = true;
@@ -107,7 +119,8 @@ public class DefenceFieldManager : BaseDungeonController
     {
         Debug.Log($"{_countdownDuration}초 후 디펜스 시작");
 
-        await CountdownAsync(_countdownDuration);
+        bool isCountdownFinished = await CountdownAsync(_countdownDuration);
+        if (!isCountdownFinished) return;
 
         for (int i = 0; i < _waveCount; i++)
         {
@@ -185,7 +198,7 @@ public class DefenceFieldManager : BaseDungeonController
         InvokeFailed(DungeonFailReason.NpcDead);
     }
 
-    private async UniTask CountdownAsync(float duration)
+    private async UniTask<bool> CountdownAsync(float duration)
     {
         float remaining = duration;
 
@@ -194,13 +207,13 @@ public class DefenceFieldManager : BaseDungeonController
             if (_isCheatClear)
             {
                 ClearDungeon();
-                return;
+                return false;
             }
 
-            if (_isCheatFail)
+            if (_isCheatFail || _isFailed)
             {
                 FailDungeon();
-                return;
+                return false;
             }
 
             OnCountdownChanged?.Invoke(remaining);
@@ -211,5 +224,6 @@ public class DefenceFieldManager : BaseDungeonController
         }
 
         OnCountdownChanged?.Invoke(0f);
+        return true;
     }
 }
