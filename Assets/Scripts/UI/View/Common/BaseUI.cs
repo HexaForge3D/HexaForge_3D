@@ -1,8 +1,9 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BaseUI : MonoBehaviour
+public class BaseUI : MonoBehaviour, IPointerDownHandler
 {
     public UIType UIType_This {  get; private set; }
 
@@ -34,5 +35,15 @@ public class BaseUI : MonoBehaviour
         {
             btn.onClick.AddListener(PlayCommonButtonSound);
         }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        BringToFront();
+    }
+
+    public void BringToFront()
+    {
+        transform.SetAsLastSibling();
     }
 }

@@ -85,7 +85,7 @@ public class UIManager : BaseMonoManager<UIManager>
         {UIType.ConfirmPopup, UIRootType.Popup },
         {UIType.GameMenuPopup, UIRootType.Popup },
         {UIType.InventoryPopup, UIRootType.Popup },
-        {UIType.SkillTreePopup, UIRootType.Content },
+        {UIType.SkillTreePopup, UIRootType.Popup },
         {UIType.EquipmentPopup, UIRootType.Popup },
         {UIType.MinimapPopup, UIRootType.Popup },
         {UIType.DeathPopup, UIRootType.Popup },
