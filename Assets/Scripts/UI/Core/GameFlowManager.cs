@@ -62,6 +62,7 @@ public class GameFlowManager
         MonsterHealth.OnMonsterItem -= OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup -= OnItemPickup;
         BossFieldManager.OnBossHpChanged -= OnBossHpChanged;
+        NPCPatrolController.OnWaypointChanged -= OnEscortWaypointChanged;
 
         SaveManager.Instance.SaveCurrentState();
 
@@ -536,6 +537,12 @@ public class GameFlowManager
         }
     }
 
+    private void OnEscortWaypointChanged(int current, int total)
+    {
+        InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
+        inGameView?.SetEscortProgress(current, total);
+    }
+
 
     // 요청 수행 메서드 모음
     private async UniTask ShowTitleAsync()
@@ -636,6 +643,7 @@ public class GameFlowManager
         MonsterHealth.OnMonsterItem += OnMonsterItemDropped;
         PlayerInteraction.OnItemPickup += OnItemPickup;
         BossFieldManager.OnBossHpChanged += OnBossHpChanged;
+        NPCPatrolController.OnWaypointChanged += OnEscortWaypointChanged;
 
         await minDisplayTask;
         UIManager.Instance.HideLoading();
