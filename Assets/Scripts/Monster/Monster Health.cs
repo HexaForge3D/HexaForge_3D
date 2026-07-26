@@ -154,7 +154,7 @@ public class MonsterHealth : MonoBehaviour
             {
                 int randomIndex = UnityEngine.Random.Range(0, droppableItemsCache.Count);
                 ItemTableData randomItem = droppableItemsCache[randomIndex];
-                int randomAmount = UnityEngine.Random.Range(1, 11);
+                int randomAmount = UnityEngine.Random.Range(1, 10);
 
                 if (string.IsNullOrEmpty(randomItem.DropPrefabAddress) == false)
                 {
