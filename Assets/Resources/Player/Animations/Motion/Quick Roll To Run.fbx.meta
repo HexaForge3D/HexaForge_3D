@@ -62,15 +62,15 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.99548775
-        functionName: EvasionAnimEnd
+      - time: 0.025266964
+        functionName: PlayerEvasionSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.3223684
-        functionName: PlayerEvasionSound
+      - time: 0.99548775
+        functionName: EvasionAnimEnd
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

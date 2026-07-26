@@ -315,6 +315,8 @@ public class GameFlowManager
         InGameView inGameView = UIManager.Instance.GetUI<InGameView>(UIType.InGameUI);
         inGameView?.RefreshSkillSlots();
 
+        SoundManager.Instance.PlaySFXSound("Player_Level_Up_Sound");
+
         CharacterSaveData data = SaveManager.Instance.GetChararcterData(_currentSlotId);
 
         if (data == null) return;
@@ -496,6 +498,8 @@ public class GameFlowManager
         if (result == TransactionResult.Success)
         {
             UnityEngine.Object.Destroy(droppedItem.gameObject);
+
+            SoundManager.Instance.PlayUISound("Item_Get_Sound");
 
             InventoryView inventoryView = UIManager.Instance.GetUI<InventoryView>(UIType.InventoryPopup);
             inventoryView?.Refresh();
