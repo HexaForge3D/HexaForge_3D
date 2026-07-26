@@ -7,6 +7,8 @@ public class BaseUI : MonoBehaviour, IPointerDownHandler
 {
     public UIType UIType_This {  get; private set; }
 
+    [SerializeField] private bool CanBringToFront = true;
+
     protected virtual void Awake()
     {
         Button[] allButtons = GetComponentsInChildren<Button>(true);
@@ -39,7 +41,10 @@ public class BaseUI : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        BringToFront();
+        if (CanBringToFront)
+        {
+            BringToFront();
+        }
     }
 
     public void BringToFront()
