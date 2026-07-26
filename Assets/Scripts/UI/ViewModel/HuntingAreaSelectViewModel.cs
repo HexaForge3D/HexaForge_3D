@@ -53,6 +53,7 @@ public class HuntingAreaSelectViewModel
             return;
         }
 
+        SoundManager.Instance.PlayUISound("Portal_Sound");
         OnTeleportRequested?.Invoke(_selectedArea);
     }
 }

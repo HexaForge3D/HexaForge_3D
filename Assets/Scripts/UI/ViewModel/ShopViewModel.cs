@@ -32,6 +32,8 @@ public class ShopViewModel
         if (result == TransactionResult.Success)
         {
             OnGoldChanged?.Invoke();
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlayUISound("Item_Buy_Sound");
         }
         else
         {

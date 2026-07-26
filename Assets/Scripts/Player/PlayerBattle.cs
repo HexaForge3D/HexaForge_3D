@@ -308,6 +308,11 @@ public class PlayerBattle : MonoBehaviour
             SaveManager.Instance.SaveCurrentState();
 
             OnPotionUsed?.Invoke(itemId, potionData.CoolTime);
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFXSound("Drink_Potion_Sound");
+            }
         }
     }
 

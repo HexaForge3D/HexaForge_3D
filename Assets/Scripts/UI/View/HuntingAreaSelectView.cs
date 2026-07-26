@@ -83,7 +83,6 @@ public class HuntingAreaSelectView : BaseOverLayUI
 
     private void OnClickTeleport()
     {
-        SoundManager.Instance.PlayUISound("Portal_Sound");
         _viewModel.RequestTeleport();
     }
 }
