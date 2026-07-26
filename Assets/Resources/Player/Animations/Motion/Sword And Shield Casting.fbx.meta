@@ -62,7 +62,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6241582
+      - time: 0.6531437
         functionName: SkillAttack
         data: 
         objectReferenceParameter: {instanceID: 0}
