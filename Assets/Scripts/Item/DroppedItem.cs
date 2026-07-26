@@ -49,7 +49,7 @@ public class DroppedItem : MonoBehaviour
 
         if (Text_ItemName != null && itemData != null)
         {
-            Text_ItemName.text = itemData.Name;
+            Text_ItemName.text = $"{itemData.Name} x{amount}";
         }
     }
 
