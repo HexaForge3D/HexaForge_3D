@@ -68,7 +68,7 @@ MonoBehaviour:
   m_text: Health Potion
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 9f398fdfd38bc1747a5ec80d29bfb22b, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 525e530c6bd170545b021cb1d0d342d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
