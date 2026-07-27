@@ -315,6 +315,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!136 &86905534
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -816,6 +818,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!136 &854172063
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1022,6 +1026,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!136 &1166507825
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1285,6 +1291,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!136 &2134415417
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1670,6 +1678,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!4 &626458773013807974
 Transform:
   m_ObjectHideFlags: 0
@@ -1892,6 +1902,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Portal
   _portalType: 0
+  _targetMapId: 
+  _parentMapName: 
 --- !u!23 &1076310636685017481
 MeshRenderer:
   m_ObjectHideFlags: 0
