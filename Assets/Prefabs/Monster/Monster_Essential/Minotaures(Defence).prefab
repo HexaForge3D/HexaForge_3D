@@ -4271,9 +4271,9 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 2800
-  minGold: 10
-  maxGold: 500
+  dropExp: 3000
+  minGold: 100
+  maxGold: 150
 --- !u!82 &918724709622994588
 AudioSource:
   m_ObjectHideFlags: 0

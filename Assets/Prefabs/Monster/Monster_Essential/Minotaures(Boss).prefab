@@ -4252,8 +4252,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 1031761753317549976}
   hitRadius: 6
-  minDamage: 300
-  maxDamage: 500
+  minDamage: 600
+  maxDamage: 800
 --- !u!114 &-7798877612820797921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4271,9 +4271,9 @@ MonoBehaviour:
     _bossDieSoundName: Boss_Minotaurs_Die_Sound
     _bossHowlingSoundName: Boss_Minotaurs_Howling_Sound
   _maxHealth: 50000
-  _dropExp: 3000
-  _minGold: 10000
-  _maxGold: 50000
+  _dropExp: 10000
+  _minGold: 3000
+  _maxGold: 5000
 --- !u!82 &-6919445619901437236
 AudioSource:
   m_ObjectHideFlags: 0
