@@ -20,6 +20,8 @@ public class DefenceFieldManager : BaseDungeonController
     [SerializeField] private int _waveCount = 5;
     [SerializeField] private float _countdownDuration = 10f;
 
+    [Header("시작 포탈/오브젝트 설정")]
+    [SerializeField] private GameObject _startPortalObject;
 
     public static event Action OnClearField;
     public static event Action OnFailField;
@@ -57,6 +59,11 @@ public class DefenceFieldManager : BaseDungeonController
     public void Start()
     {
         OnStartField?.Invoke("DefenceBGM");
+
+        if (_startPortalObject != null)
+        {
+            _startPortalObject.SetActive(true);
+        }
     }
 
     protected override void OnDisable()
@@ -81,6 +88,11 @@ public class DefenceFieldManager : BaseDungeonController
 
         _isStarted = true;
         Debug.Log("방어 목표 상호작용 감지: 디펜스 시퀀스를 시작합니다.");
+
+        if (_startPortalObject != null)
+        {
+            _startPortalObject.SetActive(false);
+        }
 
         StartDefenceSequence().Forget();
 

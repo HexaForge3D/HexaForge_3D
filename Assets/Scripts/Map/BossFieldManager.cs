@@ -19,6 +19,9 @@ public class BossFieldManager : BaseDungeonController
     [SerializeField] private GameObject _bossPrefab;
     [SerializeField] private float _countdownToStart = 5f;
 
+    [Header("포탈 오브젝트")]
+    [SerializeField] private GameObject _startPortalObject;
+
     [Header("소환 반경 및 부모 설정")]
     [SerializeField] private float _spawnRadius = 5f;
     [SerializeField] private Transform _monsterSpawnGroup;
@@ -85,6 +88,11 @@ public class BossFieldManager : BaseDungeonController
         {
             _dummyBossPrefab.SetActive(true);
         }
+
+        if (_startPortalObject != null)
+        {
+            _startPortalObject.SetActive(true);
+        }
     }
 
     private void HandleInteractionRequested()
@@ -96,6 +104,12 @@ public class BossFieldManager : BaseDungeonController
 
         _isStarted = true;
         Debug.Log("<color=green>[BossFieldManager] 상호작용 감지! 5초 후 보스전이 시작됩니다.</color>");
+
+        if (_startPortalObject != null)
+        {
+            _startPortalObject.SetActive(false);
+        }
+
         StartBossFieldSequence().Forget();
     }
 
