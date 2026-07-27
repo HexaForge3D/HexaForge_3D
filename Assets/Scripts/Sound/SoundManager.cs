@@ -160,7 +160,6 @@ public class SoundManager : MonoBehaviour
 
         GameObject tempAudioObj = new GameObject($"TempSFX_{clip.name}");
         tempAudioObj.transform.position = targetTransform.position;
-        tempAudioObj.transform.SetParent(targetTransform);
 
         AudioSource tempSource = tempAudioObj.AddComponent<AudioSource>();
         tempSource.clip = clip;
@@ -186,21 +185,38 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayNPCVoice(NPCId npcId)
+    public void PlayNPCVoice(NPCId npcId, AudioSource targetSource)
     {
         switch (npcId)
         {
             case NPCId.Store:
-                PlaySFXSound("Store_Voice",this.transform,1f,true);
+                PlaySFXWithSource(targetSource,"Store_Voice_Sound");
                 break;
             case NPCId.MainQuest:
-                PlaySFXSound("Quest_Voice_Sound",this.transform, 1f, true);
+                PlaySFXWithSource(targetSource,"Quest_Voice_Sound");
                 break;
             case NPCId.Smithy:
-                PlaySFXSound("Smithy_Voice_Sound",this.transform, 1f, true);
+                PlaySFXWithSource(targetSource,"Smithy_Voice_Sound");
                 break;
             case NPCId.None:
                 break;
+        }
+    }
+
+    public void PlaySFXWithSource(AudioSource targetSource, string fileName, float volume = 1f, bool useRandomPitch = false)
+    {
+        if (targetSource == null) return;
+
+        AudioClip clip = Resources.Load<AudioClip>($"Sounds/SFX/{fileName}");
+        if (clip != null)
+        {
+            targetSource.pitch = useRandomPitch ? UnityEngine.Random.Range(0.9f, 1.1f) : 1f;
+            targetSource.PlayOneShot(clip, volume);
+        }
+    
+        else
+        {
+            Debug.LogWarning($"PlaySFXWithSource: AudioClip '{fileName}' not found!");
         }
     }
 }
