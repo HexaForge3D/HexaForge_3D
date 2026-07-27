@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BossFieldNPC : MonoBehaviour
@@ -46,6 +47,7 @@ public class BossFieldNPC : MonoBehaviour
         _isRequested = true;
         Debug.Log("<color=green>[BossFieldNPC] 플레이어 상호작용! 보스전 시작 요청.</color>");
         OnBossFieldStartRequested?.Invoke();
+        this.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
