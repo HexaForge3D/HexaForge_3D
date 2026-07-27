@@ -30,4 +30,9 @@ public class PlayerSound : MonoBehaviour
     {
         SoundManager.Instance.PlaySFXSound("Player_Revive_Sound", 1f, false);
     }
+
+    public void PlayerSkillVoiceSound()
+    {
+        SoundManager.Instance.PlaySFXSound("Player_Skill_Voice_Sound", 1f, true);
+    }
 }
