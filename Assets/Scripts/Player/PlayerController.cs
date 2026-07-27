@@ -199,8 +199,6 @@ public class PlayerController : MonoBehaviour
         // 공격 애니메이션이 끝나기 전까지 데미지 안들어가게 하는 로직
         if (_isAttackAnimPlaying) return;
 
-        _isAttackAnimPlaying = true;
-
         if (_playerCamera != null)
         {
             Ray ray = _playerCamera.ScreenPointToRay(Input.mousePosition);
@@ -212,12 +210,15 @@ public class PlayerController : MonoBehaviour
 
                 if (lookDirection.sqrMagnitude > 0.01f)
                 {
+
+                    _isAttacking = true;
                     _attackTargetRotation = Quaternion.LookRotation(lookDirection.normalized);
 
                     if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
                     {
                         _agent.isStopped = true;
                         _agent.ResetPath();
+                        _agent.velocity = Vector3.zero;
                     }
 
 
@@ -228,7 +229,7 @@ public class PlayerController : MonoBehaviour
                     _animator.SetBool("isWalking", _isMoving);
 
                     _isAttacking = true;
-
+                    _isAttackAnimPlaying = true;
                     FireAnimationTrigger("isAttack");
                 }
             }
@@ -437,6 +438,8 @@ public class PlayerController : MonoBehaviour
             _skillManager.CancelCurrentSkill();
         }
 
+        _isAttackAnimPlaying = false;
+        _isAttacking = false;
         LookAtMousePosition();
 
         _isMoving = false;
