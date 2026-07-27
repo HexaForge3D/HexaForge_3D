@@ -53,6 +53,7 @@ public class DefenceTarget : MonoBehaviour
             return;
         }
 
+        SoundManager.Instance.PlaySFXSound("Defence_Taget_Help_Sound", 1f, true);
         _isRequested = true;
         Debug.Log("<color=green>[방어 목표 상호작용]</color> 디펜스 시작 요청을 보냅니다.");
         OnDefenceStartRequested?.Invoke();
@@ -73,7 +74,7 @@ public class DefenceTarget : MonoBehaviour
         if (_currentHp <= 0)
         {
             DestroyTarget();
-            SoundManager.Instance.PlaySFXSound("Destroy_Defence_Target_TakeDamage_Sound", this.transform, 1f, true);
+            SoundManager.Instance.PlaySFXSound("Defence_Target_Die_Sound", this.transform, 1f, true);
         }
     }
 

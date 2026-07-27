@@ -37,6 +37,11 @@ public class NPC : MonoBehaviour
 
     public void RequestInteraction()
     {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayNPCVoice(this._npcId);
+        }
+
         OnNPCInteracted?.Invoke(this);
     }
 
