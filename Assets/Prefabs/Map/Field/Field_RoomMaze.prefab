@@ -20422,7 +20422,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &148992266305490095
@@ -28589,7 +28589,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &247006510965443825
@@ -33953,7 +33953,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &627472164683698835
@@ -41956,7 +41956,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 500
-  dropExp: 4700
+  dropExp: 6500
   minGold: 10
   maxGold: 500
 --- !u!1 &685478982932594889
@@ -53994,7 +53994,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &730619854623636466
@@ -55375,7 +55375,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &2209472023866619413
@@ -62507,7 +62507,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &3312923547989362232
@@ -69580,7 +69580,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 500
-  dropExp: 4700
+  dropExp: 6500
   minGold: 10
   maxGold: 500
 --- !u!1 &3628287284536477212
@@ -78449,7 +78449,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 500
-  dropExp: 4700
+  dropExp: 6500
   minGold: 10
   maxGold: 500
 --- !u!1 &6452430245537533131
@@ -89939,7 +89939,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 500
-  dropExp: 4700
+  dropExp: 6500
   minGold: 10
   maxGold: 500
 --- !u!1 &6729628040166219086
@@ -92078,7 +92078,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &7570187634396210888
@@ -113150,7 +113150,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
-  dropExp: 4700
+  dropExp: 4500
   minGold: 10
   maxGold: 500
 --- !u!1 &9183813341953546661

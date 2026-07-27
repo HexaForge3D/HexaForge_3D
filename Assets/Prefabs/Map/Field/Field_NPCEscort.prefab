@@ -8987,7 +8987,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &1203883272879718337
@@ -21113,7 +21113,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &1977288584784295161
@@ -28103,7 +28103,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &2502474233044870066
@@ -38286,7 +38286,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &3406512683812929399
@@ -67074,7 +67074,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &4239160880749770203
@@ -69368,7 +69368,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &4310961376513344351
@@ -81674,7 +81674,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &4516285210400952010
@@ -95682,7 +95682,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &6306122409741033271
@@ -113809,7 +113809,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &6813756785727745887
@@ -122251,7 +122251,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &6965878210183160636
@@ -137256,7 +137256,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &8290307389046781039
@@ -141136,7 +141136,7 @@ MonoBehaviour:
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
   maxHealth: 150
-  dropExp: 1800
+  dropExp: 1500
   minGold: 10
   maxGold: 500
 --- !u!1 &8335705007821889833
