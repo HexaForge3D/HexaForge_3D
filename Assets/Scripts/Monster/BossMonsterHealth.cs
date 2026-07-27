@@ -31,6 +31,13 @@ public class BossMonsterHealth : MonoBehaviour
     private static List<ItemTableData> droppableItemsCache = null;
     private static bool isInitializingCache = false;
 
+    private AudioSource _myAudioSource;
+
+
+    private void Awake()
+    {
+        _myAudioSource = GetComponent<AudioSource>();
+    }
     private void OnEnable()
     {
         PlayerBattle.OnPlayerDead += StopAttackOnPlayerDeath;
@@ -92,7 +99,7 @@ public class BossMonsterHealth : MonoBehaviour
         OnBossHpChanged?.Invoke(_currentHealth, _maxHealth);
 
         string myHitSound = _bossMonsterData._bossHitSoundName;
-        SoundManager.Instance.PlaySFXSound(myHitSound, this.transform, 1f, true);
+        SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, myHitSound, 1f);
 
         string myDieSound = _bossMonsterData._bossDieSoundName;
         if (_currentHealth <= 0)
@@ -227,7 +234,7 @@ public class BossMonsterHealth : MonoBehaviour
 
                 if (_bossMonsterData != null && string.IsNullOrEmpty(_bossMonsterData._bossHowlingSoundName) == false)
                 {
-                    SoundManager.Instance.PlaySFXSound(_bossMonsterData._bossHowlingSoundName, this.transform, 1f, true);
+                    SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, _bossMonsterData._bossHowlingSoundName, 1f);
                 }
             }
         }

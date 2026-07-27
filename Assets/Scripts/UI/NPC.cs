@@ -17,6 +17,8 @@ public class NPC : MonoBehaviour
 
     [SerializeField] private NPCId _npcId;
 
+    private AudioSource _myAudioSource;
+
     public NPCId NPCId
     {
         get
@@ -25,6 +27,10 @@ public class NPC : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        _myAudioSource = GetComponent<AudioSource>();
+    }
     private void OnEnable()
     {
         PlayerInputSystem.OnInteract += HandleInteraction;
@@ -39,7 +45,7 @@ public class NPC : MonoBehaviour
     {
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlayNPCVoice(this._npcId);
+            SoundManager.Instance.PlayNPCVoice(this._npcId,_myAudioSource);
         }
 
         OnNPCInteracted?.Invoke(this);
