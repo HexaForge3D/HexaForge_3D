@@ -97,6 +97,10 @@ public class NPCPatrolController : MonoBehaviour
         MoveToNextWaypoint();
         HandleWaypointChanged();
 
+        if (NPCEscortFieldManager.Instance != null)
+        {
+            NPCEscortFieldManager.Instance.HandleEscortStart();
+        }
         Debug.Log("플레이어 상호작용! NPC 패트롤을 시작합니다.");
     }
 

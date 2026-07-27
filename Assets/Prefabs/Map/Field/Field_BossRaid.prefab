@@ -20596,6 +20596,7 @@ MonoBehaviour:
   _bossSpawnPoint: {fileID: 1522149228449314082}
   _bossPrefab: {fileID: 4414871117303439921, guid: 92782fcbbdcab4f4099ab4632ab6627a, type: 3}
   _countdownToStart: 5
+  _startPortalObject: {fileID: 8407019899511138991}
   _spawnRadius: 5
   _monsterSpawnGroup: {fileID: 629649624119771141}
   _groupSpawnPoint1: {fileID: 5245468860067867810}
