@@ -44,4 +44,14 @@ public class PlayerSound : MonoBehaviour
     {
         SoundManager.Instance.PlaySFXSound("Player_Attack_Voice_Sound", 1f);
     }
+
+    public void PlayerTakeDamageSound()
+    {
+        SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, "Player_TakeDamage_Sound", 1f, true);
+    }
+
+    public void PlayerDieSound()
+    {
+        SoundManager.Instance?.PlaySFXSound("Player_Die_Sound", this.transform, 1f, false);
+    }
 }

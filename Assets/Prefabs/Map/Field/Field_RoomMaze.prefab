@@ -20403,8 +20403,8 @@ MonoBehaviour:
   - {fileID: 7936591575228507021}
   - {fileID: 1194234600743641596}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &177771578604506434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20421,10 +20421,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &148992266305490095
 GameObject:
   m_ObjectHideFlags: 0
@@ -28570,8 +28570,8 @@ MonoBehaviour:
   - {fileID: 8023364278792545231}
   - {fileID: 1292003933487145406}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &219351464823704832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28588,10 +28588,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &247006510965443825
 GameObject:
   m_ObjectHideFlags: 0
@@ -33934,8 +33934,8 @@ MonoBehaviour:
   - {fileID: 7241795666972507569}
   - {fileID: 1888889768021835712}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &636128472332260222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33952,10 +33952,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &627472164683698835
 GameObject:
   m_ObjectHideFlags: 0
@@ -41937,8 +41937,8 @@ MonoBehaviour:
   - {fileID: 192417791685533276}
   - {fileID: 4183968373232397892}
   hitRadius: 1
-  minDamage: 70
-  maxDamage: 80
+  minDamage: 150
+  maxDamage: 200
 --- !u!114 &140094103452495653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41955,10 +41955,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 500
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 800
+  dropExp: 6500
+  minGold: 180
+  maxGold: 200
 --- !u!1 &685478982932594889
 GameObject:
   m_ObjectHideFlags: 0
@@ -53975,8 +53975,8 @@ MonoBehaviour:
   - {fileID: 7356228337360000208}
   - {fileID: 1774483418643764897}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &740119765304670751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53993,10 +53993,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &730619854623636466
 GameObject:
   m_ObjectHideFlags: 0
@@ -55356,8 +55356,8 @@ MonoBehaviour:
   - {fileID: 8258655349813975347}
   - {fileID: 876524892715932482}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &2220097574003619836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55374,10 +55374,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &2209472023866619413
 GameObject:
   m_ObjectHideFlags: 0
@@ -62488,8 +62488,8 @@ MonoBehaviour:
   - {fileID: 4741413253670758678}
   - {fileID: 4574051717759085415}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &3287380923580172249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62506,10 +62506,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &3312923547989362232
 GameObject:
   m_ObjectHideFlags: 0
@@ -69561,8 +69561,8 @@ MonoBehaviour:
   - {fileID: 4139530957836064897}
   - {fileID: 128768884496984217}
   hitRadius: 1
-  minDamage: 70
-  maxDamage: 80
+  minDamage: 150
+  maxDamage: 200
 --- !u!114 &4190807636104784376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69579,10 +69579,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 500
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 800
+  dropExp: 6500
+  minGold: 180
+  maxGold: 200
 --- !u!1 &3628287284536477212
 GameObject:
   m_ObjectHideFlags: 0
@@ -76232,10 +76232,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b335f2f3a26de841a7e3ca86f6bca76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomFieldManager
-  _rewardGold: 100
+  _rewardGold: 1000
   _rewardItems:
-  - ItemId: Item_OilofBlessing
-    Count: 100
+  - ItemId: Item_SteelChestPlate
+    Count: 1
+  - ItemId: Item_SteelBoots
+    Count: 1
+  - ItemId: Item_MysteriousPowder
+    Count: 5
+  - ItemId: Item_IronIngot
+    Count: 10
   _monsterGroupParent: {fileID: 7842039013272493480}
   _itemGroup: {fileID: 3692919251726966161}
 --- !u!1 &5834555381905831293
@@ -78430,8 +78436,8 @@ MonoBehaviour:
   - {fileID: 5954733328678539858}
   - {fileID: 7645033603357581898}
   hitRadius: 1
-  minDamage: 70
-  maxDamage: 80
+  minDamage: 150
+  maxDamage: 200
 --- !u!114 &5906851650392843051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78448,10 +78454,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 500
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 800
+  dropExp: 6500
+  minGold: 180
+  maxGold: 200
 --- !u!1 &6452430245537533131
 GameObject:
   m_ObjectHideFlags: 0
@@ -89920,8 +89926,8 @@ MonoBehaviour:
   - {fileID: 6218526032132932567}
   - {fileID: 7995947202231956431}
   hitRadius: 1
-  minDamage: 70
-  maxDamage: 80
+  minDamage: 150
+  maxDamage: 200
 --- !u!114 &6131237839977165486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89938,10 +89944,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 500
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 800
+  dropExp: 6500
+  minGold: 180
+  maxGold: 200
 --- !u!1 &6729628040166219086
 GameObject:
   m_ObjectHideFlags: 0
@@ -92059,8 +92065,8 @@ MonoBehaviour:
   - {fileID: 377046566911642086}
   - {fileID: 8902807416020192151}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &7595448766647707433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92077,10 +92083,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &7570187634396210888
 GameObject:
   m_ObjectHideFlags: 0
@@ -113131,8 +113137,8 @@ MonoBehaviour:
   - {fileID: 1388878633620436611}
   - {fileID: 7922078258924303602}
   hitRadius: 1
-  minDamage: 40
-  maxDamage: 50
+  minDamage: 100
+  maxDamage: 150
 --- !u!114 &9157423818110195788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113149,10 +113155,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Mutant_Howling_Sound
-  maxHealth: 150
-  dropExp: 4700
-  minGold: 10
-  maxGold: 500
+  maxHealth: 500
+  dropExp: 4500
+  minGold: 100
+  maxGold: 150
 --- !u!1 &9183813341953546661
 GameObject:
   m_ObjectHideFlags: 0

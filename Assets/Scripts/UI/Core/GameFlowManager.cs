@@ -200,7 +200,6 @@ public class GameFlowManager
         {
             if (portal.ParentMapName == "Village")
             {
-
                 ShowHuntingAreaAsync().Forget();
                 return;
             }
@@ -231,8 +230,6 @@ public class GameFlowManager
 
         else
         {
-            DisableSykbox();
-
             Debug.LogWarning($"[GameFlowManager] 포탈({portal.name})에 TargetMapId{portal.TargetMapId}가 설정되어 있지 않습니다.");
         }
 
@@ -983,22 +980,10 @@ public class GameFlowManager
                 moodType = DNSkyboxType.Night;
                 break;
             default:
-                return;
+                moodType = DNSkyboxType.Night;
+                break;
         }
 
         GameSettingsManager.Instance.MoodSwitcher.ChangeSkybox(moodType);
-    }
-
-    private void DisableSykbox()
-    {
-        RenderSettings.skybox = null;
-    }
-
-    private void RestoreSkybox()
-    {
-        if (string.IsNullOrEmpty(_currentMapId) == false)
-        {
-            ApplyMoodForMap(_currentMapId);
-        }
     }
 }
