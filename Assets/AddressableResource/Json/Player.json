@@ -7,7 +7,7 @@
     "Atk": 20,
     "Def": 10,
 	"HpPerLevel": 30,
-	"MpPerLevel": 10,
+	"MpPerLevel": 20,
 	"AtkPerLevel": 10,
 	"DefPerLevel": 5
   }
