@@ -153,7 +153,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlaySFX(AudioClip clip, Transform targetTransform,float volume = 1f, bool useRandomPitch = false)
+    public void PlaySFX(AudioClip clip, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
     {
         if (SoundManager.Instance == null) return;
         if (clip == null) return;
@@ -170,7 +170,7 @@ public class SoundManager : MonoBehaviour
 
         tempSource.Play();
 
-        Destroy( tempAudioObj, clip.length );
+        Destroy(tempAudioObj, clip.length);
     }
 
     public void PlaySFXSound(string fileName, Transform targetTransform, float volume = 1f, bool useRandomPitch = false)
@@ -183,6 +183,24 @@ public class SoundManager : MonoBehaviour
         else
         {
             Debug.LogWarning($"PlaySFX sound: {fileName} = null");
+        }
+    }
+
+    public void PlayNPCVoice(NPCId npcId)
+    {
+        switch (npcId)
+        {
+            case NPCId.Store:
+                PlaySFXSound("Store_Voice",this.transform,1f,true);
+                break;
+            case NPCId.MainQuest:
+                PlaySFXSound("Quest_Voice_Sound",this.transform, 1f, true);
+                break;
+            case NPCId.Smithy:
+                PlaySFXSound("Smithy_Voice_Sound",this.transform, 1f, true);
+                break;
+            case NPCId.None:
+                break;
         }
     }
 }
