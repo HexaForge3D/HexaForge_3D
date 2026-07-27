@@ -2,7 +2,7 @@
   {
     "ID": "Item_HealthPotion",
     "Name": "Health Potion",
-    "Description": "Restores a small amount of HP.",
+    "Description": "Restores 30% of your Max HP.\nCooldown: 7 sec.",
     "IconAddress": "Equipment[Consumable_HealthPotion]",
     "UseSFXName": "Drink_Potion_Sound",
     "MaxStack": 99,
@@ -13,7 +13,7 @@
   {
     "ID": "Item_ManaPotion",
     "Name": "Mana Potion",
-    "Description": "Restores a small amount of MP.",
+    "Description": "Restores 20% of your Max MP.\nCooldown: 10 sec.",
     "IconAddress": "Equipment[Consumable_ManaPotion]",
     "UseSFXName": "Drink_Potion_Sound",
     "MaxStack": 99,
@@ -24,7 +24,7 @@
   {
     "ID": "Item_IronSword",
     "Name": "Iron Sword",
-    "Description": "A basic sword forged from iron.",
+    "Description": "A basic sword forged from sturdy iron.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_IronSword]",
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
@@ -35,7 +35,7 @@
   {
     "ID": "Item_LeatherHelmet",
     "Name": "Leather Helmet",
-    "Description": "Helmet.",
+    "Description": "A lightweight leather helmet that offers basic protection.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_LeatherHelmet]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -46,7 +46,7 @@
   {
     "ID": "Item_LeatherChestPlate",
     "Name": "Leather ChestPlate",
-    "Description": "ChestPlate.",
+    "Description": "A leather chest plate that provides reliable protection.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_LeatherChestPlate]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -57,7 +57,7 @@
   {
     "ID": "Item_LeatherPants",
     "Name": "Leather Pants",
-    "Description": "Pants.",
+    "Description": "Leather pants that offer basic defense.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_LeatherPants]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -68,7 +68,7 @@
   {
     "ID": "Item_LeatherBoots",
     "Name": "Leather Boots",
-    "Description": "Boots.",
+    "Description": "Comfortable leather boots for novice adventurers.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_LeatherBoots]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -79,7 +79,7 @@
   {
     "ID": "Item_LeatherGloves",
     "Name": "Leather Gloves",
-    "Description": "Gloves.",
+    "Description": "Leather gloves that improve grip and protection.\nRequired Level: 1.",
     "IconAddress": "Equipment[Equipment_LeatherGloves]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -90,7 +90,7 @@
   {
     "ID": "Item_SteelSword",
     "Name": "Steel Sword",
-    "Description": "A liitle Upgrade Sword",
+    "Description": "A sturdy steel sword with greater power than iron.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelSword]",
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
@@ -101,7 +101,7 @@
   {
     "ID": "Item_SteelHelmet",
     "Name": "Steel Helmet",
-    "Description": "A liitle Upgrade Helmet",
+    "Description": "A durable steel helmet that offers improved protection.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelHelmet]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -112,7 +112,7 @@
   {
     "ID": "Item_SteelChestPlate",
     "Name": "Steel ChestPlate",
-    "Description": "A little Upgrade ChestPlate",
+    "Description": "A reinforced steel chest plate built for experienced adventurers.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelChestPlate]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -123,7 +123,7 @@
   {
     "ID": "Item_SteelPants",
     "Name": "Steel Pants",
-    "Description": "A little Upgrade Pants",
+    "Description": "Steel leggings that provide excellent defense.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelPants]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -134,7 +134,7 @@
   {
     "ID": "Item_SteelBoots",
     "Name": "Steel Boots",
-    "Description": "A little Upgrade Boots",
+    "Description": "Heavy steel boots that protect your feet in battle.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelBoots]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -145,7 +145,7 @@
   {
     "ID": "Item_SteelGloves",
     "Name": "Steel Gloves",
-    "Description": "A little Upgrade Gloves",
+    "Description": "Steel gloves that provide superior protection.\nRequired Level: 10.",
     "IconAddress": "Equipment[Equipment_SteelGloves]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -156,7 +156,7 @@
   {
     "ID": "Item_MithrilSword",
     "Name": "Mithril Sword",
-    "Description": "A High Quality Sword",
+    "Description": "A legendary sword forged from pure mithril.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilSword]",
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
@@ -167,7 +167,7 @@
   {
     "ID": "Item_MithrilHelmet",
     "Name": "Mithril Helmet",
-    "Description": "A High Quality Helmet",
+    "Description": "A mithril helmet crafted for elite warriors.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilHelmet]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -178,7 +178,7 @@
   {
     "ID": "Item_MithrilChestPlate",
     "Name": "Mithril ChestPlate",
-    "Description": "A High Quality ChestPlate",
+    "Description": "A masterfully crafted mithril chest plate.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilChestPlate]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -189,7 +189,7 @@
   {
     "ID": "Item_MithrilPants",
     "Name": "Mithril Pants",
-    "Description": "A High Quality Pants",
+    "Description": "Mithril leggings that offer exceptional protection.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilPants]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -200,7 +200,7 @@
   {
     "ID": "Item_MithrilBoots",
     "Name": "Mithril Boots",
-    "Description": "A High Quality Boots",
+    "Description": "Mithril boots favored by legendary adventurers.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilBoots]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -211,7 +211,7 @@
   {
     "ID": "Item_MithrilGloves",
     "Name": "Mithril Gloves",
-    "Description": "A High Quality Gloves",
+    "Description": "Finely crafted mithril gloves with unmatched durability.\nRequired Level: 50.",
     "IconAddress": "Equipment[Equipment_MithrilGloves]",
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
@@ -222,7 +222,7 @@
   {
     "ID": "Item_EnhancementScroll",
     "Name": "Enhancement Scroll",
-    "Description": "EnhancementScroll",
+    "Description": "A magical scroll used to enhance equipment.",
     "IconAddress": "Material[Material_EnhancementScroll]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -231,8 +231,8 @@
   },
   {
     "ID": "Item_LeatherPiece",
-    "Name": "LeatherPiece",
-    "Description": "Leather Piece",
+    "Name": "Leather Piece",
+    "Description": "A piece of leather commonly used for crafting and enhancement.",
     "IconAddress": "Material[Material_LeatherPiece]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -241,8 +241,8 @@
   },
   {
     "ID": "Item_IronIngot",
-    "Name": "IronIngot",
-    "Description": "Iron Ingot",
+    "Name": "Iron Ingot",
+    "Description": "A refined iron ingot used to forge sturdy equipment.",
     "IconAddress": "Material[Material_IronIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -252,7 +252,7 @@
   {
     "ID": "Item_MithrilIngot",
     "Name": "Mithril Ingot",
-    "Description": "MithrilIngot",
+    "Description": "A rare mithril ingot used to craft powerful equipment.",
     "IconAddress": "Material[Material_MithrilIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -262,7 +262,7 @@
   {
     "ID": "Item_MysteriousPowder",
     "Name": "Mysterious Powder",
-    "Description": "MysteriousPowder",
+    "Description": "A mysterious powder infused with magical energy.",
     "IconAddress": "Material[Material_MysteriousPowder]",
     "MaxStack": 99,
     "UsageType": "Material",
@@ -272,7 +272,7 @@
   {
     "ID": "Item_OilofBlessing",
     "Name": "Oil of Blessing",
-    "Description": "OilofBlessing",
+    "Description": "A sacred oil said to increase the chance of successful enhancement.",
     "IconAddress": "Material[Material_OilofBlessing]",
     "MaxStack": 99,
     "UsageType": "Material",
