@@ -2,13 +2,18 @@
 
 public class PlayerSound : MonoBehaviour
 {
+    private AudioSource _myAudioSource;
 
+    private void Awake()
+    {
+        _myAudioSource = GetComponent<AudioSource>();
+    }
     public void PlayerFootStepSound(string footSide)
     {
         string currentMapTag = MapManager.Instance.GetCurrentMapTag();
         string soundFileName = $"FootStep_{currentMapTag}_{footSide}";
 
-        SoundManager.Instance.PlaySFXSound(soundFileName, 1f, true);
+        SoundManager.Instance.PlaySFXSound(soundFileName, 0.3f, true);
     }
 
     public void PlayerAttackSound()
@@ -33,6 +38,10 @@ public class PlayerSound : MonoBehaviour
 
     public void PlayerSkillVoiceSound()
     {
-        SoundManager.Instance.PlaySFXSound("Player_Skill_Voice_Sound", 1f, true);
+        SoundManager.Instance.PlaySFXSound("Player_Skill_Voice_Sound", 1f);
+    }
+    public void PlayerAttackVoiceSound()
+    {
+        SoundManager.Instance.PlaySFXSound("Player_Attack_Voice_Sound", 1f);
     }
 }

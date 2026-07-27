@@ -31,6 +31,13 @@ public class MonsterHealth : MonoBehaviour
     // 보스레이드에서 사용되는지 확인하는 변수
     private bool _isBossMinion = false;
 
+    private AudioSource _myAudioSource;
+
+
+    private void Awake()
+    {
+        _myAudioSource = GetComponent<AudioSource>();
+    }
     private void OnEnable()
     {
         PlayerBattle.OnPlayerDead += StopAttackOnPlayerDeath;
@@ -96,7 +103,7 @@ public class MonsterHealth : MonoBehaviour
         Debug.Log($"[몬스터 피격] -{damageAmount} 데미지 (남은체력: {currentHealth} / {maxHealth}");
 
         string _myHitSound = _monsterData._monsterHitSoundName;
-        SoundManager.Instance.PlaySFXSound(_myHitSound, this.transform, 1f, true);
+        SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, _myHitSound, 1f);
 
         string myDieSound = _monsterData._monsterDieSoundName;
         if (currentHealth <= 0)
@@ -238,7 +245,7 @@ public class MonsterHealth : MonoBehaviour
 
                 if (_monsterData != null && string.IsNullOrEmpty(_monsterData._monsterHowlingSoundName) == false)
                 {
-                    SoundManager.Instance.PlaySFXSound(_monsterData._monsterHowlingSoundName, this.transform, 1f, true);
+                    SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, _monsterData._monsterHowlingSoundName, 1f);
                 }
             }
         }

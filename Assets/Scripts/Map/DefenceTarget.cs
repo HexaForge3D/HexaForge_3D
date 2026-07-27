@@ -9,10 +9,19 @@ public class DefenceTarget : MonoBehaviour
     private bool _isPlayerInCollider = false;
     private bool _isRequested = false;
 
+    private float _lastHitSoundTime = -2f;
+
     public static event Action OnTargetDestroyed;
     public static event Action OnDefenceStartRequested;
 
     public static event Action<int, int> OnTargetHpChanged;
+
+    private AudioSource _myAudioSource;
+
+    private void Awake()
+    {
+        _myAudioSource = GetComponent<AudioSource>();
+    }
 
     private void OnEnable()
     {
@@ -53,7 +62,7 @@ public class DefenceTarget : MonoBehaviour
             return;
         }
 
-        SoundManager.Instance.PlaySFXSound("Defence_Taget_Help_Sound", 1f, true);
+        SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, "Defence_Target_Help_Sound", 1f);
         _isRequested = true;
         Debug.Log("<color=green>[방어 목표 상호작용]</color> 디펜스 시작 요청을 보냅니다.");
         OnDefenceStartRequested?.Invoke();
@@ -70,11 +79,17 @@ public class DefenceTarget : MonoBehaviour
 
         OnTargetHpChanged?.Invoke(_currentHp, _maxHp);
 
-        SoundManager.Instance.PlaySFXSound("Defence_Target_TakeDamage_Sound", this.transform, 1f, true);
+        if(Time.time - _lastHitSoundTime >= 2f)
+        {
+            SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, "Defence_Target_TakeDamage_Sound", 1f);
+
+            _lastHitSoundTime = Time.time;
+        }
+
         if (_currentHp <= 0)
         {
-            DestroyTarget();
-            SoundManager.Instance.PlaySFXSound("Defence_Target_Die_Sound", this.transform, 1f, true);
+            SoundManager.Instance?.PlaySFXSound("Defence_Target_Die_Sound", this.transform, 1f);
+            DestroyTarget();        
         }
     }
 

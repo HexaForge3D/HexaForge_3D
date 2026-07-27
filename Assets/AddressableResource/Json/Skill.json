@@ -2,7 +2,7 @@
     {
         "ID": "Skill_Slash",
         "Name": "Slash",
-        "Description": "A quick slash attack to monsters.",
+        "Description": "Slams the blade down in a flash, causing flames to erupt from the earth.",
         "Key": "SkillQ",
         "RequiredLevel": 1,
         "IconAddress": "Skill_Icon_Warrior1",
@@ -22,7 +22,7 @@
     {
         "ID": "Skill_Rage",
         "Name": "Rage",
-        "Description": "A Reinforce AttackPower",
+        "Description": "Channels inner fury to significantly boost Attack Power for a duration.",
         "Key": "SkillW",
         "RequiredLevel": 15,
         "IconAddress": "Skill_Icon_Warrior2",
@@ -43,7 +43,7 @@
     {
         "ID": "Skill_Smash",
         "Name": "Smash",
-        "Description": "A Heavy, overHead Down attack to monsters",
+        "Description": "Performs a devastating overhead smash, crushing the target with immense force.",
         "Key": "SkillE",
         "RequiredLevel": 20,
         "IconAddress": "Skill_Icon_Warrior3",
@@ -63,7 +63,7 @@
     {
         "ID": "Skill_Bladestorm",
         "Name": "Bladestorm",
-        "Description": "A Rapid, continous spinning attack to monsters",
+        "Description": "Transforms into a relentless whirlwind of steel, unleashing a continuous flurry of strikes.",
         "Key": "SkillR",
         "RequiredLevel": 40,
         "IconAddress": "Skill_Icon_Warrior4",
