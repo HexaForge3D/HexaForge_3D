@@ -31585,10 +31585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2488ddf5bceb8a04da5b46ed6d829daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCEscortFieldManager
-  _rewardGold: 100
+  _rewardGold: 400
   _rewardItems:
-  - ItemId: Item_IronSword
+  - ItemId: Item_LeatherGloves
     Count: 1
+  - ItemId: Item_OilofBlessing
+    Count: 5
   _npcPatrolController: {fileID: 8247241499568329226}
   _monsterGroup: {fileID: 0}
   _itemGroup: {fileID: 3872847445261677635}

@@ -76232,10 +76232,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b335f2f3a26de841a7e3ca86f6bca76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomFieldManager
-  _rewardGold: 100
+  _rewardGold: 1000
   _rewardItems:
-  - ItemId: Item_OilofBlessing
-    Count: 100
+  - ItemId: Item_SteelChestPlate
+    Count: 1
+  - ItemId: Item_SteelBoots
+    Count: 1
+  - ItemId: Item_MysteriousPowder
+    Count: 5
+  - ItemId: Item_IronIngot
+    Count: 10
   _monsterGroupParent: {fileID: 7842039013272493480}
   _itemGroup: {fileID: 3692919251726966161}
 --- !u!1 &5834555381905831293
