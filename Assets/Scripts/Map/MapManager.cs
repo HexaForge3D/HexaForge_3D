@@ -107,6 +107,8 @@ public class MapManager : MonoBehaviour
 
         OnStartField?.Invoke("VillageBGM");
 
+        SoundManager.Instance.PlayUISound("Portal_Sound");
+
         Debug.Log($"맵이 {mapData.Name}(으)로 변경되었습니다.");
     }
 

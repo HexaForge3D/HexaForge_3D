@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
-using Cysharp.Threading.Tasks;
 
 
 public class BossMonsterHealth : MonoBehaviour
@@ -48,6 +49,8 @@ public class BossMonsterHealth : MonoBehaviour
         {
             InitializeDroppableItemsAsync().Forget();
         }
+
+        RandomIdleSoundRoutine(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     private async UniTaskVoid InitializeDroppableItemsAsync()
@@ -210,12 +213,35 @@ public class BossMonsterHealth : MonoBehaviour
 
         Debug.Log($"{gameObject.name} : 뇌 재부팅 완료! 기억이 지워졌으므로 순찰로 복귀합니다.");
     }
+    private async UniTaskVoid RandomIdleSoundRoutine(CancellationToken token)
+    {
+        try
+        {
+            while (_isDead == false && token.IsCancellationRequested == false)
+            {
+                float randomDelay = UnityEngine.Random.Range(3f, 7f);
 
-    [System.Serializable]
+                await UniTask.Delay(TimeSpan.FromSeconds(randomDelay), cancellationToken: token);
+
+                if (_isDead) break;
+
+                if (_bossMonsterData != null && string.IsNullOrEmpty(_bossMonsterData._bossHowlingSoundName) == false)
+                {
+                    SoundManager.Instance.PlaySFXSound(_bossMonsterData._bossHowlingSoundName, this.transform, 1f, true);
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            Debug.Log("사운드루프가 강제종료됩니다");
+        }
+    }
+}
+    [Serializable]
     public class BossMonsterData
     {
         [Header("Boss Sound Setting")]
         public string _bossHitSoundName = "BossMonster_TakeDamage_Sound";
         public string _bossDieSoundName = "BossMonster_Die_Sound";
+        public string _bossHowlingSoundName = "Boss_Minotaurs_Howling_Sound";
     }
-}

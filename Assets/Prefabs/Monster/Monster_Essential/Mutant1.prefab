@@ -2083,7 +2083,7 @@ MonoBehaviour:
   _monsterData:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
-    _monsterHowlingSoundName: Monster_Howling_Sound
+    _monsterHowlingSoundName: Mutant_Howling_Sound
   maxHealth: 150
   dropExp: 60
   minGold: 10

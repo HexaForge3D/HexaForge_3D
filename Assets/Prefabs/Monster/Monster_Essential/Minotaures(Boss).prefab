@@ -4265,6 +4265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717a84142c2937945acd1179d6dcab24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossMonsterHealth
+  _bossMonsterData:
+    _bossHitSoundName: Boss_Minotaurs_TakeDamage_Sound
+    _bossDieSoundName: Boss_Minotaurs_Die_Sound
   _maxHealth: 50000
   _dropExp: 3000
   _minGold: 10000

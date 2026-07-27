@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 66.56773, y: 10.2363}
+  m_SizeDelta: {x: 84.21457, y: 10.2363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4038347820437752340
 Canvas:
@@ -168,10 +168,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Oil of Blessing
+  m_text: Oil of Blessing x2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 9f398fdfd38bc1747a5ec80d29bfb22b, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 7aa4cd79fa6f45f4b8a38de1d2a349d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

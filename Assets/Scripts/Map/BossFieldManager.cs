@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [Serializable]
@@ -75,6 +76,8 @@ public class BossFieldManager : BaseDungeonController
 
     private void Start()
     {
+        
+
         OnStartField?.Invoke("BossBGM");
         Debug.Log("<color=cyan>[BossFieldManager] 보스 대기 중... NPC와 상호작용하여 전투를 시작하세요.</color>");
 
@@ -174,18 +177,21 @@ public class BossFieldManager : BaseDungeonController
         if (hpPercentage <= 75f && !_isSpawnGroup1)
         {
             _isSpawnGroup1 = true;
+            SoundManager.Instance.PlaySFXSound("Boss_RecallMonster_Sound");
             SpawnMonsterGroup(_groupSpawnPoint1, _group1SpawnPairs, "그룹 1 (75% 구간)");
         }
 
         if (hpPercentage <= 50f && !_isSpawnGroup2)
         {
             _isSpawnGroup2 = true;
+            SoundManager.Instance.PlaySFXSound("Boss_RecallMonster_Sound");
             SpawnMonsterGroup(_groupSpawnPoint2, _group2SpawnPairs, "그룹 2 (50% 구간)");
         }
 
         if (hpPercentage <= 25f && !_isSpawnGroup3)
         {
             _isSpawnGroup3 = true;
+            SoundManager.Instance.PlaySFXSound("Boss_RecallMonster_Sound");
             SpawnMonsterGroup(_groupSpawnPoint3, _group3SpawnPairs, "그룹 3 (25% 구간)");
         }
     }
@@ -221,6 +227,7 @@ public class BossFieldManager : BaseDungeonController
                     monsterInstance.transform.SetParent(_monsterSpawnGroup);
                 }
             }
+
         }
     }
 
@@ -285,4 +292,5 @@ public class BossFieldManager : BaseDungeonController
         OnFailField?.Invoke();
         InvokeFailed(DungeonFailReason.PlayerDead);
     }
+   
 }
