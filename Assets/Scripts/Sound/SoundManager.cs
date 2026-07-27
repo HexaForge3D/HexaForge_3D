@@ -37,6 +37,7 @@ public class SoundManager : MonoBehaviour
         NPCEscortFieldManager.OnStartField += PlayBGMSound;
         RoomFieldManager.OnStartField += PlayBGMSound;
         MapManager.OnStartField += PlayBGMSound;
+        BossFieldManager.OnStartField += PlayBGMSound;
     }
 
     private void OnDisable()
@@ -45,6 +46,7 @@ public class SoundManager : MonoBehaviour
         NPCEscortFieldManager.OnStartField -= PlayBGMSound;
         RoomFieldManager.OnStartField -= PlayBGMSound;
         MapManager.OnStartField -= PlayBGMSound;
+        BossFieldManager.OnStartField -=PlayBGMSound;
     }
 
     private void Start()
