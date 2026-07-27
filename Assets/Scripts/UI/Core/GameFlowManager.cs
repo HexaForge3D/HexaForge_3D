@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameFlowManager
 {
     private string _currentSlotId;
+    private string _currentMapId;
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
@@ -230,6 +231,8 @@ public class GameFlowManager
 
         else
         {
+            DisableSykbox();
+
             Debug.LogWarning($"[GameFlowManager] 포탈({portal.name})에 TargetMapId{portal.TargetMapId}가 설정되어 있지 않습니다.");
         }
 
@@ -958,6 +961,8 @@ public class GameFlowManager
 
     private void ApplyMoodForMap(string mapId)
     {
+        _currentMapId = mapId;
+
         DNSkyboxType moodType;
 
         switch (mapId)
@@ -982,5 +987,18 @@ public class GameFlowManager
         }
 
         GameSettingsManager.Instance.MoodSwitcher.ChangeSkybox(moodType);
+    }
+
+    private void DisableSykbox()
+    {
+        RenderSettings.skybox = null;
+    }
+
+    private void RestoreSkybox()
+    {
+        if (string.IsNullOrEmpty(_currentMapId) == false)
+        {
+            ApplyMoodForMap(_currentMapId);
+        }
     }
 }

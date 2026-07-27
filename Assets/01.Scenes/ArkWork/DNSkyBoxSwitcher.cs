@@ -93,5 +93,10 @@ public class DNSkyBoxSwitcher : MonoBehaviour
         RenderSettings.ambientEquatorColor = data.Color_EquatorColor;
         RenderSettings.ambientGroundColor = data.Color_GroundColor;
     }
+
+    public void ClearSkybox()
+    {
+        RenderSettings.skybox = null;
+    }
 }
 
