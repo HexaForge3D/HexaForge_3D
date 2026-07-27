@@ -19,7 +19,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
     public const float SellPriceRatio = 0.8f;
-    private const int SkillPointsPerLevel = 4;
+    private const int SkillPointsPerLevel = 1;
     public const int MaxInventorySlots = 63;
 
     public SaveData CurrentSaveData { get; private set; }
@@ -323,7 +323,8 @@ public class SaveManager : BaseMonoManager<SaveManager>
                 };
             }
 
-            slot.Skills.AvailablePoints += levelsGained * SkillPointsPerLevel;
+            int skillPointsGained = (levelAfter / 2) - (levelBefore / 2);
+            slot.Skills.AvailablePoints += skillPointsGained;
             Debug.Log($"[SaveManager] 레벨업! {levelBefore} > {levelAfter}, 스킬 포인트 +{levelsGained}");
         }
 

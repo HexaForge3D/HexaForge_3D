@@ -7,20 +7,8 @@
     "Atk": 20,
     "Def": 10,
 	"HpPerLevel": 30,
-	"MpPerLevel": 10,
-	"AtkPerLevel": 10,
-	"DefPerLevel": 5
-  },
-  {
-    "ID": "GunSliger",
-    "PrefabAddress": "Player_Warrior",
-    "Hp": 200,
-    "Mp": 100,
-    "Atk": 150,
-    "Def": 5,
-	"HpPerLevel": 20,
 	"MpPerLevel": 20,
-	"AtkPerLevel": 15,
+	"AtkPerLevel": 10,
 	"DefPerLevel": 5
   }
 ]
