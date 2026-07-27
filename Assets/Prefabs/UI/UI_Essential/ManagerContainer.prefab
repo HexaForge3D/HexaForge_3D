@@ -453,7 +453,7 @@ Transform:
   m_GameObject: {fileID: 2978950600396341953}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 11.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1398,10 +1398,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3355506053159683265, guid: 3439e54879491804aa5c2fbb7b192ef8, type: 3}
-      propertyPath: m_text
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8323350529704140707, guid: 3439e54879491804aa5c2fbb7b192ef8, type: 3}
       propertyPath: m_Name
       value: SystemMessage
@@ -1613,10 +1609,6 @@ PrefabInstance:
     - target: {fileID: 960246182470873720, guid: c4decdca31f88e94b9449e306ba10a47, type: 3}
       propertyPath: m_Name
       value: Tooltip
-      objectReference: {fileID: 0}
-    - target: {fileID: 960246182470873720, guid: c4decdca31f88e94b9449e306ba10a47, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3739420221857564328, guid: c4decdca31f88e94b9449e306ba10a47, type: 3}
       propertyPath: m_Pivot.x

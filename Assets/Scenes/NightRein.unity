@@ -316,7 +316,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649772655}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &649772658
 Camera:
   m_ObjectHideFlags: 0
@@ -511,15 +511,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.0915
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.16209
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalRotation.w
@@ -548,26 +548,6 @@ PrefabInstance:
     - target: {fileID: 6249489593430521741, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: _mapSpawnPoints.Array.data[0].SpawnPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: _mapSpawnPoints.Array.data[1].SpawnPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: _mapSpawnPoints.Array.data[2].SpawnPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: _mapSpawnPoints.Array.data[3].SpawnPoint
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816796768789612171, guid: c532de1a1d60e2b4ab97d84337ab0341, type: 3}
-      propertyPath: _mapSpawnPoints.Array.data[4].SpawnPoint
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
