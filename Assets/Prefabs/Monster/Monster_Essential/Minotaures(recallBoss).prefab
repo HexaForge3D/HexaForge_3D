@@ -3990,10 +3990,9 @@ GameObject:
   - component: {fileID: 5492942865036117532}
   - component: {fileID: 9055795822608500722}
   - component: {fileID: 14325061817120725}
-  - component: {fileID: -7798877612820797921}
-  - component: {fileID: -6919445619901437236}
+  - component: {fileID: 1161289063105529477}
   m_Layer: 0
-  m_Name: Minotaures(Boss)
+  m_Name: Minotaures(recallBoss)
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4009,7 +4008,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4414871117353324496}
@@ -4145,14 +4144,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: 2526050477347474807, guid: 058ffa13e6301d142a664c467d1e26c2, type: 2}
+  m_Graph: {fileID: 2526050477347474807, guid: 99f40a9e01cc7b34d983849ac60fcd39, type: 2}
   m_BlackboardVariableOverridesList:
   - rid: 312138339817881858
   - rid: 312138365541810282
   - rid: 312138497893597685
   - rid: 312138497893597686
   - rid: 312138497893598160
-  m_OriginalGraph: {fileID: 2526050477347474807, guid: 058ffa13e6301d142a664c467d1e26c2, type: 2}
+  m_OriginalGraph: {fileID: 2526050477347474807, guid: 99f40a9e01cc7b34d983849ac60fcd39, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
@@ -4181,7 +4180,7 @@ MonoBehaviour:
           m_Value0: 4345574515795816933
           m_Value1: 14419878264557771408
         Name: AttackRange
-        m_Value: 7
+        m_Value: 2.5
     - rid: 312138497893597686
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -4251,10 +4250,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterHitBox
   weaponPoints:
   - {fileID: 1031761753317549976}
-  hitRadius: 6
-  minDamage: 600
-  maxDamage: 800
---- !u!114 &-7798877612820797921
+  hitRadius: 1
+  minDamage: 200
+  maxDamage: 400
+--- !u!114 &1161289063105529477
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4263,114 +4262,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4414871117303439921}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 717a84142c2937945acd1179d6dcab24, type: 3}
+  m_Script: {fileID: 11500000, guid: 65118580ee3706c4ea9ddd0fd9a32835, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossMonsterHealth
-  _bossMonsterData:
-    _bossHitSoundName: Boss_Minotaurs_TakeDamage_Sound
-    _bossDieSoundName: Boss_Minotaurs_Die_Sound
-    _bossHowlingSoundName: Boss_Minotaurs_Howling_Sound
-  _maxHealth: 50000
-  _dropExp: 10000
-  _minGold: 3000
-  _maxGold: 5000
---- !u!82 &-6919445619901437236
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4414871117303439921}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 0
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterHealth
+  _monsterData:
+    _monsterHitSoundName: Monster_TakeDamage_Sound
+    _monsterDieSoundName: Monster_Die_Sound
+    _monsterHowlingSoundName: Minotaurs_Howling_Sound
+  maxHealth: 3000
+  dropExp: 500
+  minGold: 100
+  maxGold: 200
 --- !u!1 &4414871117353324497
 GameObject:
   m_ObjectHideFlags: 0

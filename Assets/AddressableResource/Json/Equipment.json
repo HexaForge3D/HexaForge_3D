@@ -2,7 +2,7 @@
   {
     "ID": "Item_IronSword",
     "EquipSlot": "Weapon",
-    "AtkBonus": 5,
+    "AtkBonus": 100,
     "DefBonus": 0,
 	"Rank": 0
   },
@@ -10,119 +10,119 @@
     "ID": "Item_LeatherHelmet",
     "EquipSlot": "Helmet",
     "AtkBonus": 0,
-    "DefBonus": 2,
+    "DefBonus": 10,
 	"Rank": 0
   },
   {
     "ID": "Item_LeatherChestPlate",
     "EquipSlot": "Chest",
     "AtkBonus": 0,
-    "DefBonus": 4,
+    "DefBonus": 20,
 	"Rank":0
   },
   {
     "ID": "Item_LeatherPants",
     "EquipSlot": "Pants",
     "AtkBonus": 0,
-    "DefBonus": 3,
+    "DefBonus": 20,
 	"Rank": 0
   },
   {
     "ID": "Item_LeatherBoots",
     "EquipSlot": "Boots",
     "AtkBonus": 0,
-    "DefBonus": 2,
+    "DefBonus": 10,
 	"Rank": 0
   },
   {
     "ID": "Item_LeatherGloves",
     "EquipSlot": "Gloves",
-    "AtkBonus": 1,
-    "DefBonus": 1,
+    "AtkBonus": 50,
+    "DefBonus": 10,
 	"Rank": 0
   },
   {
     "ID": "Item_SteelSword",
     "EquipSlot": "Weapon",
-    "AtkBonus": 12,
-    "DefBonus": 2,
+    "AtkBonus": 500,
+    "DefBonus": 0,
 	"Rank": 1
   },
   {
     "ID": "Item_SteelHelmet",
     "EquipSlot": "Helmet",
-    "AtkBonus": 2,
-    "DefBonus": 7,
+    "AtkBonus": 0,
+    "DefBonus": 20,
 	"Rank": 1
   },
   {
     "ID": "Item_SteelChestPlate",
     "EquipSlot": "Chest",
     "AtkBonus": 0,
-    "DefBonus": 10,
-	"Rank":1
+    "DefBonus": 40,
+    "Rank": 1
   },
   {
     "ID": "Item_SteelPants",
     "EquipSlot": "Pants",
     "AtkBonus": 0,
-    "DefBonus": 5,
-	"Rank": 1
+    "DefBonus": 40,
+    "Rank": 1
   },
   {
     "ID": "Item_SteelBoots",
     "EquipSlot": "Boots",
     "AtkBonus": 0,
-    "DefBonus": 4,
-	"Rank": 1
+    "DefBonus": 20,
+    "Rank": 1
   },
   {
     "ID": "Item_SteelGloves",
     "EquipSlot": "Gloves",
-    "AtkBonus": 2,
-    "DefBonus": 2,
-	"Rank": 1
+    "AtkBonus": 250,
+    "DefBonus": 20,
+    "Rank": 1
   },
   {
     "ID": "Item_MithrilSword",
     "EquipSlot": "Weapon",
-    "AtkBonus": 20,
-    "DefBonus": 5,
-	"Rank": 2
+    "AtkBonus": 0,
+    "DefBonus": 20,
+    "Rank": 2
   },
   {
     "ID": "Item_MithrilHelmet",
     "EquipSlot": "Helmet",
-    "AtkBonus": 4,
-    "DefBonus": 16,
+    "AtkBonus": 0,
+    "DefBonus": 40,
 	"Rank": 2
   },
   {
     "ID": "Item_MithrilChestPlate",
     "EquipSlot": "Chest",
     "AtkBonus": 0,
-    "DefBonus": 10,
+    "DefBonus": 80,
 	"Rank":2
   },
   {
     "ID": "Item_MithrilPants",
     "EquipSlot": "Pants",
     "AtkBonus": 0,
-    "DefBonus": 8,
+    "DefBonus": 80,
 	"Rank": 2
   },
   {
     "ID": "Item_MithrilBoots",
     "EquipSlot": "Boots",
     "AtkBonus": 0,
-    "DefBonus": 7,
+    "DefBonus": 40,
 	"Rank": 2
   },
   {
     "ID": "Item_MithrilGloves",
     "EquipSlot": "Gloves",
-    "AtkBonus": 5,
-    "DefBonus": 5,
+    "AtkBonus": 400,
+    "DefBonus": 40,
 	"Rank": 2
   }
 ]

@@ -20600,19 +20600,19 @@ MonoBehaviour:
   _monsterSpawnGroup: {fileID: 629649624119771141}
   _groupSpawnPoint1: {fileID: 5245468860067867810}
   _group1SpawnPairs:
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
   _groupSpawnPoint2: {fileID: 8786897743950560589}
   _group2SpawnPairs:
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
   _groupSpawnPoint3: {fileID: 3897354176287780158}
   _group3SpawnPairs:
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
-  - _monsterPrefab: {fileID: 4414871117303439921, guid: 0e0c64d47866c5b48a5db826d654981f, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
+  - _monsterPrefab: {fileID: 4414871117303439921, guid: 123172ff5417e794d81c5193a819a608, type: 3}
 --- !u!1 &4203169565726082184
 GameObject:
   m_ObjectHideFlags: 0

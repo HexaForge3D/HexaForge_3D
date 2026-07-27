@@ -7,7 +7,7 @@
     "UseSFXName": "Drink_Potion_Sound",
     "MaxStack": 99,
     "UsageType": "Consumable",
-    "Price": 20,
+    "Price": 100,
     "DropPrefabAddress": "Item_HealthPotion"
   },
   {
@@ -18,7 +18,7 @@
     "UseSFXName": "Drink_Potion_Sound",
     "MaxStack": 99,
     "UsageType": "Consumable",
-    "Price": 20,
+    "Price": 120,
     "DropPrefabAddress": "Item_ManaPotion"
   },
   {
@@ -29,7 +29,7 @@
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 900,
     "DropPrefabAddress": ""
   },
   {
@@ -40,7 +40,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 400,
     "DropPrefabAddress": ""
   },
   {
@@ -51,7 +51,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 700,
     "DropPrefabAddress": ""
   },
   {
@@ -62,7 +62,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 700,
     "DropPrefabAddress": ""
   },
   {
@@ -73,7 +73,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 400,
     "DropPrefabAddress": ""
   },
   {
@@ -84,7 +84,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 20,
+    "Price": 600,
     "DropPrefabAddress": ""
   },
   {
@@ -95,7 +95,7 @@
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 1800,
     "DropPrefabAddress": ""
   },
   {
@@ -106,7 +106,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 800,
     "DropPrefabAddress": ""
   },
   {
@@ -117,7 +117,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 1400,
     "DropPrefabAddress": ""
   },
   {
@@ -128,7 +128,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 1400,
     "DropPrefabAddress": ""
   },
   {
@@ -139,7 +139,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 800,
     "DropPrefabAddress": ""
   },
   {
@@ -150,7 +150,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 100,
+    "Price": 1200,
     "DropPrefabAddress": ""
   },
   {
@@ -161,7 +161,7 @@
     "UseSFXName": "Equipped_Sword_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 3600,
     "DropPrefabAddress": ""
   },
   {
@@ -172,7 +172,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 1600,
     "DropPrefabAddress": ""
   },
   {
@@ -183,7 +183,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 2800,
     "DropPrefabAddress": ""
   },
   {
@@ -194,7 +194,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 2800,
     "DropPrefabAddress": ""
   },
   {
@@ -205,7 +205,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 1600,
     "DropPrefabAddress": ""
   },
   {
@@ -216,7 +216,7 @@
     "UseSFXName": "Equipped_Armor_Sound",
     "MaxStack": 1,
     "UsageType": "Equipment",
-    "Price": 500,
+    "Price": 2400,
     "DropPrefabAddress": ""
   },
   {
@@ -226,7 +226,7 @@
     "IconAddress": "Material[Material_EnhancementScroll]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 100,
     "DropPrefabAddress": "Item_EnhancementScroll"
   },
   {
@@ -236,7 +236,7 @@
     "IconAddress": "Material[Material_LeatherPiece]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 100,
     "DropPrefabAddress": "Item_LeatherPiece"
   },
   {
@@ -246,7 +246,7 @@
     "IconAddress": "Material[Material_IronIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 100,
     "DropPrefabAddress": "Item_IronIngot"
   },
   {
@@ -256,7 +256,7 @@
     "IconAddress": "Material[Material_MithrilIngot]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 100,
     "DropPrefabAddress": "Item_MithrilIngot"
   },
   {
@@ -266,7 +266,7 @@
     "IconAddress": "Material[Material_MysteriousPowder]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 100,
     "DropPrefabAddress": "Item_MysteriousPowder"
   },
   {
@@ -276,7 +276,7 @@
     "IconAddress": "Material[Material_OilofBlessing]",
     "MaxStack": 99,
     "UsageType": "Material",
-    "Price": 500,
+    "Price": 200,
     "DropPrefabAddress": "Item_OilofBlessing"
   }
 ]

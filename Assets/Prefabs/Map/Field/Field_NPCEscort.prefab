@@ -8968,8 +8968,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 2567127996185470343}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &4462067597104923802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8986,10 +8986,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &1203883272879718337
 GameObject:
   m_ObjectHideFlags: 0
@@ -21094,8 +21094,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 2911002419901897333}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &3902864810868357992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21112,10 +21112,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &1977288584784295161
 GameObject:
   m_ObjectHideFlags: 0
@@ -28084,8 +28084,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 1274478238582806169}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &1145018960271488900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28102,10 +28102,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &2502474233044870066
 GameObject:
   m_ObjectHideFlags: 0
@@ -31585,10 +31585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2488ddf5bceb8a04da5b46ed6d829daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCEscortFieldManager
-  _rewardGold: 100
+  _rewardGold: 400
   _rewardItems:
-  - ItemId: Item_IronSword
+  - ItemId: Item_LeatherGloves
     Count: 1
+  - ItemId: Item_OilofBlessing
+    Count: 5
   _npcPatrolController: {fileID: 8247241499568329226}
   _monsterGroup: {fileID: 0}
   _itemGroup: {fileID: 3872847445261677635}
@@ -38267,8 +38269,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 2040998172667185756}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &152878979281103681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38285,10 +38287,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &3406512683812929399
 GameObject:
   m_ObjectHideFlags: 0
@@ -67055,8 +67057,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 703069956792441687}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &1697287510523968074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67073,10 +67075,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &4239160880749770203
 GameObject:
   m_ObjectHideFlags: 0
@@ -69349,8 +69351,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 632426662706682137}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &1624360393365141508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69367,10 +69369,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &4310961376513344351
 GameObject:
   m_ObjectHideFlags: 0
@@ -81655,8 +81657,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 988638260597235782}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &1437896070446317915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81673,10 +81675,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &4516285210400952010
 GameObject:
   m_ObjectHideFlags: 0
@@ -95663,8 +95665,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 7248139879234749809}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &8852571947251360876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95681,10 +95683,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &6306122409741033271
 GameObject:
   m_ObjectHideFlags: 0
@@ -113790,8 +113792,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 7897655171263132953}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &8346907415082062852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113808,10 +113810,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &6813756785727745887
 GameObject:
   m_ObjectHideFlags: 0
@@ -122232,8 +122234,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 6034416035830386096}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &5616757228095106221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122250,10 +122252,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &6965878210183160636
 GameObject:
   m_ObjectHideFlags: 0
@@ -137237,8 +137239,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 4618545457063549990}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &6797173214715084091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137255,10 +137257,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &8290307389046781039
 GameObject:
   m_ObjectHideFlags: 0
@@ -141117,8 +141119,8 @@ MonoBehaviour:
   weaponPoints:
   - {fileID: 4664347886861220719}
   hitRadius: 1
-  minDamage: 10
-  maxDamage: 20
+  minDamage: 30
+  maxDamage: 60
 --- !u!114 &6842973521989393010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141135,10 +141137,10 @@ MonoBehaviour:
     _monsterHitSoundName: Monster_TakeDamage_Sound
     _monsterDieSoundName: Monster_Die_Sound
     _monsterHowlingSoundName: Minotaurs_Howling_Sound
-  maxHealth: 150
-  dropExp: 1800
-  minGold: 10
-  maxGold: 500
+  maxHealth: 100
+  dropExp: 1500
+  minGold: 50
+  maxGold: 100
 --- !u!1 &8335705007821889833
 GameObject:
   m_ObjectHideFlags: 0

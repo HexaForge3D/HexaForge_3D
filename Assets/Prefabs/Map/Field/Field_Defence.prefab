@@ -14359,10 +14359,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 207c6644be1b5db4cabb19b092484767, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefenceFieldManager
-  _rewardGold: 100
+  _rewardGold: 2000
   _rewardItems:
-  - ItemId: Item_IronIngot
-    Count: 55
+  - ItemId: Item_SteelSword
+    Count: 1
+  - ItemId: Item_MithrilPants
+    Count: 1
+  - ItemId: Item_HealthPotion
+    Count: 10
+  - ItemId: Item_ManaPotion
+    Count: 5
   _monsterGroup: {fileID: 8360525535724549069}
   _itemGroup: {fileID: 1057827679499765391}
   _spawnPairs:
