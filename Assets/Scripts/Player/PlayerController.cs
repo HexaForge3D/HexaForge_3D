@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     private bool _isEvasiving = false;
 
+    private float _animFailsafeTimer = 0f;
+
     public int BuffAtk { get; set; }
 
     private void Start()
@@ -164,6 +166,22 @@ public class PlayerController : MonoBehaviour
         }
 
         _animator.SetBool("isWalking", _isMoving);
+
+        if (_isAttackAnimPlaying || _isEvasiving)
+        {
+            _animFailsafeTimer += Time.deltaTime;
+            if (_animFailsafeTimer > 1.5f)
+            {
+                _isAttackAnimPlaying = false;
+                _isEvasiving = false;
+                _isAttacking = false;
+                _animFailsafeTimer = 0f;
+            }
+        }
+        else
+        {
+            _animFailsafeTimer = 0f;
+        }
     }
 
     private void LateUpdate()
@@ -230,6 +248,8 @@ public class PlayerController : MonoBehaviour
 
                     _isAttacking = true;
                     _isAttackAnimPlaying = true;
+
+                    _animator.ResetTrigger("isAttack");
                     FireAnimationTrigger("isAttack");
                 }
             }
@@ -264,15 +284,28 @@ public class PlayerController : MonoBehaviour
             }
 
             // SamplePosition으로 레이캐스트가 맞은 곳에서 가장 가까운 "실제 네비메쉬 바닥"을 정밀하게 탐색합니다.
-            if (NavMesh.SamplePosition(rawTargetPosition, out NavMeshHit navHit, 3.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(rawTargetPosition, out NavMeshHit navHit, 5.0f, NavMesh.AllAreas))
             {
                 _targetPosition = navHit.position;
 
                 if (_agent != null && _agent.isActiveAndEnabled && _agent.isOnNavMesh)
                 {
-                    _isAttacking = false;
-                    _agent.SetDestination(_targetPosition);
-                    _agent.isStopped = false;
+
+                    if (_agent.isOnNavMesh == false)
+                    {
+                        if (NavMesh.SamplePosition(transform.position, out NavMeshHit playerHit, 5.0f, NavMesh.AllAreas))
+                        {
+                            _agent.Warp(playerHit.position);
+                        }
+                    }
+
+                    if (_agent.isOnNavMesh)
+                    {
+                        _isAttacking = false;
+                        _agent.isStopped = false;
+                        _agent.SetDestination(_targetPosition);
+                    }
+
                 }
 
                 if (updateSpotMarker && _spotPoint != null)
