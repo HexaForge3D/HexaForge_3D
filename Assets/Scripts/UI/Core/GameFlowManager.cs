@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameFlowManager
 {
     private string _currentSlotId;
+    private string _currentMapId;
     private string _pendingDeleteSlotId;
     private InGameViewModel _inGameViewModel;
 
@@ -230,6 +231,8 @@ public class GameFlowManager
 
         else
         {
+            DisableSykbox();
+
             Debug.LogWarning($"[GameFlowManager] 포탈({portal.name})에 TargetMapId{portal.TargetMapId}가 설정되어 있지 않습니다.");
         }
 
@@ -660,6 +663,7 @@ public class GameFlowManager
         try
         {
             await MapManager.Instance.ChangeMapAsync(mapId);
+            ApplyMoodForMap(mapId);
 
             UIManager.Instance.CloseUI(UIType.HuntingAreaSelectUI);
 
@@ -681,6 +685,7 @@ public class GameFlowManager
         try
         {
             await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
+            ApplyMoodForMap("area_village");
 
             PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
             playerBattle?.Revive();
@@ -841,6 +846,7 @@ public class GameFlowManager
         try
         {
             await MapManager.Instance.ChangeMapAsync("area_village", PortalType.Village);
+            ApplyMoodForMap("area_village");
 
             PlayerBattle playerBattle = PlayerSpawnManager.Instance.GetPlayerBattle();
 
@@ -861,16 +867,17 @@ public class GameFlowManager
 
     private async UniTask ChangeMapWithLoadingAsync(string mapId, PortalType entryPortalType, bool useFullScreenLoading)
     {
-        UniTask loadingTask = UIManager.Instance.ShowLoadingAsync(useFullScreenLoading);
-        UniTask minDisplayTask = UniTask.Delay(500);
+        await UIManager.Instance.ShowLoadingAsync(useFullScreenLoading);
 
-        await loadingTask;
-
-        UniTask changeMapTask = MapManager.Instance.ChangeMapAsync(mapId, entryPortalType);
-
-        await UniTask.WhenAll(changeMapTask, minDisplayTask);
-
-        UIManager.Instance.HideLoading();
+        try
+        {
+            await MapManager.Instance.ChangeMapAsync(mapId, entryPortalType);
+            ApplyMoodForMap(mapId); 
+        }
+        finally
+        {
+            UIManager.Instance.HideLoading();
+        }
     }
 
 
@@ -952,4 +959,46 @@ public class GameFlowManager
         inGameView?.SetBossHp(current, max);
     }
 
+    private void ApplyMoodForMap(string mapId)
+    {
+        _currentMapId = mapId;
+
+        DNSkyboxType moodType;
+
+        switch (mapId)
+        {
+            case "area_village":
+                moodType = DNSkyboxType.Day;
+                break;
+            case "area_bossraid":
+                moodType = DNSkyboxType.Morning;
+                break;
+            case "area_defence":
+                moodType = DNSkyboxType.Rainey;
+                break;
+            case "area_npcescort":
+                moodType = DNSkyboxType.Dusk;
+                break;
+            case "area_roommaze":
+                moodType = DNSkyboxType.Night;
+                break;
+            default:
+                return;
+        }
+
+        GameSettingsManager.Instance.MoodSwitcher.ChangeSkybox(moodType);
+    }
+
+    private void DisableSykbox()
+    {
+        RenderSettings.skybox = null;
+    }
+
+    private void RestoreSkybox()
+    {
+        if (string.IsNullOrEmpty(_currentMapId) == false)
+        {
+            ApplyMoodForMap(_currentMapId);
+        }
+    }
 }

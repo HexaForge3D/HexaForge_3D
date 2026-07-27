@@ -2,7 +2,7 @@
   {
     "ID": "area_npcescort",
     "Name": "NPCEscort",
-    "Description": "This is Wide Plain. So Easy World",
+    "Description": "Requires Lv. 1\n\nInteract with the Elder and safely escort them to the destination. The NPC will stop moving if they are too far away from you or if monsters get too close.",
     "ImageAddress": "",
     "MapName": "NPCEscort",
 	"MapType": "Dungeon",
@@ -12,7 +12,7 @@
   {
     "ID": "area_roommaze",
     "Name": "Maze",
-    "Description": "This is Forest. Easy World",
+    "Description": "Requires Lv. 10\n\nDefeat every monster lurking within the maze to clear the dungeon.",
     "ImageAddress": "",
     "MapName": "Maze",
 	"MapType": "Dungeon",
@@ -22,7 +22,7 @@
   {
     "ID": "area_defence",
     "Name": "Defence",
-    "Description": "This is Mountain. Normal World",
+    "Description": "Requires Lv. 20\n\nInteract with the Nun at the center of the map. Protect her from the endless waves of monsters.",
     "ImageAddress": "",
     "MapName": "Defence",
 	"MapType": "Dungeon",
@@ -32,7 +32,7 @@
   {
     "ID": "area_bossraid",
     "Name": "BossRaid",
-    "Description": "This is Deep Vally. Hard World",
+    "Description": "Requires Lv. 40\n\nInteract with the NPC to challenge the boss. Defeat the boss, who occasionally unleashes powerful special attacks, and protect the village.",
     "ImageAddress": "",
     "MapName": "BossRaid",
 	"MapType": "Dungeon",
@@ -42,7 +42,7 @@
   {
     "ID": "area_village",
     "Name": "Village",
-    "Description": "This is Laboratory. Very Hard World",
+    "Description": "A peaceful village where adventurers gather. Visit the Blacksmith to enhance your equipment, buy supplies from the Shop, and prepare for your next adventure.",
     "ImageAddress": "",
     "MapName": "Village",
 	"MapType": "Dungeon",

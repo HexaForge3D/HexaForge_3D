@@ -587,8 +587,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.6719, y: 2.9537}
-  m_SizeDelta: {x: 750.5464, y: 78.806}
+  m_AnchoredPosition: {x: -0.6719, y: 12.0949}
+  m_SizeDelta: {x: 750.5464, y: 97.0885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &803858875368907094
 CanvasRenderer:
@@ -618,8 +618,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1265123301, guid: 9d69bcc843179f8419cc34d26bbe7f32, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: -595539882, guid: ba5630d6bd7002741ab5812938533f47, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -645,7 +645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7802933434302444
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1444,7 +1444,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -63}
+  m_AnchoredPosition: {x: -0.000030517578, y: -1}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2344950792093140069
@@ -1502,8 +1502,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1564,7 +1564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &819669044892658461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1791,7 +1791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6108569550976916868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5005,6 +5005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e0367ca410d3f34a8ad150ff378133e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InGameView
+  CanBringToFront: 1
   Image_HpBar: {fileID: 5983875454471411592}
   Image_MpBar: {fileID: 4714245387235734648}
   Image_ExpBar: {fileID: 5695344722636273673}
@@ -5377,7 +5378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1201332989840502205
 RectTransform:
   m_ObjectHideFlags: 0

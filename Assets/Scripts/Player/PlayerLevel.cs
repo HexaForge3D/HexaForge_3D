@@ -60,7 +60,7 @@ public class PlayerLevel : MonoBehaviour
 
     private void HandleExpTestKey()
     {
-        AddExp(100);
+        AddExp(2000);
     }
 
     public void AddExp(int amount)

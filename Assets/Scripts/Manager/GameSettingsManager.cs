@@ -5,6 +5,8 @@ public class GameSettingsManager : BaseMonoManager<GameSettingsManager>
     private const string ResolutionIndexKey = "ResolutionIndex";
     private const string IsFullscreenKey = "IsFullscrren";
 
+    public DNSkyBoxSwitcher MoodSwitcher;
+
     private Resolution[] _availableResolutions;
 
     protected override void Awake()
