@@ -14391,6 +14391,7 @@ MonoBehaviour:
   _defenceTarget: {fileID: 148525882093162775}
   _waveCount: 5
   _countdownDuration: 20
+  _startPortalObject: {fileID: 1172582240796764264}
 --- !u!1 &3303121894424712445
 GameObject:
   m_ObjectHideFlags: 0
