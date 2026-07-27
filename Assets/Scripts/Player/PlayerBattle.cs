@@ -26,7 +26,7 @@ public class PlayerBattle : MonoBehaviour
     // 플레이어 마나 자동 회복에 필요한 값들
     private CancellationTokenSource _cts;
     private const float ManaRegenTimer = 1f;
-    private const float ManaRegenRate = 0.05f;
+    private const float ManaRegenRate = 0.12f;
     // 물약을 마시고 난 뒤의 쿨타임을 알려주는 이벤트 변수
     public static event Action<string, float> OnPotionUsed;
 
