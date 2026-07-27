@@ -18,7 +18,7 @@ public class SaveManager : BaseMonoManager<SaveManager>
 {
     private const int SlotCount = 3;
     private const string SaveFileName = "CharacterSaveData.json";
-    public const float SellPriceRatio = 0.8f;
+    public const float SellPriceRatio = 0.5f;
     private const int SkillPointsPerLevel = 1;
     public const int MaxInventorySlots = 63;
 
