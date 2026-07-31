@@ -13,10 +13,8 @@ public enum PortalType : byte
     FakePortal
 }
 
-public class Portal : MonoBehaviour
+public class Portal : InteractObject
 {
-    private bool _isPlayerInCollider;
-
     public static event System.Action<Portal> OnPortalInteracted;
 
     [SerializeField] private PortalType _portalType;
@@ -32,42 +30,34 @@ public class Portal : MonoBehaviour
 
     public Portal _partnerPortal { get; set; }
 
-
-    private void OnEnable()
+    // 인터페이스 멤버 =======================
+    protected override void OnEnable()
     {
         PortalManager.Instance.RegisterPortal(this);
-        PlayerInputSystem.OnInteract += Handleinteraction;
+        base.OnEnable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
         PortalManager.Instance.UnRegisterPortal(this);
-        PlayerInputSystem.OnInteract -= Handleinteraction;
+        base.OnDisable();
     }
 
-    private void Handleinteraction()
+    protected override void OnTriggerEnter(Collider other)
     {
-        if (_isPlayerInCollider == false)
+        if (other.CompareTag(_playerTag))
         {
-            return;
-        }
-
-        OnPortalInteracted?.Invoke(this);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
+            _isPlayerInCollider = true;
             MapManager.Instance.SetPlayer(other.transform);
             EnterPortal();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag(_playerTag))
         {
+            _isPlayerInCollider = false;
             if (MapManager.Instance != null)
             {
                 ExitPortal();
@@ -75,12 +65,20 @@ public class Portal : MonoBehaviour
         }
     }
 
+    protected override bool CanInteract()
+    {
+        return true;
+    }
+
+    protected override void OnInteract()
+    {
+        OnPortalInteracted?.Invoke(this);
+    }
     public void EnterPortal()
     {
         _isPlayerInCollider = true;
         
     }
-
     public void ExitPortal()
     {
         if (MapManager.Instance != null)
