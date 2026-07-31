@@ -30,11 +30,7 @@ public class DefenceFieldManager : BaseDungeonController
     public static event Action<float> OnCountdownChanged;
     public static event Action<string> OnStartField;
 
-    private bool _isFailed = false;
     private bool _isStarted = false;
-
-    private bool _isCheatClear = false;
-    private bool _isCheatFail = false;
 
     public static DefenceFieldManager Instance { get; private set; }
 
@@ -49,9 +45,6 @@ public class DefenceFieldManager : BaseDungeonController
 
         DefenceTarget.OnTargetDestroyed += HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested += HandleDefenceStartRequested;
-
-        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
 
         OnDungeonFailed += HandleDungeonFailedEvent;
     }
@@ -72,9 +65,6 @@ public class DefenceFieldManager : BaseDungeonController
 
         DefenceTarget.OnTargetDestroyed -= HandleTargetDestroyed;
         DefenceTarget.OnDefenceStartRequested -= HandleDefenceStartRequested;
-
-        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
 
         OnDungeonFailed -= HandleDungeonFailedEvent;
     }
@@ -109,22 +99,25 @@ public class DefenceFieldManager : BaseDungeonController
 
     private void HandleDungeonFailedEvent(DungeonFailReason reason)
     {
-        if (_isFailed) return;
+        if (_isFailed)
+        {
+            return;
+        }
 
         _isFailed = true;
         Debug.Log($"[DefenceFieldManager] 던전 실패 (사유: {reason}). 디펜스 시퀀스를 중단합니다.");
     }
 
-    private void HandleCheatClear()
+    protected override void OnCheatClear()
     {
-        _isCheatClear = true;
         Debug.Log("[DefenceFieldManager] 치트키: 던전 클리어");
+        ClearDungeon();
     }
 
-    private void HandleCheatFail()
+    protected override void OnCheatFail()
     {
-        _isCheatFail = true;
         Debug.Log("[DefenceFieldManager] 치트키: 던전 실패");
+        FailDungeon();
     }
 
     private async UniTask StartDefenceSequence()
@@ -198,16 +191,14 @@ public class DefenceFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = CreateReward();
-
         OnClearField?.Invoke();
-        InvokeCleared(reward);
+        ClearDungeonCommon();
     }
 
     private void FailDungeon()
     {
         OnFailField?.Invoke();
-        InvokeFailed(DungeonFailReason.NpcDead);
+        FailDungeonCommon(DungeonFailReason.NpcDead);
     }
 
     private async UniTask<bool> CountdownAsync(float duration)

@@ -16,11 +16,6 @@ public class RoomFieldManager : BaseDungeonController
     private List<MonsterHealth> _activeMonsters = new List<MonsterHealth>();
     private int _totalMonsterCount = 0;
     private int _currentMonsterCount = 0;
-    private bool _isCleared = false;
-    private bool _isFailed = false;
-
-    private bool _isCheatClear = false;
-    private bool _isCheatFail = false;
 
     public static RoomFieldManager Instance { get; private set; }
 
@@ -32,18 +27,11 @@ public class RoomFieldManager : BaseDungeonController
     protected override void OnEnable()
     {
         base.OnEnable();
-
-        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
-
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-
-        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
     }
 
     private void Start()
@@ -113,27 +101,15 @@ public class RoomFieldManager : BaseDungeonController
         }
     }
 
-    private void HandleCheatClear()
+    protected override void OnCheatClear()
     {
-        if (_isCleared || _isFailed)
-        {
-            return;
-        }
-
-        _isCheatClear = true;
-        Debug.Log("[RoomFieldManager] 치트키: 던전 클리어");
+        Debug.Log("[RoomFieldManager] 치트키로 인한 던전 클리어");
         ClearDungeon();
     }
 
-    private void HandleCheatFail()
+    protected override void OnCheatFail()
     {
-        if (_isCleared || _isFailed)
-        {
-            return;
-        }
-
-        _isCheatFail = true;
-        Debug.Log("[RoomFieldManager] 치트키: 던전 실패");
+        Debug.Log("[RoomFieldManager] 치트키로 인한 던전 실패");
         FailDungeon();
     }
 
@@ -152,15 +128,13 @@ public class RoomFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = CreateReward();
-
         OnClearField?.Invoke();
-        InvokeCleared(reward);
+        ClearDungeonCommon();
     }
 
     private void FailDungeon()
     {
         OnFailField?.Invoke();
-        InvokeFailed(DungeonFailReason.PlayerDead);
+        FailDungeonCommon(DungeonFailReason.PlayerDead);
     }
 }

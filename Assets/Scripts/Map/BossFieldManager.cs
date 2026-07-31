@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 [Serializable]
@@ -48,8 +47,6 @@ public class BossFieldManager : BaseDungeonController
     private BossMonsterHealth _bossHealth;
 
     private bool _isStarted = false;
-    private bool _isCleared = false;
-    private bool _isFailed = false;
 
     private bool _isSpawnGroup1 = false;
     private bool _isSpawnGroup2 = false;
@@ -60,9 +57,6 @@ public class BossFieldManager : BaseDungeonController
         base.OnEnable();
 
         BossFieldNPC.OnBossFieldStartRequested += HandleInteractionRequested;
-
-        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
     }
 
     protected override void OnDisable()
@@ -71,16 +65,11 @@ public class BossFieldManager : BaseDungeonController
 
         BossFieldNPC.OnBossFieldStartRequested -= HandleInteractionRequested;
 
-        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
-
         UnsubscribeBossEvents();
     }
 
     private void Start()
     {
-        
-
         OnStartField?.Invoke("BossBGM");
         Debug.Log("<color=cyan>[BossFieldManager] 보스 대기 중... NPC와 상호작용하여 전투를 시작하세요.</color>");
 
@@ -267,44 +256,28 @@ public class BossFieldManager : BaseDungeonController
         }
     }
 
-    private void HandleCheatClear()
+    protected override void OnCheatClear()
     {
-        if (_isCleared || _isFailed)
-        {
-            return;
-        }
-
-        _isCleared = true;
         Debug.Log("[BossFieldManager] 치트키: 던전 클리어");
         ClearDungeon();
     }
 
-    private void HandleCheatFail()
+    protected override void OnCheatFail()
     {
-        if (_isCleared || _isFailed)
-        {
-            return;
-        }
-
-        _isFailed = true;
+        UnsubscribeBossEvents();
         Debug.Log("[BossFieldManager] 치트키: 던전 실패");
         FailDungeon();
     }
-
     private void ClearDungeon()
     {
-        DungeonReward reward = CreateReward();
-
         OnClearField?.Invoke();
-        InvokeCleared(reward);
+        ClearDungeonCommon();
     }
 
     private void FailDungeon()
     {
         UnsubscribeBossEvents();
-
         OnFailField?.Invoke();
-        InvokeFailed(DungeonFailReason.PlayerDead);
+        FailDungeonCommon(DungeonFailReason.PlayerDead);
     }
-   
 }

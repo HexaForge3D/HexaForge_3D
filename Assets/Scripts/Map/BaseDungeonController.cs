@@ -32,23 +32,97 @@ public abstract class BaseDungeonController : MonoBehaviour
 
     [Header("Dungeon Reward")]
     [SerializeField] private int _rewardGold = 100;
-    [SerializeField] private List<RewardItem> _rewardItems = new List<RewardItem>();  
+    [SerializeField] private List<RewardItem> _rewardItems = new List<RewardItem>();
+
+    protected bool _isCleared = false;
+    protected bool _isFailed = false;
+    protected bool _isCheatClear = false;
+    protected bool _isCheatFail = false;
 
     protected virtual void OnEnable()
     {
         IsInDungeon = true;
         PlayerBattle.OnPlayerDead += HandlePlayerDead;
+
+        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClearInternal;
+        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFailInternal;
     }
 
     protected virtual void OnDisable()
     {
         IsInDungeon = false;
-        PlayerBattle.OnPlayerDead -= HandlePlayerDead;  
+        PlayerBattle.OnPlayerDead -= HandlePlayerDead;
+
+        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClearInternal;
+        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFailInternal;
     }
 
     private void HandlePlayerDead()
     {
+        if (_isCleared || _isFailed)
+        {
+            return;
+        }
+
+        _isFailed = true;
         InvokeFailed(DungeonFailReason.PlayerDead);
+    }
+
+    private void HandleCheatClearInternal()
+    {
+        if (_isCleared || _isFailed)
+        {
+            return;
+        }
+
+        _isCheatClear = true;
+        Debug.Log($"[{GetType().Name}] 치트키: 던전 강제 클리어");
+        OnCheatClear();
+    }
+
+    private void HandleCheatFailInternal()
+    {
+        if (_isCleared || _isFailed)
+        {
+            return;
+        }
+
+        _isCheatFail = true;
+        Debug.Log($"[{GetType().Name}] 치트키: 던전 강제 실패");
+        OnCheatFail();
+    }
+
+    protected virtual void OnCheatClear()
+    {
+        ClearDungeonCommon();
+    }
+
+    protected virtual void OnCheatFail()
+    {
+        FailDungeonCommon(DungeonFailReason.PlayerDead);
+    }
+
+    protected void ClearDungeonCommon()
+    {
+        if (_isCleared || _isFailed)
+        {
+            return;
+        }
+
+        _isCleared = true;
+        DungeonReward reward = CreateReward();
+        InvokeCleared(reward);
+    }
+
+    protected void FailDungeonCommon(DungeonFailReason reason)
+    {
+        if (_isCleared || _isFailed)
+        {
+            return;
+        }
+
+        _isFailed = true;
+        InvokeFailed(reason);
     }
 
     protected static void InvokeCleared(DungeonReward reward)

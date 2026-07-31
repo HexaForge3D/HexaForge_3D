@@ -18,10 +18,6 @@ public class NPCEscortFieldManager : BaseDungeonController
     public static event Action<string> OnStartField;
 
     private bool _isStarted = false;
-    private bool _isFailed = false;
-
-    private bool _isCheatClear = false;
-    private bool _isCheatFail = false;
 
     public static NPCEscortFieldManager Instance { get; private set; }
 
@@ -35,9 +31,6 @@ public class NPCEscortFieldManager : BaseDungeonController
         base.OnEnable();
 
         NPCPatrolController.OnPatrolFinished += HandlePatrolFinished;
-
-        PlayerInputSystem.OnCheatDungeonCleared += HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed += HandleCheatFail;
     }
 
     protected override void OnDisable()
@@ -45,9 +38,6 @@ public class NPCEscortFieldManager : BaseDungeonController
         base.OnDisable();
 
         NPCPatrolController.OnPatrolFinished -= HandlePatrolFinished;
-
-        PlayerInputSystem.OnCheatDungeonCleared -= HandleCheatClear;
-        PlayerInputSystem.OnCheatDungeonFailed -= HandleCheatFail;
     }
 
     private void Start()
@@ -74,26 +64,14 @@ public class NPCEscortFieldManager : BaseDungeonController
         }
     }
 
-    private void HandleCheatClear()
+    protected override void OnCheatClear()
     {
-        if (_isCheatClear || _isFailed)
-        {
-            return;
-        }
-
-        _isCheatClear = true;
         Debug.Log("[NPCEscortFieldManager] 치트키: 던전 강제 클리어");
         ClearDungeon();
     }
 
-    private void HandleCheatFail()
+    protected override void OnCheatFail()
     {
-        if (_isCheatFail || _isFailed)
-        {
-            return;
-        }
-
-        _isCheatFail = true;
         Debug.Log("[NPCEscortFieldManager] 치트키: 던전 강제 실패");
         FailDungeon();
     }
@@ -107,16 +85,13 @@ public class NPCEscortFieldManager : BaseDungeonController
 
     private void ClearDungeon()
     {
-        DungeonReward reward = CreateReward();
-
         OnClearField?.Invoke();
-        InvokeCleared(reward);
+        ClearDungeonCommon();
     }
 
     private void FailDungeon()
     {
-        _isFailed = true;
         OnFailField?.Invoke();
-        InvokeFailed(DungeonFailReason.NpcDead);
+        FailDungeonCommon(DungeonFailReason.PlayerDead);
     }
 }
