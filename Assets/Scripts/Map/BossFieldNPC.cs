@@ -1,51 +1,25 @@
 ﻿using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class BossFieldNPC : MonoBehaviour
+public class BossFieldNPC : InteractObject
 {
     [SerializeField] private float _detectRadius = 3f;
 
-    private bool _isPlayerInCollider = false;
-    private bool _isRequested = false;
-
     public static event Action OnBossFieldStartRequested;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        PlayerInputSystem.OnInteract += HandleInteraction;
+        base.OnEnable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        PlayerInputSystem.OnInteract -= HandleInteraction;
+        base.OnDisable();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnInteract()
     {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = false;
-        }
-    }
-
-    private void HandleInteraction()
-    {
-        if (!_isPlayerInCollider || _isRequested)
-        {
-            return;
-        }
-
-        _isRequested = true;
-        Debug.Log("<color=green>[BossFieldNPC] 플레이어 상호작용! 보스전 시작 요청.</color>");
+        Debug.Log("<color=green>[BossFieldNPC] 플레이어 상호작용! 보스전 시작 요청.");
         OnBossFieldStartRequested?.Invoke();
         this.gameObject.SetActive(false);
     }

@@ -1,19 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-public class DefenceTarget : MonoBehaviour
+public class DefenceTarget : InteractObject
 {
     [SerializeField] private int _maxHp = 500;
     private int _currentHp;
-    private bool _isDestroyed = false;
-    private bool _isPlayerInCollider = false;
-    private bool _isRequested = false;
 
+    private bool _isDestroyed = false;
     private float _lastHitSoundTime = -2f;
 
     public static event Action OnTargetDestroyed;
     public static event Action OnDefenceStartRequested;
-
     public static event Action<int, int> OnTargetHpChanged;
 
     private AudioSource _myAudioSource;
@@ -23,48 +20,35 @@ public class DefenceTarget : MonoBehaviour
         _myAudioSource = GetComponent<AudioSource>();
     }
 
-    private void OnEnable()
-    {
-        PlayerInputSystem.OnInteract += HandleInteraction;
-    }
-
-    private void OnDisable()
-    {
-        PlayerInputSystem.OnInteract -= HandleInteraction;
-    }
-
     private void Start()
     {
         _currentHp = _maxHp;
         OnTargetHpChanged?.Invoke(_currentHp, _maxHp);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected override void OnEnable()
     {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = true;
-        }
+        base.OnEnable();
     }
 
-    private void OnTriggerExit(Collider other)
+    protected override void OnDisable()
     {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = false;
-        }
+        base.OnDisable();
     }
 
-    private void HandleInteraction()
+    protected override bool CanInteract()
     {
-        if (!_isPlayerInCollider || _isDestroyed || _isRequested)
+        if (_isDestroyed)
         {
-            return;
+            return false;
         }
+        return base.CanInteract();
+    }
 
+    protected override void OnInteract()
+    {
         SoundManager.Instance?.PlaySFXWithSource(_myAudioSource, "Defence_Target_Help_Sound", 1f);
-        _isRequested = true;
-        Debug.Log("<color=green>[방어 목표 상호작용]</color> 디펜스 시작 요청을 보냅니다.");
+        Debug.Log("<color=green>[방어 목표 상호작용] 디펜스 시작 요청을 보냅니다.");
         OnDefenceStartRequested?.Invoke();
     }
 

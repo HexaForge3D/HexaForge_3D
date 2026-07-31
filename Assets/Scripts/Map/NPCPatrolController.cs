@@ -2,15 +2,13 @@
 using UnityEngine.AI;
 using System;
 
-public class NPCPatrolController : MonoBehaviour
+public class NPCPatrolController : InteractObject
 {
     [Header("NPC경로오브젝트")]
     [SerializeField] private Transform[] _waypoints;
-
     [SerializeField] private float _arrivalThreshold = 1f;
     [SerializeField] private float _detectRadius = 10f;
     [SerializeField] private string _monsterTag = "Monster";
-    [SerializeField] private string _playerTag = "Player";
 
     public static event Action OnPatrolFinished;
     public static event Action<int, int> OnWaypointChanged;
@@ -18,7 +16,6 @@ public class NPCPatrolController : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private int _currentIndex = 0;
     private bool _isFinished = false;
-    private bool _isPlayerInCollider = false;
     private bool _isStarted = false;
 
     private Animator _animator;
@@ -33,14 +30,14 @@ public class NPCPatrolController : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
-        PlayerInputSystem.OnInteract += HandleInteraction;
+        base.OnEnable();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
-        PlayerInputSystem.OnInteract -= HandleInteraction;
+        base.OnDisable();
     }
 
     private void Update()
@@ -74,12 +71,19 @@ public class NPCPatrolController : MonoBehaviour
         CheckWaypoint();
     }
 
-    private void HandleInteraction()
+    protected override bool CanInteract()
     {
-        if (_isPlayerInCollider && (_isStarted == false))
+        return (_isStarted == false);
+    }
+
+    protected override void OnInteract()
+    {
+        if (_isStarted)
         {
-            StartPatrol();
+            return;
         }
+
+        StartPatrol();
     }
 
     private void StartPatrol()
@@ -90,10 +94,12 @@ public class NPCPatrolController : MonoBehaviour
         }
 
         _isStarted = true;
+
         if (_navMeshAgent != null)
         {
             _navMeshAgent.isStopped = false;
         }
+
         MoveToNextWaypoint();
         HandleWaypointChanged();
 
@@ -101,7 +107,40 @@ public class NPCPatrolController : MonoBehaviour
         {
             NPCEscortFieldManager.Instance.HandleEscortStart();
         }
+
         Debug.Log("플레이어 상호작용! NPC 패트롤을 시작합니다.");
+    }
+
+    private void CheckWaypoint()
+    {
+        if (_waypoints == null || _waypoints.Length == 0 || _isFinished)
+        {
+            return;
+        }
+
+        if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _arrivalThreshold)
+        {
+            if (_currentIndex >= _waypoints.Length - 1)
+            {
+                _isFinished = true;
+
+                if (_navMeshAgent != null)
+                {
+                    _navMeshAgent.isStopped = true;
+                }
+
+                Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
+
+                SetAnimation(false, false);
+
+                OnPatrolFinished?.Invoke();
+                return;
+            }
+
+            _currentIndex++;
+            MoveToNextWaypoint();
+            HandleWaypointChanged();
+        }
     }
 
     private bool HasTargetInDetectRadius(string targetTag)
@@ -126,33 +165,9 @@ public class NPCPatrolController : MonoBehaviour
             return;
         }
 
-        _navMeshAgent.SetDestination(_waypoints[_currentIndex].position);
-    }
-
-    private void CheckWaypoint()
-    {
-        if (_waypoints == null || _waypoints.Length == 0 || _isFinished)
+        if (_currentIndex < _waypoints.Length)
         {
-            return;
-        }
-
-        if (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _arrivalThreshold)
-        {
-            if (_currentIndex >= _waypoints.Length - 1)
-            {
-                _isFinished = true;
-                _navMeshAgent.isStopped = true;
-                Debug.Log("모든 웨이포인트 경로를 완료했습니다.");
-
-                SetAnimation(false, false);
-
-                OnPatrolFinished?.Invoke();
-                return;
-            }
-
-            _currentIndex++;
-            MoveToNextWaypoint();
-            HandleWaypointChanged();
+            _navMeshAgent.SetDestination(_waypoints[_currentIndex].position);
         }
     }
 
@@ -164,22 +179,6 @@ public class NPCPatrolController : MonoBehaviour
         }
 
         OnWaypointChanged?.Invoke(_currentIndex + 1, _waypoints.Length);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            _isPlayerInCollider = false;
-        }
     }
 
     private void OnDrawGizmosSelected()
